@@ -1,8 +1,9 @@
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@/lib/server';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
 export async function GET() {
+    const supabase = await createClient();
     const cookieStore = cookies();
 
     // 2. Fetch Aggregated Stats
