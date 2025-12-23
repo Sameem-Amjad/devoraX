@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/server";
 import { notFound } from "next/navigation";
 import ServiceDetailClient from "@/app/services/[id]/_components/serviceClient";
+import { ServiceJsonLd } from "@/components/seo/service-json-Id";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -16,9 +17,12 @@ export default async function Page({ params }: { params: { id: string } }) {
   if (!serviceRes.data) return notFound();
 
   return (
-    <ServiceDetailClient
-      service={serviceRes.data}
-      initialProjects={projectsRes.data || []}
-    />
+    <>
+      <ServiceJsonLd service={projectsRes.data} />
+      <ServiceDetailClient
+        service={serviceRes.data}
+        initialProjects={projectsRes.data || []}
+      />
+    </>
   );
 }
