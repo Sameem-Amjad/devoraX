@@ -1,10 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowRight, CalendarDays, MessageSquare } from "lucide-react";
+import { FloatingBubbles } from "@/components/ui/floatingBubbles";
 
 export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
   return (
     <section className="py-32 bg-[#020202] relative overflow-hidden border-t border-white/5">
+      {/* Swimming bubbles */}
+      <FloatingBubbles count={14} />
+
       {/* Layered glows */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,_rgba(20,184,166,0.08)_0%,_transparent_70%)] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />

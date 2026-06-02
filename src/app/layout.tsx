@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Orbitron, Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { RippleEffect } from '@/components/ui/rippleEffect';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const orbitron = Orbitron({ subsets: ['latin'], variable: '--font-orbitron', display: 'swap' });
@@ -400,6 +401,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       </head>
       <body className="antialiased">
+        <RippleEffect />
         {children}
       </body>
     </html>

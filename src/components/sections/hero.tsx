@@ -1,5 +1,8 @@
 "use client";
 import { CircuitBackground } from "../ui/circuitBackground";
+import { FloatingBubbles } from "../ui/floatingBubbles";
+import { FluidBackground } from "../ui/fluidBackground";
+import { WaveDivider } from "../ui/waveDivider";
 import { motion, AnimatePresence } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
 import { Mail, ArrowRight, ChevronDown } from "lucide-react";
@@ -29,6 +32,8 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
   return (
     <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden min-h-screen flex flex-col justify-center">
       <CircuitBackground />
+      <FluidBackground />
+      <FloatingBubbles count={22} />
 
       {/* Ambient glow orbs */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-teal-600/8 blur-[140px] rounded-full pointer-events-none" />
@@ -164,16 +169,15 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ delay: 1.2, duration: 0.6 }}
           className="mt-16 flex justify-center"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="flex flex-col items-center gap-1 text-gray-600 cursor-pointer"
-          >
+          <div className="swim-float flex flex-col items-center gap-1 text-gray-600 cursor-pointer">
             <span className="text-[0.6rem] uppercase tracking-widest">Scroll</span>
             <ChevronDown className="w-4 h-4" />
-          </motion.div>
+          </div>
         </motion.div>
       </div>
+
+      {/* Wave transition into next section */}
+      <WaveDivider fromColor="transparent" toColor="#020202" height={70} />
     </section>
   );
 };

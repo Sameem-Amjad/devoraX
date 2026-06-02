@@ -14,6 +14,8 @@ import { IndustriesSection } from "@/components/sections/industries";
 import { FAQSection } from "@/components/sections/faq";
 import { StatsCounterSection } from "@/components/sections/statsCounter";
 import { ToolsSection } from "@/components/sections/toolsSection";
+import { WaveDivider } from "@/components/ui/waveDivider";
+import { FloatingBubbles } from "@/components/ui/floatingBubbles";
 import BookingModal from "@/components/models/bookingModel/bookingModel";
 import { AnimatePresence, motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
@@ -53,9 +55,11 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
 
         {/* ── About ── */}
         <AboutSection />
+        <WaveDivider fromColor="#030303" toColor="#020202" height={60} />
 
         {/* ── Work portfolio ── */}
         <WorkSection projects={initialProjects} />
+        <WaveDivider fromColor="#020202" toColor="#000000" height={60} />
 
         {/* ── Services ── */}
         <Services
@@ -63,15 +67,19 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
           setView={setView}
           setActiveService={setActiveService}
         />
+        <WaveDivider fromColor="#000000" toColor="#030303" height={60} />
 
         {/* ── How We Work ── */}
         <ProcessSection />
+        <WaveDivider fromColor="#030303" toColor="#0a0a0a" height={60} />
 
         {/* ── Why Us ── */}
         <WhyUsSection />
+        <WaveDivider fromColor="#030303" toColor="#000000" height={60} />
 
         {/* ── Industries ── */}
         <IndustriesSection />
+        <WaveDivider fromColor="#000000" toColor="#020202" height={60} />
 
         {/* ── Stats Counter ── */}
         <StatsCounterSection />
