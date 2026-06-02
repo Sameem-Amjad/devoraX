@@ -1,12 +1,23 @@
 import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-    return {
-        rules: {
-            userAgent: '*',
-            allow: '/',
-            disallow: ['/api/', '/admin/'], // Hide admin/api from Google
-        },
-        sitemap: '[https://thedevorax.tech/sitemap.xml](https://thedevorax.tech/sitemap.xml)',
-    };
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/api/', '/admin/'],
+      },
+      {
+        userAgent: 'GPTBot',
+        disallow: ['/'],
+      },
+      {
+        userAgent: 'ChatGPT-User',
+        disallow: ['/'],
+      },
+    ],
+    sitemap: 'https://thedevorax.tech/sitemap.xml',
+    host: 'https://thedevorax.tech',
+  };
 }

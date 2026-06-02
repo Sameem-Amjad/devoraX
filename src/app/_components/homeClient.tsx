@@ -13,6 +13,7 @@ import { WhyUsSection } from "@/components/sections/whyUs";
 import { IndustriesSection } from "@/components/sections/industries";
 import { FAQSection } from "@/components/sections/faq";
 import { StatsCounterSection } from "@/components/sections/statsCounter";
+import { ToolsSection } from "@/components/sections/toolsSection";
 import BookingModal from "@/components/models/bookingModel/bookingModel";
 import { AnimatePresence, motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
@@ -46,6 +47,9 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
 
         {/* ── Tech stack marquee ── */}
         <TechStackSection />
+
+        {/* ── Tools ── */}
+        <ToolsSection />
 
         {/* ── About ── */}
         <AboutSection />
