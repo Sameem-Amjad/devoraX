@@ -139,7 +139,7 @@ export const metadata: Metadata = {
 
   // ── Verification (add actual codes when available) ──
   verification: {
-    google: 'google-site-verification-token',
+    google: 'oC4qTo34TX-z--ZSvnNKptARN2-JVXSL5PbCrsHsNNg',
   },
 
   // ── Icons (Next.js App Router auto-picks icon.tsx + apple-icon.tsx) ──
