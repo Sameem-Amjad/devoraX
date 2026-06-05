@@ -2,7 +2,7 @@
 import Logo from "@/components/global/logo";
 import { BarChart, Briefcase, Inbox, Layout, LogOut } from "lucide-react";
 import CONSTANTS from "@/utils/constants/constants";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { supabase } from "@/lib/client";
 import { AdminProjectsManager } from "@/app/admin/_components/adminProjectManager";
 import { deleteProjectAction, addProjectAction } from "@/app/admin/dashboard/_components/adminActions";
@@ -46,15 +46,24 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
           <div className="mt-4 px-2 py-1 bg-teal-500/10 rounded border border-teal-500/20 text-xs text-teal-400 font-mono text-center">ADMIN PORTAL</div>
         </div>
         <div className="p-4 space-y-2 flex-grow">
-          {['Overview', 'Projects', 'Inquiries', 'Settings'].map((item, i) => (
-            <button key={item} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${i === 0 ? 'bg-gradient-to-r from-teal-500/10 to-transparent border-l-2 border-teal-500 text-teal-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}>
-              {i === 0 && <BarChart className="w-4 h-4" />}
-              {i === 1 && <Briefcase className="w-4 h-4" />}
-              {i === 2 && <Inbox className="w-4 h-4" />}
-              {i === 3 && <Layout className="w-4 h-4" />}
-              {item}
-            </button>
-          ))}
+          {[
+            { label: 'Overview', tab: 'overview', icon: <BarChart className="w-4 h-4" /> },
+            { label: 'Projects', tab: 'projects', icon: <Briefcase className="w-4 h-4" /> },
+            { label: 'Inquiries', tab: 'inquiries', icon: <Inbox className="w-4 h-4" /> },
+            { label: 'Settings', tab: 'settings', icon: <Layout className="w-4 h-4" /> },
+          ].map(({ label, tab, icon }) => {
+            const isActive = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${isActive ? 'bg-gradient-to-r from-teal-500/10 to-transparent border-l-2 border-teal-500 text-teal-400' : 'text-gray-400 hover:text-white hover:bg-white/5'}`}
+              >
+                {icon}
+                {label}
+              </button>
+            );
+          })}
         </div>
         <div className="p-4 border-t border-white/5">
           <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer">
@@ -121,44 +130,6 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
             </div>
           </div>
         )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {[
-          { label: 'Total Revenue', val: '$124,500', trend: '+12%', color: 'text-emerald-400', border: 'border-emerald-500/20' },
-          { label: 'Active Projects', val: '12', trend: '3 due soon', color: 'text-cyan-400', border: 'border-cyan-500/20' },
-          { label: 'New Leads', val: '28', trend: '+5 this week', color: 'text-teal-400', border: 'border-teal-500/20' },
-        ].map((stat, i) => (
-          <div key={i} className={`bg-[#080808] border ${stat.border} p-6 rounded-xl relative overflow-hidden group`}>
-            <div className={`absolute top-0 right-0 p-20 opacity-5 rounded-full ${i === 0 ? 'bg-emerald-500' : i === 1 ? 'bg-cyan-500' : 'bg-teal-500'} blur-3xl group-hover:opacity-10 transition-opacity`} />
-            <div className="text-gray-400 text-xs uppercase tracking-wider mb-2">{stat.label}</div>
-            <div className="text-3xl font-bold text-white mb-1">{stat.val}</div>
-            <div className={`text-xs ${stat.color} font-mono`}>{stat.trend}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="bg-[#080808] border border-white/5 rounded-xl overflow-hidden">
-        <div className="p-6 border-b border-white/5 flex justify-between items-center">
-          <h3 className="font-bold text-white">Recent Inquiries</h3>
-          <button className="text-xs text-teal-400 hover:text-teal-300">View All</button>
-        </div>
-        <div className="divide-y divide-white/5">
-          {initialInquiries.map((lead: any, i: any) => (
-            <div key={i} className="p-4 hover:bg-white/5 transition-colors cursor-pointer flex justify-between items-center group">
-              <div className="flex gap-4 items-center">
-                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center font-bold text-sm text-gray-400 group-hover:text-white group-hover:bg-teal-500/20 transition-colors">
-                  {lead.name.charAt(0)}
-                </div>
-                <div>
-                  <div className="text-sm font-bold text-white">{lead.name} <span className="text-gray-500 font-normal">• {lead.company || 'N/A'}</span></div>
-                  <div className="text-sm text-gray-400 truncate max-w-md">{lead.message || lead.msg}</div>
-                </div>
-              </div>
-              <div className="text-xs text-gray-600 font-mono">{lead.created_at || lead.time}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </div >
   );
