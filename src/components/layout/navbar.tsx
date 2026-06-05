@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import Logo from "../global/logo";
-import { Menu, X } from "lucide-react";
+import { Menu, X, BookOpen } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+
 export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: () => void, setView: (view: string) => void, activeView: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -33,31 +36,22 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
             <a
               key={item}
               onClick={() => handleNav(item.toLowerCase())}
-              className="
-      relative cursor-pointer
-      text-sm font-medium text-gray-400
-      transition-colors duration-300
-      hover:text-teal-400
-      group
-    "
+              className="relative cursor-pointer text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-teal-400 group"
             >
               {item}
-
-              {/* Animated underline */}
-              <span
-                className="
-        pointer-events-none
-        absolute left-0 -bottom-1
-        h-[2px] w-full
-        origin-left scale-x-0
-        bg-gradient-to-r from-cyan-400 to-emerald-400
-        transition-transform duration-300 ease-out
-        group-hover:scale-x-100
-        drop-shadow-[0_0_8px_rgba(45,212,191,0.7)]
-      "
-              />
+              <span className="pointer-events-none absolute left-0 -bottom-1 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-cyan-400 to-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100 drop-shadow-[0_0_8px_rgba(45,212,191,0.7)]" />
             </a>
           ))}
+
+          {/* Case Study button */}
+          <button
+            onClick={() => router.push('/case-study')}
+            className="relative flex items-center gap-2 text-sm font-semibold text-teal-300 hover:text-teal-100 transition-all duration-300 group"
+          >
+            <BookOpen className="w-4 h-4" />
+            Case Studies
+            <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-teal-400 to-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100 drop-shadow-[0_0_8px_rgba(45,212,191,0.7)]" />
+          </button>
 
           <button
             onClick={onOpenBooking}
@@ -86,7 +80,14 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
                   {item}
                 </a>
               ))}
-              <button onClick={() => { setIsOpen(false); onOpenBooking(); }} className="bg-teal-600 text-white w-full py-3 rounded-xl font-semibold mt-4">
+              <button
+                onClick={() => { setIsOpen(false); router.push('/case-study'); }}
+                className="flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300 transition-colors"
+              >
+                <BookOpen className="w-5 h-5" />
+                Case Studies
+              </button>
+              <button onClick={() => { setIsOpen(false); onOpenBooking(); }} className="bg-teal-600 text-white w-full py-3 rounded-xl font-semibold mt-2">
                 Book a Call
               </button>
             </div>

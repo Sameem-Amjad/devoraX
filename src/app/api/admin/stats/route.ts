@@ -1,12 +1,15 @@
 import { createClient } from '@/lib/server';
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 export async function GET() {
     const supabase = await createClient();
-    const cookieStore = cookies();
 
-    // 2. Fetch Aggregated Stats
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user || user.app_metadata?.role !== "admin") {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Fetch Aggregated Stats
     const [
         { count: projectCount },
         { count: inquiryCount },
