@@ -55,6 +55,7 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
 
         {/* ── About ── */}
         <AboutSection />
+
         <WaveDivider fromColor="#030303" toColor="#020202" height={60} />
 
         {/* ── Work portfolio ── */}

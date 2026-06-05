@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Logo from "../global/logo";
-import { Menu, X, BookOpen } from "lucide-react";
+import { Menu, X, BookOpen, Users } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -43,6 +43,16 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
             </a>
           ))}
 
+          {/* Team button */}
+          <button
+            onClick={() => router.push('/team')}
+            className="relative flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-teal-400 transition-all duration-300 group"
+          >
+            <Users className="w-4 h-4" />
+            Team
+            <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-teal-400 to-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100 drop-shadow-[0_0_8px_rgba(45,212,191,0.7)]" />
+          </button>
+
           {/* Case Study button */}
           <button
             onClick={() => router.push('/case-study')}
@@ -80,6 +90,13 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
                   {item}
                 </a>
               ))}
+              <button
+                onClick={() => { setIsOpen(false); router.push('/team'); }}
+                className="flex items-center gap-2 text-lg font-medium text-gray-300 hover:text-teal-400 transition-colors"
+              >
+                <Users className="w-5 h-5" />
+                Team
+              </button>
               <button
                 onClick={() => { setIsOpen(false); router.push('/case-study'); }}
                 className="flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300 transition-colors"
