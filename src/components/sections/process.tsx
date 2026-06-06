@@ -60,7 +60,7 @@ export const ProcessSection = () => {
                   <div
                     className={`relative w-16 h-16 rounded-2xl ${c.bg} border ${c.border} flex items-center justify-center mb-6 transition-all duration-300 group-hover:${c.glow} group-hover:scale-110`}
                   >
-                    <span className="text-2xl">{step.icon}</span>
+                    <span className={`flex items-center justify-center ${c.text}`}>{step.icon}</span>
                     <span
                       className={`absolute -top-2.5 -right-2.5 w-6 h-6 rounded-full bg-black border ${c.border} flex items-center justify-center text-[0.6rem] font-bold font-mono ${c.text}`}
                     >

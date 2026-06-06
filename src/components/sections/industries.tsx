@@ -1,9 +1,18 @@
 "use client";
 import { motion } from "framer-motion";
+import { CreditCard, Heart, ShoppingCart, Rocket, Building2, GraduationCap, Car, Zap } from "lucide-react";
+import React from "react";
 
-const INDUSTRIES = [
+const INDUSTRIES: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  tags: string[];
+  gradient: string;
+  border: string;
+}[] = [
   {
-    emoji: "💳",
+    icon: <CreditCard className="w-7 h-7 text-emerald-400" />,
     title: "FinTech & Banking",
     description: "Payment platforms, trading apps, digital wallets, and core banking systems built to handle millions of transactions securely.",
     tags: ["PCI DSS", "KYC/AML", "Real-time Payments"],
@@ -11,7 +20,7 @@ const INDUSTRIES = [
     border: "hover:border-emerald-500/30",
   },
   {
-    emoji: "🏥",
+    icon: <Heart className="w-7 h-7 text-blue-400" />,
     title: "HealthTech & MedTech",
     description: "HIPAA-compliant patient portals, telemedicine platforms, wearable integrations, and AI-powered diagnostic tools.",
     tags: ["HIPAA", "HL7/FHIR", "IoT Wearables"],
@@ -19,7 +28,7 @@ const INDUSTRIES = [
     border: "hover:border-blue-500/30",
   },
   {
-    emoji: "🛒",
+    icon: <ShoppingCart className="w-7 h-7 text-orange-400" />,
     title: "E-Commerce & Retail",
     description: "High-conversion storefronts, AI recommendation engines, inventory management systems, and omnichannel retail platforms.",
     tags: ["Headless CMS", "AR Try-On", "Real-time Inventory"],
@@ -27,7 +36,7 @@ const INDUSTRIES = [
     border: "hover:border-orange-500/30",
   },
   {
-    emoji: "🚀",
+    icon: <Rocket className="w-7 h-7 text-violet-400" />,
     title: "SaaS & Startups",
     description: "From zero to Series A — MVPs, product-market-fit iterations, and scalable multi-tenant architectures built for rapid growth.",
     tags: ["Multi-tenant", "Freemium", "Usage Billing"],
@@ -35,7 +44,7 @@ const INDUSTRIES = [
     border: "hover:border-violet-500/30",
   },
   {
-    emoji: "🏗️",
+    icon: <Building2 className="w-7 h-7 text-teal-400" />,
     title: "PropTech & Real Estate",
     description: "Property listing platforms, virtual tour experiences, smart building IoT dashboards, and investment analytics tools.",
     tags: ["3D Tours", "IoT Sensors", "Market Analytics"],
@@ -43,7 +52,7 @@ const INDUSTRIES = [
     border: "hover:border-teal-500/30",
   },
   {
-    emoji: "🎓",
+    icon: <GraduationCap className="w-7 h-7 text-pink-400" />,
     title: "EdTech & Learning",
     description: "LMS platforms, AI tutoring systems, live cohort experiences, and adaptive learning engines that personalize at scale.",
     tags: ["AI Tutoring", "Live Cohorts", "Gamification"],
@@ -51,7 +60,7 @@ const INDUSTRIES = [
     border: "hover:border-pink-500/30",
   },
   {
-    emoji: "🚗",
+    icon: <Car className="w-7 h-7 text-sky-400" />,
     title: "Mobility & Logistics",
     description: "Fleet management platforms, ride-hailing apps, last-mile delivery tracking, and route optimization powered by ML.",
     tags: ["Real-time GPS", "Route ML", "Fleet IoT"],
@@ -59,7 +68,7 @@ const INDUSTRIES = [
     border: "hover:border-sky-500/30",
   },
   {
-    emoji: "⚡",
+    icon: <Zap className="w-7 h-7 text-yellow-400" />,
     title: "Energy & CleanTech",
     description: "Smart grid monitoring, EV charging networks, carbon tracking platforms, and renewable energy management dashboards.",
     tags: ["Smart Grid", "EV Charging", "Carbon API"],
@@ -113,7 +122,7 @@ export const IndustriesSection = () => {
               />
 
               <div className="relative z-10">
-                <div className="text-3xl mb-4">{industry.emoji}</div>
+                <div className="mb-4">{industry.icon}</div>
                 <h3 className="text-base font-bold text-white mb-2">{industry.title}</h3>
                 <p className="text-xs text-gray-500 leading-relaxed mb-4">
                   {industry.description}

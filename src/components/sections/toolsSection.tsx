@@ -1,10 +1,19 @@
 "use client";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import React from "react";
+import {
+  Bot, Brain, Link2, Smile, Database, Search,
+  Globe, Atom, Smartphone, Layers, Code2, Wand2,
+  Server, Terminal, Zap, Share2, ArrowLeftRight,
+  Cloud, Box, LayoutGrid, Settings, GitBranch,
+  Leaf, HardDrive, Paintbrush, Wind, LayoutDashboard,
+  Circle, Star, BookOpen,
+} from "lucide-react";
 
 type Tool = {
   name: string;
-  icon: string;
+  icon: React.ReactNode;
   color: string;
 };
 
@@ -23,12 +32,12 @@ const TOOL_CATEGORIES: Category[] = [
     gradient: "from-violet-500 to-purple-600",
     glow: "rgba(139,92,246,0.25)",
     tools: [
-      { name: "OpenAI GPT-4o", icon: "🤖", color: "text-violet-400" },
-      { name: "Claude API", icon: "🧠", color: "text-purple-400" },
-      { name: "LangChain", icon: "🔗", color: "text-violet-300" },
-      { name: "Hugging Face", icon: "🤗", color: "text-yellow-400" },
-      { name: "Pinecone", icon: "🌲", color: "text-green-400" },
-      { name: "LlamaIndex", icon: "🦙", color: "text-orange-400" },
+      { name: "OpenAI GPT-4o", icon: <Bot className="w-4 h-4" />, color: "text-violet-400" },
+      { name: "Claude API", icon: <Brain className="w-4 h-4" />, color: "text-purple-400" },
+      { name: "LangChain", icon: <Link2 className="w-4 h-4" />, color: "text-violet-300" },
+      { name: "Hugging Face", icon: <Smile className="w-4 h-4" />, color: "text-yellow-400" },
+      { name: "Pinecone", icon: <Database className="w-4 h-4" />, color: "text-green-400" },
+      { name: "LlamaIndex", icon: <Search className="w-4 h-4" />, color: "text-orange-400" },
     ],
   },
   {
@@ -37,12 +46,12 @@ const TOOL_CATEGORIES: Category[] = [
     gradient: "from-cyan-500 to-teal-500",
     glow: "rgba(6,182,212,0.25)",
     tools: [
-      { name: "Next.js 15", icon: "▲", color: "text-white" },
-      { name: "React 19", icon: "⚛️", color: "text-cyan-400" },
-      { name: "React Native", icon: "📱", color: "text-cyan-300" },
-      { name: "Flutter", icon: "🐦", color: "text-blue-400" },
-      { name: "TypeScript", icon: "🔷", color: "text-blue-300" },
-      { name: "Framer Motion", icon: "🎭", color: "text-pink-400" },
+      { name: "Next.js 15", icon: <Globe className="w-4 h-4" />, color: "text-white" },
+      { name: "React 19", icon: <Atom className="w-4 h-4" />, color: "text-cyan-400" },
+      { name: "React Native", icon: <Smartphone className="w-4 h-4" />, color: "text-cyan-300" },
+      { name: "Flutter", icon: <Layers className="w-4 h-4" />, color: "text-blue-400" },
+      { name: "TypeScript", icon: <Code2 className="w-4 h-4" />, color: "text-blue-300" },
+      { name: "Framer Motion", icon: <Wand2 className="w-4 h-4" />, color: "text-pink-400" },
     ],
   },
   {
@@ -51,12 +60,12 @@ const TOOL_CATEGORIES: Category[] = [
     gradient: "from-emerald-500 to-green-600",
     glow: "rgba(16,185,129,0.25)",
     tools: [
-      { name: "Node.js", icon: "🟢", color: "text-emerald-400" },
-      { name: "Python", icon: "🐍", color: "text-yellow-400" },
-      { name: "FastAPI", icon: "⚡", color: "text-teal-400" },
-      { name: "GraphQL", icon: "◈", color: "text-pink-400" },
-      { name: "tRPC", icon: "🔁", color: "text-blue-400" },
-      { name: "Prisma ORM", icon: "🔺", color: "text-emerald-300" },
+      { name: "Node.js", icon: <Server className="w-4 h-4" />, color: "text-emerald-400" },
+      { name: "Python", icon: <Terminal className="w-4 h-4" />, color: "text-yellow-400" },
+      { name: "FastAPI", icon: <Zap className="w-4 h-4" />, color: "text-teal-400" },
+      { name: "GraphQL", icon: <Share2 className="w-4 h-4" />, color: "text-pink-400" },
+      { name: "tRPC", icon: <ArrowLeftRight className="w-4 h-4" />, color: "text-blue-400" },
+      { name: "Prisma ORM", icon: <Database className="w-4 h-4" />, color: "text-emerald-300" },
     ],
   },
   {
@@ -65,12 +74,12 @@ const TOOL_CATEGORIES: Category[] = [
     gradient: "from-orange-500 to-amber-500",
     glow: "rgba(249,115,22,0.25)",
     tools: [
-      { name: "AWS", icon: "☁️", color: "text-orange-400" },
-      { name: "Docker", icon: "🐳", color: "text-blue-400" },
-      { name: "Kubernetes", icon: "☸️", color: "text-blue-300" },
-      { name: "Terraform", icon: "🏗️", color: "text-violet-400" },
-      { name: "GitHub Actions", icon: "🔄", color: "text-gray-300" },
-      { name: "Vercel", icon: "▲", color: "text-white" },
+      { name: "AWS", icon: <Cloud className="w-4 h-4" />, color: "text-orange-400" },
+      { name: "Docker", icon: <Box className="w-4 h-4" />, color: "text-blue-400" },
+      { name: "Kubernetes", icon: <LayoutGrid className="w-4 h-4" />, color: "text-blue-300" },
+      { name: "Terraform", icon: <Settings className="w-4 h-4" />, color: "text-violet-400" },
+      { name: "GitHub Actions", icon: <GitBranch className="w-4 h-4" />, color: "text-gray-300" },
+      { name: "Vercel", icon: <Globe className="w-4 h-4" />, color: "text-white" },
     ],
   },
   {
@@ -79,12 +88,12 @@ const TOOL_CATEGORIES: Category[] = [
     gradient: "from-sky-500 to-indigo-500",
     glow: "rgba(14,165,233,0.25)",
     tools: [
-      { name: "PostgreSQL", icon: "🐘", color: "text-sky-400" },
-      { name: "MongoDB", icon: "🍃", color: "text-green-400" },
-      { name: "Redis", icon: "🔴", color: "text-red-400" },
-      { name: "Supabase", icon: "⚡", color: "text-emerald-400" },
-      { name: "Weaviate", icon: "🕸️", color: "text-indigo-400" },
-      { name: "S3 / R2", icon: "🪣", color: "text-orange-300" },
+      { name: "PostgreSQL", icon: <Database className="w-4 h-4" />, color: "text-sky-400" },
+      { name: "MongoDB", icon: <Leaf className="w-4 h-4" />, color: "text-green-400" },
+      { name: "Redis", icon: <Zap className="w-4 h-4" />, color: "text-red-400" },
+      { name: "Supabase", icon: <Database className="w-4 h-4" />, color: "text-emerald-400" },
+      { name: "Weaviate", icon: <Globe className="w-4 h-4" />, color: "text-indigo-400" },
+      { name: "S3 / R2", icon: <HardDrive className="w-4 h-4" />, color: "text-orange-300" },
     ],
   },
   {
@@ -93,12 +102,12 @@ const TOOL_CATEGORIES: Category[] = [
     gradient: "from-pink-500 to-rose-500",
     glow: "rgba(236,72,153,0.25)",
     tools: [
-      { name: "Figma", icon: "🎨", color: "text-pink-400" },
-      { name: "Tailwind CSS", icon: "💨", color: "text-cyan-400" },
-      { name: "shadcn/ui", icon: "🧩", color: "text-gray-300" },
-      { name: "Radix UI", icon: "⚫", color: "text-white" },
-      { name: "Lucide Icons", icon: "✦", color: "text-yellow-400" },
-      { name: "Storybook", icon: "📖", color: "text-pink-300" },
+      { name: "Figma", icon: <Paintbrush className="w-4 h-4" />, color: "text-pink-400" },
+      { name: "Tailwind CSS", icon: <Wind className="w-4 h-4" />, color: "text-cyan-400" },
+      { name: "shadcn/ui", icon: <LayoutDashboard className="w-4 h-4" />, color: "text-gray-300" },
+      { name: "Radix UI", icon: <Circle className="w-4 h-4" />, color: "text-white" },
+      { name: "Lucide Icons", icon: <Star className="w-4 h-4" />, color: "text-yellow-400" },
+      { name: "Storybook", icon: <BookOpen className="w-4 h-4" />, color: "text-pink-300" },
     ],
   },
 ];
@@ -211,7 +220,7 @@ export const ToolsSection = () => {
                       transition={{ delay: catIdx * 0.07 + toolIdx * 0.04 }}
                       className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.05] hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-200 cursor-default"
                     >
-                      <span className="text-base leading-none">{tool.icon}</span>
+                      <span className={`flex-shrink-0 ${tool.color}`}>{tool.icon}</span>
                       <span className={`text-xs font-medium ${tool.color} truncate`}>
                         {tool.name}
                       </span>

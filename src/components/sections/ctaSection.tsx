@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowRight, CalendarDays, MessageSquare } from "lucide-react";
+import { ArrowRight, CalendarDays, MessageSquare, Check } from "lucide-react";
 import { FloatingBubbles } from "@/components/ui/floatingBubbles";
 
 export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
@@ -69,12 +69,13 @@ export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => 
           {/* Trust signals */}
           <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600">
             {[
-              "✓ Free 30-min discovery call",
-              "✓ Fixed-price proposals",
-              "✓ NDA on request",
-              "✓ Response within 24h",
+              "Free 30-min discovery call",
+              "Fixed-price proposals",
+              "NDA on request",
+              "Response within 24h",
             ].map((item) => (
-              <span key={item} className="font-medium">
+              <span key={item} className="flex items-center gap-1.5 font-medium">
+                <Check className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
                 {item}
               </span>
             ))}

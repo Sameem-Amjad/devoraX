@@ -1,6 +1,6 @@
 // --- Configuration & Data ---
 
-import { Cpu, Layout, Server, Smartphone, ShoppingCart, Database, GitBranch, Shield } from "lucide-react";
+import { Cpu, Layout, Server, Smartphone, ShoppingCart, Database, GitBranch, Shield, Search, Layers, Code2, Rocket, TrendingUp } from "lucide-react";
 
 const AGENCY_NAME = "Devora";
 const CEO_NAME = "Sameem Amjad";
@@ -113,35 +113,35 @@ const PROCESS_STEPS = [
     number: "01",
     title: "Discover",
     description: "We deep-dive into your vision, user needs, and competitive landscape. Every great product starts with the right questions.",
-    icon: "🔍",
+    icon: <Search className="w-6 h-6" />,
     color: "teal",
   },
   {
     number: "02",
     title: "Architect",
     description: "Our engineers design a scalable system blueprint — choosing the right stack, data models, and infrastructure patterns before a single line of code.",
-    icon: "🏗️",
+    icon: <Layers className="w-6 h-6" />,
     color: "cyan",
   },
   {
     number: "03",
     title: "Build",
     description: "Agile sprints with weekly demos. You stay in the loop as we ship tested, production-ready features with clear milestones.",
-    icon: "⚡",
+    icon: <Code2 className="w-6 h-6" />,
     color: "emerald",
   },
   {
     number: "04",
     title: "Launch",
     description: "Zero-downtime deployments, performance audits, and go-live support. We treat launch day as the beginning, not the end.",
-    icon: "🚀",
+    icon: <Rocket className="w-6 h-6" />,
     color: "blue",
   },
   {
     number: "05",
     title: "Scale",
     description: "Post-launch monitoring, feature iteration, and infrastructure scaling. We're your long-term engineering partner, not just a vendor.",
-    icon: "📈",
+    icon: <TrendingUp className="w-6 h-6" />,
     color: "violet",
   },
 ];
