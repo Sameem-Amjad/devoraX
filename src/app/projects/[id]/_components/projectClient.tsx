@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 // ─── Icon map (matches what's stored in DB) ───────────────────────────────────
 
@@ -34,8 +34,6 @@ const safeUrl = (val: any): string | null => {
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const ProjectDetailClient = ({ project }: { project: any }) => {
-  const router = useRouter();
-
   // Parse JSON fields (stored as text or JSONB)
   const tags      = safeParse<string[]>(project.tags, []);
   const techstack = safeParse<{ icon: string; name: string }[]>(project.techstack, []);
@@ -54,13 +52,13 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Back */}
-        <button
-          onClick={() => router.back()}
+        <Link
+          href="/projects"
           className="flex items-center text-gray-400 hover:text-teal-400 mb-10 transition-colors group"
         >
           <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Projects
-        </button>
+        </Link>
 
         {/* ── Hero Header ── */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">

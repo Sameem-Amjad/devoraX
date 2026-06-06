@@ -186,7 +186,7 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
         </section>
 
         {/* ── Testimonials ── */}
-        <section className="py-32 bg-[#020202] border-t border-white/5">
+        <section id="testimonials" aria-label="Client Testimonials" className="py-32 bg-[#020202] border-t border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -302,11 +302,14 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
                 Services
               </h4>
               <ul className="space-y-3">
+                <li>
+                  <a href="/services" className="text-gray-500 hover:text-teal-400 transition-colors text-sm">All Services</a>
+                </li>
                 {["Mobile Development", "AI & Web", "Cloud & DevOps", "UI/UX Design", "E-Commerce", "Data Analytics"].map(
                   (s) => (
                     <li key={s}>
                       <a
-                        href="#services"
+                        href="/services"
                         className="text-gray-500 hover:text-teal-400 transition-colors text-sm"
                       >
                         {s}
@@ -323,16 +326,13 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
                 Company
               </h4>
               <ul className="space-y-3">
-                {["About", "Work", "Process", "Pricing", "Careers", "Contact"].map((s) => (
-                  <li key={s}>
-                    <a
-                      href={`#${s.toLowerCase()}`}
-                      className="text-gray-500 hover:text-teal-400 transition-colors text-sm"
-                    >
-                      {s}
-                    </a>
-                  </li>
-                ))}
+                <li><a href="/#about"       className="text-gray-500 hover:text-teal-400 transition-colors text-sm">About</a></li>
+                <li><a href="/projects"     className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Work</a></li>
+                <li><a href="/#process"     className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Process</a></li>
+                <li><a href="/#pricing"     className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Pricing</a></li>
+                <li><a href="/team"         className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Team</a></li>
+                <li><a href="/case-study"   className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Case Studies</a></li>
+                <li><a href="/contact"      className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Contact</a></li>
               </ul>
             </div>
           </div>

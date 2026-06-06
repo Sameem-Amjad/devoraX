@@ -365,10 +365,12 @@ const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Services', item: `${BASE_URL}/#services` },
-    { '@type': 'ListItem', position: 3, name: 'Work', item: `${BASE_URL}/#work` },
-    { '@type': 'ListItem', position: 4, name: 'Pricing', item: `${BASE_URL}/#pricing` },
+    { '@type': 'ListItem', position: 1, name: 'Home',         item: BASE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Services',     item: `${BASE_URL}/services` },
+    { '@type': 'ListItem', position: 3, name: 'Projects',     item: `${BASE_URL}/projects` },
+    { '@type': 'ListItem', position: 4, name: 'Case Studies', item: `${BASE_URL}/case-study` },
+    { '@type': 'ListItem', position: 5, name: 'Team',         item: `${BASE_URL}/team` },
+    { '@type': 'ListItem', position: 6, name: 'Contact',      item: `${BASE_URL}/contact` },
   ],
 };
 

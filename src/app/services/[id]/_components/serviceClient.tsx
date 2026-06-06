@@ -2,28 +2,18 @@
 import { ArrowLeft, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import getIcon from "@/utils/utils";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 
 const ServiceDetailClient = ({ service, initialProjects }: { service: any, initialProjects: any[] }) => {
-  const router = useRouter();
-
-  const handleViewProject = (project: any) => {
-    router.push(`/projects/${project.id}`);
-  };
-
   if (!service) return null;
-
-  const onBack = () => {
-    router.back();
-  };
 
   return (
     <div className="min-h-screen bg-black pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-6">
-        <button onClick={onBack} className="flex items-center text-gray-400 hover:text-teal-400 mb-8 transition-colors group">
+        <Link href="/services" className="flex items-center text-gray-400 hover:text-teal-400 mb-8 transition-colors group">
           <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Services
-        </button>
+        </Link>
 
         <div className="grid md:grid-cols-2 gap-12 mb-20 items-center">
           <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
@@ -53,7 +43,7 @@ const ServiceDetailClient = ({ service, initialProjects }: { service: any, initi
         <h2 className="text-3xl font-bold text-white mb-8">Related Success Stories</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {initialProjects.length > 0 ? initialProjects.map(p => (
-            <div key={p.id} onClick={() => handleViewProject(p)} className="cursor-pointer group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-teal-500/40 transition-all">
+            <Link key={p.id} href={`/projects/${p.id}`} className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-teal-500/40 transition-all">
               <div className="h-48 relative overflow-hidden bg-gray-800">
                 {p.image ? (
                   <Image
@@ -72,7 +62,7 @@ const ServiceDetailClient = ({ service, initialProjects }: { service: any, initi
                 <div className="text-xs font-bold text-teal-500 mb-2 uppercase">{p.category}</div>
                 <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">{p.title}</h3>
               </div>
-            </div>
+            </Link>
           )) : (
             <div className="col-span-3 text-center py-12 border border-dashed border-white/10 rounded-2xl text-gray-500">
               No specific case studies linked to this service yet.
