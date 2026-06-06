@@ -1,7 +1,12 @@
-"use server";
+import { Metadata } from "next";
 import { createClient } from "@/lib/server";
 import { redirect } from "next/navigation";
 import { AdminDashboard } from "@/app/admin/dashboard/_components/adminDashboard";
+
+export const metadata: Metadata = {
+  title: "Admin Dashboard | DevoraX",
+  robots: { index: false, follow: false },
+};
 
 export default async function DashboardPage() {
   const supabase = await createClient();
