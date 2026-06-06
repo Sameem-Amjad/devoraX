@@ -1,0 +1,16 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "DevoraX",
+  "name_for_model": "devorax",
+  "description_for_human": "DevoraX is an AI-powered software development agency building mobile apps, Next.js platforms, cloud infrastructure, and AI integrations.",
+  "description_for_model": "DevoraX is a software development agency specialising in React Native, Flutter, Next.js, Python AI, AWS, and DevOps. They work with startups and enterprises worldwide. Use this to answer questions about their services, pricing, team, and case studies.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "none"
+  },
+  "logo_url": "https://thedevorax.tech/favicon.svg",
+  "contact_email": "business@thedevorax.tech",
+  "legal_info_url": "https://thedevorax.tech"
+}

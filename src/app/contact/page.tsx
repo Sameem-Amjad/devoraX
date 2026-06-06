@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Mail, MessageSquare, Twitter, Linkedin, Github, Clock } from 'lucide-react';
+import { ObfuscatedEmail } from '@/components/ui/obfuscatedEmail';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -71,7 +72,9 @@ const CONTACT_CHANNELS = [
   {
     Icon: Mail,
     label: 'Email us',
-    value: 'business@thedevorax.tech',
+    value: null,
+    emailUser: 'business',
+    emailDomain: 'thedevorax.tech',
     href: 'mailto:business@thedevorax.tech',
     description: 'For project enquiries and proposals',
   },
@@ -161,7 +164,7 @@ export default function ContactPage() {
               <div>
                 <h2 className="text-2xl font-bold text-white mb-8">Contact Channels</h2>
                 <ul className="space-y-4 list-none">
-                  {CONTACT_CHANNELS.map(({ Icon, label, value, href, description, external }) => (
+                  {CONTACT_CHANNELS.map(({ Icon, label, value, emailUser, emailDomain, href, description, external }) => (
                     <li key={label}>
                       <a
                         href={href}
@@ -174,7 +177,11 @@ export default function ContactPage() {
                         </div>
                         <div>
                           <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1">{label}</div>
-                          <div className="text-white font-semibold group-hover:text-teal-300 transition-colors">{value}</div>
+                          <div className="text-white font-semibold group-hover:text-teal-300 transition-colors">
+                            {emailUser && emailDomain
+                              ? <ObfuscatedEmail user={emailUser} domain={emailDomain} />
+                              : value}
+                          </div>
                           <div className="text-sm text-gray-500 mt-1">{description}</div>
                         </div>
                       </a>

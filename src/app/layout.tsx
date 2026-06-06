@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Orbitron, Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { RippleEffect } from '@/components/ui/rippleEffect';
+import { CookieConsent } from '@/components/ui/cookieConsent';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const orbitron = Orbitron({ subsets: ['latin'], variable: '--font-orbitron', display: 'swap' });
@@ -407,6 +408,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="antialiased">
         <RippleEffect />
         {children}
+        <CookieConsent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js');})}`,
+          }}
+        />
       </body>
     </html>
   );

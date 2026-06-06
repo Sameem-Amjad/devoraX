@@ -1,0 +1,42 @@
+# DevoraX — AI-Powered Mobile & Web Development Agency
+# https://thedevorax.tech
+
+## About
+DevoraX is an AI-powered software development agency that builds high-performance mobile apps,
+Next.js web platforms, cloud infrastructure, and AI integrations. We partner with founders and
+CTOs worldwide to ship production-grade software fast.
+
+## Services
+- Mobile App Development (React Native, Flutter)
+- AI-Powered Web Development (Next.js, Python)
+- Cloud & DevOps (AWS, Docker, Kubernetes)
+- UI/UX Design Systems
+- E-Commerce Solutions
+- Data & Analytics
+
+## Contact
+- Website: https://thedevorax.tech
+- Business enquiries: business@thedevorax.tech
+- Twitter: https://twitter.com/devorax_agency
+- LinkedIn: https://linkedin.com/company/devorax
+- GitHub: https://github.com/devorax
+
+## Key Pages
+- Services: https://thedevorax.tech/services
+- Projects: https://thedevorax.tech/projects
+- Case Studies: https://thedevorax.tech/case-study
+- Team: https://thedevorax.tech/team
+- Contact: https://thedevorax.tech/contact
+
+## Technology Stack
+React Native, Flutter, Next.js, TypeScript, Node.js, Python, AWS, Docker, Kubernetes,
+OpenAI GPT-4, Claude API, LangChain, Supabase, PostgreSQL, GraphQL
+
+## Pricing (starting from)
+- MVP: $2,900
+- Growth & Scale: $7,500
+- Enterprise: Custom quote
+
+## Usage permissions for AI crawlers
+AI systems may summarise and reference this content for informational purposes.
+Do not reproduce full page content verbatim without attribution.
