@@ -139,7 +139,7 @@ export const FAQSection = () => {
           <p className="text-gray-600 text-sm">
             Still have questions?{" "}
             <a
-              href="mailto:hello@devorax.com"
+              href="mailto:support@thedevorax.tech"
               className="text-teal-400 hover:text-teal-300 transition-colors font-medium"
             >
               Email us directly →

@@ -222,6 +222,7 @@ const organizationSchema = {
     {
       '@type': 'ContactPoint',
       contactType: 'sales',
+      email: 'business@thedevorax.tech',
       areaServed: 'Global',
       availableLanguage: 'English',
       url: `${BASE_URL}/#contact`,
@@ -229,6 +230,7 @@ const organizationSchema = {
     {
       '@type': 'ContactPoint',
       contactType: 'customer support',
+      email: 'support@thedevorax.tech',
       areaServed: 'Global',
       availableLanguage: 'English',
       url: `${BASE_URL}/#contact`,

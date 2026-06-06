@@ -130,7 +130,7 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
           <a
-            href="mailto:hello@devorax.com"
+            href="mailto:business@thedevorax.tech"
             className="w-full sm:w-auto px-10 py-4 bg-transparent text-white border border-white/10 rounded-xl font-bold transition-all flex items-center justify-center gap-2 hover:bg-white/5 hover:border-teal-500/50 group"
           >
             <Mail className="w-5 h-5 group-hover:text-teal-400 transition-colors" />

@@ -431,7 +431,7 @@ export default function TeamClient() {
                 We're always looking for exceptional engineers and designers who care about craft. Drop us a line.
               </p>
               <a
-                href="mailto:hello@thedevorax.tech"
+                href="mailto:business@thedevorax.tech"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-black text-sm font-bold hover:shadow-[0_0_25px_rgba(45,212,191,0.35)] transition-all duration-300"
               >
                 Get in Touch
