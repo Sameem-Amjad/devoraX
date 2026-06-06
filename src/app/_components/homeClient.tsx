@@ -1,22 +1,24 @@
 "use client";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/sections/hero";
-import { AboutSection } from "@/components/sections/about";
-import { WorkSection } from "@/components/sections/work";
-import { Services } from "@/components/sections/services";
-import { ProcessSection } from "@/components/sections/process";
-import { TechStackSection } from "@/components/sections/techStack";
-import { CTASection } from "@/components/sections/ctaSection";
 import { TrustedBySection } from "@/components/sections/trustedBy";
-import { WhyUsSection } from "@/components/sections/whyUs";
-import { IndustriesSection } from "@/components/sections/industries";
-import { FAQSection } from "@/components/sections/faq";
-import { StatsCounterSection } from "@/components/sections/statsCounter";
-import { ToolsSection } from "@/components/sections/toolsSection";
 import { WaveDivider } from "@/components/ui/waveDivider";
-import { FloatingBubbles } from "@/components/ui/floatingBubbles";
-import BookingModal from "@/components/models/bookingModel/bookingModel";
+
+// Below-fold sections: lazy-loaded to reduce initial JS bundle and TBT
+const TechStackSection = dynamic(() => import("@/components/sections/techStack").then(m => ({ default: m.TechStackSection })));
+const ToolsSection = dynamic(() => import("@/components/sections/toolsSection").then(m => ({ default: m.ToolsSection })));
+const AboutSection = dynamic(() => import("@/components/sections/about").then(m => ({ default: m.AboutSection })));
+const WorkSection = dynamic(() => import("@/components/sections/work").then(m => ({ default: m.WorkSection })));
+const Services = dynamic(() => import("@/components/sections/services").then(m => ({ default: m.Services })));
+const ProcessSection = dynamic(() => import("@/components/sections/process").then(m => ({ default: m.ProcessSection })));
+const WhyUsSection = dynamic(() => import("@/components/sections/whyUs").then(m => ({ default: m.WhyUsSection })));
+const IndustriesSection = dynamic(() => import("@/components/sections/industries").then(m => ({ default: m.IndustriesSection })));
+const StatsCounterSection = dynamic(() => import("@/components/sections/statsCounter").then(m => ({ default: m.StatsCounterSection })));
+const FAQSection = dynamic(() => import("@/components/sections/faq").then(m => ({ default: m.FAQSection })));
+const CTASection = dynamic(() => import("@/components/sections/ctaSection").then(m => ({ default: m.CTASection })));
+const BookingModal = dynamic(() => import("@/components/models/bookingModel/bookingModel"));
 import { AnimatePresence, motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
 import { Star, Twitter, Linkedin, Github, Mail, Check, ArrowRight, Quote } from "lucide-react";

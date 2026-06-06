@@ -33,7 +33,7 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
     <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden min-h-screen flex flex-col justify-center">
       <CircuitBackground />
       <FluidBackground />
-      <FloatingBubbles count={22} />
+      <FloatingBubbles count={12} />
 
       {/* Ambient glow orbs */}
       <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-teal-600/8 blur-[140px] rounded-full pointer-events-none" />
@@ -57,11 +57,11 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           </span>
         </motion.div>
 
-        {/* Main headline */}
+        {/* Main headline — starts visible for LCP; only y-position animates */}
         <motion.h1
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          initial={{ y: 16 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
           className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white tracking-tight leading-[1.05] mb-6"
         >
           We build exceptional
@@ -86,11 +86,11 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           </span>
         </motion.h1>
 
-        {/* Subheadline */}
+        {/* Subheadline — starts visible, only slides up */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
+          initial={{ y: 12 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.45, delay: 0.2 }}
           className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-5 leading-relaxed"
         >
           {CONSTANTS.AGENCY_NAME} is a full-service technology agency. We fuse{" "}
@@ -142,7 +142,7 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.4, delay: 0.45 }}
           className="mt-24 pt-8 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto"
         >
           {[
