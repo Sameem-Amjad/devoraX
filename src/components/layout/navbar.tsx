@@ -4,12 +4,10 @@ import Logo from "../global/logo";
 import { Menu, X, BookOpen, Users } from "lucide-react";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
-import { useRouter } from "next/navigation";
 
 export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: () => void, setView: (view: string) => void, activeView: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -17,7 +15,7 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNav = (id: any) => {
+  const handleNav = (id: string) => {
     setView('home');
     setIsOpen(false);
     setTimeout(() => {
@@ -27,15 +25,23 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'}`}>
+    <nav aria-label="Primary navigation" className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-xl border-b border-white/5' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-        <div className="cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><Logo /></div>
+        <a
+          href="/"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          aria-label="DevoraX — go to homepage"
+          className="cursor-pointer"
+        >
+          <Logo />
+        </a>
 
         <div className="hidden md:flex items-center gap-8">
           {["About", "Work", "Services", "Pricing"].map((item) => (
             <a
               key={item}
-              onClick={() => handleNav(item.toLowerCase())}
+              href={`/#${item.toLowerCase()}`}
+              onClick={(e) => { e.preventDefault(); handleNav(item.toLowerCase()); }}
               className="relative cursor-pointer text-sm font-medium text-gray-400 transition-colors duration-300 hover:text-teal-400 group"
             >
               {item}
@@ -43,25 +49,23 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
             </a>
           ))}
 
-          {/* Team button */}
-          <button
-            onClick={() => router.push('/team')}
+          <a
+            href="/team"
             className="relative flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-teal-400 transition-all duration-300 group"
           >
             <Users className="w-4 h-4" />
             Team
             <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-teal-400 to-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100 drop-shadow-[0_0_8px_rgba(45,212,191,0.7)]" />
-          </button>
+          </a>
 
-          {/* Case Study button */}
-          <button
-            onClick={() => router.push('/case-study')}
+          <a
+            href="/case-study"
             className="relative flex items-center gap-2 text-sm font-semibold text-teal-300 hover:text-teal-100 transition-all duration-300 group"
           >
             <BookOpen className="w-4 h-4" />
             Case Studies
             <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-left scale-x-0 bg-gradient-to-r from-teal-400 to-emerald-400 transition-transform duration-300 ease-out group-hover:scale-x-100 drop-shadow-[0_0_8px_rgba(45,212,191,0.7)]" />
-          </button>
+          </a>
 
           <button
             onClick={onOpenBooking}
@@ -71,7 +75,13 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
           </button>
         </div>
 
-        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-white">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
+          className="md:hidden text-white"
+        >
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -79,6 +89,7 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
       <AnimatePresence>
         {isOpen && (
           <motion.div
+            id="mobile-menu"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -86,24 +97,31 @@ export const Navbar = ({ onOpenBooking, setView, activeView }: { onOpenBooking: 
           >
             <div className="flex flex-col p-6 gap-4">
               {['About', 'Work', 'Services', 'Pricing'].map((item) => (
-                <a key={item} href={`#${item.toLowerCase()}`} onClick={() => setIsOpen(false)} className="text-lg font-medium text-gray-300 hover:text-white">
+                <a
+                  key={item}
+                  href={`/#${item.toLowerCase()}`}
+                  onClick={(e) => { e.preventDefault(); handleNav(item.toLowerCase()); }}
+                  className="text-lg font-medium text-gray-300 hover:text-white"
+                >
                   {item}
                 </a>
               ))}
-              <button
-                onClick={() => { setIsOpen(false); router.push('/team'); }}
+              <a
+                href="/team"
+                onClick={() => setIsOpen(false)}
                 className="flex items-center gap-2 text-lg font-medium text-gray-300 hover:text-teal-400 transition-colors"
               >
                 <Users className="w-5 h-5" />
                 Team
-              </button>
-              <button
-                onClick={() => { setIsOpen(false); router.push('/case-study'); }}
+              </a>
+              <a
+                href="/case-study"
+                onClick={() => setIsOpen(false)}
                 className="flex items-center gap-2 text-lg font-semibold text-teal-400 hover:text-teal-300 transition-colors"
               >
                 <BookOpen className="w-5 h-5" />
                 Case Studies
-              </button>
+              </a>
               <button onClick={() => { setIsOpen(false); onOpenBooking(); }} className="bg-teal-600 text-white w-full py-3 rounded-xl font-semibold mt-2">
                 Book a Call
               </button>

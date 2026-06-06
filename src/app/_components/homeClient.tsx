@@ -276,10 +276,18 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
                 digital products. AI-powered, cloud-native, design-obsessed.
               </p>
               <div className="flex gap-3 mt-6">
-                {[Twitter, Linkedin, Github, Mail].map((Icon, i) => (
+                {[
+                  { Icon: Twitter, href: "https://twitter.com/devorax_agency", label: "Follow DevoraX on Twitter" },
+                  { Icon: Linkedin, href: "https://linkedin.com/company/devorax", label: "DevoraX on LinkedIn" },
+                  { Icon: Github, href: "https://github.com/devorax", label: "DevoraX on GitHub" },
+                  { Icon: Mail, href: "mailto:business@thedevorax.tech", label: "Email DevoraX" },
+                ].map(({ Icon, href, label }) => (
                   <a
-                    key={i}
-                    href="#"
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    target={href.startsWith("mailto") ? undefined : "_blank"}
+                    rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                     className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-500 hover:text-white hover:bg-teal-600/80 transition-all duration-300"
                   >
                     <Icon className="w-4 h-4" />

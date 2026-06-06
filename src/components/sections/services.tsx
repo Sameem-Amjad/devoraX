@@ -65,7 +65,7 @@ export const Services = ({
   };
 
   return (
-    <div id="services" className="py-32 bg-black relative border-t border-white/5 overflow-hidden">
+    <section id="services" aria-label="Our Services" className="py-32 bg-black relative border-t border-white/5 overflow-hidden">
       {/* Ambient glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/8 blur-[140px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-900/8 blur-[120px] rounded-full pointer-events-none" />
@@ -170,6 +170,6 @@ export const Services = ({
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
