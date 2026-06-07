@@ -201,8 +201,9 @@ export const AdminProjectsManager = ({ projects, onDelete, onAdd, onUpdate }: Ad
 
     try {
       const res  = await fetch("/api/admin/upload-image", { method: "POST", body: fd });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error ?? "Upload failed");
+      const text = await res.text();
+      const json = text ? JSON.parse(text) : {};
+      if (!res.ok) throw new Error(json.error ?? `Upload failed (${res.status})`);
       setForm((prev) => ({ ...prev, image: json.url }));
     } catch (err: any) {
       setAiError(`Image upload failed: ${err.message}`);
