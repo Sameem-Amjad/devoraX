@@ -42,7 +42,32 @@ const SOCIALS = [
 
 // ── Dummy team data ───────────────────────────────────────────────────────────
 
-const TEAM = [
+type Member = {
+  initials: string;
+  name: string;
+  role: string;
+  bio: string;
+  skills: string[];
+  gradient: string;
+  location: string;
+  since: string;
+  image?: string;
+  lead?: boolean;
+};
+
+const TEAM: Member[] = [
+  {
+    initials: "U",
+    name: "Usman",
+    role: "Chief Technical Officer",
+    bio: "Full-Stack AI Architect with 5+ years building scalable Generative-AI systems, custom web apps and SaaS platforms. Leads architecture and DevOps across React Native, Flutter and high-concurrency web on Kubernetes & AWS — engineering for 99.9% uptime.",
+    skills: ["Generative AI", "React Native", "Flutter", "Kubernetes", "AWS", "SaaS"],
+    gradient: "from-teal-500 to-emerald-500",
+    location: "Pakistan · Remote",
+    since: "2021",
+    image: "/images/usman_cto.jpeg",
+    lead: true,
+  },
   {
     initials: "AR",
     name: "Ali Raza",
@@ -62,16 +87,6 @@ const TEAM = [
     gradient: "from-cyan-500 to-blue-500",
     location: "Karachi, Pakistan",
     since: "2022",
-  },
-  {
-    initials: "UB",
-    name: "Usman Baig",
-    role: "Mobile Developer",
-    bio: "Cross-platform mobile specialist building polished iOS/Android experiences with React Native and Flutter.",
-    skills: ["React Native", "Flutter", "Firebase", "Expo", "Swift"],
-    gradient: "from-violet-500 to-purple-500",
-    location: "Islamabad, Pakistan",
-    since: "2023",
   },
   {
     initials: "FS",
@@ -369,18 +384,35 @@ export default function TeamClient() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className="group relative p-6 rounded-2xl bg-[#080808] border border-white/5 hover:border-teal-500/20 transition-all duration-300 overflow-hidden"
+                  className={`group relative p-6 rounded-2xl bg-[#080808] border ${
+                    member.lead ? "border-teal-500/25" : "border-white/5"
+                  } hover:border-teal-500/30 transition-all duration-300 overflow-hidden`}
                 >
                   {/* Top shimmer */}
                   <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-teal-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                   {/* Avatar + name */}
                   <div className="flex items-start gap-4 mb-5">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${member.gradient} flex-shrink-0 flex items-center justify-center font-bold text-white text-lg shadow-lg`}>
-                      {member.initials}
-                    </div>
+                    {member.image ? (
+                      <div className="relative w-14 h-14 flex-shrink-0 rounded-2xl p-[2px] bg-gradient-to-br from-teal-400 via-emerald-300 to-cyan-400 shadow-[0_0_24px_rgba(45,212,191,0.22)]">
+                        <div className="relative w-full h-full rounded-[14px] overflow-hidden bg-[#030303]">
+                          <Image src={member.image} alt={member.name} fill className="object-cover" sizes="56px" />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${member.gradient} flex-shrink-0 flex items-center justify-center font-bold text-white text-lg shadow-lg`}>
+                        {member.initials}
+                      </div>
+                    )}
                     <div>
-                      <div className="font-bold text-white text-base leading-tight">{member.name}</div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-bold text-white text-base leading-tight">{member.name}</span>
+                        {member.lead && (
+                          <span className="text-[0.55rem] font-semibold text-teal-400 uppercase tracking-wider px-1.5 py-0.5 rounded-md bg-teal-500/10 border border-teal-500/25">
+                            Leadership
+                          </span>
+                        )}
+                      </div>
                       <div className="text-xs text-teal-400/80 mt-0.5 font-medium">{member.role}</div>
                       <div className="flex items-center gap-1 mt-1.5 text-gray-600 text-[0.65rem]">
                         <MapPin className="w-3 h-3" />
