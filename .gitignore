@@ -41,3 +41,7 @@ yarn-error.log*
 *.csv
 next-env.d.ts
 *.md
+
+/myportfolio
+DevoraX-Portfolio.pdf
+projects
