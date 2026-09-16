@@ -51,7 +51,10 @@ function CountUp({ to, suffix }: { to: number; suffix: string }) {
   );
 }
 
-export const StatsCounterSection = () => {
+export const StatsCounterSection = ({ stats }: { stats?: typeof STATS }) => {
+  // Server-computed figures win; the literals below are only a fallback so the
+  // section still renders if the prop is ever missing.
+  const rows = stats && stats.length ? stats : STATS;
   return (
     <section className="py-24 bg-black border-t border-white/5 relative overflow-hidden">
       {/* Glow */}
@@ -77,7 +80,7 @@ export const StatsCounterSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/5">
-          {STATS.map((stat, idx) => (
+          {rows.map((stat, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}

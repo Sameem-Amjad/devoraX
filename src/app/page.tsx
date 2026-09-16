@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createPublicClient } from "@/lib/public";
 import HomeClient from "@/app/_components/homeClient";
 import { faqPageSchema } from "@/data/faqs";
+import { getSiteStats } from "@/data/siteStats";
 
 const BASE_URL = "https://thedevorax.tech";
 
@@ -42,6 +43,9 @@ export default async function Home() {
       <HomeClient
         initialProjects={projectsRes.data || []}
         initialServices={servicesRes.data || []}
+        // Computed on the server from the real corpus, so the counter cannot
+        // drift out of date the way the hardcoded version did.
+        stats={getSiteStats((projectsRes.data || []).length)}
       />
     </>
   );

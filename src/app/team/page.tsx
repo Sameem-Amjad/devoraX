@@ -117,9 +117,10 @@ const founderSchema = {
     'PostgreSQL',
     'Supabase',
   ],
-  // One canonical profile URL, matching the link the page actually renders.
-  // The root layout previously asserted a different LinkedIn URL for this same
-  // person (/in/sameem-amjad-336bb428b), which is a reconciliation conflict.
+  // One canonical profile URL, matching the link the page actually renders and
+  // the `authors` entry in the root layout. A second URL for the same person was
+  // asserted here until it was confirmed superseded — conflicting sameAs values
+  // are what stop an entity being reconciled, so there must only ever be one.
   sameAs: [
     'https://www.linkedin.com/in/sameem-amjad-dev/',
     'https://www.fiverr.com/sameemamjad',

@@ -23,7 +23,7 @@ import CONSTANTS from "@/utils/constants/constants";
 import { TESTIMONIALS, TESTIMONIAL_STATS, FIVERR_PROFILE_URL } from "@/data/testimonials";
 import { Star, Check, ArrowRight, Quote } from "lucide-react";
 
-export default function HomeClient({ initialProjects, initialServices }: any) {
+export default function HomeClient({ initialProjects, initialServices, stats }: any) {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [view, setView] = useState("home");
   const [activeService, setActiveService] = useState(null);
@@ -74,7 +74,7 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
         <WaveDivider fromColor="#000000" toColor="#020202" height={60} />
 
         {/* ── Stats Counter ── */}
-        <StatsCounterSection />
+        <StatsCounterSection stats={stats} />
 
         {/* ── Pricing ── */}
         <section id="pricing" className="py-32 bg-black border-t border-white/5 relative overflow-hidden">

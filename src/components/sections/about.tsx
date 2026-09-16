@@ -51,8 +51,8 @@ export const AboutSection = () => {
               className="space-y-5 text-gray-400 text-lg leading-relaxed"
             >
               <p>
-                {CONSTANTS.AGENCY_NAME} was founded with a singular mission: to bridge the gap
-                between complex engineering and intuitive design. We're not a freelancer collective
+                {CONSTANTS.AGENCY_NAME} was founded in 2019 with a singular mission: to bridge
+                the gap between complex engineering and intuitive design. We're not a freelancer collective
                 — we're a{" "}
                 <span className="text-white font-medium">
                   full-service product agency
@@ -135,8 +135,12 @@ export const AboutSection = () => {
                   transition={{ delay: 0.5 }}
                   className="absolute top-6 left-6 bg-black/80 backdrop-blur-md border border-teal-500/20 rounded-xl px-4 py-3"
                 >
-                  <div className="text-2xl font-bold text-teal-400 font-mono">5+</div>
-                  <div className="text-[0.6rem] text-gray-500 uppercase tracking-widest">Years of Excellence</div>
+                  {/* Was "5+ Years of Excellence" — a self-graded claim on a
+                      number that drifts every January. The founding year is
+                      exact, never stales, and matches Organization.foundingDate
+                      in the root layout. */}
+                  <div className="text-2xl font-bold text-teal-400 font-mono">2019</div>
+                  <div className="text-[0.6rem] text-gray-500 uppercase tracking-widest">Founded</div>
                 </motion.div>
 
                 {/* Code block */}

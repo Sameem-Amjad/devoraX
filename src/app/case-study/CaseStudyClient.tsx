@@ -236,16 +236,26 @@ function ProjectCard({
               <Code2 className="text-black w-4 h-4" />
             </div>
 
+            {/* The study's own headline and opening passage, not the portfolio
+                title and blurb that /projects already renders. Two hubs listing
+                the same 25 entities is only a duplication problem while they say
+                the same thing about them. */}
             <h3
               className={`font-bold text-white mb-2 leading-tight transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-teal-300 group-hover:to-emerald-300 ${
                 large ? "text-2xl" : "text-lg"
               }`}
             >
-              {project.title}
+              {project.studyTitle || project.title}
             </h3>
-            <p className="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-auto">
-              {project.description}
+            <p className={`text-gray-500 text-sm leading-relaxed mb-auto ${large ? "line-clamp-4" : "line-clamp-3"}`}>
+              {project.studyExcerpt || project.description}
             </p>
+            {project.studyWords && (
+              <p className="mt-4 font-mono text-[0.6rem] uppercase tracking-widest text-teal-500/70">
+                {project.studyWords.toLocaleString("en-US")}-word study
+                {project.studyOutcomes > 0 && ` · ${project.studyOutcomes} reported outcomes`}
+              </p>
+            )}
 
             {/* Tags */}
             <div className="flex items-center gap-1.5 flex-wrap mt-5 pt-4 border-t border-white/[0.05]">

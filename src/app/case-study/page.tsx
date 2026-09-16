@@ -88,12 +88,29 @@ export default async function CaseStudyPage() {
    * 25 items with the same 25 links — near-duplicate hubs competing for the same
    * queries and splitting whatever authority either earned.
    *
-   * They now have genuinely different jobs. /projects is the full portfolio.
-   * This page is the editorial index: only projects that carry a published
-   * long-form engineering study appear here, which is what someone searching for
-   * "case study" is actually looking for.
+   * They now have genuinely different jobs. /projects is the full portfolio and
+   * renders the DB `title` and `description`. This page is the editorial index:
+   * only projects carrying a published long-form study appear, and each card
+   * shows that study's own headline and opening passage rather than repeating
+   * the portfolio blurb. Same entities, different content — which is the part
+   * that actually matters for duplication.
    */
-  const list = (projects || []).filter((p: any) => getCaseStudy(p.id));
+  const list = (projects || [])
+    .map((p: any) => {
+      const study = getCaseStudy(p.id);
+      if (!study) return null;
+      // First two sentences of the answer-first summary: real prose that exists
+      // nowhere else on the site.
+      const excerpt = study.summary_answer.split(/(?<=\.)\s+/).slice(0, 2).join(" ");
+      return {
+        ...p,
+        studyTitle: study.title,
+        studyExcerpt: excerpt,
+        studyWords: study.word_count,
+        studyOutcomes: (study.results || []).length,
+      };
+    })
+    .filter(Boolean);
 
   return (
     <>

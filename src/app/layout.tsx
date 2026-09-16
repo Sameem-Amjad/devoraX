@@ -244,8 +244,11 @@ const organizationSchema = {
   },
   image: { '@id': `${BASE_URL}/#logo` },
   description: DESCRIPTION,
-  // Full ISO 8601 rather than a bare year.
-  foundingDate: '2023-01-01',
+  // Full ISO 8601 rather than a bare year. 2019 confirmed by the founder —
+  // the schema previously said 2023, which contradicted the hero copy and made
+  // "5+ Years Operating" on /services look like an inflated claim when it was
+  // the schema that was wrong.
+  foundingDate: '2019-01-01',
   // Minimal stubs, not bare references: a consumer reading this page alone must
   // be able to resolve them. The full Person nodes live on /team under the same
   // @id, so the two merge into one entity rather than reading as duplicates.

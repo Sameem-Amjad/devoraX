@@ -209,11 +209,14 @@ export default async function ServicesPage() {
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 {[
-                  // "5+ Years Operating" contradicted the Organization schema's
-                  // foundingDate. Replaced with figures that are checkable on this
-                  // site or on the public Fiverr profile.
+                  // "5+ Years Operating" was removed when it appeared to
+                  // contradict the schema's foundingDate — but the schema was the
+                  // wrong one. With 2019 confirmed, tenure is restored as an exact
+                  // year rather than a count that drifts every January. Every
+                  // figure here is checkable on this site or on the public Fiverr
+                  // profile.
                   { val: '25', label: 'Projects Shipped' },
-                  { val: '16', label: 'Clients Served' },
+                  { val: '2019', label: 'Operating Since' },
                   { val: '20', label: 'Five-Star Reviews' },
                   { val: '100%', label: 'IP Ownership' },
                 ].map((s) => (
