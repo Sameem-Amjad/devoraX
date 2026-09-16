@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { createClient } from '@/lib/server';
 import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
 import { SERVICE_CONTENT, SERVICE_CONTENT_UPDATED } from '@/data/serviceContent';
+import { INSIGHTS, INSIGHTS_UPDATED } from '@/data/insights';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -83,5 +84,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/contact`, lastModified: STATIC_CONTENT_UPDATED },
   ];
 
-  return [...staticEntries, ...serviceEntries, ...projectEntries];
+  // Research articles. Only listed once published — an empty insights set must not
+  // put /insights in the sitemap pointing at nothing.
+  const insightEntries: MetadataRoute.Sitemap = INSIGHTS.length
+    ? [
+        { url: `${BASE_URL}/insights`, lastModified: new Date(INSIGHTS_UPDATED) },
+        ...INSIGHTS.map((a) => ({
+          url: `${BASE_URL}/insights/${a.slug}`,
+          lastModified: new Date(INSIGHTS_UPDATED),
+        })),
+      ]
+    : [];
+
+  return [...staticEntries, ...serviceEntries, ...projectEntries, ...insightEntries];
 }

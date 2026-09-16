@@ -47,3 +47,7 @@ DevoraX-Portfolio.pdf
 # Leading slash anchors this to the repo root. Unanchored, `projects` also
 # matched src/app/projects/, silently ignoring new files in that route.
 /projects
+
+# IndexNow shared secret. The matching public/<key>.txt IS committed (it must be
+# publicly fetchable for verification); this private copy is not.
+.indexnow-key
