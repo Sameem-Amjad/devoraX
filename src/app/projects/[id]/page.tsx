@@ -3,6 +3,8 @@ import { createClient } from "@/lib/server";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/projects/[id]/_components/projectClient";
 import { ProjectJsonLd } from '@/components/seo/json-ld';
+import { CaseStudyLongform } from '@/components/seo/case-study-longform';
+import { getCaseStudy } from '@/data/caseStudyContent';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -41,7 +43,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   // once rendered, and some descriptions are far under 120. Qualify the title
   // and top the description up from `content` rather than shipping a stub.
   const title = `${project.title} Case Study`;
-  const base = (project.description || '').replace(/\s+/g, ' ').trim();
+  // Prefer the hand-written, fact-checked description from the long-form study.
+  const study = getCaseStudy(id);
+  const base = (study?.meta_description || project.description || '').replace(/\s+/g, ' ').trim();
   const extra = (project.content || '').replace(/\s+/g, ' ').trim();
   let description = base;
   if (description.length < 120 && extra) {
@@ -112,5 +116,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return <>
     <ProjectJsonLd project={project} />
     <ProjectDetailClient project={project} />
+    {/* Server-rendered long-form study: these pages carried ~70 words before,
+        far under the depth that makes a case study citable or rankable. */}
+    <div className="mx-auto max-w-7xl px-6 pb-20">
+      <CaseStudyLongform content={getCaseStudy(id)} />
+    </div>
   </>;
 }
