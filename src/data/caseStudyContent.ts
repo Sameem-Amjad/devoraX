@@ -609,3 +609,13 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
 export function getCaseStudy(id: number | string): CaseStudyContent | undefined {
   return CASE_STUDY_CONTENT[Number(id)];
 }
+
+/**
+ * When the long-form case study bodies above were last substantively rewritten.
+ *
+ * Used for Article.dateModified and sitemap lastModified. `created_at` in Supabase
+ * records when the project row was added, which is NOT when the page content
+ * changed — and stale freshness signals measurably reduce how often a page is
+ * cited by AI answer engines. Bump this only on a real content revision.
+ */
+export const CASE_STUDY_CONTENT_UPDATED = '2026-09-16T00:00:00.000Z';

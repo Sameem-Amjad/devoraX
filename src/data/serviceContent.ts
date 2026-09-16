@@ -305,3 +305,6 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
 export function getServiceContent(id: number | string): ServiceContent | undefined {
   return SERVICE_CONTENT[Number(id)];
 }
+
+/** When the long-form service copy above was last substantively rewritten. */
+export const SERVICE_CONTENT_UPDATED = '2026-09-16T00:00:00.000Z';

@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next';
 import { createClient } from '@/lib/server';
+import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
+import { SERVICE_CONTENT, SERVICE_CONTENT_UPDATED } from '@/data/serviceContent';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -43,14 +45,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('[sitemap] services query failed:', servicesRes.error.message);
   }
 
+  // Pages whose body copy was substantively rewritten carry the real revision
+  // date. Everything else keeps its row timestamp — lastModified must describe an
+  // actual content change, not a build.
   const projectEntries: MetadataRoute.Sitemap = (projectsRes.data ?? []).map((project) => ({
     url: `${BASE_URL}/projects/${project.id}`,
-    lastModified: toDate(project.created_at, STATIC_CONTENT_UPDATED),
+    lastModified: getCaseStudy(project.id)
+      ? new Date(CASE_STUDY_CONTENT_UPDATED)
+      : toDate(project.created_at, STATIC_CONTENT_UPDATED),
   }));
 
   const serviceEntries: MetadataRoute.Sitemap = (servicesRes.data ?? []).map((service) => ({
     url: `${BASE_URL}/services/${service.id}`,
-    lastModified: toDate(service.created_at, STATIC_CONTENT_UPDATED),
+    lastModified: SERVICE_CONTENT[Number(service.id)]
+      ? new Date(SERVICE_CONTENT_UPDATED)
+      : toDate(service.created_at, STATIC_CONTENT_UPDATED),
   }));
 
   // Index pages are only as fresh as the newest item they list.

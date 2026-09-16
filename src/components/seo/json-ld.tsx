@@ -1,3 +1,5 @@
+import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
+
 const BASE_URL = 'https://thedevorax.tech';
 
 type Project = {
@@ -20,9 +22,12 @@ type Project = {
  */
 export function ProjectJsonLd({ project }: { project: Project }) {
     const url = `${BASE_URL}/projects/${project.id}`;
-    // Projects have no updated_at column, so modified === published rather than
-    // inventing a fresher date than the content actually has.
     const published = project.created_at ?? undefined;
+    // `created_at` is when the project row was added, not when the page content
+    // changed. Studies that were substantively rewritten carry the real revision
+    // date; the rest fall back to published rather than claiming false freshness.
+    const study = getCaseStudy(project.id);
+    const modified = study ? CASE_STUDY_CONTENT_UPDATED : published;
 
     const breadcrumbLd = {
         '@context': 'https://schema.org',
@@ -43,7 +48,7 @@ export function ProjectJsonLd({ project }: { project: Project }) {
         mainEntityOfPage: { '@type': 'WebPage', '@id': url },
         image: project.image ? [project.image] : undefined,
         datePublished: published,
-        dateModified: published,
+        dateModified: modified,
         author: { '@type': 'Organization', name: 'DevoraX', url: BASE_URL },
         publisher: {
             '@type': 'Organization',
