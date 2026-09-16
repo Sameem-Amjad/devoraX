@@ -101,7 +101,7 @@ export default function TeamClient() {
         </div>
       </header>
 
-      <main className="pt-20">
+      <main className="pt-24">
 
         {/* ════════════════════════════════════════════════
             FOUNDER SECTION

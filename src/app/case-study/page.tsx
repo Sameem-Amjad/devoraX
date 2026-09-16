@@ -1,4 +1,5 @@
 import { createPublicClient } from "@/lib/public";
+import { getCaseStudy } from "@/data/caseStudyContent";
 import CaseStudyClient from "./CaseStudyClient";
 import { Metadata } from "next";
 
@@ -7,9 +8,11 @@ export const revalidate = 3600;
 const BASE_URL = "https://thedevorax.tech";
 
 export const metadata: Metadata = {
-  title: "Case Studies — Real Client Results",
+  // Differentiated from /projects, which is the full portfolio grid. This page
+  // is the long-form engineering write-ups only.
+  title: "Engineering Case Studies",
   description:
-    "Explore our portfolio of high-impact digital products — web apps, mobile apps, AI solutions, and more built for global clients.",
+    "In-depth engineering write-ups of shipped products: the problem, the architecture, the stack and the reasoning. 2,000+ words each, no marketing filler.",
   keywords: [
     "DevoraX case studies",
     "software development portfolio",
@@ -80,7 +83,17 @@ export default async function CaseStudyPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  const list = projects || [];
+  /**
+   * /case-study and /projects were two self-canonicalising URLs listing the same
+   * 25 items with the same 25 links — near-duplicate hubs competing for the same
+   * queries and splitting whatever authority either earned.
+   *
+   * They now have genuinely different jobs. /projects is the full portfolio.
+   * This page is the editorial index: only projects that carry a published
+   * long-form engineering study appear here, which is what someone searching for
+   * "case study" is actually looking for.
+   */
+  const list = (projects || []).filter((p: any) => getCaseStudy(p.id));
 
   return (
     <>

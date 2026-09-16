@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Mail, MessageSquare, Twitter, Linkedin, Github, Clock } from 'lucide-react';
 import { ObfuscatedEmail } from '@/components/ui/obfuscatedEmail';
+import { FAQS } from '@/data/faqs';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -252,21 +253,76 @@ export default function ContactPage() {
           </div>
         </section>
 
-        {/* ── FAQ teaser ── */}
-        <section aria-label="Common questions" className="py-20 border-t border-white/5 bg-[#030303]">
-          <div className="max-w-3xl mx-auto px-6 text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">Have more questions?</h2>
-            <p className="text-gray-400 mb-8">
-              We&apos;ve answered the most common questions about timelines, pricing, IP ownership, and process
-              on our homepage.
+        {/* ── What happens after you get in touch ── */}
+        <section aria-label="What happens next" className="py-20 border-t border-white/5 bg-[#030303]">
+          <div className="mx-auto max-w-3xl px-6">
+            <h2 className="text-3xl font-bold text-white">What happens after you book a call?</h2>
+            <p className="mt-5 leading-relaxed text-gray-400">
+              Booking reserves a 30-minute slot for a conversation. It does not
+              commit you to anything, and either side can reschedule. The form
+              stores your name, email and the date and time you picked — nothing
+              else — and what we do with it is set out in our{' '}
+              <Link
+                href="/privacy"
+                className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+              >
+                privacy policy
+              </Link>
+              .
             </p>
-            <Link
-              href="/#faq"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-teal-400 hover:text-teal-300 transition-colors group"
-            >
-              Read the FAQ
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            <p className="mt-4 leading-relaxed text-gray-400">
+              On the call we work out what you are trying to build, what already
+              exists, and which parts of it are actually hard. If there is a fit,
+              you get a written proposal with a fixed price and a scope, so the
+              number you are quoted is the number you pay. If there is not a fit,
+              we will say so on the call rather than send a proposal anyway.
+            </p>
+            <p className="mt-4 leading-relaxed text-gray-400">
+              You do not need a specification to have this conversation. If you
+              have an idea and no documents, that is a normal starting point.
+            </p>
+
+            <h2 className="mt-14 text-3xl font-bold text-white">
+              Common questions before getting in touch
+            </h2>
+            {/* Was a link to /#faq. Sending someone to another page to read the
+                answers means this page answers nothing itself — and a crawler or
+                AI engine reading /contact sees a stub. The answers are rendered
+                here, from the same array the homepage uses. */}
+            <div className="mt-8 space-y-3">
+              {FAQS.map((f) => (
+                <details
+                  key={f.q}
+                  className="group rounded-xl border border-white/5 bg-[#0a0a0a] p-6 open:border-teal-500/30"
+                >
+                  <summary className="cursor-pointer list-none font-semibold text-gray-300 group-open:text-white [&::-webkit-details-marker]:hidden">
+                    {f.q}
+                  </summary>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">{f.a}</p>
+                </details>
+              ))}
+            </div>
+
+            <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              <Link
+                href="/services"
+                className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
+              >
+                What we build
+              </Link>
+              <Link
+                href="/case-study"
+                className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
+              >
+                Engineering case studies
+              </Link>
+              <Link
+                href="/terms"
+                className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
+              >
+                Terms of service
+              </Link>
+            </div>
           </div>
         </section>
       </main>

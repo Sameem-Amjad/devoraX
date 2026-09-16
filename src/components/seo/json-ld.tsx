@@ -36,7 +36,10 @@ export function ProjectJsonLd({ project }: { project: Project }) {
         '@id': `${url}#breadcrumb`,
         itemListElement: [
             { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-            { '@type': 'ListItem', position: 2, name: 'Case Studies', item: `${BASE_URL}/case-study` },
+            // Was 'Case Studies' → /case-study, which contradicts the URL: these
+            // pages live under /projects. A breadcrumb has to describe the path
+            // that actually exists.
+            { '@type': 'ListItem', position: 2, name: 'Projects', item: `${BASE_URL}/projects` },
             { '@type': 'ListItem', position: 3, name: project.title, item: url },
         ],
     };

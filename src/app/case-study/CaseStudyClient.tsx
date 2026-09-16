@@ -450,7 +450,7 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
       </section>
 
       {/* ── Filter bar ─────────────────────────────────────────────────────── */}
-      <section className="sticky top-20 z-40 bg-[#040404]/80 backdrop-blur-lg border-b border-white/[0.04] py-4">
+      <section className="sticky top-24 z-40 bg-[#040404]/80 backdrop-blur-lg border-b border-white/[0.04] py-4">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
             {categories.map((cat) => (

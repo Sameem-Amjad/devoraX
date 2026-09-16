@@ -29,8 +29,13 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
 
         {content.results?.length > 0 && (
           <div className="mt-10 rounded-2xl border border-teal-500/15 bg-teal-500/[0.03] p-6">
+            {/* Was headed "Measured outcomes", which claims we measured them. We
+                did not: these are figures the client reported or took from their
+                own systems. The provenance belongs next to the numbers, not only
+                in the terms page, because that is where a reader forms the
+                impression and where an AI engine lifts the quote from. */}
             <h2 className="text-sm font-semibold uppercase tracking-widest text-teal-400">
-              Measured outcomes
+              Outcomes reported by the client
             </h2>
             <ul className="mt-4 space-y-2">
               {content.results.map((r) => (
@@ -40,6 +45,18 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
                 </li>
               ))}
             </ul>
+            <p className="mt-5 border-t border-teal-500/10 pt-4 text-xs leading-relaxed text-gray-500">
+              These figures were reported to us by the client or taken from the
+              client&apos;s own systems. We did not independently instrument or
+              audit them. See our{' '}
+              <a
+                href="/terms"
+                className="underline underline-offset-4 hover:text-teal-400"
+              >
+                terms
+              </a>{' '}
+              for how we present portfolio results.
+            </p>
           </div>
         )}
 
