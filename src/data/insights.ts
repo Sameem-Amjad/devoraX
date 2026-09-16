@@ -1105,6 +1105,332 @@ export const INSIGHTS: Insight[] = [
       "Bundle size, cold-start behaviour or offline sync quality on mobile. These were never captured in any project record."
     ],
     "word_count": 1460
+  },
+  {
+    "slug": "sharetribe-vs-custom-marketplace-build",
+    "title": "Sharetribe vs Custom Marketplace Development: Where the Line Actually Falls",
+    "meta_description": "Where Sharetribe is the right answer, where a custom marketplace build is, and how that line fell inside three marketplaces one agency actually shipped.",
+    "summary_answer": "Use Sharetribe when your marketplace is a standard listing-and-commission transaction and you have not yet proved supply. For a large share of marketplaces that is the permanent answer, not a stage. Build custom when the domain data model, the role surfaces or native apps are the product. The line can also run through one project: our Pastel Marketplace is a custom Next.js storefront on Sharetribe's transaction layer. We never built the alternative, so read that as description, not verdict.",
+    "dataset_note": "Three marketplaces from DevoraX's 25-project record sit behind this piece: Pastel, Afriva and Dooz, each with a published case study. Every scale figure is client-reported and unaudited. We ran no paired build, no cost model and no migration, and we have never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A record of delivered work cannot show what failed.",
+    "sections": [
+      {
+        "heading": "What is actually being compared here?",
+        "body": "Three options are on the table, not two. The first is a hosted marketplace product such as Sharetribe, where the vendor operates the infrastructure and supplies the marketplace transaction as a configurable process: enquiry, payment, fulfilment, completion, commission, payout. You configure it; you do not deploy it.\n\nThe second is an existing commerce platform with a multi-vendor app layered on top, most commonly Shopify. We have never built one, so it gets a section of its own below rather than a column in the table, and we describe it only where its vendors do.\n\nThe third is a custom application, where the data model, the role surfaces and the hosting are yours. The binary in the question is false in one important way: Sharetribe sells both a no-code hosted product and a developer platform that exposes the same transaction engine over an API. A custom frontend on a bought transaction layer is a real position, and it is the one most comparisons omit.",
+        "table": {
+          "caption": "Structural differences between a hosted marketplace product and a custom build, described as general characteristics rather than a feature scorecard. No pricing appears here. The Shopify-plus-app column has been dropped: we have never run one, and we are not going to describe someone else's object model as though we had.",
+          "headers": [
+            "Dimension",
+            "Hosted marketplace product (Sharetribe-type)",
+            "Custom build"
+          ],
+          "rows": [
+            [
+              "Who operates the infrastructure",
+              "The vendor",
+              "You, or an agency you pay"
+            ],
+            [
+              "Transaction process",
+              "Supplied as a configurable process; Pastel's frontend consumes it as a modelled state machine",
+              "Whatever you model, at the cost of modelling it"
+            ],
+            [
+              "Data model",
+              "Users, listings and transactions as the platform defines them, extended with custom fields",
+              "Yours to define: Dooz models versioned inspection records, which the client reports at 150+ points per vehicle"
+            ],
+            [
+              "Setup work",
+              "Configuration",
+              "Engineering, plus environments, CI and hosting"
+            ],
+            [
+              "Native iOS and Android apps",
+              "Not the default path; a native client is a custom build against the API",
+              "Pastel ships iOS; Dooz ships Google Play and the App Store"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "Why does an agency that builds custom marketplaces run Sharetribe inside one?",
+        "body": "Pastel Marketplace is a custom build in our record, a Next.js storefront on Firebase live at mypastel.com and on the Apple App Store, and its transaction layer is Sharetribe. The case study calls using it rather than writing a bespoke payment flow the single most consequential decision on the project.\n\nThe reasoning is worth repeating. A marketplace payment is not a checkout. Money moves from a buyer to the platform, is held while a one-of-one antique is packed and shipped, and is released to the seller only once the exchange completes, with commissions, refunds, disputes and cross-border payouts attached. That surface area is larger than the storefront itself.\n\nSharetribe supplies it as a modelled state machine built for two-sided commerce, so the frontend reads a transaction's current state rather than taking custody of funds. What that decision does not tell you is whether the whole project should have been hosted. We never built that version, so the record establishes the choice was consequential, not that it was correct."
+      },
+      {
+        "heading": "When is Sharetribe clearly the right answer?",
+        "body": "There are four situations in which we would tell you not to hire us, and they are common. First, you have not proved supply. A marketplace with no sellers has nothing to transact, and no framework choice changes that; we hold no failure data, so treat that as mechanics rather than a finding. Until sellers list and buyers pay, every engineering hour funds a hypothesis.\n\nSecond, your transaction is standard: list, buy or book, pay, fulfil, release, commission. Third, your differentiation is not software, because curation, community and category expertise are not code. Fourth, your budget is below the build, and our own floor is $2,900.\n\nOne thing worth being plain about, because vendor pages are not: for many marketplaces the hosted product is the permanent answer rather than a stage before us. A configured marketplace taking real money is a finished business, not a prototype. That you will inevitably outgrow it is a sales line, and we have no evidence for it."
+      },
+      {
+        "heading": "When is Shopify with a multi-vendor app the better choice?",
+        "body": "We have never built this arrangement, so nothing here comes from our record. We describe it only as its vendors do: Shopify is a commerce platform for running a store, and multi-vendor capability is added by third-party apps installed on top.\n\nIt is right when you are the merchant of record and your vendors are really suppliers. If the catalogue behaves like products with variants and stock levels, if one party owns the customer relationship, and if you want an existing payments, tax and shipping ecosystem without integrating it, take that route. Configuration is less work than construction, and our custom floor is $2,900 before any change budget. For that reader this is the destination, not a stepping stone.\n\nThe requirements that pushed Afriva onto its own schema were four role-separated dashboards, each querying only the slice its role is entitled to with authorisation in the data layer, and one checkout splitting into child shipments on independent timelines. Whether a given app expresses those is a question for its documentation."
+      },
+      {
+        "heading": "What did Pastel, Afriva and Dooz need that an off-the-shelf product does not give you?",
+        "body": "Three projects in our record are the marketplaces this article rests on, each needing custom code for a different reason. We have not audited the record for every project that might be called marketplace-shaped, so read three as the evidence behind this piece, not a census of our marketplace work.\n\nPastel needed a catalogue where every listing is a one-of-one object carrying provenance rather than attributes, where seller verification is account state checked when a listing is created, and where curated collections cut across categories. Its transaction layer is still bought. Afriva needed four role-separated dashboards over managed Postgres, atomic stock decrements when one item enters several baskets at once, a parent purchase that splits into child shipments, and delivery status streamed from the database, not polled.\n\nDooz needed structured inspection records, which the client reports at 150+ points per vehicle, versioned so older reports still render and indexed so condition becomes a search facet, feeding an AI valuation. The common thread is the data model, not the payment flow.",
+        "table": {
+          "caption": "The three marketplaces behind this article, each with a published case study. Every scale figure is client-reported and was not audited or instrumented by us.",
+          "headers": [
+            "Marketplace",
+            "Transaction layer",
+            "What forced the custom build",
+            "Live surfaces",
+            "Client-reported scale"
+          ],
+          "rows": [
+            [
+              "Pastel Marketplace (Next.js, Firebase)",
+              "Sharetribe",
+              "One-of-one provenance listings, curated collections cutting across categories, seller verification as account state",
+              "mypastel.com, Apple App Store",
+              "The client reports 12k+ curated items, 48k+ collectors, 2.8k+ verified sellers, 98% positive reviews"
+            ],
+            [
+              "Afriva (Next.js 15, Supabase)",
+              "Not named in the record; order and inventory state sit in the platform's own Postgres schema",
+              "Four role-separated dashboards, parent orders splitting into per-vendor shipments, realtime delivery tracking",
+              "afriva-buyer.vercel.app",
+              "The client reports 1,245 active vendors, $1.2M total revenue, 120+ cities covered"
+            ],
+            [
+              "Dooz Inspected Cars (Angular, React Native, NestJS, PostgreSQL)",
+              "Not named in the record; NestJS owns the business rules and PostgreSQL the transactional guarantees",
+              "Structured, versioned inspection records, AI valuation, financing and insurance quotes inside the buying flow",
+              "dooz.com, Google Play, Apple App Store",
+              "The client reports 20,000+ verified vehicles, 1.2B+ JD in total transactions, 150+ inspection points per vehicle, 98% satisfaction"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "How do the cost shapes actually differ?",
+        "body": "The headline price is the least interesting number in this decision, and it is also the one we are least able to give you. A hosted product is operating expenditure: a subscription plus payment processing, with no capital outlay. A custom build is capital expenditure plus a change budget, and it is the change budget that kills projects rather than the build price.\n\nOur own model is a fixed-price proposal rather than hourly billing, with indicative starting points of $2,900 for an MVP Starter and $7,500 for Growth, and Enterprise quoted per project. Those are starting points, not quotes. Nothing in the shape of Dooz, three clients over one backend, versioned inspections, an AI valuation service, financing and insurance integrations, fits the smaller band.\n\nWe will not tell you what the alternatives cost. Two things are worth pricing yourself: the configuration, design and data-migration labour a hosted setup still takes, and what a custom build does at ten times the volume, where re-architecture is an engineering ticket like any other.",
+        "table": {
+          "caption": "Where each cost number has to come from. The only figures stated here are DevoraX's own indicative starting points; we quote no third-party pricing anywhere, because we hold no invoices and ran no cost model.",
+          "headers": [
+            "Cost line",
+            "What we can state from our own record",
+            "Where the real number has to come from"
+          ],
+          "rows": [
+            [
+              "Build or setup",
+              "Fixed-price proposals starting at $2,900 (MVP Starter) and $7,500 (Growth), Enterprise quoted per project. Indicative starting points, not quotes.",
+              "Any setup cost on a hosted product, including configuration, design and data-migration labour, has to come from whoever does that work."
+            ],
+            [
+              "Subscription",
+              "None. We charge no recurring fee and do not resell hosting; you pay your own infrastructure providers directly.",
+              "The vendor's current pricing page. Hosted marketplace products and commerce platforms are sold as tiered subscriptions; multi-vendor apps are priced by their own publishers, on models that vary."
+            ],
+            [
+              "Payment processing",
+              "Nothing. We integrate processors; we do not set their rates and we hold no invoices.",
+              "Your payment processor's current rates, plus any platform fee a marketplace product takes on top of them. Both have to be read from current terms."
+            ],
+            [
+              "Cost of a change",
+              "On a custom build, every change is an engineering ticket that someone has to scope, price and schedule.",
+              "On a configured product, a change is available only within what the product supports. Whether yours is supported is a question for the vendor's documentation."
+            ],
+            [
+              "What you hold at the end",
+              "Our contracts transfer code and IP to the client on final payment.",
+              "What a vendor account leaves you with if you stop paying is set by that vendor's terms. We have not tested any of them."
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "Which parts should you never build yourself, even inside a custom build?",
+        "body": "Even when the answer is custom, the answer is not custom everywhere. Pastel is the worked example: Next.js owns the storefront, Firebase owns accounts, data and media, Sharetribe owns the transaction, Shippo owns fulfilment. The two components carrying legal and financial risk, money movement and insured cross-border shipping, were bought. The two that define the product were kept.\n\nThe rule we apply is simple. If a component is regulated, adversarial, or maintained against somebody else's changing API, buy it. Multi-carrier shipping is the clearest case: a framed print, a chandelier and a chest of drawers share no packaging profile, dimensional weight or obvious carrier, and sellers are not logistics professionals.\n\nDooz applies the same rule at a different boundary. What it built is what makes it a product: inspection modelled as versioned data, valuation resolved server-side, and PostgreSQL guarantees that let a reservation, a listing state change and a financial record commit or fail as one unit. Financing and insurance quotes come from third parties on someone else's latency budget."
+      },
+      {
+        "heading": "What does our record prove about this choice, and what does it not?",
+        "body": "Less than the confidence of these headings suggests, so here are the bounds. DevoraX has been building since 2019, has 25 delivered projects all with published case studies, and holds 20 five-star Fiverr reviews from 16 clients across four countries. Three of those projects are the marketplaces here. A record of delivered work is by construction a record of what went well enough to publish, so nothing cancelled or abandoned would appear in it, and we do not claim there is nothing to appear.\n\nWe have never built the same marketplace twice, once hosted and once custom. There is no paired test, no migration in either direction and no instrumentation of either approach. The scale figures are what clients told us, not what we measured.\n\nWe are also an interested party. We sell custom builds, and the four situations listed earlier are precisely the ones where we lose the sale. They are here because for a large share of readers the honest answer is the product we did not build."
+      },
+      {
+        "heading": "How should you decide, in order?",
+        "body": "Answer four questions in sequence, stopping at the first clear no. Has supply proved itself? If sellers are not already listing, buy a hosted marketplace and spend the difference on recruiting them. For many marketplaces that is where this decision ends permanently, and there is nothing second-best about ending it there.\n\nDoes your transaction fit a standard process: list, buy or book, pay, fulfil, release, commission? If it does and your catalogue is ordinary too, a configured product is the finished answer and you should stop here rather than build around it. Pastel keeps a bought transaction layer inside a custom build, but that shape only becomes relevant once the next question is also a yes.\n\nDoes your domain need a data model the platform does not have: structured inspections, provenance, role-separated tenancy, multi-shipment orders? Do you need surfaces it does not produce, as two of our three do with native apps? Reach the fourth question with yes answers and a funded change budget, and a custom build is defensible."
+      }
+    ],
+    "key_findings": [
+      "The build-versus-buy line ran through the middle of one of our own projects, not around it: Pastel Marketplace is a custom Next.js and Firebase build whose transaction layer is Sharetribe, which its case study calls the single most consequential decision on the project.",
+      "In all three marketplaces the custom part was the domain data model and the role surfaces, not the payment flow: Afriva runs four role-separated dashboards with authorisation pushed into the data layer, Pastel treats seller verification as account state, and Dooz models inspections as versioned, indexed data.",
+      "Two of the three ship an app store presence (Pastel on iOS, Dooz on Google Play and the App Store), which a hosted web marketplace product does not produce by default.",
+      "For a marketplace with a standard transaction, an ordinary catalogue and unproven supply, a hosted product is the permanent answer rather than a stage before a custom build. Nothing in our record shows anyone outgrowing one, because our record contains no such case either way.",
+      "Our indicative custom starting points are $2,900 (MVP Starter) and $7,500 (Growth), and nothing in the shape of Dooz fits the smaller band, so for some specifications the honest answer is to cut scope or stay hosted.",
+      "Every scale figure here is client-reported and unaudited: 12k+ items, 48k+ collectors and 2.8k+ verified sellers for Pastel; 1,245 vendors and $1.2M revenue for Afriva; 20,000+ vehicles, 1.2B+ JD in transactions and 150+ inspection points per vehicle for Dooz."
+    ],
+    "limitations": [
+      "Three marketplaces with case studies inside a 25-project record from one small agency. A record of delivered work is selection-biased by construction: no cancelled, abandoned or failed marketplace could appear in it, and we have not audited the record for every project that might be called marketplace-shaped.",
+      "We have never built the same marketplace twice, once on a hosted product and once custom. There is no paired test, no A/B and no migration in either direction, so every comparison here is engineering reasoning rather than measurement.",
+      "We have not run Sharetribe or a Shopify multi-vendor app as an entire client platform. Our direct experience of Sharetribe is its transaction layer inside Pastel, which is why the Shopify column was dropped from the structural table rather than filled with an object model we have never worked in.",
+      "All outcome figures are client-reported and were not audited or instrumented by us. None carries a measurement date, a baseline or a comparison condition.",
+      "DevoraX sells custom builds, so we have a commercial interest in this answer. The only prices in this article are our own indicative starting points, which are not quotes; no third-party pricing is stated anywhere, including in the cost table."
+    ],
+    "cannot_answer": [
+      "What Sharetribe, Shopify or any multi-vendor app will cost you at your transaction volume. We hold no invoices and quote no third-party prices, so those figures have to come from the vendors' current terms.",
+      "Whether Pastel would have performed as well fully hosted, or Afriva on an off-the-shelf product. No counterfactual was built, so the comparison is untested.",
+      "Whether any of the client-reported figures were caused by the build-versus-buy decision. There is no control group and no baseline anywhere in this record.",
+      "How hard it is to migrate from a hosted marketplace to custom code, or back. No project in our record has made that move, so we have no migration experience to report."
+    ],
+    "word_count": 1681
+  },
+  {
+    "slug": "what-a-3000-mvp-budget-gets-you",
+    "title": "What a $3,000 MVP Budget Actually Gets You (And What It Does Not)",
+    "meta_description": "What a $3,000 MVP budget actually buys, and what it does not, checked against our published $2,900 starting tier and five live builds.",
+    "summary_answer": "Roughly $3,000 buys one working surface for one primary audience, a narrow set of features, and a managed stack you do not have to operate. It does not buy role-separated dashboards, an app-store release, verified multi-tenancy or a security assessment. What it depends on is roles: each additional kind of user adds a surface, a permission boundary and a full test pass. If your difference from an off-the-shelf product is a preference rather than a rule, rent instead.",
+    "dataset_note": "This draws on 25 delivered projects from one two-person agency, five examined closely: Coffee Shop, Augment Fit, Waitmate, Pathana and Afriva. No project record stores a price, timeline, team size or developer-hour count, so nothing here evidences what any build cost. Outcome figures are client-reported and unaudited. The 25 are our own published book of work, not a sample: no record stores a delivery or failure status.",
+    "sections": [
+      {
+        "heading": "What does a $3,000 MVP budget actually buy?",
+        "body": "A budget in that range buys one working surface, for one primary audience, doing a small number of things well, on a managed platform somebody else operates. Our own published starting points are an MVP Starter from $2,900, Growth from $7,500 and Enterprise scoped individually. Those are starting points rather than quotes: every engagement is priced as a fixed sum in a proposal written after a free 30-minute discovery call, and we do not bill hourly. The caveat comes first, because it governs everything below. None of the 25 project records behind this article stores a price. We are not going to tell you that any named build was delivered for $2,900, because we did not record that, and a number invented to make an argument land is worth nothing to a reader spending real money.\n\nWhat the records do support is a description of scope shapes, and the smallest shape among the five examined here is the Coffee Shop Web App. One public web surface. One audience, the customer. Three named features: an interactive menu, customer testimonials and integrated e-commerce. A stack of Next.js for server rendering, React for the interface and Firebase for content and data, which means no server to run and no database to operate. No second operational surface, no separate admin product, no real-time requirement, no mobile release. That is the shape a starting-tier budget can hold: a single front door, a single kind of user behind it, and a content and transaction path a non-developer can keep current. Read it as a scope illustration and not as a recommendation, because the fifth section below explains why we would tell a reader arriving with exactly that brief to rent instead."
+      },
+      {
+        "heading": "Why is $3,000 a scope number rather than a price?",
+        "body": "Because the fixed price is the output, not the input. A proposal prices a defined scope, so the only thing a smaller budget can move is what sits inside that scope. That is a more useful conversation than asking for a discount on a rate, and it is why the discovery call happens before the number. It helps to know the shape of the supplier too. DevoraX has been operating since 2019 and is two people, Sameem Amjad and Usman. We hold no cost accounting in any project record, no price, no hours and no allocation, so we are not going to explain the tier by describing an overhead structure we never measured. What our own site does publish alongside the price is the working arrangement: a dedicated project manager as a single point of contact, direct Slack access, weekly demos and a shared project board.\n\nWhat actually moves the number is structural rather than cosmetic. How many distinct kinds of user need their own screens. Whether money changes hands inside the product. Whether anything has to stay correct under contention, such as a seat, a table or a unit of stock two people can claim at the same moment. Whether the product must exist in an app store as well as a browser. Whether the data is sensitive enough that isolation between tenants has to hold by construction rather than by careful coding. Each of those is a step change, not a percentage increase, because each adds a surface, a permission boundary and a set of failure cases somebody has to test. Colour schemes, copy and the number of marketing pages are small against any of them. Our site also publishes a typical four-to-six-week timeline for an MVP, though no project record stores what any build actually took, so read that as a plan rather than a measurement."
+      },
+      {
+        "heading": "What does scope actually look like across five live products?",
+        "body": "Five of our 25 builds are useful calibration here, because all five carry a live web link and a published case study, and they sit at visibly different levels of scope. One caution about the selection before the table. All five are web-only, and that is a property of which five we picked rather than of the budget or of the market: nine of the 25 project records carry a Google Play or App Store listing. Waitmate is the case worth naming, because its case study puts React Native in the stack for mobile access while the Android and iOS fields in its record are both empty, so a mobile client appears in the architecture with no store listing behind it in what we hold.\n\nRead the table by counting surfaces and roles rather than features. Coffee Shop has one of each. Augment Fit's record names two surfaces, an admin panel and a user dashboard. Waitmate's stack names a React.js dashboard alongside a React Native client. Pathana is the instructive one: its record names one platform and three parties reading one shared record, so the roles multiply while the surfaces do not. Afriva names four separate dashboards. Named feature counts stay inside a narrow band of three to four across all five, which is the point, because features are cheap relative to the number of places and permission levels each one has to be correct in. We have dropped the column an earlier draft carried placing each build against our starting tier. No project record stores a price, so that column was judgement printed beside counted facts, and in a grid it read as data.",
+        "table": {
+          "caption": "Five live DevoraX builds by recorded scope. Every column is counted from the project records and the published case studies. No column here is a price or a price proxy: no project record stores what any build was sold for, so this table cannot be read against our published tiers.",
+          "headers": [
+            "Build",
+            "Public links in our record",
+            "Surfaces the record names",
+            "Distinct user roles the record names",
+            "Named features",
+            "Real-time requirement named"
+          ],
+          "rows": [
+            [
+              "Coffee Shop Web App",
+              "Web only",
+              "1 (public site)",
+              "1 (the visiting customer)",
+              "Interactive menu, customer testimonials, integrated e-commerce",
+              "No"
+            ],
+            [
+              "Augment Fit Platform",
+              "Web only",
+              "2 (admin panel, user dashboard)",
+              "2 named (trainers, users); no operational role named for the admin panel",
+              "Session and performance tracking, BMI classification, workout plan building",
+              "No"
+            ],
+            [
+              "Waitmate Platform",
+              "Web only",
+              "2 in the stack (React.js web dashboard, React Native mobile client)",
+              "Not enumerated in the record",
+              "Smart reservations, table management, real-time analytics, multi-location support",
+              "Yes (real-time analytics)"
+            ],
+            [
+              "Pathana Platform",
+              "Web only",
+              "1 (one platform; the record names no separate surfaces)",
+              "3 (students, counsellors, families) over one shared record",
+              "Personalised roadmaps, milestone tracking, counsellor collaboration, data-driven dashboards",
+              "Yes (real-time propagation)"
+            ],
+            [
+              "Afriva E-Commerce Platform",
+              "Web only",
+              "4 role dashboards (admin, manager, seller, buyer)",
+              "4 (admin, manager, seller, buyer)",
+              "Inventory management, order processing, real-time delivery tracking",
+              "Yes (real-time delivery tracking)"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "What does a $3,000 budget specifically not buy?",
+        "body": "It does not buy role separation. Afriva's four dashboards are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and the case study's structural point is that a change to seller tooling cannot quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. We hold no recorded test matrix, review step or release procedure for any project in the portfolio, so nothing here should be read as a description of how we test. It does not buy institutional multi-tenancy either. Pathana's case study states the requirement and stops there: isolation across the 500+ school partnerships the client reports has to hold by construction rather than by careful coding. No record documents that the isolation was implemented, and no assessment verifies it.\n\nIt does not buy a native release. All five reference builds are reachable in a browser and none carries a store listing in our record, while nine of the 25 records do, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five examined records contains a penetration test, a security assessment, a load test or an uptime SLA. Be precise about what that does and does not mean, because we do market an SLA. Long-term SLA and 24/7 DevOps monitoring are published features of the Enterprise tier, and the FinTech record carries a client-reported 99.9% uptime, which is a client figure rather than an assurance artefact. None of that sits in a starting-tier engagement, which carries one month of support, after which the system is yours to run and the code and IP are yours on final payment."
+      },
+      {
+        "heading": "When is the honest answer not to hire an agency like us at all?",
+        "body": "Frequently, and here is the version with no hedge on it. If you are a single-location cafe, restaurant, salon, gym or retailer who needs a branded site with a menu or catalogue and online ordering, rent. Hosted commerce platforms and site builders solve that exact shape as a subscription, and they arrive with payment handling, hosting, updates and a support contract that keeps renewing for as long as you pay. That is the Coffee Shop scope shape, and renting is the right answer for a reader arriving with that brief today. We will not tell you the Coffee Shop client should have rented, because no record tells us why custom was chosen there, but the recommendation to a new reader with that brief is not ambiguous. The same holds for appointment and session booking for a small team, and for an internal dashboard over data you already hold.\n\nThe table below is deliberately two-sided, because owning software has costs as surely as renting it does. Renting is a fee that never stops and a data model you configure rather than design. Owning is a hosting bill, a maintenance burden, support only for as long as it is contracted, one month at our starting tier, and key-person risk with a two-person supplier. The test you can apply on your own is whether the thing your product does differently is a preference or a rule. If your difference is a preference, our own brand, our own layout, our own copy, rent. If it is a rule the hosted product cannot express, this capacity is contested, this payout splits four ways, this record is legally restricted, that is where custom starts earning the money. Afriva's record names four role dashboards; whether that could have been rented, the record does not say.",
+        "table": {
+          "caption": "Where renting usually beats custom at this budget, and what renting costs in return. Third-party products are described by commercial model and positioning only. We have quoted no current price for any of them, packaging in this space changes, and each vendor should be checked directly.",
+          "headers": [
+            "If your brief is...",
+            "Mature rentable category",
+            "What renting costs you",
+            "What custom costs you",
+            "When custom is the honest answer"
+          ],
+          "rows": [
+            [
+              "A brand site with a menu or catalogue and online ordering",
+              "Hosted site builders and hosted commerce platforms, Shopify and Squarespace among them, sold as a subscription",
+              "A recurring fee for as long as you use it, and a catalogue and checkout you configure rather than design",
+              "Your own hosting bill, your own upgrades, and support only for as long as it is contracted; our starting tier includes one month",
+              "When the ordering, pricing or fulfilment logic genuinely will not fit the platform's model"
+            ],
+            [
+              "Appointment or session booking",
+              "Hosted scheduling products, Calendly among them, sold as a subscription",
+              "A recurring fee that commonly scales with the number of users, and booking rules limited to what the product expresses",
+              "Contention handling, calendar sync and notifications all become yours to build and then to keep working",
+              "When capacity, contention or multi-location rules exceed what the product can express"
+            ],
+            [
+              "A two-sided marketplace",
+              "Marketplace platforms, Sharetribe among them, sold as a subscription rather than built from scratch",
+              "A recurring fee, and a transaction, role and payout model you configure rather than design",
+              "Payments, payouts, disputes and vendor onboarding all become yours to build and to operate",
+              "When the role, fulfilment or payout model on offer cannot express your transaction"
+            ],
+            [
+              "An internal dashboard over data you already hold",
+              "Internal-tool and low-code builders, Retool among them, sold as a subscription",
+              "A recurring fee that commonly scales with the number of users, and an interface assembled from the product's own components",
+              "Build time before anyone can use it, plus ongoing maintenance of a tool that earns no revenue directly",
+              "When the dashboard is a product your customers see rather than an internal tool"
+            ]
+          ]
+        }
+      },
+      {
+        "heading": "How much does each additional user role really cost?",
+        "body": "Roles are the multiplier that ruins budgets, and they are almost never counted properly at the start. Each distinct kind of user adds three things at once. It adds a surface, because a screen trying to serve two mandates usually serves neither; Augment Fit's record names two of them, an admin panel and a user dashboard, and its case study is explicit that neither one's screens were published, so the reasoning is about why products of this kind separate surfaces at all rather than about how these were laid out. It adds an authorisation boundary, because cross-account visibility is exactly the capability an ordinary account is designed to withhold, and that boundary has to be enforced where the data lives rather than in each screen that reads it. And it adds a test matrix, because every feature now has to be verified once per role that can reach it.\n\nPathana illustrates the third cost most clearly, and it does so without adding a single surface. Three parties look at one student's record with three different mandates: the student owns the work, the counsellor advises and intervenes, the family needs visibility without editing rights that would distort the record. That is one data model and three correct answers to the question of what this screen shows, and getting it wrong in a school product is not a cosmetic defect. The planning consequence is the one people resist: a second role is not ten per cent more work, and a fourth role is not four times the first, because boundaries multiply where features add. If your brief names three kinds of user in its first sentence, a starting-tier budget is the wrong frame for it, and the useful move is to cut to one role and ship, not to compress three."
+      },
+      {
+        "heading": "Do the client-reported results on these builds tell you what the budget bought?",
+        "body": "No, and it is worth being exact about why. Every figure our records carry is reported by the client rather than measured or audited by us. The client reports that Afriva carries 1,245 active vendors and $1.2M in total revenue across more than 120 cities. The client reports that Pathana reaches more than 10,000 students across 500+ school partnerships with an 85% success rate. Waitmate's record lists $24,680 in total revenue, 87% occupancy and 4.8/5 customer satisfaction, all client-reported. Augment Fit's lists $18,230 in revenue and 87.3% retention on the same basis. The Coffee Shop record lists a 95% Lighthouse score and customer retention increased by 15%. Not one of them carries a measurement window, a baseline or a stated method.\n\nMore importantly for a reader with a budget, none of them is a statement about cost. They describe the state of a live product, often well after the build, and the distance between what a thing cost to make and what it went on to do is the entire business. Reading a portfolio figure as a price signal is the specific error this article exists to prevent. One structural caution about the dataset itself: 25 projects is small, it is our own book of work, and we chose which five to examine. No record stores a delivery, launch or failure status of any kind, so we cannot tell you how many ran late, ran over or were abandoned. What we can tell you is that 18 of the 25 records carry a public link and seven carry none, and that all 25 have a case study published on our site whether a link exists or not. A portfolio is not a base rate."
+      },
+      {
+        "heading": "What should you actually do with roughly $3,000?",
+        "body": "Three answers, and only one of them involves hiring anybody. If your product is the default shape of a category with mature hosted products in it, rent one, spend nothing on engineering, and revisit in a year when you know which constraint actually hurts. That is the answer for anyone whose difference from the category default is a preference rather than a rule, and the Coffee Shop scope shape sits squarely inside it. If your product has one primary audience, a handful of features, and one rule the hosted products cannot express, a starting-tier custom build is a real option: one surface, one audience, a managed backend, a live link at the end. If your brief names three user roles, a store release, a compliance obligation or contention over finite capacity, this budget buys a half-built version of that, and the move is to cut to one role and ship it rather than to find a supplier who will agree to all of it at this price.\n\nTwo practical notes if you do spend it. Keep some of it back. A starting tier includes one month of support and then the system is yours to run, so a budget entirely consumed at launch leaves nothing for the first real bug and nothing for the hosting bill either. And insist the scope is written down as a fixed price against a specific list before anyone starts, which is how we work and is the only structure under which a small budget is safe for both sides. If a supplier cannot tell you what falls out of scope at your number, they have not scoped it, and the shortfall surfaces later as either an invoice or an argument. Ask the same supplier what they would tell you to rent instead, because the answer tells you what the proposal is really for."
+      }
+    ],
+    "key_findings": [
+      "All five reference builds are web-only in our record, but that is a property of the selection rather than of the budget: nine of the 25 project records carry a Google Play or App Store listing. Waitmate's case study names React Native for mobile access while its Android and iOS link fields are both empty.",
+      "Surfaces and roles, not features, separate the five: Coffee Shop names one surface and one audience, Augment Fit and Waitmate two surfaces each, Pathana one platform with three parties over a shared record, and Afriva four role dashboards, while named feature counts stay within a band of three to four throughout.",
+      "No project record stores a price, a timeline or a team size, so this article makes no claim that any named build was delivered at the $2,900 starting tier, and it carries no table column placing one there.",
+      "Our published starting points are MVP Starter from $2,900, Growth from $7,500 and Enterprise custom-scoped, each priced as a fixed sum in a proposal after a free 30-minute discovery call. The MVP Starter includes one month of support; a long-term SLA and 24/7 DevOps monitoring are published Enterprise features, not starting-tier ones.",
+      "None of the five examined records contains a penetration test, a security assessment, a load test or an uptime SLA. The portfolio does carry a client-reported 99.9% uptime on the FinTech record, which is a client figure rather than an assurance artefact.",
+      "18 of the 25 records carry a public link and seven carry none, while all 25 carry a published case study. No record stores a delivery, launch or failure status, so the portfolio cannot be read as a success rate in either direction."
+    ],
+    "limitations": [
+      "n=25 projects from a single two-person agency, and we chose which five to examine. No record stores a delivery, launch or failure status, so nothing here estimates the odds of a $3,000 build succeeding, and the portfolio should not be read as one.",
+      "No price, effort, duration or team-size data exists in any project record. Every statement about what a budget buys rests on scope shape and general engineering reasoning, not on cost accounting.",
+      "All outcome figures are client-reported, with no baseline, measurement window or stated method, and none was audited or instrumented by us.",
+      "The five builds were selected for carrying live web links and detailed case studies, which is exactly why all five are web-only. The nine store-listed projects in the portfolio are not represented here at all, so this article says nothing about what a mobile build involves.",
+      "Third-party products are described by commercial model and positioning only. We have quoted no current price for any of them, packaging in this space changes, and the right build-versus-rent answer changes with it."
+    ],
+    "cannot_answer": [
+      "What any of the five named builds was actually sold for. No project record stores a price, so the relationship between these scopes and our published tiers is inference, not evidence.",
+      "How long any build actually took. Our own site publishes a typical four-to-six-week MVP timeline, but no project record stores a real duration, sprint count or developer-hour figure, so nothing here verifies that published figure against delivery.",
+      "What a build costs to run and maintain after handover. No hosting invoices, platform bills or post-launch support costs exist anywhere in the records.",
+      "Whether $2,900 is competitive against other suppliers. We hold no competitor quotes and did not price-check anybody for this article."
+    ],
+    "word_count": 2511
   }
 ];
 
