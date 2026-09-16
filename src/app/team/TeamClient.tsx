@@ -40,7 +40,11 @@ const SOCIALS = [
   { label: "Website",  href: "https://thedevorax.tech/",                       hover: "hover:border-teal-500/40 hover:text-teal-400 hover:bg-teal-500/5" },
 ];
 
-// ── Dummy team data ───────────────────────────────────────────────────────────
+// ── Team ──────────────────────────────────────────────────────────────────────
+// Real, verifiable people only. Five fabricated members (Ali Raza, Zara Khan,
+// Fatima Shah, Hassan Malik, Nadia Qureshi) were removed: invented staff on a
+// team page is a direct trust/E-E-A-T liability, and it undermines the credibility
+// of the case studies and research the site is built to be cited for.
 
 type Member = {
   initials: string;
@@ -68,56 +72,11 @@ const TEAM: Member[] = [
     image: "/images/usman_cto.jpeg",
     lead: true,
   },
-  {
-    initials: "AR",
-    name: "Ali Raza",
-    role: "Lead Frontend Engineer",
-    bio: "Pixel-perfect UI craftsman. Specializes in Next.js architecture, animation systems, and building component libraries at scale.",
-    skills: ["React.js", "Next.js", "Framer Motion", "Tailwind CSS", "TypeScript"],
-    gradient: "from-teal-500 to-emerald-500",
-    location: "Lahore, Pakistan",
-    since: "2022",
-  },
-  {
-    initials: "ZK",
-    name: "Zara Khan",
-    role: "Full-Stack Engineer",
-    bio: "End-to-end product builder with a focus on clean APIs, database performance, and scalable SaaS backends.",
-    skills: ["Node.js", "Nest.js", "PostgreSQL", "Redis", "AWS"],
-    gradient: "from-cyan-500 to-blue-500",
-    location: "Karachi, Pakistan",
-    since: "2022",
-  },
-  {
-    initials: "FS",
-    name: "Fatima Shah",
-    role: "UI/UX Designer",
-    bio: "Human-centered designer who translates complex user problems into elegant, intuitive interfaces and seamless experiences.",
-    skills: ["Figma", "Prototyping", "Design Systems", "User Research", "Motion"],
-    gradient: "from-pink-500 to-rose-500",
-    location: "Multan, Pakistan",
-    since: "2023",
-  },
-  {
-    initials: "HM",
-    name: "Hassan Malik",
-    role: "DevOps & Cloud Engineer",
-    bio: "Infrastructure specialist ensuring 99.99% uptime. Builds CI/CD pipelines and cloud-native systems on AWS and GCP.",
-    skills: ["AWS", "Docker", "Kubernetes", "Terraform", "GitHub Actions"],
-    gradient: "from-orange-500 to-amber-500",
-    location: "Faisalabad, Pakistan",
-    since: "2023",
-  },
-  {
-    initials: "NQ",
-    name: "Nadia Qureshi",
-    role: "Backend & AI Engineer",
-    bio: "Backend architect with a growing focus on LLM integrations, RAG pipelines, and building intelligent backend systems.",
-    skills: ["Python", "FastAPI", "LangChain", "OpenAI", "MongoDB"],
-    gradient: "from-lime-500 to-green-500",
-    location: "Peshawar, Pakistan",
-    since: "2024",
-  },
+  // Muneeb Jutt and Muhammad Fakhar belong here. Their entries are intentionally
+  // absent until their real title, focus and skills are confirmed — LinkedIn
+  // blocks automated reads (HTTP 999), and there are 100+ people sharing these
+  // names, so anything inferred would risk publishing the wrong person's career
+  // on a public page and in Person structured data.
 ];
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -371,7 +330,8 @@ export default function TeamClient() {
                 </span>
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed">
-                A tight-knit, senior-only team of engineers, designers, and cloud architects — each a specialist in their domain.
+                A small, senior team. Every person listed here works directly on client
+                builds — we do not pad this page with profiles you will never meet.
               </p>
             </motion.div>
 
