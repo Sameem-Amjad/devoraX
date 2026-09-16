@@ -28,9 +28,11 @@ export function ServiceJsonLd({ service }: { service: any }) {
     // 2. Service Rich Snippet (The "Extreme SEO" part)
     const serviceLd = {
         '@context': 'https://schema.org',
-        '@type': 'ProfessionalService', // Or 'Service', 'SoftwareApplication'
+        '@type': 'Service',
+        // Real columns are desc_long / desc_text — `description`/`desc` do not
+        // exist on the services table, so this rendered an empty description.
         name: service.title,
-        description: service.description || service.desc,
+        description: service.desc_long || service.desc_text,
         provider: {
             '@type': 'Organization',
             name: 'Devora',

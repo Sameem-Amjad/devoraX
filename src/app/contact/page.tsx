@@ -6,9 +6,9 @@ import { ObfuscatedEmail } from '@/components/ui/obfuscatedEmail';
 const BASE_URL = 'https://thedevorax.tech';
 
 export const metadata: Metadata = {
-  title: 'Contact',
+  title: 'Contact Us — Book a Free Strategy Call',
   description:
-    'Get in touch with DevoraX. Book a free 30-minute strategy call, send us a project brief, or reach out directly. We typically respond within one business day.',
+    'Book a free 30-minute strategy call or send a project brief. We reply within one business day with scope, timeline and a fixed-price proposal.',
   keywords: [
     'contact DevoraX',
     'hire software development agency',

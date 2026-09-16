@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/server";
 import HomeClient from "@/app/_components/homeClient";
+import { faqPageSchema } from "@/data/faqs";
 
 const BASE_URL = "https://thedevorax.tech";
 
 export const metadata: Metadata = {
-  title: "DevoraX | AI-Powered Mobile & Web Development Agency",
+  // `absolute` bypasses the root layout's "%s | DevoraX" template — without it
+  // this rendered as "DevoraX | … | DevoraX" with the brand duplicated.
+  // Keyword first, brand last, 52 chars.
+  title: { absolute: "AI-Powered Mobile & Web Development Agency | DevoraX" },
+  // 152 chars — Google truncates around 155-160.
   description:
-    "DevoraX is an AI-powered software development agency building high-performance mobile apps, Next.js web platforms, cloud infrastructure, and AI integrations. Trusted by founders and CTOs worldwide.",
+    "We build production-grade mobile apps, Next.js platforms and AI integrations for founders and CTOs. Fixed-price proposals, shipped in weeks.",
   alternates: {
     canonical: BASE_URL,
   },
@@ -27,9 +32,17 @@ export default async function Home() {
 
   // Pass the data to the Client Component
   return (
-    <HomeClient
-      initialProjects={projectsRes.data || []}
-      initialServices={servicesRes.data || []}
-    />
+    <>
+      {/* Server-rendered so crawlers (and AI crawlers, which don't run JS) see it.
+          Generated from the same FAQS array <FAQSection /> renders below. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
+      />
+      <HomeClient
+        initialProjects={projectsRes.data || []}
+        initialServices={servicesRes.data || []}
+      />
+    </>
   );
 }

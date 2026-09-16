@@ -8,9 +8,9 @@ const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Projects',
+  title: 'Software Project Portfolio',
   description:
-    'Browse DevoraX\'s portfolio of shipped products — fintech apps, AI e-commerce platforms, SaaS dashboards, React Native mobile apps, and Next.js web applications built for clients worldwide.',
+    'Fintech apps, AI e-commerce platforms, SaaS dashboards and React Native builds — real products shipped to production for clients worldwide.',
   keywords: [
     'DevoraX portfolio',
     'software development projects',

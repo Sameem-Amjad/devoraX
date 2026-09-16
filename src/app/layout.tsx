@@ -259,11 +259,9 @@ const websiteSchema = {
   name: SITE_NAME,
   description: DESCRIPTION,
   publisher: { '@id': `${BASE_URL}/#organization` },
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: `${BASE_URL}/search?q={search_term_string}` },
-    'query-input': 'required name=search_term_string',
-  },
+  // NOTE: no `potentialAction`/SearchAction — the site has no /search route, so
+  // declaring one describes an endpoint that does not exist. (Google also
+  // retired the sitelinks search box, so it earns nothing even when valid.)
   inLanguage: 'en-US',
 };
 
@@ -307,73 +305,13 @@ const professionalServiceSchema = {
   award: 'AI-Powered Development Excellence',
 };
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What services does DevoraX offer?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'DevoraX offers mobile app development (React Native, Flutter), AI-powered web development (Next.js, Python), cloud & DevOps (AWS, Docker, Kubernetes), UI/UX design, e-commerce solutions, and data analytics services.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How long does it take to build a mobile app?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Depending on complexity, an MVP typically takes 6-10 weeks. Full-featured cross-platform mobile apps generally require 3-6 months with weekly sprint demos throughout development.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What is the starting cost for a project?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'MVP projects start at $2,900. Growth & scale solutions start at $7,500. Enterprise transformation projects are custom-quoted. All plans include a free 30-minute discovery call and fixed-price proposal.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Does DevoraX work with startups?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes, DevoraX specializes in working with startups and scaleups. We offer rapid MVP development to validate ideas quickly, then scale architecture to enterprise-grade as the business grows.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What AI technologies does DevoraX integrate?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'DevoraX integrates OpenAI GPT-4, Claude API, LangChain, Hugging Face models, vector databases (Pinecone, Weaviate), and custom ML pipelines into production-ready applications.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Can DevoraX maintain and scale our existing application?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. DevoraX provides post-launch monitoring, feature iteration, performance optimization, and infrastructure scaling as a long-term engineering partner under flexible SLA agreements.',
-      },
-    },
-  ],
-};
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home',         item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Services',     item: `${BASE_URL}/services` },
-    { '@type': 'ListItem', position: 3, name: 'Projects',     item: `${BASE_URL}/projects` },
-    { '@type': 'ListItem', position: 4, name: 'Case Studies', item: `${BASE_URL}/case-study` },
-    { '@type': 'ListItem', position: 5, name: 'Team',         item: `${BASE_URL}/team` },
-    { '@type': 'ListItem', position: 6, name: 'Contact',      item: `${BASE_URL}/contact` },
-  ],
-};
+// NOTE: FAQPage schema lives on the homepage (app/page.tsx), generated from the
+// same FAQS array the visible <FAQSection /> renders. It must not be emitted
+// site-wide: structured data may only describe content visible on that page.
+//
+// NOTE: BreadcrumbList is emitted per-route (see /services, /projects, /contact,
+// and the detail pages). A single flat list of every top-level page is a nav
+// menu, not a breadcrumb trail, and repeating it on every URL is incorrect.
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -393,14 +331,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />

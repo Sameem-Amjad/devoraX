@@ -6,28 +6,58 @@ import { ServiceJsonLd } from "@/components/seo/service-json-Id";
 
 const BASE_URL = "https://thedevorax.tech";
 
+/** Trim to a clean word boundary so descriptions land in the 120-160 band. */
+function clampDescription(text: string, max = 155): string {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:\-—]$/, "") + "…";
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const supabase = await createClient();
   const { id } = await params;
-  const { data: service } = await supabase
+
+  // The services table has columns: id, title, icon, desc_text, desc_long,
+  // features, created_at. Selecting `description`/`image` (which do not exist)
+  // made this query fail, so every service page fell into the "not found"
+  // branch below and shipped `noindex` — silently de-indexing all of them.
+  const { data: service, error } = await supabase
     .from("services")
-    .select("title, description, image")
+    .select("title, desc_text, desc_long")
     .eq("id", id)
     .single();
 
   if (!service) {
+    // Only de-index when the row genuinely does not exist (PGRST116 = no rows).
+    // A transient DB/network error must NOT emit `noindex` — that would hand
+    // Googlebot a de-indexing directive for a page that is actually fine.
+    const genuinelyMissing = !error || error.code === "PGRST116";
+    if (genuinelyMissing) {
+      return {
+        title: "Service Not Found",
+        description: "The requested service could not be found.",
+        robots: { index: false, follow: false },
+      };
+    }
     return {
-      title: "Service Not Found",
-      description: "The requested service could not be found.",
-      robots: { index: false, follow: false },
+      title: "Software Development Services",
+      description:
+        "React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and DevOps automation — six specialist practices, one delivery team.",
+      alternates: { canonical: `${BASE_URL}/services/${id}` },
     };
   }
 
   const canonicalUrl = `${BASE_URL}/services/${id}`;
+  const description = clampDescription(service.desc_long || service.desc_text || "");
+  // "Mobile Innovation" alone is far under the 30-char floor once rendered;
+  // the qualifier keeps the title descriptive and keyword-bearing.
+  const title = `${service.title} Services`;
+  const ogImage = { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: `${service.title} — DevoraX` };
 
   return {
-    title: service.title,
-    description: service.description,
+    title,
+    description,
     keywords: [
       service.title,
       "DevoraX service",
@@ -47,18 +77,17 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       locale: "en_US",
       url: canonicalUrl,
       siteName: "DevoraX",
-      title: `${service.title} | DevoraX`,
-      description: service.description,
-      images: service.image
-        ? [{ url: service.image, width: 1200, height: 630, alt: service.title }]
-        : [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: service.title }],
+      title: `${title} | DevoraX`,
+      description,
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
       site: "@devorax_agency",
       creator: "@devorax_agency",
-      title: `${service.title} | DevoraX`,
-      description: service.description,
+      title: `${title} | DevoraX`,
+      description,
+      images: [ogImage],
     },
   };
 }

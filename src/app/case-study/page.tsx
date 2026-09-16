@@ -7,7 +7,7 @@ export const revalidate = 3600;
 const BASE_URL = "https://thedevorax.tech";
 
 export const metadata: Metadata = {
-  title: "Case Studies",
+  title: "Case Studies — Real Client Results",
   description:
     "Explore our portfolio of high-impact digital products — web apps, mobile apps, AI solutions, and more built for global clients.",
   keywords: [
@@ -49,6 +49,32 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Case Studies", item: `${BASE_URL}/case-study` },
+  ],
+};
+
+/** Hub/pillar pages should expose the collection they link to as an ItemList. */
+const itemListSchema = (projects: { id: number | string; title: string }[]) => ({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "DevoraX Case Studies",
+  description:
+    "Client projects delivered by DevoraX across web, mobile, AI and cloud.",
+  numberOfItems: projects.length,
+  itemListElement: projects.map((project, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: project.title,
+    // Must match the URLs that actually resolve (routes look up by id).
+    url: `${BASE_URL}/projects/${project.id}`,
+  })),
+});
+
 export default async function CaseStudyPage() {
   const supabase = await createClient();
   const { data: projects } = await supabase
@@ -56,5 +82,19 @@ export default async function CaseStudyPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  return <CaseStudyClient projects={projects || []} />;
+  const list = projects || [];
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema(list)) }}
+      />
+      <CaseStudyClient projects={list} />
+    </>
+  );
 }

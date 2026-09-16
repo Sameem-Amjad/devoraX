@@ -9,25 +9,58 @@ const BASE_URL = 'https://thedevorax.tech';
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const supabase = await createClient();
   const { id } = await params;
-  const { data: project } = await supabase
+  const { data: project, error } = await supabase
     .from('projects')
-    .select('title, description, image, tags')
+    .select('title, description, content, image, tags')
     .eq('id', id)
     .single();
 
   if (!project) {
+    // Only de-index when the row genuinely does not exist (PGRST116 = no rows).
+    // A transient DB/network error must NOT emit `noindex` — that would hand
+    // Googlebot a de-indexing directive for a page that is actually fine.
+    const genuinelyMissing = !error || error.code === 'PGRST116';
+    if (genuinelyMissing) {
+      return {
+        title: 'Project Not Found',
+        description: 'The requested project could not be found.',
+        robots: { index: false, follow: false },
+      };
+    }
     return {
-      title: 'Project Not Found',
-      description: 'The requested project could not be found.',
-      robots: { index: false, follow: false },
+      title: 'Software Project Portfolio',
+      description:
+        'Fintech apps, AI e-commerce platforms, SaaS dashboards and React Native builds — real products shipped to production for clients worldwide.',
+      alternates: { canonical: `${BASE_URL}/projects/${id}` },
     };
   }
 
   const canonicalUrl = `${BASE_URL}/projects/${id}`;
 
+  // Project titles alone ("Loopedin", "Afriva") fall under the ~30-char floor
+  // once rendered, and some descriptions are far under 120. Qualify the title
+  // and top the description up from `content` rather than shipping a stub.
+  const title = `${project.title} Case Study`;
+  const base = (project.description || '').replace(/\s+/g, ' ').trim();
+  const extra = (project.content || '').replace(/\s+/g, ' ').trim();
+  let description = base;
+  if (description.length < 120 && extra) {
+    description = `${base} ${extra}`.trim();
+  }
+  if (description.length > 155) {
+    const cut = description.slice(0, 155);
+    description = cut.slice(0, cut.lastIndexOf(' ')).replace(/[,;:\-—]$/, '') + '…';
+  }
+
+  // Several projects have an empty/placeholder image. Emitting og:image with an
+  // empty url is invalid, so fall back to the site card.
+  const rawImage = (project.image || '').trim().replace(/^"+|"+$/g, '');
+  const imageUrl = rawImage.startsWith('http') ? rawImage : `${BASE_URL}/og-image.jpg`;
+  const ogImage = { url: imageUrl, width: 1200, height: 630, alt: `${project.title} — DevoraX case study` };
+
   return {
-    title: project.title,
-    description: project.description,
+    title,
+    description,
     keywords: [
       project.title,
       'DevoraX project',
@@ -48,16 +81,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       url: canonicalUrl,
       siteName: 'DevoraX',
       title: `${project.title} | DevoraX Case Study`,
-      description: project.description,
-      images: [{ url: project.image, width: 1200, height: 630, alt: project.title }],
+      description,
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       site: '@devorax_agency',
       creator: '@devorax_agency',
       title: `${project.title} | DevoraX Case Study`,
-      description: project.description,
-      images: [{ url: project.image, alt: project.title }],
+      description,
+      images: [ogImage],
     },
   };
 }

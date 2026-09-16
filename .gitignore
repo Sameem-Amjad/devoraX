@@ -44,4 +44,6 @@ next-env.d.ts
 
 /myportfolio
 DevoraX-Portfolio.pdf
-projects
+# Leading slash anchors this to the repo root. Unanchored, `projects` also
+# matched src/app/projects/, silently ignoring new files in that route.
+/projects

@@ -7,9 +7,11 @@ const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Services',
+  // Title 39 chars rendered ("… | DevoraX"); description 139 chars, no brand in
+  // the body (the title already carries it) and no restating of the title.
+  title: 'Software Development Services',
   description:
-    'Explore DevoraX\'s full range of software development services — React Native mobile apps, AI-powered Next.js web platforms, cloud architecture, DevOps automation, UI/UX design, and e-commerce solutions.',
+    'React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and DevOps automation — six specialist practices, one delivery team.',
   keywords: [
     'mobile app development services',
     'AI web development agency',
