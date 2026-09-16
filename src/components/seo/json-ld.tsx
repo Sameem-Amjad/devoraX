@@ -57,9 +57,9 @@ export function ProjectJsonLd({ project }: { project: Project }) {
             url: BASE_URL,
             logo: {
                 '@type': 'ImageObject',
-                url: `${BASE_URL}/logo.png`,
-                width: 200,
-                height: 60,
+                url: `${BASE_URL}/apple-icon`,
+                width: 180,
+                height: 180,
             },
         },
         keywords: Array.isArray(project.tags) ? project.tags.join(', ') : undefined,

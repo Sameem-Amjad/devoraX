@@ -90,21 +90,24 @@ function ProjectCard({
   large?: boolean;
 }) {
   const [hovered, setHovered] = useState(false);
-  const router = useRouter();
   const tags = safeTags(project.tags).slice(0, 3);
   const imgSrc = safeImage(project.image);
 
   return (
     <TiltCard className="h-full">
-      <motion.div
+      {/* Real <a> rather than router.push on a div: an onClick handler is invisible
+          to crawlers, so this hub previously emitted zero links and passed no link
+          equity to any case study. It is also the only keyboard-accessible option. */}
+      <motion.a
+        href={`/projects/${project.id}`}
+        aria-label={`Read the ${project.title} case study`}
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ delay: idx * 0.06, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => router.push(`/projects/${project.id}`)}
-        className="group relative h-full cursor-pointer"
+        className="group relative block h-full cursor-pointer"
       >
         {/* Neon glow border */}
         <div
@@ -232,7 +235,7 @@ function ProjectCard({
             </div>
           </div>
         </div>
-      </motion.div>
+      </motion.a>
     </TiltCard>
   );
 }

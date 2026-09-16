@@ -90,7 +90,7 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
       '@id': `${BASE_URL}/#organization`,
       name: 'DevoraX',
       url: BASE_URL,
-      logo: { '@type': 'ImageObject', url: `${BASE_URL}/logo.png`, width: 200, height: 60 },
+      logo: { '@type': 'ImageObject', url: `${BASE_URL}/apple-icon`, width: 180, height: 180 },
     },
     inLanguage: 'en-US',
     isAccessibleForFree: true,
