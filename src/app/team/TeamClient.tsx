@@ -161,7 +161,7 @@ export default function TeamClient() {
             className="relative h-56 sm:h-72 md:h-80 w-full overflow-hidden"
           >
             <Image
-              src="/images/banner.png"
+              src="/images/banner.jpg"
               alt="Sameem Amjad — DevoraX"
               fill
               className="object-cover object-top"
@@ -199,7 +199,7 @@ export default function TeamClient() {
                   <div className="relative p-[2.5px] rounded-full bg-gradient-to-br from-teal-400 via-emerald-300 to-cyan-400 shadow-[0_0_30px_rgba(45,212,191,0.25)]">
                     <div className="p-[2.5px] rounded-full bg-[#030303]">
                       <div className="relative w-44 h-44 rounded-full overflow-hidden">
-                        <Image src="/images/profile_image.png" alt="Sameem Amjad" fill className="object-cover" />
+                        <Image src="/images/profile_image.jpg" alt="Sameem Amjad" fill className="object-cover" />
                       </div>
                     </div>
                   </div>

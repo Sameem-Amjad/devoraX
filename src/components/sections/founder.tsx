@@ -109,7 +109,7 @@ export const FounderSection = () => {
         className="relative h-56 sm:h-72 md:h-80 w-full overflow-hidden"
       >
         <Image
-          src="/images/banner.png"
+          src="/images/banner.jpg"
           alt="Sameem Amjad — DevoraX"
           fill
           className="object-cover object-top"
@@ -154,7 +154,7 @@ export const FounderSection = () => {
                 <div className="p-[2.5px] rounded-full bg-[#030303]">
                   <div className="relative w-44 h-44 rounded-full overflow-hidden">
                     <Image
-                      src="/images/profile_image.png"
+                      src="/images/profile_image.jpg"
                       alt="Sameem Amjad"
                       fill
                       className="object-cover"

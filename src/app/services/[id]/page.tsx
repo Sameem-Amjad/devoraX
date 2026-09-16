@@ -3,6 +3,8 @@ import { createClient } from "@/lib/server";
 import { notFound } from "next/navigation";
 import ServiceDetailClient from "@/app/services/[id]/_components/serviceClient";
 import { ServiceJsonLd } from "@/components/seo/service-json-Id";
+import { ServiceLongform } from "@/components/seo/service-longform";
+import { getServiceContent } from "@/data/serviceContent";
 
 const BASE_URL = "https://thedevorax.tech";
 
@@ -49,7 +51,11 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   const canonicalUrl = `${BASE_URL}/services/${id}`;
-  const description = clampDescription(service.desc_long || service.desc_text || "");
+  // Prefer the hand-written, fact-checked description from the long-form content;
+  // fall back to clamping the short DB copy.
+  const longform = getServiceContent(id);
+  const description =
+    longform?.meta_description || clampDescription(service.desc_long || service.desc_text || "");
   // "Mobile Innovation" alone is far under the 30-char floor once rendered;
   // the qualifier keeps the title descriptive and keyword-bearing.
   const title = `${service.title} Services`;
@@ -110,6 +116,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         service={serviceRes.data}
         initialProjects={projectsRes.data || []}
       />
+      {/* Server-rendered long-form copy: these pages carried ~25 words before,
+          far under the coverage floor needed to rank for commercial queries. */}
+      <div className="mx-auto max-w-7xl px-6 pb-20">
+        <ServiceLongform content={getServiceContent(id)} />
+      </div>
     </>
   );
 }

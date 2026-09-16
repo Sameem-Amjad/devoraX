@@ -75,7 +75,7 @@ const founderSchema = {
     jobTitle: 'Founder & CEO',
     description:
       'Software engineer specializing in scalable backend architectures and high-performance full-stack ecosystems, and founder of DevoraX.',
-    image: `${BASE_URL}/images/profile_image.png`,
+    image: `${BASE_URL}/images/profile_image.jpg`,
     url: `${BASE_URL}/team`,
     worksFor: { '@id': `${BASE_URL}/#organization` },
     knowsAbout: [
