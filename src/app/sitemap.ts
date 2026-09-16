@@ -3,6 +3,7 @@ import { createPublicClient } from '@/lib/public';
 import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
 import { SERVICE_CONTENT, SERVICE_CONTENT_UPDATED } from '@/data/serviceContent';
 import { INSIGHTS, INSIGHTS_UPDATED } from '@/data/insights';
+import { SOLUTIONS, SOLUTIONS_UPDATED } from '@/data/solutions';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -105,5 +106,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ]
     : [];
 
-  return [...staticEntries, ...serviceEntries, ...projectEntries, ...insightEntries];
+  // Commercial solution landing pages. Like /insights, only listed once there is
+  // something to list — an empty set must not put a hub URL in the index pointing
+  // at nothing.
+  const solutionEntries: MetadataRoute.Sitemap = SOLUTIONS.map((s) => ({
+    url: `${BASE_URL}/solutions/${s.slug}`,
+    lastModified: new Date(SOLUTIONS_UPDATED),
+  }));
+
+  return [
+    ...staticEntries,
+    ...serviceEntries,
+    ...projectEntries,
+    ...insightEntries,
+    ...solutionEntries,
+  ];
 }

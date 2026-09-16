@@ -16,6 +16,7 @@
 import { SERVICE_CONTENT } from './serviceContent';
 import { CASE_STUDY_CONTENT } from './caseStudyContent';
 import { INSIGHTS } from './insights';
+import { SOLUTIONS } from './solutions';
 
 export type NavLink = { href: string; label: string };
 
@@ -69,6 +70,15 @@ export const INSIGHT_LINKS: NavLink[] = INSIGHTS.map((a) => ({
   href: `/insights/${a.slug}`,
   label: a.title,
 }));
+
+/**
+ * Solution landing pages, hub first. These are the pages built against the
+ * keywords that survived a live SERP check, so they need to be reachable from
+ * every page rather than sitting behind a service page two clicks deep.
+ */
+export const SOLUTION_LINKS: NavLink[] = [...SOLUTIONS]
+  .sort((a, b) => (a.role === 'hub' ? -1 : b.role === 'hub' ? 1 : 0))
+  .map((s) => ({ href: `/solutions/${s.slug}`, label: s.h1 }));
 
 export const COMPANY_LINKS: NavLink[] = [
   { href: '/team', label: 'Team' },

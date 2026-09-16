@@ -11,6 +11,7 @@ import { Linkedin, Github, Mail } from 'lucide-react';
 import Logo from '@/components/global/logo';
 import {
   SERVICE_LINKS,
+  SOLUTION_LINKS,
   CASE_STUDY_LINKS,
   COMPANY_LINKS,
   LEGAL_LINKS,
@@ -64,6 +65,16 @@ export function SiteFooter() {
             </h2>
             <ul className="space-y-3">
               {SERVICE_LINKS.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className={linkClass}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+              {/* The solution pages are the cluster spokes. Linking them from the
+                  footer puts every one a single click from every page, which is
+                  what makes the cluster a graph rather than a list. */}
+              {SOLUTION_LINKS.slice(0, 6).map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className={linkClass}>
                     {l.label}
