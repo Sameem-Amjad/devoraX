@@ -99,17 +99,32 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
 
         {/* ── Stats Strip ── */}
         {statsEntries.length > 0 && (
-          <div className={`grid gap-4 mb-14 ${
-            statsEntries.length <= 2 ? "grid-cols-2" :
-            statsEntries.length === 3 ? "grid-cols-3" :
-            "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
-          }`}>
-            {statsEntries.map(([key, val]) => (
-              <div key={key} className="bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">{val}</div>
-                <div className="text-teal-400 text-xs uppercase tracking-wider capitalize">{key}</div>
-              </div>
-            ))}
+          <div className="mb-14">
+            <div className={`grid gap-4 ${
+              statsEntries.length <= 2 ? "grid-cols-2" :
+              statsEntries.length === 3 ? "grid-cols-3" :
+              "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
+            }`}>
+              {statsEntries.map(([key, val]) => (
+                <div key={key} className="bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{val}</div>
+                  <div className="text-teal-400 text-xs uppercase tracking-wider capitalize">{key}</div>
+                </div>
+              ))}
+            </div>
+            {/* These are the numbers a reader sees first, above the long-form
+                study, and they were presented with no source at all. The
+                long-form body attributes every figure it states; this strip has
+                to do the same or the attribution below it reads as a hedge on
+                claims the page already made flatly. */}
+            <p className="mt-4 text-xs text-gray-500">
+              Figures reported by the client or taken from the client&apos;s own
+              systems. Not independently audited by DevoraX —{" "}
+              <Link href="/terms" className="underline underline-offset-4 hover:text-teal-400">
+                how we present portfolio results
+              </Link>
+              .
+            </p>
           </div>
         )}
 
