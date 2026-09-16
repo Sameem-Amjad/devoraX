@@ -49,22 +49,26 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
   );
 }
 
-function ProjectCard({ item, idx, onClick }: { item: any; idx: number; onClick: () => void }) {
+function ProjectCard({ item, idx }: { item: any; idx: number }) {
   const [hovered, setHovered] = useState(false);
   const tags = safeTags(item.tags).slice(0, 3);
   const imgSrc = safeImage(item.image);
 
   return (
     <TiltCard>
-      <motion.div
+      {/* A real anchor, not a div with router.push(). The featured work grid is
+          the most prominent placement on the homepage and it emitted zero
+          crawlable links to any project — the portfolio was reachable only
+          through JavaScript. */}
+      <motion.a
+        href={`/projects/${item.id}`}
         initial={{ opacity: 0, y: 48 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ delay: (idx % 3) * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={onClick}
-        className="group relative h-full cursor-pointer"
+        className="group relative block h-full cursor-pointer"
       >
         {/* Neon glow border */}
         <div
@@ -191,7 +195,7 @@ function ProjectCard({ item, idx, onClick }: { item: any; idx: number; onClick: 
             </div>
           </div>
         </div>
-      </motion.div>
+      </motion.a>
     </TiltCard>
   );
 }
@@ -277,12 +281,7 @@ export const WorkSection = ({ projects }: { projects: any[] }) => {
         {/* Project grid */}
         <div className="grid md:grid-cols-3 gap-5">
           {visibleProjects.map((item: any, idx: number) => (
-            <ProjectCard
-              key={item.id}
-              item={item}
-              idx={idx}
-              onClick={() => handleViewProject(item)}
-            />
+            <ProjectCard key={item.id} item={item} idx={idx} />
           ))}
         </div>
 

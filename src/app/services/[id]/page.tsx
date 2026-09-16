@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { createClient } from "@/lib/server";
+import { createPublicClient } from "@/lib/public";
 import { notFound } from "next/navigation";
 import ServiceDetailClient from "@/app/services/[id]/_components/serviceClient";
 import { ServiceJsonLd } from "@/components/seo/service-json-Id";
@@ -18,7 +18,7 @@ function clampDescription(text: string, max = 155): string {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { id } = await params;
 
   // The services table has columns: id, title, icon, desc_text, desc_long,
@@ -97,9 +97,22 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   };
 }
 
+/** Prerendered + ISR — see the note on the equivalent block in /projects/[id]. */
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const supabase = createPublicClient();
+  const { data, error } = await supabase.from('services').select('id');
+  if (error || !data) {
+    console.error('[services/[id]] generateStaticParams failed:', error?.message);
+    return [];
+  }
+  return data.map((s) => ({ id: String(s.id) }));
+}
+
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   const [serviceRes, projectsRes] = await Promise.all([
     supabase.from("services").select("*").eq("id", id).single(),

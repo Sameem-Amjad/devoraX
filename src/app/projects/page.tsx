@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { createClient } from '@/lib/server';
+import { createPublicClient } from '@/lib/public';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
@@ -65,7 +65,7 @@ const breadcrumbSchema = {
 };
 
 export default async function ProjectsPage() {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data: projects } = await supabase
     .from('projects')
     .select('*')

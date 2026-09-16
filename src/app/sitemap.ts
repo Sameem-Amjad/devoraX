@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { createClient } from '@/lib/server';
+import { createPublicClient } from '@/lib/public';
 import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
 import { SERVICE_CONTENT, SERVICE_CONTENT_UPDATED } from '@/data/serviceContent';
 import { INSIGHTS, INSIGHTS_UPDATED } from '@/data/insights';
@@ -28,7 +28,7 @@ function newest(dates: Date[], fallback: Date): Date {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   // NOTE: both detail routes resolve by primary key (`.eq('id', id)`), and the
   // site links to /projects/{id} and /services/{id}. The sitemap must emit the
@@ -49,12 +49,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Pages whose body copy was substantively rewritten carry the real revision
   // date. Everything else keeps its row timestamp — lastModified must describe an
   // actual content change, not a build.
-  const projectEntries: MetadataRoute.Sitemap = (projectsRes.data ?? []).map((project) => ({
-    url: `${BASE_URL}/projects/${project.id}`,
-    lastModified: getCaseStudy(project.id)
-      ? new Date(CASE_STUDY_CONTENT_UPDATED)
-      : toDate(project.created_at, STATIC_CONTENT_UPDATED),
-  }));
+  const projectEntries: MetadataRoute.Sitemap = (projectsRes.data ?? []).map((project) => {
+    const study = getCaseStudy(project.id);
+    return {
+      url: `${BASE_URL}/projects/${project.id}`,
+      // Each study carries its own revision date — the second batch was written
+      // later than the first, and reporting one shared date for both would make
+      // ten pages claim a freshness they do not have.
+      lastModified: study
+        ? new Date(study.updated ?? CASE_STUDY_CONTENT_UPDATED)
+        : toDate(project.created_at, STATIC_CONTENT_UPDATED),
+    };
+  });
 
   const serviceEntries: MetadataRoute.Sitemap = (servicesRes.data ?? []).map((service) => ({
     url: `${BASE_URL}/services/${service.id}`,

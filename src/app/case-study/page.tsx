@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/server";
+import { createPublicClient } from "@/lib/public";
 import CaseStudyClient from "./CaseStudyClient";
 import { Metadata } from "next";
 
@@ -74,7 +74,7 @@ const itemListSchema = (projects: { id: number | string; title: string }[]) => (
 });
 
 export default async function CaseStudyPage() {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data: projects } = await supabase
     .from("projects")
     .select("*")

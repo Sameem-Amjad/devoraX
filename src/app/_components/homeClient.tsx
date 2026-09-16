@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/sections/hero";
 import { TrustedBySection } from "@/components/sections/trustedBy";
 import { WaveDivider } from "@/components/ui/waveDivider";
@@ -22,27 +21,16 @@ const BookingModal = dynamic(() => import("@/components/models/bookingModel/book
 import { AnimatePresence, motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
 import { TESTIMONIALS, TESTIMONIAL_STATS, FIVERR_PROFILE_URL } from "@/data/testimonials";
-import { Star, Twitter, Linkedin, Github, Mail, Check, ArrowRight, Quote } from "lucide-react";
-import Logo from "@/components/global/logo";
-import { useRouter } from "next/navigation";
+import { Star, Check, ArrowRight, Quote } from "lucide-react";
 
 export default function HomeClient({ initialProjects, initialServices }: any) {
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [view, setView] = useState("home");
   const [activeService, setActiveService] = useState(null);
-  const router = useRouter();
-
-  if (isAdmin) router.push("/admin/login");
 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-teal-500/30 font-sans">
-      <Navbar
-        onOpenBooking={() => setIsBookingOpen(true)}
-        setView={setView}
-        activeView={view}
-      />
-
+      {/* Header and footer are now rendered site-wide from the root layout. */}
       <main>
         {/* ── Hero ── */}
         <Hero onOpenBooking={() => setIsBookingOpen(true)} />
@@ -278,95 +266,6 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
         <CTASection onOpenBooking={() => setIsBookingOpen(true)} />
       </main>
 
-      {/* ── Footer ── */}
-      <footer className="bg-black pt-20 pb-10 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            {/* Brand column */}
-            <div className="md:col-span-2">
-              <Logo />
-              <p className="text-gray-500 mt-5 max-w-sm leading-relaxed text-sm">
-                A full-service technology agency building the world's next generation of
-                digital products. AI-powered, cloud-native, design-obsessed.
-              </p>
-              <div className="flex gap-3 mt-6">
-                {[
-                  { Icon: Linkedin, href: "https://linkedin.com/company/devorax", label: "DevoraX on LinkedIn" },
-                  { Icon: Github, href: "https://github.com/devorax", label: "DevoraX on GitHub" },
-                  { Icon: Mail, href: "mailto:business@thedevorax.tech", label: "Email DevoraX" },
-                ].map(({ Icon, href, label }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    aria-label={label}
-                    target={href.startsWith("mailto") ? undefined : "_blank"}
-                    rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                    className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-500 hover:text-white hover:bg-teal-600/80 transition-all duration-300"
-                  >
-                    <Icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* Services links */}
-            <div>
-              <h4 className="text-white font-semibold text-sm mb-5 uppercase tracking-widest">
-                Services
-              </h4>
-              <ul className="space-y-3">
-                <li>
-                  <a href="/services" className="text-gray-500 hover:text-teal-400 transition-colors text-sm">All Services</a>
-                </li>
-                {["Mobile Development", "AI & Web", "Cloud & DevOps", "UI/UX Design", "E-Commerce", "Data Analytics"].map(
-                  (s) => (
-                    <li key={s}>
-                      <a
-                        href="/services"
-                        className="text-gray-500 hover:text-teal-400 transition-colors text-sm"
-                      >
-                        {s}
-                      </a>
-                    </li>
-                  )
-                )}
-              </ul>
-            </div>
-
-            {/* Company links */}
-            <div>
-              <h4 className="text-white font-semibold text-sm mb-5 uppercase tracking-widest">
-                Company
-              </h4>
-              <ul className="space-y-3">
-                <li><a href="/#about"       className="text-gray-500 hover:text-teal-400 transition-colors text-sm">About</a></li>
-                <li><a href="/projects"     className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Work</a></li>
-                <li><a href="/#process"     className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Process</a></li>
-                <li><a href="/#pricing"     className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Pricing</a></li>
-                <li><a href="/team"         className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Team</a></li>
-                <li><a href="/case-study"   className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Case Studies</a></li>
-                <li><a href="/contact"      className="text-gray-500 hover:text-teal-400 transition-colors text-sm">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-white/5 gap-4">
-            <p className="text-xs text-gray-600 font-mono">
-              © 2025 {CONSTANTS.AGENCY_NAME}. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <a href="/privacy" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Privacy Policy</a>
-              <a href="/terms" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Terms of Service</a>
-              <button
-                onClick={() => setIsAdmin(true)}
-                className="text-xs text-gray-700 hover:text-teal-500 transition-colors font-mono"
-              >
-                SYSTEM ACCESS
-              </button>
-            </div>
-          </div>
-        </div>
-      </footer>
 
       <AnimatePresence>
         {isBookingOpen && (

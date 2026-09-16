@@ -69,7 +69,7 @@ export const WhyUsSection = () => {
           className="text-center mb-20"
         >
           <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-4 px-4 py-1.5 rounded-full bg-teal-500/5 border border-teal-500/20">
-            Why Devora
+            Why DevoraXX
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
             We're not like other{" "}

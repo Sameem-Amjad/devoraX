@@ -1,13 +1,25 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Orbitron, Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
 import { RippleEffect } from '@/components/ui/rippleEffect';
 import { CookieConsent } from '@/components/ui/cookieConsent';
+import { SiteHeader } from '@/components/layout/site-header';
+import { SiteFooter } from '@/components/layout/site-footer';
 
+/**
+ * One font, and it is actually applied.
+ *
+ * This was previously four families — Inter, Orbitron, Geist and Geist_Mono —
+ * each declaring a CSS variable (`--font-inter`, `--font-orbitron`, …) that no
+ * rule anywhere in the project ever read. There is no `tailwind.config`, and
+ * `globals.css` is a bare `@import "tailwindcss"`, so nothing mapped those
+ * variables to a `font-family`. The result was ~112 KB of woff2 preloaded and
+ * render-blocking on every page for typefaces the browser never used.
+ *
+ * `--font-inter` is now bound to Tailwind's `font-sans` in globals.css, so the
+ * one font that ships is the one the site renders in.
+ */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const orbitron = Orbitron({ subsets: ['latin'], variable: '--font-orbitron', display: 'swap' });
-export const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] });
-export const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] });
 
 const BASE_URL = 'https://thedevorax.tech';
 const SITE_NAME = 'DevoraX';
@@ -73,7 +85,7 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   keywords: KEYWORDS,
-  authors: [{ name: 'Sameem Amjad', url: 'https://linkedin.com/in/sameem-amjad-336bb428b' }],
+  authors: [{ name: 'Sameem Amjad', url: 'https://www.linkedin.com/in/sameem-amjad-dev/' }],
   creator: 'DevoraX Agency',
   publisher: 'DevoraX',
   category: 'Technology',
@@ -187,102 +199,67 @@ export const viewport: Viewport = {
 
 // ── JSON-LD Schemas ──────────────────────────────────────────────────────────
 
+/**
+ * One connected entity graph, not a pile of disconnected nodes.
+ *
+ * Previously `Organization` (#organization) and `ProfessionalService` (#service)
+ * were two separate top-level nodes describing the same company, with nothing
+ * linking them — so a consumer had no way to know they were one entity and could
+ * reasonably read them as two. The founder was a blank node with no `@id` and no
+ * `sameAs`, attached via the superseded `founders` property, which is a dead end:
+ * it asserts a person exists but gives nothing to reconcile them against.
+ *
+ * Now: `ProfessionalService` is a sub-type of `Organization`, so this is a single
+ * node carrying both sets of properties, and the founder is a real `Person` node
+ * with a stable `@id` that the /team ProfilePage can point at.
+ */
+// Must stay identical to the ids in app/team/page.tsx, which carries the full
+// Person nodes. Referencing them by @id here keeps one description of each
+// person instead of two partial ones.
+const PERSON_ID = `${BASE_URL}/team#sameem-amjad`;
+const CTO_ID = `${BASE_URL}/team#usman`;
+
+export const ORGANIZATION_ID = `${BASE_URL}/#organization`;
+export const WEBSITE_ID = `${BASE_URL}/#website`;
+
 const organizationSchema = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
-  '@id': `${BASE_URL}/#organization`,
+  // Both types on one node: DevoraX is an Organization *and* the professional
+  // service being described. Two nodes for one entity was the bug.
+  '@type': ['Organization', 'ProfessionalService'],
+  '@id': ORGANIZATION_ID,
   name: 'DevoraX',
+  legalName: 'DevoraX',
+  // Kept as a schema-level variant rather than in the visible copy: people do
+  // shorten it, and this is where that belongs.
   alternateName: 'Devora',
   url: BASE_URL,
   logo: {
     '@type': 'ImageObject',
+    '@id': `${BASE_URL}/#logo`,
     url: `${BASE_URL}/apple-icon`,
     width: 180,
     height: 180,
+    caption: 'DevoraX',
   },
+  image: { '@id': `${BASE_URL}/#logo` },
   description: DESCRIPTION,
-  foundingDate: '2023',
-  founders: [{ '@type': 'Person', name: 'Sameem Amjad' }],
-  areaServed: 'Worldwide',
-  serviceType: [
-    'Mobile App Development',
-    'Web Development',
-    'AI Integration',
-    'Cloud Architecture',
-    'DevOps Services',
-  ],
-  sameAs: [
-    'https://linkedin.com/company/devorax',
-    'https://github.com/devorax',
-  ],
-  contactPoint: [
-    {
-      '@type': 'ContactPoint',
-      contactType: 'sales',
-      email: 'business@thedevorax.tech',
-      areaServed: 'Global',
-      availableLanguage: 'English',
-      url: `${BASE_URL}/#contact`,
-    },
-    {
-      '@type': 'ContactPoint',
-      contactType: 'customer support',
-      email: 'support@thedevorax.tech',
-      areaServed: 'Global',
-      availableLanguage: 'English',
-      url: `${BASE_URL}/#contact`,
-    },
-  ],
-  hasOfferCatalog: {
-    '@type': 'OfferCatalog',
-    name: 'Software Development Services',
-    itemListElement: [
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Mobile App Development' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'AI & Full-Stack Web Development' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Cloud & DevOps' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'UI/UX Design Systems' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'E-Commerce Solutions' } },
-      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Data & Analytics' } },
-    ],
+  // Full ISO 8601 rather than a bare year.
+  foundingDate: '2023-01-01',
+  // Minimal stubs, not bare references: a consumer reading this page alone must
+  // be able to resolve them. The full Person nodes live on /team under the same
+  // @id, so the two merge into one entity rather than reading as duplicates.
+  founder: {
+    '@type': 'Person',
+    '@id': PERSON_ID,
+    name: 'Sameem Amjad',
+    url: `${BASE_URL}/team`,
   },
-};
-
-const websiteSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  '@id': `${BASE_URL}/#website`,
-  url: BASE_URL,
-  name: SITE_NAME,
-  description: DESCRIPTION,
-  publisher: { '@id': `${BASE_URL}/#organization` },
-  // NOTE: no `potentialAction`/SearchAction — the site has no /search route, so
-  // declaring one describes an endpoint that does not exist. (Google also
-  // retired the sitelinks search box, so it earns nothing even when valid.)
-  inLanguage: 'en-US',
-};
-
-const professionalServiceSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfessionalService',
-  '@id': `${BASE_URL}/#service`,
-  name: 'DevoraX',
-  url: BASE_URL,
-  description: DESCRIPTION,
-  priceRange: '$$$',
-  currenciesAccepted: 'USD',
-  paymentAccepted: 'Credit Card, Bank Transfer, PayPal',
-  areaServed: {
-    '@type': 'Place',
-    name: 'Worldwide',
-  },
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:00',
-      closes: '18:00',
-    },
+  employee: [
+    { '@type': 'Person', '@id': PERSON_ID, name: 'Sameem Amjad', url: `${BASE_URL}/team` },
+    { '@type': 'Person', '@id': CTO_ID, name: 'Usman', url: `${BASE_URL}/team` },
   ],
+  areaServed: { '@type': 'Place', name: 'Worldwide' },
   knowsAbout: [
     'React Native',
     'Next.js',
@@ -297,6 +274,64 @@ const professionalServiceSchema = {
     'PostgreSQL',
     'Supabase',
   ],
+  priceRange: '$$$',
+  currenciesAccepted: 'USD',
+  paymentAccepted: 'Credit Card, Bank Transfer, PayPal',
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '09:00',
+      closes: '18:00',
+    },
+  ],
+  sameAs: ['https://linkedin.com/company/devorax', 'https://github.com/devorax'],
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      email: 'business@thedevorax.tech',
+      areaServed: 'Global',
+      availableLanguage: 'English',
+      url: `${BASE_URL}/contact`,
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'customer support',
+      email: 'support@thedevorax.tech',
+      areaServed: 'Global',
+      availableLanguage: 'English',
+      url: `${BASE_URL}/contact`,
+    },
+  ],
+  // The catalogue now matches the four services the site actually publishes, and
+  // each entry resolves to that service's own page node. It previously listed six
+  // — including "E-Commerce Solutions" and "Data & Analytics", which do not exist
+  // — and none of the six linked anywhere.
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Software Development Services',
+    itemListElement: [
+      { '@type': 'Service', '@id': `${BASE_URL}/services/1#service`, name: 'Mobile App Development' },
+      { '@type': 'Service', '@id': `${BASE_URL}/services/2#service`, name: 'AI & Full-Stack Web Development' },
+      { '@type': 'Service', '@id': `${BASE_URL}/services/3#service`, name: 'Cloud Architecture & DevOps' },
+      { '@type': 'Service', '@id': `${BASE_URL}/services/4#service`, name: 'UI/UX Design Systems' },
+    ],
+  },
+};
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': WEBSITE_ID,
+  url: BASE_URL,
+  name: SITE_NAME,
+  description: DESCRIPTION,
+  publisher: { '@id': ORGANIZATION_ID },
+  // NOTE: no `potentialAction`/SearchAction — the site has no /search route, so
+  // declaring one describes an endpoint that does not exist. (Google also
+  // retired the sitelinks search box, so it earns nothing even when valid.)
+  inLanguage: 'en-US',
 };
 
 // NOTE: FAQPage schema lives on the homepage (app/page.tsx), generated from the
@@ -309,10 +344,7 @@ const professionalServiceSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${orbitron.variable} ${geistSans.variable} ${geistMono.variable} scroll-smooth`}
-    >
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
       <head>
         <script
           type="application/ld+json"
@@ -322,16 +354,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(professionalServiceSchema) }}
-        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
       </head>
-      <body className="antialiased">
+      <body className="antialiased bg-[#020202] text-white">
         <RippleEffect />
+        {/* Header and footer live here so every route has them. They used to be
+            rendered inside the homepage client component, which left most of the
+            site with no navigation and no outbound links at all. */}
+        <SiteHeader />
         {children}
+        <SiteFooter />
         <CookieConsent />
         <script
           dangerouslySetInnerHTML={{

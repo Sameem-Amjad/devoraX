@@ -1,4 +1,6 @@
 import type { Insight, InsightTable } from '@/data/insights';
+import { INSIGHTS_UPDATED } from '@/data/insights';
+import { Byline } from './byline';
 
 /**
  * Renders a research article as a SERVER component.
@@ -50,7 +52,8 @@ export function InsightArticle({ insight }: { insight: Insight }) {
 
   return (
     <article className="max-w-3xl">
-      <p className="text-xl leading-relaxed text-gray-200">{insight.summary_answer}</p>
+      <Byline updated={INSIGHTS_UPDATED} kind="research" />
+      <p className="mt-8 text-xl leading-relaxed text-gray-200">{insight.summary_answer}</p>
 
       <aside className="mt-8 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
         <h2 className="text-xs font-semibold uppercase tracking-widest text-teal-400">

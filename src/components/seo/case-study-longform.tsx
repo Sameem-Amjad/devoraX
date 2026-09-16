@@ -1,4 +1,6 @@
 import type { CaseStudyContent } from '@/data/caseStudyContent';
+import { CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
+import { Byline } from './byline';
 
 /**
  * Long-form case study body, rendered as a SERVER component.
@@ -21,8 +23,9 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
   return (
     <section className="mt-20 border-t border-white/5 pt-14">
       <div className="max-w-3xl">
+        <Byline updated={CASE_STUDY_CONTENT_UPDATED} kind="case study" />
         {/* Answer-first summary — the passage most likely to be quoted. */}
-        <p className="text-xl leading-relaxed text-gray-200">{content.summary_answer}</p>
+        <p className="mt-8 text-xl leading-relaxed text-gray-200">{content.summary_answer}</p>
 
         {content.results?.length > 0 && (
           <div className="mt-10 rounded-2xl border border-teal-500/15 bg-teal-500/[0.03] p-6">

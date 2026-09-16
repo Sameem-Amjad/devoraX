@@ -9,7 +9,7 @@ export type Faq = { q: string; a: string };
 
 export const FAQS: Faq[] = [
   {
-    q: "How long does it take to build a product with Devora?",
+    q: "How long does it take to build a product with DevoraX?",
     a: "It depends on scope, but our typical timeline is 4–6 weeks for an MVP, 8–16 weeks for a full-featured product, and 3–6 months for enterprise-grade platforms. After a free discovery call, we provide a detailed project timeline alongside a fixed-price proposal.",
   },
   {

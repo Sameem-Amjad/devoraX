@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { createClient } from "@/lib/server";
+import { createPublicClient } from "@/lib/public";
 import HomeClient from "@/app/_components/homeClient";
 import { faqPageSchema } from "@/data/faqs";
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function Home() {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
 
   // ✅ Fetching data on the server is faster and more secure
   const [projectsRes, servicesRes] = await Promise.all([

@@ -53,59 +53,91 @@ export const metadata: Metadata = {
 // TeamClient are placeholder entries — marking those up would publish
 // fabricated people as structured data and create a content/schema mismatch.
 
+const ORGANIZATION_ID = `${BASE_URL}/#organization`;
+// Must stay identical to PERSON_ID in app/layout.tsx. The founder was previously
+// `/#sameem-amjad` here and a separate blank node in the root layout, so the two
+// never resolved to one person.
+const FOUNDER_ID = `${BASE_URL}/team#sameem-amjad`;
+const CTO_ID = `${BASE_URL}/team#usman`;
+
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
+  '@id': `${BASE_URL}/team#breadcrumb`,
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
     { '@type': 'ListItem', position: 2, name: 'Team', item: `${BASE_URL}/team` },
   ],
 };
 
-const founderSchema = {
+/**
+ * One ProfilePage that owns both people.
+ *
+ * Previously this page emitted a ProfilePage whose `mainEntity` was the founder,
+ * and then a second, entirely detached Person node for the CTO — declared at the
+ * top level with nothing pointing at it. A floating Person on a ProfilePage reads
+ * as an unrelated entity that happens to share the URL. The CTO is now listed in
+ * `about`, which is the property for additional entities a profile page covers.
+ */
+const profilePageSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
+  '@id': `${BASE_URL}/team#webpage`,
   url: `${BASE_URL}/team`,
-  mainEntity: {
-    '@type': 'Person',
-    '@id': `${BASE_URL}/#sameem-amjad`,
-    name: 'Sameem Amjad',
-    jobTitle: 'Founder & CEO',
-    description:
-      'Software engineer specializing in scalable backend architectures and high-performance full-stack ecosystems, and founder of DevoraX.',
-    image: `${BASE_URL}/images/profile_image.jpg`,
-    url: `${BASE_URL}/team`,
-    worksFor: { '@id': `${BASE_URL}/#organization` },
-    knowsAbout: [
-      'Next.js',
-      'React Native',
-      'Node.js',
-      'NestJS',
-      'TypeScript',
-      'AWS',
-      'Docker',
-      'Kubernetes',
-      'PostgreSQL',
-      'Supabase',
-    ],
-    sameAs: [
-      'https://www.linkedin.com/in/sameem-amjad-dev/',
-      'https://www.fiverr.com/sameemamjad',
-    ],
-  },
+  name: 'The DevoraX Team',
+  isPartOf: { '@id': `${BASE_URL}/#website` },
+  breadcrumb: { '@id': `${BASE_URL}/team#breadcrumb` },
+  mainEntity: { '@id': FOUNDER_ID },
+  about: [{ '@id': FOUNDER_ID }, { '@id': CTO_ID }],
+  publisher: { '@id': ORGANIZATION_ID },
+  inLanguage: 'en-US',
+};
+
+const founderSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': FOUNDER_ID,
+  name: 'Sameem Amjad',
+  jobTitle: 'Founder & CEO',
+  description:
+    'Software engineer specializing in scalable backend architectures and high-performance full-stack ecosystems, and founder of DevoraX.',
+  image: `${BASE_URL}/images/profile_image.jpg`,
+  url: `${BASE_URL}/team`,
+  mainEntityOfPage: { '@id': `${BASE_URL}/team#webpage` },
+  worksFor: { '@id': ORGANIZATION_ID },
+  knowsAbout: [
+    'Next.js',
+    'React Native',
+    'Node.js',
+    'NestJS',
+    'TypeScript',
+    'AWS',
+    'Docker',
+    'Kubernetes',
+    'PostgreSQL',
+    'Supabase',
+  ],
+  // One canonical profile URL, matching the link the page actually renders.
+  // The root layout previously asserted a different LinkedIn URL for this same
+  // person (/in/sameem-amjad-336bb428b), which is a reconciliation conflict.
+  sameAs: [
+    'https://www.linkedin.com/in/sameem-amjad-dev/',
+    'https://www.fiverr.com/sameemamjad',
+  ],
 };
 
 const ctoSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
-  '@id': `${BASE_URL}/#usman-cto`,
+  '@id': CTO_ID,
   name: 'Usman',
   jobTitle: 'Chief Technical Officer',
   description:
     'Full-Stack AI Architect leading architecture and DevOps at DevoraX across React Native, Flutter and high-concurrency web on Kubernetes and AWS.',
   image: `${BASE_URL}/images/usman_cto.jpeg`,
   url: `${BASE_URL}/team`,
-  worksFor: { '@id': `${BASE_URL}/#organization` },
+  mainEntityOfPage: { '@id': `${BASE_URL}/team#webpage` },
+  worksFor: { '@id': ORGANIZATION_ID },
   knowsAbout: [
     'Generative AI',
     'React Native',
@@ -119,6 +151,10 @@ const ctoSchema = {
 export default function TeamPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

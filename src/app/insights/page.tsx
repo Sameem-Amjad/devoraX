@@ -88,6 +88,84 @@ export default function InsightsPage() {
               ))}
             </div>
           )}
+
+          {/* The hub carried 248 words — a heading and a card grid. A listing
+              page with no substance of its own has nothing to rank for and
+              nothing for an answer engine to quote; it is a router, not a page.
+              What follows describes the dataset and its limits, which is also the
+              honest thing to publish alongside research this small. */}
+          <section className="mt-24 max-w-3xl border-t border-white/5 pt-14">
+            <h2 className="text-2xl font-bold text-white md:text-3xl">
+              Where does this research come from?
+            </h2>
+            <p className="mt-5 leading-relaxed text-gray-400">
+              Every article here is derived from the same source: the record of
+              work we have actually delivered. That is 25 production builds, their
+              technology stacks, the platforms each one shipped to, and whatever
+              outcome figures the clients reported back to us. Nothing is drawn
+              from a survey we did not run, a benchmark we did not measure, or an
+              industry report we did not read in full.
+            </p>
+            <p className="mt-4 leading-relaxed text-gray-400">
+              That makes these articles unusual in one specific way, and it is
+              worth being direct about it. Twenty-five projects is a small sample.
+              It is large enough to show which technology choices recur and where
+              they cluster, and far too small to support a general claim about the
+              industry. Where an article reports a proportion, the denominator is
+              stated next to it so you can judge the weight of the finding
+              yourself.
+            </p>
+
+            <h2 className="mt-14 text-2xl font-bold text-white md:text-3xl">
+              What can this data not tell you?
+            </h2>
+            <p className="mt-5 leading-relaxed text-gray-400">
+              It cannot tell you what is true of software projects in general. It
+              is one agency&apos;s book of work, shaped by the kinds of client who
+              approached us and the kinds of problem we were asked to solve, so it
+              carries that selection bias in every direction at once. It also
+              cannot tell you much about failure, because the projects that reach a
+              portfolio are the ones that shipped.
+            </p>
+            <p className="mt-4 leading-relaxed text-gray-400">
+              Outcome figures come with a second caveat. Where a case study reports
+              user counts, order volumes or uptime, those are numbers the client
+              reported to us or took from their own systems. We did not
+              independently instrument or audit them, and we present them as
+              client-reported for that reason. Each article restates the limits of
+              its own dataset rather than relying on this page to have done it.
+            </p>
+
+            <h2 className="mt-14 text-2xl font-bold text-white md:text-3xl">
+              Where is the underlying work?
+            </h2>
+            <p className="mt-5 leading-relaxed text-gray-400">
+              The projects these articles are built from are published in full.
+              Each one has a long-form engineering case study covering the problem,
+              the architecture, the technology choices and the reasoning behind
+              them.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              <Link
+                href="/case-study"
+                className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+              >
+                All case studies
+              </Link>
+              <Link
+                href="/projects"
+                className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
+              >
+                Full portfolio
+              </Link>
+              <Link
+                href="/services"
+                className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
+              >
+                Services
+              </Link>
+            </div>
+          </section>
         </div>
       </main>
     </>

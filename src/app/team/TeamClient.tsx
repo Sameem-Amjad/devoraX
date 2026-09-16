@@ -125,6 +125,10 @@ export default function TeamClient() {
               fill
               className="object-cover object-top"
               priority
+              // Without `sizes`, next/image assumes 100vw for a `fill` image and
+              // the browser picks the largest candidate in the srcSet — a
+              // desktop-width file downloaded onto a phone.
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-[#030303]" />
             <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/60 via-transparent to-[#030303]/60" />
@@ -158,7 +162,7 @@ export default function TeamClient() {
                   <div className="relative p-[2.5px] rounded-full bg-gradient-to-br from-teal-400 via-emerald-300 to-cyan-400 shadow-[0_0_30px_rgba(45,212,191,0.25)]">
                     <div className="p-[2.5px] rounded-full bg-[#030303]">
                       <div className="relative w-44 h-44 rounded-full overflow-hidden">
-                        <Image src="/images/profile_image.jpg" alt="Sameem Amjad" fill className="object-cover" />
+                        <Image src="/images/profile_image.jpg" alt="Sameem Amjad" fill className="object-cover" sizes="176px" />
                       </div>
                     </div>
                   </div>

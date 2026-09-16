@@ -3,10 +3,21 @@ import { useEffect } from "react";
 
 export const RippleEffect = () => {
   useEffect(() => {
+    // A purely decorative effect must not sit on the interaction path. This used
+    // to build three elements, set a long cssText string on each and append them
+    // to <body> synchronously inside the click handler — style recalculation and
+    // layout that the browser has to finish before it can paint the response to
+    // the click, which is precisely what INP measures. Deferring the DOM work to
+    // the next frame keeps the visual and takes it off that path.
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+
     const handleClick = (e: MouseEvent | TouchEvent) => {
       const x = "touches" in e ? e.touches[0].clientX : e.clientX;
       const y = "touches" in e ? e.touches[0].clientY : e.clientY;
+      requestAnimationFrame(() => spawn(x, y));
+    };
 
+    const spawn = (x: number, y: number) => {
       // Create up to 3 concentric ripple rings
       for (let i = 0; i < 3; i++) {
         const ripple = document.createElement("div");

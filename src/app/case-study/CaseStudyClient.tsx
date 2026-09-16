@@ -36,13 +36,41 @@ function safeImage(val: any): string | null {
   return s.startsWith("http") ? s : null;
 }
 
-const CATEGORIES = ["All", "Web", "Mobile", "AI", "Design", "E-Commerce"];
+/**
+ * Filter buckets, matched against the data instead of against a guess.
+ *
+ * The filter row used to be a hardcoded ["All","Web","Mobile","AI","Design",
+ * "E-Commerce"] compared with `p.category.toLowerCase() === cat.toLowerCase()`.
+ * No project's `category` is ever one of those words — the real values are
+ * strings like "React Native & Node.js", "Node.js Backend & AWS" and "MERN
+ * Stack" — so every filter except "All" matched nothing and every count rendered
+ * 0. Buckets now match on the category and tag text, and a bucket with no
+ * projects is not rendered at all.
+ */
+const BUCKETS: { label: string; match: RegExp }[] = [
+  { label: "Mobile", match: /react native|flutter|mobile|ios|android/i },
+  { label: "Web", match: /next\.?js|react\.?js|mern|angular|frontend|web app/i },
+  { label: "Cloud & Backend", match: /node\.?js|aws|microservice|serverless|kubernetes|docker|nestjs|backend/i },
+  { label: "AI", match: /\bai\b|machine learning|stable diffusion|fastapi|openai/i },
+  { label: "E-Commerce", match: /e-?commerce|marketplace|storefront|shop/i },
+];
+
+function haystack(p: any): string {
+  return [p.category, p.title, ...(Array.isArray(p.tags) ? p.tags : [])]
+    .filter(Boolean)
+    .join(" ");
+}
+
+function inBucket(p: any, label: string): boolean {
+  const b = BUCKETS.find((x) => x.label === label);
+  return b ? b.match.test(haystack(p)) : false;
+}
 
 const CAT_ICON: Record<string, React.ReactNode> = {
   Web: <Globe className="w-3.5 h-3.5" />,
   Mobile: <Smartphone className="w-3.5 h-3.5" />,
   AI: <Cpu className="w-3.5 h-3.5" />,
-  Design: <Layout className="w-3.5 h-3.5" />,
+  "Cloud & Backend": <Layout className="w-3.5 h-3.5" />,
   "E-Commerce": <Zap className="w-3.5 h-3.5" />,
 };
 
@@ -304,38 +332,24 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const router = useRouter();
 
+  // Only offer a filter that actually returns something.
+  const categories = [
+    "All",
+    ...BUCKETS.filter((b) => projects.some((p) => b.match.test(haystack(p)))).map(
+      (b) => b.label
+    ),
+  ];
+
   const filtered =
     activeCategory === "All"
       ? projects
-      : projects.filter(
-          (p) => p.category?.toLowerCase() === activeCategory.toLowerCase()
-        );
+      : projects.filter((p) => inBucket(p, activeCategory));
 
   return (
     <div className="min-h-screen bg-[#040404] text-white selection:bg-teal-500/30 font-sans">
-      {/* ── Navbar ──────────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 w-full z-50 bg-black/70 backdrop-blur-xl border-b border-white/[0.05]">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <button onClick={() => router.push("/")} className="cursor-pointer">
-            <Logo />
-          </button>
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => router.push("/")}
-              className="flex items-center gap-2 text-gray-400 hover:text-white text-sm font-medium transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="hidden sm:inline">Back to Home</span>
-            </button>
-            <button
-              onClick={() => router.push("/#work")}
-              className="px-5 py-2 rounded-lg bg-teal-500/10 border border-teal-500/25 text-teal-300 text-sm font-semibold hover:bg-teal-500/20 transition-all"
-            >
-              View Work
-            </button>
-          </div>
-        </div>
-      </nav>
+      {/* The page-local navbar that used to sit here was a second, conflicting
+          header made of router.push() buttons — zero crawlable links. The
+          site-wide <SiteHeader /> in the root layout covers every route now. */}
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
       <section className="relative pt-40 pb-24 overflow-hidden">
@@ -439,7 +453,7 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
       <section className="sticky top-20 z-40 bg-[#040404]/80 backdrop-blur-lg border-b border-white/[0.04] py-4">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
-            {CATEGORIES.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
@@ -463,9 +477,7 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
                         : "bg-white/5 text-gray-600"
                     }`}
                   >
-                    {projects.filter(
-                      (p) => p.category?.toLowerCase() === cat.toLowerCase()
-                    ).length}
+                    {projects.filter((p) => inBucket(p, cat)).length}
                   </span>
                 )}
               </button>

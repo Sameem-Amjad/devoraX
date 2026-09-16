@@ -4,9 +4,9 @@ const BASE_URL = 'https://thedevorax.tech';
 const CONTACT_EMAIL = 'business@thedevorax.tech';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service',
+  title: 'Terms of Service — Site and Project Work',
   description:
-    'The terms covering use of this website, what the portfolio and pricing information means, and how project work is actually agreed.',
+    'The terms covering use of this site, what our portfolio figures and indicative pricing mean, and how project work is agreed in a separate written proposal.',
   alternates: { canonical: `${BASE_URL}/terms` },
   robots: { index: true, follow: true },
 };

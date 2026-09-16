@@ -15,20 +15,35 @@ export const FloatingBubbles = ({ count = 18 }: { count?: number }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    // Cleanup handles shared by the effect and the deferred start. The cleanup
+    // used to be *returned from inside the setTimeout callback*, where React
+    // never sees it — so cancelAnimationFrame and removeEventListener never ran
+    // and the rAF loop kept painting forever after the component unmounted. Each
+    // remount started another one.
+    let animId = 0;
+    let onResize: (() => void) | null = null;
+    let stopped = false;
+
+    // Respect the OS setting — a permanent background animation is exactly what
+    // reduced-motion is for, and skipping it also saves the paint cost.
+    const reduceMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
     // Defer animation start to avoid blocking LCP / TTI
     const startDelay = setTimeout(() => {
+      if (stopped || reduceMotion) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-
-      let animId: number;
 
       const resize = () => {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
       };
       resize();
+      onResize = resize;
       window.addEventListener("resize", resize);
 
       const bubbles: Bubble[] = Array.from({ length: count }, () => ({
@@ -72,14 +87,15 @@ export const FloatingBubbles = ({ count = 18 }: { count?: number }) => {
       };
 
       draw();
-
-      return () => {
-        cancelAnimationFrame(animId);
-        window.removeEventListener("resize", resize);
-      };
     }, 300);
 
-    return () => clearTimeout(startDelay);
+    // The real cleanup: React can actually see this one.
+    return () => {
+      stopped = true;
+      clearTimeout(startDelay);
+      if (animId) cancelAnimationFrame(animId);
+      if (onResize) window.removeEventListener("resize", onResize);
+    };
   }, [count]);
 
   return (

@@ -43,9 +43,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    optimizeCss: true,
-  },
+  // `experimental.optimizeCss` was set to true, but it needs the `critters` /
+  // `beasties` package to do anything and that dependency is not installed — so
+  // no critical CSS was ever inlined. A flag that silently does nothing is worse
+  // than no flag, because it reads as "this is handled". Left off deliberately:
+  // the site now ships one stylesheet for one font, which is not worth the
+  // build-time cost or the extra dependency.
   async headers() {
     return [
       {

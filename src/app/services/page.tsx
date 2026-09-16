@@ -1,7 +1,8 @@
 import { Metadata } from 'next';
-import { createClient } from '@/lib/server';
+import { createPublicClient } from '@/lib/public';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft, Code2, Cpu, Layout, Server, Smartphone, Zap } from 'lucide-react';
+import { ServicesHubContent, servicesHubFaqSchema } from '@/components/seo/services-hub-content';
 
 const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   // the body (the title already carries it) and no restating of the title.
   title: 'Software Development Services',
   description:
-    'React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and DevOps automation — six specialist practices, one delivery team.',
+    'React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and UI/UX design — four specialist practices, one delivery team.',
   keywords: [
     'mobile app development services',
     'AI web development agency',
@@ -78,9 +79,10 @@ const breadcrumbSchema = {
 };
 
 export default async function ServicesPage() {
-  const supabase = await createClient();
+  const supabase = createPublicClient();
   const { data: services } = await supabase.from('services').select('*').order('created_at', { ascending: true });
   const list = services || [];
+  const faqSchema = servicesHubFaqSchema(BASE_URL);
 
   return (
     <>
@@ -92,6 +94,12 @@ export default async function ServicesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema(list)) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
 
       <main className="min-h-screen bg-[#020202] text-white">
         {/* ── Page Header ── */}
@@ -183,6 +191,9 @@ export default async function ServicesPage() {
           </div>
         </section>
 
+        {/* ── Long-form body: comparison table, per-service detail, FAQ ── */}
+        <ServicesHubContent />
+
         {/* ── Why Choose DevoraX ── */}
         <section aria-label="Why choose DevoraX" className="py-20 border-t border-white/5 bg-[#030303]">
           <div className="max-w-7xl mx-auto px-6">
@@ -198,9 +209,12 @@ export default async function ServicesPage() {
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 {[
+                  // "5+ Years Operating" contradicted the Organization schema's
+                  // foundingDate. Replaced with figures that are checkable on this
+                  // site or on the public Fiverr profile.
                   { val: '25', label: 'Projects Shipped' },
-                  { val: '5+',   label: 'Years Operating' },
-                  { val: '20',   label: 'Five-Star Reviews' },
+                  { val: '16', label: 'Clients Served' },
+                  { val: '20', label: 'Five-Star Reviews' },
                   { val: '100%', label: 'IP Ownership' },
                 ].map((s) => (
                   <div key={s.label} className="text-center p-5 rounded-xl bg-[#0a0a0a] border border-white/5">

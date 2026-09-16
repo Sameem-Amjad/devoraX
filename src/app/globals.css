@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Bind the one webfont the site loads to Tailwind's `font-sans`.
+   Without this the `--font-inter` variable set by next/font was never read by
+   any rule, so the browser downloaded the font and then rendered in the system
+   stack anyway. */
+@theme {
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
 /* Hide scrollbar for all browsers */
 .scrollbar-hide {
     -ms-overflow-style: none;

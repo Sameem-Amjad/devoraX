@@ -4,9 +4,9 @@ const BASE_URL = 'https://thedevorax.tech';
 const CONTACT_EMAIL = 'business@thedevorax.tech';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy',
+  title: 'Privacy Policy — What We Collect and Why',
   description:
-    'What data this site collects, why, where it is stored, and how to have it deleted. Plain language, no dark patterns.',
+    'What this site collects when you book a call or browse, where it is stored, how long it is kept, and how to have it deleted. Plain language, no dark patterns.',
   alternates: { canonical: `${BASE_URL}/privacy` },
   robots: { index: true, follow: true },
 };

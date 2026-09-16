@@ -1,4 +1,6 @@
 import type { ServiceContent } from '@/data/serviceContent';
+import { SERVICE_CONTENT_UPDATED } from '@/data/serviceContent';
+import { Byline } from './byline';
 
 /**
  * Long-form service copy, rendered as a SERVER component.
@@ -21,8 +23,9 @@ export function ServiceLongform({ content }: { content?: ServiceContent }) {
   return (
     <section className="mt-24 border-t border-white/5 pt-16">
       <div className="max-w-3xl">
+        <Byline updated={SERVICE_CONTENT_UPDATED} kind="service overview" />
         {/* Answer-first lead: the most quotable definition sits at the top. */}
-        <p className="text-xl leading-relaxed text-gray-200">{content.hero_answer}</p>
+        <p className="mt-8 text-xl leading-relaxed text-gray-200">{content.hero_answer}</p>
 
         {content.sections.map((s) => (
           <div key={s.heading} className="mt-12">

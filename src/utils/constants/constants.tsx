@@ -2,7 +2,13 @@
 
 import { Cpu, Layout, Server, Smartphone, ShoppingCart, Database, GitBranch, Shield, Search, Layers, Code2, Rocket, TrendingUp } from "lucide-react";
 
-const AGENCY_NAME = "Devora";
+// The brand is DevoraX — the domain, the Organization schema `name`, the logo
+// and every case study say so. This constant said "Devora", which is what the
+// hero, the about section and the logo rendered, so the homepage referred to the
+// company by one name seven times and by its actual name three times. Brand
+// mentions are the single strongest correlate for being surfaced by generative
+// engines, and splitting them across two spellings splits the signal.
+const AGENCY_NAME = "DevoraX";
 const CEO_NAME = "Sameem Amjad";
 const PRIMARY_GRADIENT = "from-cyan-400 via-teal-400 to-emerald-400";
 const GLOW_COLOR = "group-hover:shadow-[0_0_25px_rgba(45,212,191,0.5)]";
