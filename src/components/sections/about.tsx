@@ -4,9 +4,9 @@ import CONSTANTS from "@/utils/constants/constants";
 import { Award, Globe, Users, Zap } from "lucide-react";
 
 const HIGHLIGHTS = [
-  { icon: Globe,  label: "Global Reach",   sub: "Clients in 15+ countries" },
+  { icon: Globe,  label: "Global Reach",   sub: "Clients across 4 countries" },
   { icon: Award,  label: "Top Rated",      sub: "Industry recognized" },
-  { icon: Users,  label: "Expert Team",    sub: "15+ senior engineers" },
+  { icon: Users,  label: "Senior Team",    sub: "Founder-led delivery" },
   { icon: Zap,    label: "Fast Delivery",  sub: "4–6 week avg. to launch" },
 ];
 
@@ -60,7 +60,7 @@ export const AboutSection = () => {
                 with dedicated teams for every discipline.
               </p>
               <p>
-                With 5+ years and 100+ shipped products across fintech, e-commerce, health-tech,
+                With 25 shipped products across fintech, e-commerce, health-tech,
                 and SaaS, we specialize in high-stakes environments where{" "}
                 <span className="text-teal-400 font-medium">
                   uptime, scalability, and performance
@@ -124,7 +124,7 @@ export const AboutSection = () => {
                   transition={{ delay: 0.4 }}
                   className="absolute top-6 right-6 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3"
                 >
-                  <div className="text-2xl font-bold text-white font-mono">100+</div>
+                  <div className="text-2xl font-bold text-white font-mono">25</div>
                   <div className="text-[0.6rem] text-gray-500 uppercase tracking-widest">Projects Shipped</div>
                 </motion.div>
 

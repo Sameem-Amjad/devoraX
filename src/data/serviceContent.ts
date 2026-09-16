@@ -308,3 +308,26 @@ export function getServiceContent(id: number | string): ServiceContent | undefin
 
 /** When the long-form service copy above was last substantively rewritten. */
 export const SERVICE_CONTENT_UPDATED = '2026-09-16T00:00:00.000Z';
+
+/**
+ * Curated case studies per service, by project id.
+ *
+ * The `service_id` column in Supabase is inverted against content depth: the only
+ * projects it links to each service are 10-65 word stubs, while all ten long-form
+ * case studies (1,260-1,556 words) have no service_id at all. So the strongest
+ * proof each service page could show was reachable from nowhere on that page.
+ *
+ * Mapped here in code rather than by writing to production data: it is
+ * reviewable in a diff and reversible. Assignments follow each project's real
+ * stack, not marketing convenience.
+ */
+export const SERVICE_CASE_STUDIES: Record<number, number[]> = {
+  // Mobile Innovation — React Native (Koor, Dooz) and Flutter (TAL, WOD) builds.
+  1: [17, 25, 28, 31],
+  // AI & Full-Stack Web — Next.js / React front ends on Supabase and Firebase.
+  2: [32, 23, 24, 22],
+  // Cloud Architecture — Node/AWS backends: microservices and media pipelines.
+  3: [26, 30],
+  // Modern UI/UX — the two most interface-led products in the record.
+  4: [23, 22],
+};

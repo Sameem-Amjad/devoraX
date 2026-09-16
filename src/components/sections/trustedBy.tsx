@@ -1,15 +1,22 @@
 "use client";
 import { motion } from "framer-motion";
 
+// Real products we shipped, not invented client brands.
+//
+// This strip previously listed eight fabricated companies (FinStart, ShopFlow,
+// TechCorp, NovaMed, CloudVault, SwiftPay, DataSphere, AeroLogic) — the same
+// invented names that backed the fabricated testimonials. Every entry below is a
+// real project in the portfolio, and most are publicly reachable, so the claim is
+// checkable rather than decorative.
 const CLIENTS = [
-  { name: "FinStart",    abbr: "FS" },
-  { name: "ShopFlow",    abbr: "SF" },
-  { name: "TechCorp",    abbr: "TC" },
-  { name: "NovaMed",     abbr: "NM" },
-  { name: "CloudVault",  abbr: "CV" },
-  { name: "SwiftPay",    abbr: "SP" },
-  { name: "DataSphere",  abbr: "DS" },
-  { name: "AeroLogic",   abbr: "AL" },
+  { name: "Dooz",           abbr: "DZ" },
+  { name: "Koor",           abbr: "KR" },
+  { name: "Afriva",         abbr: "AF" },
+  { name: "Pastel",         abbr: "PS" },
+  { name: "WOD Pro League", abbr: "WP" },
+  { name: "TAL Services",   abbr: "TAL" },
+  { name: "Pathana",        abbr: "PA" },
+  { name: "Loopedin",       abbr: "LI" },
 ];
 
 const LogoCard = ({ client }: { client: { name: string; abbr: string } }) => (

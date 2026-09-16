@@ -183,32 +183,13 @@ const PRICING_PLANS = [
   }
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "Alex Johnson",
-    role: "CTO, FinStart",
-    text: "Devora delivered our mobile app 2 weeks ahead of schedule. The code quality and scalability are world-class.",
-    avatar: "A",
-    company: "FinStart",
-    result: "2 weeks early delivery"
-  },
-  {
-    name: "Maria Garcia",
-    role: "Founder, ShopFlow",
-    text: "Sameem and his team completely transformed our legacy backend into a modern, cloud-native architecture.",
-    avatar: "M",
-    company: "ShopFlow",
-    result: "300% performance boost"
-  },
-  {
-    name: "David Chen",
-    role: "Product Owner, TechCorp",
-    text: "The best dev shop we've worked with. Their expertise in both AI and DevOps is a game changer.",
-    avatar: "D",
-    company: "TechCorp",
-    result: "Shipped in 6 weeks"
-  }
-];
+// Testimonials moved to src/data/testimonials.ts, sourced from real public Fiverr
+// reviews. The three entries that used to live here ("Alex Johnson, CTO,
+// FinStart" and similar) were invented people at invented companies, carrying
+// invented outcome metrics such as "300% performance boost". Fabricated social
+// proof is the fastest way to lose the credibility the rest of the site is
+// working to build — and the real reviews are stronger anyway, because a reader
+// can check them.
 
 export default {
   AGENCY_NAME,
@@ -220,6 +201,5 @@ export default {
   EXTENDED_SERVICES,
   PROCESS_STEPS,
   TECH_STACK,
-  PRICING_PLANS,
-  TESTIMONIALS
+  PRICING_PLANS
 }

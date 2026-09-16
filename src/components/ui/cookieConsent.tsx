@@ -33,10 +33,10 @@ export function CookieConsent() {
       className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 p-5 rounded-2xl bg-[#0d0d0d] border border-white/10 shadow-2xl shadow-black/60 backdrop-blur-md"
     >
       <p className="text-sm text-gray-300 leading-relaxed mb-4">
-        We use essential cookies for site functionality and anonymous analytics
-        to improve performance.{" "}
+        This site runs no analytics and sets no tracking cookies. We only store
+        your choice here so this banner stops reappearing.{" "}
         <a
-          href="/#faq"
+          href="/privacy"
           className="text-teal-400 underline underline-offset-2 hover:text-teal-300 transition-colors"
         >
           Learn more

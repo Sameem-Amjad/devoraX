@@ -21,6 +21,7 @@ const CTASection = dynamic(() => import("@/components/sections/ctaSection").then
 const BookingModal = dynamic(() => import("@/components/models/bookingModel/bookingModel"));
 import { AnimatePresence, motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
+import { TESTIMONIALS, TESTIMONIAL_STATS, FIVERR_PROFILE_URL } from "@/data/testimonials";
 import { Star, Twitter, Linkedin, Github, Mail, Check, ArrowRight, Quote } from "lucide-react";
 import Logo from "@/components/global/logo";
 import { useRouter } from "next/navigation";
@@ -204,13 +205,23 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
                 </span>
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto">
-                Don't take our word for it — hear from the founders and CTOs who've
-                shipped with us.
+                Every review below is a real, public Fiverr review — {TESTIMONIAL_STATS.totalReviews}{" "}
+                five-star ratings from {TESTIMONIAL_STATS.uniqueClients} clients across{" "}
+                {TESTIMONIAL_STATS.countries} countries.{" "}
+                <a
+                  href={FIVERR_PROFILE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                >
+                  Verify them on Fiverr
+                </a>
+                .
               </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {CONSTANTS.TESTIMONIALS.map((t, i) => (
+              {TESTIMONIALS.slice(0, 6).map((t, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 24 }}
@@ -221,10 +232,11 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
                 >
                   <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-teal-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                  {/* Result badge */}
-                  {t.result && (
+                  {/* Verified-delivery badge. Replaces invented outcome metrics
+                      like "300% performance boost" with something checkable. */}
+                  {t.hasDeliveryProof && (
                     <span className="self-start mb-5 text-[0.65rem] font-semibold px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 uppercase tracking-wider">
-                      {t.result}
+                      Delivery screenshot attached
                     </span>
                   )}
 
@@ -244,11 +256,13 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
                   {/* Author */}
                   <div className="flex items-center gap-4 pt-6 border-t border-white/5">
                     <div className="w-11 h-11 rounded-full bg-gradient-to-br from-teal-800 to-emerald-900 flex items-center justify-center font-bold text-white text-base flex-shrink-0">
-                      {t.avatar}
+                      {t.username.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <div className="font-bold text-white text-sm">{t.name}</div>
-                      <div className="text-xs text-teal-400 mt-0.5">{t.role}</div>
+                      <div className="font-bold text-white text-sm">{t.username}</div>
+                      <div className="text-xs text-teal-400 mt-0.5">
+                        {t.country} · Verified Fiverr review
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -277,7 +291,6 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
               </p>
               <div className="flex gap-3 mt-6">
                 {[
-                  { Icon: Twitter, href: "https://twitter.com/devorax_agency", label: "Follow DevoraX on Twitter" },
                   { Icon: Linkedin, href: "https://linkedin.com/company/devorax", label: "DevoraX on LinkedIn" },
                   { Icon: Github, href: "https://github.com/devorax", label: "DevoraX on GitHub" },
                   { Icon: Mail, href: "mailto:business@thedevorax.tech", label: "Email DevoraX" },
@@ -342,8 +355,8 @@ export default function HomeClient({ initialProjects, initialServices }: any) {
               © 2025 {CONSTANTS.AGENCY_NAME}. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Privacy Policy</a>
-              <a href="#" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Terms of Service</a>
+              <a href="/privacy" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Privacy Policy</a>
+              <a href="/terms" className="text-xs text-gray-600 hover:text-gray-400 transition-colors">Terms of Service</a>
               <button
                 onClick={() => setIsAdmin(true)}
                 className="text-xs text-gray-700 hover:text-teal-500 transition-colors font-mono"

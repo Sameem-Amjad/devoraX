@@ -35,8 +35,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@devorax_agency',
-    creator: '@devorax_agency',
     title: 'Projects | DevoraX',
     description: 'Our portfolio of shipped digital products.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, alt: 'DevoraX Projects' }],

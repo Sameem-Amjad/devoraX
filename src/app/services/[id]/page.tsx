@@ -5,6 +5,7 @@ import ServiceDetailClient from "@/app/services/[id]/_components/serviceClient";
 import { ServiceJsonLd } from "@/components/seo/service-json-Id";
 import { ServiceLongform } from "@/components/seo/service-longform";
 import { getServiceContent } from "@/data/serviceContent";
+import { RelatedCaseStudies } from "@/components/seo/related-case-studies";
 
 const BASE_URL = "https://thedevorax.tech";
 
@@ -89,8 +90,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     },
     twitter: {
       card: "summary_large_image",
-      site: "@devorax_agency",
-      creator: "@devorax_agency",
       title: `${title} | DevoraX`,
       description,
       images: [ogImage],
@@ -120,6 +119,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           far under the coverage floor needed to rank for commercial queries. */}
       <div className="mx-auto max-w-7xl px-6 pb-20">
         <ServiceLongform content={getServiceContent(id)} />
+        {/* The service_id column links these pages only to 10-65 word stubs, so
+            the long-form studies are wired in here instead. */}
+        <RelatedCaseStudies serviceId={id} />
       </div>
     </>
   );

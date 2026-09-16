@@ -13,7 +13,7 @@ import Logo from "@/components/global/logo";
 
 const STATS = [
   { value: "5+",   label: "Years Exp."     },
-  { value: "100+", label: "Projects"       },
+  { value: "25",   label: "Projects"       },
   { value: "5.0",  label: "Fiverr Rating"  },
   { value: "56",   label: "Reviews"        },
 ];
@@ -241,8 +241,7 @@ export default function TeamClient() {
                   <p className="text-gray-400 text-base leading-relaxed">
                     As the <span className="text-teal-400 font-medium">Founder & CEO of DevoraX</span>, I lead a
                     multidisciplinary team delivering production-grade web and mobile solutions to global clients.
-                    With <span className="text-white font-medium">5+ years</span> and{" "}
-                    <span className="text-white font-medium">100+ projects delivered</span> — from real-time fitness
+                    With <span className="text-white font-medium">25 projects delivered</span> — from real-time fitness
                     platforms to GDPR-compliant enterprise systems — I bring depth across the MERN stack, Next.js,
                     cloud infrastructure, and high-performance mobile apps.
                   </p>

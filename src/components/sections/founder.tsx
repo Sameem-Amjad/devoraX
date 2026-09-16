@@ -9,7 +9,7 @@ import {
 
 const STATS = [
   { value: "5+",   label: "Years Exp."      },
-  { value: "100+", label: "Projects"        },
+  { value: "25",   label: "Projects"        },
   { value: "5.0",  label: "Fiverr Rating"   },
   { value: "56",   label: "Client Reviews"  },
 ];

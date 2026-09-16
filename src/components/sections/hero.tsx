@@ -53,7 +53,7 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
           </span>
           <span className="text-[0.72rem] font-semibold text-teal-200 tracking-widest uppercase">
-            Award-Winning Digital Agency · Est. 2019
+            Product Engineering Agency · 25 Shipped Projects
           </span>
         </motion.div>
 
@@ -145,11 +145,14 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ duration: 0.4, delay: 0.45 }}
           className="mt-24 pt-8 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto"
         >
+          {/* Verifiable figures only. "100+ Projects", "15+ Expert Engineers" and
+              "100% Client Success Rate" were contradicted by the portfolio, the
+              team page and the review record respectively. */}
           {[
-            { label: "Projects Shipped", val: "100+" },
-            { label: "Years of Excellence", val: "5+" },
-            { label: "Client Success Rate", val: "100%" },
-            { label: "Expert Engineers", val: "15+" },
+            { label: "Projects Delivered", val: "25" },
+            { label: "Live Products", val: "18" },
+            { label: "Five-Star Reviews", val: "20" },
+            { label: "Countries Served", val: "4" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className={`text-3xl md:text-4xl font-bold mb-1 font-mono text-transparent bg-clip-text bg-gradient-to-r ${CONSTANTS.PRIMARY_GRADIENT}`}>

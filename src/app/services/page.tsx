@@ -39,8 +39,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@devorax_agency',
-    creator: '@devorax_agency',
     title: 'Services | DevoraX',
     description: 'Mobile apps, AI platforms, cloud architecture, and more.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, alt: 'DevoraX Services' }],
@@ -195,14 +193,14 @@ export default async function ServicesPage() {
               <p className="text-gray-400 text-lg leading-relaxed mb-10">
                 DevoraX is a vertically integrated technology partner. Whether you need a React Native
                 app shipped in six weeks, an AI pipeline integrated into your existing platform, or a
-                full cloud infrastructure migration — our team of 15+ senior engineers handles every layer.
+                full cloud infrastructure migration — our senior engineers handle every layer.
                 No hand-offs, no subcontractors, no surprises.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 {[
-                  { val: '100+', label: 'Projects Shipped' },
+                  { val: '25', label: 'Projects Shipped' },
                   { val: '5+',   label: 'Years Operating' },
-                  { val: '15+',  label: 'Senior Engineers' },
+                  { val: '20',   label: 'Five-Star Reviews' },
                   { val: '100%', label: 'IP Ownership' },
                 ].map((s) => (
                   <div key={s.label} className="text-center p-5 rounded-xl bg-[#0a0a0a] border border-white/5">

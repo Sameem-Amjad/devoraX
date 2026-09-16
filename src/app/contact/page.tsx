@@ -31,8 +31,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@devorax_agency',
-    creator: '@devorax_agency',
     title: 'Contact | DevoraX',
     description: 'Book a free strategy call or send us a project brief.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, alt: 'Contact DevoraX' }],
@@ -52,7 +50,6 @@ const contactPageSchema = {
     email: 'business@thedevorax.tech',
     url: BASE_URL,
     sameAs: [
-      'https://twitter.com/devorax_agency',
       'https://linkedin.com/company/devorax',
       'https://github.com/devorax',
     ],
@@ -78,14 +75,9 @@ const CONTACT_CHANNELS = [
     href: 'mailto:business@thedevorax.tech',
     description: 'For project enquiries and proposals',
   },
-  {
-    Icon: Twitter,
-    label: 'Twitter / X',
-    value: '@devorax_agency',
-    href: 'https://twitter.com/devorax_agency',
-    description: 'Quick questions and updates',
-    external: true,
-  },
+  // Twitter/X channel removed: @devorax_agency returns 404 on both x.com and
+  // twitter.com. Advertising a contact channel that does not exist is worse than
+  // offering one fewer.
   {
     Icon: Linkedin,
     label: 'LinkedIn',

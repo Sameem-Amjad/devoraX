@@ -16,7 +16,6 @@ const DESCRIPTION =
   'DevoraX is an AI-powered software development agency building high-performance mobile apps, Next.js web platforms, cloud infrastructure, and AI integrations. Trusted by founders and CTOs worldwide.';
 
 const OG_IMAGE = `${BASE_URL}/og-image.jpg`;
-const TWITTER_HANDLE = '@devorax_agency';
 
 // ── Comprehensive keyword strategy covering high-intent, long-tail, and brand terms ──
 const KEYWORDS = [
@@ -117,8 +116,6 @@ export const metadata: Metadata = {
   // ── Twitter / X ──
   twitter: {
     card: 'summary_large_image',
-    site: TWITTER_HANDLE,
-    creator: TWITTER_HANDLE,
     title: `${SITE_NAME} | ${TAGLINE}`,
     description: DESCRIPTION,
     images: [
@@ -215,7 +212,6 @@ const organizationSchema = {
     'DevOps Services',
   ],
   sameAs: [
-    'https://twitter.com/devorax_agency',
     'https://linkedin.com/company/devorax',
     'https://github.com/devorax',
   ],
@@ -279,7 +275,6 @@ const professionalServiceSchema = {
     '@type': 'Place',
     name: 'Worldwide',
   },
-  hasMap: BASE_URL,
   openingHoursSpecification: [
     {
       '@type': 'OpeningHoursSpecification',
@@ -302,7 +297,6 @@ const professionalServiceSchema = {
     'PostgreSQL',
     'Supabase',
   ],
-  award: 'AI-Powered Development Excellence',
 };
 
 // NOTE: FAQPage schema lives on the homepage (app/page.tsx), generated from the

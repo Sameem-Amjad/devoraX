@@ -7,7 +7,7 @@ const DIFFERENTIATORS = [
     icon: Zap,
     title: "Speed Without Compromise",
     description:
-      "Most agencies choose between fast and good. We choose both. Our battle-tested boilerplates, CI/CD pipelines, and agile sprints cut delivery time by 40% while keeping code quality at enterprise level.",
+      "Most agencies choose between fast and good. We choose both. Our battle-tested boilerplates, CI/CD pipelines and agile sprints shorten delivery without trading away code quality.",
     gradient: "from-yellow-500 to-orange-500",
     glow: "rgba(234,179,8,0.2)",
   },
@@ -47,7 +47,7 @@ const DIFFERENTIATORS = [
     icon: HeartHandshake,
     title: "Long-Term Partnership",
     description:
-      "70% of our clients have worked with us on 3+ projects. We don't disappear after launch — we become your embedded tech team, scaling with you as your business grows.",
+      "Clients come back — several have hired us for more than one project. We don't disappear after launch; we become your embedded tech team, scaling with you as your business grows.",
     gradient: "from-teal-500 to-emerald-500",
     glow: "rgba(20,184,166,0.2)",
   },
@@ -78,7 +78,7 @@ export const WhyUsSection = () => {
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            We've shipped 100+ products and learned exactly what separates great agencies
+            We've shipped 25 products and learned exactly what separates great agencies
             from forgettable ones. Here's how we're different.
           </p>
         </motion.div>

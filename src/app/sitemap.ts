@@ -82,6 +82,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/case-study`, lastModified: projectsUpdated },
     { url: `${BASE_URL}/team`, lastModified: STATIC_CONTENT_UPDATED },
     { url: `${BASE_URL}/contact`, lastModified: STATIC_CONTENT_UPDATED },
+    // Legal pages are trust signals, so they belong in the index.
+    { url: `${BASE_URL}/privacy`, lastModified: STATIC_CONTENT_UPDATED },
+    { url: `${BASE_URL}/terms`, lastModified: STATIC_CONTENT_UPDATED },
   ];
 
   // Research articles. Only listed once published — an empty insights set must not

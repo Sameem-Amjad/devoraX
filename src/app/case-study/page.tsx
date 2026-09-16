@@ -37,8 +37,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@devorax_agency",
-    creator: "@devorax_agency",
     title: "Case Studies | DevoraX",
     description:
       "Explore our portfolio of high-impact digital products built for global clients.",

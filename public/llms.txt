@@ -17,7 +17,6 @@ CTOs worldwide to ship production-grade software fast.
 ## Contact
 - Website: https://thedevorax.tech
 - Business enquiries: business@thedevorax.tech
-- Twitter: https://twitter.com/devorax_agency
 - LinkedIn: https://linkedin.com/company/devorax
 - GitHub: https://github.com/devorax
 

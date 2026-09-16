@@ -34,8 +34,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@devorax_agency",
-    creator: "@devorax_agency",
     title: "Our Team | DevoraX",
     description:
       "Meet the people behind DevoraX — engineers, designers, and DevOps specialists.",

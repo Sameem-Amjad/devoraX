@@ -50,7 +50,6 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      site: '@devorax_agency',
       title: article.title,
       description: article.meta_description,
       images: [{ url: `${BASE_URL}/og-image.jpg`, alt: article.title }],

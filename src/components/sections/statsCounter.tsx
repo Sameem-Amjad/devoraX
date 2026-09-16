@@ -2,13 +2,24 @@
 import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
 import { useEffect, useRef } from "react";
 
+/**
+ * Every figure here is checkable against something on this site or on a public
+ * profile. That is the point.
+ *
+ * The previous set was not: "98% Client Satisfaction (based on post-project
+ * surveys)" described surveys that do not exist, "40% Faster Delivery vs industry
+ * average" cited a benchmark nobody ran, "70% Returning Clients" was contradicted
+ * by the review record (3 of 16 clients repeat), and "15+ Senior Engineers"
+ * contradicted the team page. Numbers a visitor can disprove in one click cost
+ * more trust than they buy.
+ */
 const STATS = [
-  { value: 100, suffix: "+", label: "Products Shipped", sub: "Across 15+ countries" },
-  { value: 5,   suffix: "+", label: "Years of Excellence", sub: "Since 2019" },
-  { value: 98,  suffix: "%", label: "Client Satisfaction", sub: "Based on post-project surveys" },
-  { value: 40,  suffix: "%", label: "Faster Delivery", sub: "vs industry average" },
-  { value: 15,  suffix: "+", label: "Senior Engineers", sub: "Across time zones" },
-  { value: 70,  suffix: "%", label: "Returning Clients", sub: "Work with us again" },
+  { value: 25, suffix: "",  label: "Projects Delivered",  sub: "Each one a published case study" },
+  { value: 18, suffix: "",  label: "Live Products",       sub: "Publicly reachable right now" },
+  { value: 20, suffix: "",  label: "Five-Star Reviews",   sub: "Every Fiverr review, 5 of 5" },
+  { value: 16, suffix: "",  label: "Clients Served",      sub: "Across 4 countries" },
+  { value: 10, suffix: "",  label: "In-Depth Case Studies", sub: "1,200+ words of engineering detail" },
+  { value: 3,  suffix: "",  label: "Repeat Clients",      sub: "Came back for more work" },
 ];
 
 function CountUp({ to, suffix }: { to: number; suffix: string }) {
@@ -28,9 +39,14 @@ function CountUp({ to, suffix }: { to: number; suffix: string }) {
     return controls.stop;
   }, [inView, to, suffix, count]);
 
+  // Server-render the REAL value, not "0". AI crawlers and non-JS fetchers never
+  // run the count-up effect, so this component previously published six zeros —
+  // "0+ Products Shipped", "0% Client Satisfaction" — as the site's only
+  // machine-readable business facts. The animation still runs from 0 on the
+  // client because `count` starts at 0; only the SSR/first-paint text changes.
   return (
     <span ref={ref} className="tabular-nums">
-      {`0${suffix}`}
+      {`${to}${suffix}`}
     </span>
   );
 }

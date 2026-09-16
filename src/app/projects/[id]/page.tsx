@@ -90,8 +90,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     },
     twitter: {
       card: 'summary_large_image',
-      site: '@devorax_agency',
-      creator: '@devorax_agency',
       title: `${project.title} | DevoraX Case Study`,
       description,
       images: [ogImage],
