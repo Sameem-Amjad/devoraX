@@ -181,15 +181,32 @@ export const fetchBusy = async (from: Date, to: Date): Promise<Array<[number, nu
         items: [{ id: calendarId }],
       }),
     });
-    if (!res.ok) return [];
+    if (!res.ok) {
+      // Loudly, because the failure mode is invisible: availability still
+      // renders, it just stops respecting anything already on the calendar.
+      // A 403 here means the refresh token lacks calendar.readonly —
+      // calendar.events alone cannot query freeBusy. Re-run `npm run
+      // setup:google` to reauthorise with both scopes.
+      console.warn(
+        `[booking] freeBusy unavailable (${res.status}) — availability will ignore ` +
+          `existing calendar events.` +
+          (res.status === 403 ? " Token is missing the calendar.readonly scope." : "")
+      );
+      return [];
+    }
 
     const body = await res.json();
-    const busy = body.calendars?.[calendarId]?.busy ?? [];
-    return busy.map((b: { start: string; end: string }) => [
-      new Date(b.start).getTime(),
-      new Date(b.end).getTime(),
-    ]);
-  } catch {
+
+    // Keyed by whatever id Google resolved, which is not necessarily the one
+    // requested — asking for "primary" can come back under the account's
+    // email address. Merging every entry avoids depending on which.
+    const busy = Object.values(
+      (body.calendars ?? {}) as Record<string, { busy?: Array<{ start: string; end: string }> }>
+    ).flatMap((c) => c.busy ?? []);
+
+    return busy.map((b) => [new Date(b.start).getTime(), new Date(b.end).getTime()]);
+  } catch (err) {
+    console.warn("[booking] freeBusy lookup failed — availability will ignore", err);
     return [];
   }
 };

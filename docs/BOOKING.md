@@ -52,6 +52,21 @@ GOOGLE_CALENDAR_ID=you@example.com   # optional; defaults to your primary
 Restart `npm run dev`, book a test call, and the invite should land in both
 inboxes.
 
+### Scopes
+
+The script requests two, and both matter:
+
+| Scope | For |
+|---|---|
+| `calendar.events` | Create the booking and invite the guest |
+| `calendar.readonly` | Query `freeBusy`, so the site won't offer a slot you're already busy in |
+
+`calendar.events` alone does **not** cover `freeBusy` — Google answers 403 and
+availability silently stops respecting anything already on your calendar. If
+you authorised before this was fixed, re-run `npm run setup:google`. You'll see
+`[booking] freeBusy unavailable (403)` in the server log if the token is short
+a scope.
+
 ## Environment variables
 
 | Variable | Required | Purpose |

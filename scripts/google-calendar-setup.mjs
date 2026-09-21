@@ -45,7 +45,17 @@ import { spawn } from "node:child_process";
 
 const PORT = 53682;
 const REDIRECT_URI = `http://localhost:${PORT}/callback`;
-const SCOPE = "https://www.googleapis.com/auth/calendar.events";
+/* Two scopes, both needed:
+     calendar.events   — create the booking event and invite the guest
+     calendar.readonly — query freeBusy, so the site will not offer a slot
+                         you are already busy in. freeBusy is NOT covered
+                         by calendar.events; with only that scope Google
+                         answers 403 and availability silently ignores
+                         everything already on your calendar. */
+const SCOPE = [
+  "https://www.googleapis.com/auth/calendar.events",
+  "https://www.googleapis.com/auth/calendar.readonly",
+].join(" ");
 
 /* Minimal .env reader — the repo has no dotenv dependency and this script
    runs outside Next, which would otherwise load it. */
