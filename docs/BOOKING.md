@@ -6,14 +6,14 @@ with a Meet link.
 
 ## Status
 
-Google Calendar **is connected** — verified end to end on 22 Sep 2026: a
-booking created the event, attached a Meet link, and sent a real invite to an
-external guest address.
+Google Calendar **is connected and fully working** — verified end to end on
+22 Sep 2026:
 
-One thing outstanding: the current refresh token was issued with only
-`calendar.events`, so `freeBusy` returns 403 and availability ignores meetings
-made outside the site. Re-run `npm run setup:google` to reauthorise with both
-scopes (see [Scopes](#scopes)).
+- a booking creates the event, attaches a Meet link and sends a real invite to
+  an external guest address
+- the token carries both scopes, so `freeBusy` works: a meeting made anywhere
+  else blocks its slot on the site, and a meeting that only partly overlaps a
+  slot still blocks it
 
 If Calendar is ever unconfigured, everything else still works — bookings save
 and appear in the dashboard, and the confirmation says so honestly rather than
