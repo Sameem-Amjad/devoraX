@@ -51,3 +51,6 @@ DevoraX-Portfolio.pdf
 # IndexNow shared secret. The matching public/<key>.txt IS committed (it must be
 # publicly fetchable for verification); this private copy is not.
 .indexnow-key
+
+# Supabase CLI local state (machine-specific, not shared)
+supabase/.temp/
