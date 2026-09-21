@@ -1,0 +1,11 @@
+-- Placeholder for a migration that was applied to the remote database before
+-- this repo tracked migrations (there was no supabase/ directory until now).
+--
+-- The Supabase CLI compares migration *versions* between the remote history
+-- table and this directory; a version present remotely but missing here makes
+-- every `db push` and `db pull` refuse to run. This file supplies the missing
+-- version so the histories line up.
+--
+-- Intentionally empty. The schema it created is already live, so re-running
+-- anything here would either fail or duplicate it. Do not add statements to
+-- this file — put new changes in a new migration.
