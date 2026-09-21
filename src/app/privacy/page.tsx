@@ -30,7 +30,7 @@ export default function PrivacyPage() {
       <main className="min-h-screen bg-black pb-24 pt-32">
         <div className="mx-auto max-w-3xl px-6">
           <h1 className="text-4xl font-bold text-white md:text-5xl">Privacy Policy</h1>
-          <p className="mt-4 text-sm text-gray-500">Last updated 17 September 2026</p>
+          <p className="mt-4 text-sm text-gray-500">Last updated 22 September 2026</p>
 
           <div className="mt-10 space-y-10 text-gray-400">
             <section>
@@ -79,6 +79,42 @@ export default function PrivacyPage() {
                 The site itself is served over HTTPS. Access to the booking data is
                 restricted to DevoraX personnel who need it in order to respond to
                 you.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white">Google Calendar</h2>
+              <p className="mt-4 leading-relaxed">
+                When you book a call, we create an event on our own Google Calendar
+                and add you as a guest so that Google can send you the invitation,
+                the calendar file and the video link. The only information that
+                reaches Google is what you entered on the booking form: your{' '}
+                <strong className="text-gray-200">name</strong>, your{' '}
+                <strong className="text-gray-200">email address</strong>, the{' '}
+                <strong className="text-gray-200">time you chose</strong> and
+                anything you wrote in the optional message field.
+              </p>
+              <p className="mt-4 leading-relaxed">
+                We also read the free and busy periods of our own calendar so the
+                site does not offer you a time we are already booked. That check
+                returns only whether a period is free — never the contents, titles
+                or guests of any other appointment.
+              </p>
+              <p className="mt-4 leading-relaxed">
+                We do not read your calendar. We request access only to our own, and
+                we use it only to schedule the call you asked for. Our use of
+                information received from Google APIs follows the{' '}
+                <a
+                  href="https://developers.google.com/terms/api-services-user-data-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                >
+                  Google API Services User Data Policy
+                </a>
+                , including its Limited Use requirements. If you would like the
+                event removed, reply to the invitation or email us and we will
+                cancel it.
               </p>
             </section>
 
