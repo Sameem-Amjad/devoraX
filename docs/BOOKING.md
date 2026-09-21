@@ -4,11 +4,22 @@ A visitor picks a slot on `/book`, it's checked against your real Google
 Calendar, saved to Supabase, and Google emails both of you a calendar invite
 with a Meet link.
 
-## What you still need to do
+## Status
 
-Google Calendar is **not connected yet** — everything else works without it.
-Until you do this, bookings save and show in the admin dashboard, but no invite
-is sent and the confirmation screen says so honestly rather than promising one.
+Google Calendar **is connected** — verified end to end on 22 Sep 2026: a
+booking created the event, attached a Meet link, and sent a real invite to an
+external guest address.
+
+One thing outstanding: the current refresh token was issued with only
+`calendar.events`, so `freeBusy` returns 403 and availability ignores meetings
+made outside the site. Re-run `npm run setup:google` to reauthorise with both
+scopes (see [Scopes](#scopes)).
+
+If Calendar is ever unconfigured, everything else still works — bookings save
+and appear in the dashboard, and the confirmation says so honestly rather than
+promising an invite that isn't coming.
+
+## First-time setup
 
 ### 1. Google Cloud Console
 
