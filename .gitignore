@@ -41,6 +41,10 @@ yarn-error.log*
 *.csv
 next-env.d.ts
 *.md
+# ...but committed docs are not drafts. The rule above keeps loose notes
+# (FOUNDER.md, proposal-*.md) out of the repo; docs/ is deliberate.
+!docs/
+!docs/**/*.md
 
 /myportfolio
 DevoraX-Portfolio.pdf
