@@ -138,7 +138,7 @@ export const SOLUTIONS: Solution[] = [
         "project_id": 14,
         "name": "Food Magnet",
         "one_line": "A food truck discovery and vendor engagement platform: a Flutter mobile app and a React admin dashboard on an AWS Lambda serverless backend.",
-        "what_it_proves": "Two clients, one mobile and one admin web, over a single serverless backend, with four user roles named in the record: admin, manager, vendor and customer. Live vendor location tracking, Stripe payments, and Firebase plus OneSignal for realtime and push. Published on web, Google Play and the App Store. It is not a marketplace build: the record covers discovery, menus and vendor profiles, not a buyer checkout or a vendor order queue, and it does not publish how the four roles are enforced.",
+        "what_it_proves": "Two clients, one mobile and one admin web, over a single serverless backend, with four user roles: admin, manager, vendor and customer. Live vendor location tracking, Stripe payments, and Firebase plus OneSignal for realtime and push. Published on web, Google Play and the App Store. It is not a marketplace build: it covers discovery, menus and vendor profiles, not a buyer checkout or a vendor order queue, and we have not published how the four roles are enforced.",
         "figures": []
       }
     ],
@@ -521,7 +521,7 @@ export const SOLUTIONS: Solution[] = [
         "project_id": 14,
         "name": "Food Magnet",
         "one_line": "A food truck discovery and vendor engagement platform built as a Flutter mobile app and a React admin dashboard over a serverless AWS Lambda backend, live on web, Android and iOS.",
-        "what_it_proves": "The food truck half: live truck location tracking, menu management, vendor profiles, a four-role model of admin, manager, vendor and customer, Stripe payments, Firebase realtime updates and Firebase plus OneSignal push, shipped to three published surfaces. It does not evidence a customer ordering and checkout flow, and the record names Stripe under payments without stating what is charged or by whom.",
+        "what_it_proves": "The food truck half: live truck location tracking, menu management, vendor profiles, a four-role model of admin, manager, vendor and customer, Stripe payments, Firebase realtime updates and Firebase plus OneSignal push, shipped to three published surfaces. It does not evidence a customer ordering and checkout flow, and we have not published what Stripe charges or on whose behalf.",
         "figures": []
       },
       {
@@ -624,7 +624,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "How separate are the athlete side and the organizer side?",
-        "body": "Separate clients, one shared backend. The record describes three client surfaces, the Flutter athlete app, the web platform and the React administrative dashboard, sitting on one Node.js service layer. The athlete app submits and displays. It cannot compute or alter a rank, because the scoring and ranking logic lives on the server, which is what makes every surface agree.\n\nBe clear on what that is: separation of surfaces and of authority, not of data. Nothing in the WOD Pro League record documents roles, permissions, row-level access or anti-cheat, so we will not describe an access model we cannot evidence. Server-side ranking alone does not stop a tampered client posting a false score through the same API; submission validation and judging do, and both are rules you define.\n\nIf you need a written access model, or several organizers running isolated competitions from one instance, raise it on the call. Role-separated dashboards over one shared backend is a pattern we describe on our multi-vendor marketplace development page, at /solutions/multi-vendor-marketplace-development."
+        "body": "Separate clients, one shared backend. Three client surfaces, the Flutter athlete app, the web platform and the React administrative dashboard, sit on one Node.js service layer. The athlete app submits and displays. It cannot compute or alter a rank, because the scoring and ranking logic lives on the server, which is what makes every surface agree.\n\nBe clear on what that is: separation of surfaces and of authority, not of data. We have published nothing on roles, permissions, row-level access or anti-cheat for WOD Pro League, so we will not describe an access model we cannot evidence. Server-side ranking alone does not stop a tampered client posting a false score through the same API; submission validation and judging do, and both are rules you define.\n\nIf you need a written access model, or several organizers running isolated competitions from one instance, raise it on the call. Role-separated dashboards over one shared backend is a pattern we describe on our multi-vendor marketplace development page, at /solutions/multi-vendor-marketplace-development."
       },
       {
         "heading": "What does the build process look like, and what do you need from us?",
@@ -690,7 +690,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "What stops an athlete submitting a false score?",
-        "a": "Your rules do, not our architecture. Ranking runs server-side in WOD Pro League, so no client can rewrite a placement, but a tampered client can still post a score through the same API. The record documents no anti-cheat or validation tooling on that build, so we claim none. Video review, judging queues and appeals are quoted as a separate workstream. Tell us how you verify a score today and it gets priced as defined work."
+        "a": "Your rules do, not our architecture. Ranking runs server-side in WOD Pro League, so no client can rewrite a placement, but a tampered client can still post a score through the same API. We have not published any anti-cheat or validation tooling on that build, so we claim none. Video review, judging queues and appeals are quoted as a separate workstream. Tell us how you verify a score today and it gets priced as defined work."
       },
       {
         "q": "How long does a build like this take?",
@@ -770,7 +770,7 @@ export const SOLUTIONS: Solution[] = [
         "project_id": 29,
         "name": "Barfly Risk Engine",
         "one_line": "A Node.js flight transfer risk assessment system that integrates the Duffel API with heuristic algorithms to produce real-time risk predictions for codeshare and non-codeshare itineraries, with React.js as the interface technology, live at got2.travel.",
-        "what_it_proves": "That DevoraX has taken a Duffel integration into a live travel product and built domain logic on top of it. The record documents an engine that treats codeshare and non-codeshare itineraries as distinct cases rather than collapsing them into one path, and a heuristic layer that synthesizes airline protocols and aviation variables into an assessment computed on demand rather than prepared offline. The build also carries an AI travel assistant, disruption prediction and a global flight risk index. The internals of those three are not published, so no conclusion about the delivered architecture is drawn from them here.",
+        "what_it_proves": "That DevoraX has taken a Duffel integration into a live travel product and built domain logic on top of it. The build carries an engine that treats codeshare and non-codeshare itineraries as distinct cases rather than collapsing them into one path, and a heuristic layer that synthesizes airline protocols and aviation variables into an assessment computed on demand rather than prepared offline. The build also carries an AI travel assistant, disruption prediction and a global flight risk index. The internals of those three are not published, so no conclusion about the delivered architecture is drawn from them here.",
         "figures": [
           "The client reports 88% on-time performance",
           "The client reports 78% flight risk prediction accuracy",
