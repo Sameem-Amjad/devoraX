@@ -117,11 +117,14 @@ const founderSchema = {
     'PostgreSQL',
     'Supabase',
   ],
-  // One canonical profile URL, matching the link the page actually renders and
-  // the `authors` entry in the root layout. A second URL for the same person was
-  // asserted here until it was confirmed superseded — conflicting sameAs values
-  // are what stop an entity being reconciled, so there must only ever be one.
+  // Distinct properties for the same person, which is what sameAs is for:
+  // it lets Google reconcile the founder described here with the same
+  // individual elsewhere. The personal site is listed first as the primary
+  // identity URL. Note the earlier caution still applies — two URLs for the
+  // *same* profile conflict and stop an entity resolving, so each entry here
+  // must be a genuinely different property.
   sameAs: [
+    'https://sameemamjad.com',
     'https://www.linkedin.com/in/sameem-amjad-dev/',
     'https://www.fiverr.com/sameemamjad',
   ],

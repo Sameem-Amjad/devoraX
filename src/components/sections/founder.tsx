@@ -84,8 +84,12 @@ const SOCIALS = [
     color: "hover:border-emerald-500/40 hover:text-emerald-400 hover:bg-emerald-500/5",
   },
   {
-    label: "Website",
-    href: "https://thedevorax.tech/",
+    // Was "Website" -> thedevorax.tech: a link from this site back to itself,
+    // which does nothing for a reader or a crawler. Sameem's personal site is
+    // a separate property and the thing someone reading about the founder
+    // actually wants. No rel="nofollow" — this is a genuine editorial link.
+    label: "Portfolio",
+    href: "https://sameemamjad.com",
     color: "hover:border-teal-500/40 hover:text-teal-400 hover:bg-teal-500/5",
   },
 ];
