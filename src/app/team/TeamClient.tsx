@@ -35,6 +35,11 @@ const PROJECTS = [
 ];
 
 const SOCIALS = [
+  // Portfolio first: it is Sameem's own site and the primary identity URL,
+  // matching the first entry in the Person `sameAs` on this page. A real
+  // anchor, not just schema — a hyperlink and an entity assertion are
+  // different signals and this page should carry both.
+  { label: "Portfolio", href: "https://sameemamjad.com",                      hover: "hover:border-teal-500/40 hover:text-teal-400 hover:bg-teal-500/5" },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/sameem-amjad-dev/", hover: "hover:border-blue-500/40 hover:text-blue-400 hover:bg-blue-500/5" },
   { label: "Fiverr",   href: "https://www.fiverr.com/sameemamjad",            hover: "hover:border-emerald-500/40 hover:text-emerald-400 hover:bg-emerald-500/5" },
   { label: "Website",  href: "https://thedevorax.tech/",                       hover: "hover:border-teal-500/40 hover:text-teal-400 hover:bg-teal-500/5" },

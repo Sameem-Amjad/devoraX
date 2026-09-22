@@ -1,3 +1,9 @@
+/**
+ * NOT RENDERED. Nothing imports FounderSection — verified against the live
+ * site, where none of this markup appears. Kept because the copy and the
+ * project list are worth salvaging, but edits here have no effect until it
+ * is wired into a page. The team page carries the equivalent content.
+ */
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
