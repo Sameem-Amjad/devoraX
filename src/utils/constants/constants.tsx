@@ -198,6 +198,7 @@ const PRICING_PLANS = [
 // can check them.
 
 export default {
+  HEADER_TITLE: "Devora",
   AGENCY_NAME,
   CEO_NAME,
   PRIMARY_GRADIENT,

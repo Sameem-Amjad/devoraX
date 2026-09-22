@@ -42,7 +42,7 @@ const Logo = ({ size = "md", glow = true }: LogoProps) => {
           `}
           style={{ fontFamily: "Orbitron, sans-serif" }}
         >
-          {CONSTANTS.AGENCY_NAME}
+          {CONSTANTS.HEADER_TITLE}
         </span>
 
         {/* X Mark */}
