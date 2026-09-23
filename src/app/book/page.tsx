@@ -32,9 +32,55 @@ export const metadata: Metadata = {
   },
 };
 
+/* Every other content page on the site emits a BreadcrumbList; this one did
+   not, so Google had to infer a trail for it from internal linking — which is
+   where the odd "... > Team > Contact" crumbs in search results come from.
+   Matches the shape used by /team and /services so the whole site is
+   consistent. */
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "@id": `${BASE_URL}/book#breadcrumb`,
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
+    { "@type": "ListItem", position: 2, name: "Book a Call", item: `${BASE_URL}/book` },
+  ],
+};
+
+/* A booking page is a ReserveAction target. Declaring it lets Google
+   understand the page's purpose rather than treating it as generic prose. */
+const reserveSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": `${BASE_URL}/book#webpage`,
+  url: `${BASE_URL}/book`,
+  name: "Book a Strategy Call",
+  description:
+    "Pick a time for a free 30-minute call with Sameem Amjad — scope, timeline and an honest number for your web, mobile or AI product.",
+  breadcrumb: { "@id": `${BASE_URL}/book#breadcrumb` },
+  isPartOf: { "@id": `${BASE_URL}/#website` },
+  potentialAction: {
+    "@type": "ReserveAction",
+    name: "Book a strategy call",
+    target: `${BASE_URL}/book`,
+    result: {
+      "@type": "Reservation",
+      name: "30-minute strategy call",
+    },
+  },
+};
+
 export default function BookPage() {
   return (
     <main className="min-h-screen bg-[#050505]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(reserveSchema) }}
+      />
       {/* Real text under the modal: a crawler (and anyone with JS off) gets a
           page with content rather than an empty shell, and it gives the OG
           card something to match. */}
