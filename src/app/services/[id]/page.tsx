@@ -57,9 +57,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const longform = getServiceContent(id);
   const description =
     longform?.meta_description || clampDescription(service.desc_long || service.desc_text || "");
-  // "Mobile Innovation" alone is far under the 30-char floor once rendered;
-  // the qualifier keeps the title descriptive and keyword-bearing.
-  const title = `${service.title} Services`;
+  // The DB `title` is the UI label and the H1 ("Mobile Innovation"), which is
+  // not what anyone searches — `${service.title} Services` spent only 22-29
+  // characters of the highest-weight on-page signal, on four transactional
+  // pages. seo_title carries the head term instead, with the DB title kept as
+  // the fallback so a service without longform content still gets something.
+  // No " | DevoraX" here: the root layout's title template appends it.
+  const title = longform?.seo_title || `${service.title} Services`;
   const ogImage = { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: `${service.title} — DevoraX` };
 
   return {

@@ -17,6 +17,13 @@
 export type ServiceContent = {
   service_id: number;
   title: string;
+  /** Title tag, WITHOUT the " | DevoraX" suffix — the root layout's template
+      appends that. Separate from `title` because these are the head terms
+      people actually search, whereas the DB `title` ("Mobile Innovation") is
+      the UI label and the H1. Two of the longform `title` values already
+      carried their own " | DevoraX" and two ran past 75 chars, so neither was
+      safe to reuse for the head. */
+  seo_title: string;
   meta_description: string;
   hero_answer: string;
   sections: { heading: string; body: string }[];
@@ -29,6 +36,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
   "1": {
     "service_id": 1,
     "title": "Mobile Innovation: Cross-Platform iOS & Android App Development",
+    "seo_title": "Mobile App Development: React Native & Flutter",
     "meta_description": "iOS and Android apps built in React Native or Flutter, with secure API integrations, smooth performance and App Store and Play Store deployment support.",
     "hero_answer": "Mobile Innovation is DevoraX's cross-platform mobile app service: we build fast, scalable and visually polished applications in React Native or Flutter that run on iOS and Android from one codebase, with optimized performance and smooth animations, secure API integrations, and App Store and Play Store deployment support.",
     "sections": [
@@ -97,6 +105,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
   "2": {
     "service_id": 2,
     "title": "AI & Full-Stack Web Development | DevoraX",
+    "seo_title": "AI & Full-Stack Web Development: Next.js, Python",
     "meta_description": "Next.js and React front ends, Python and FastAPI services, and AI built into the stack, from architecture and API design through to containerized deployment.",
     "hero_answer": "AI and full-stack web development is the end-to-end build of a web application: interface, API layer, data model, and infrastructure, with AI integrated into the product rather than bolted on afterwards. DevoraX delivers these as Next.js and modern React front ends backed by Python services, REST and GraphQL APIs, and secure authentication.",
     "sections": [
@@ -166,6 +175,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
   "3": {
     "service_id": 3,
     "title": "Cloud Architecture Services | AWS, Docker & Kubernetes | DevoraX",
+    "seo_title": "AWS Cloud Architecture & DevOps Services",
     "meta_description": "Design and build of AWS cloud infrastructure: serverless or containerized workloads, CI/CD pipelines, high availability, monitoring and cost control.",
     "hero_answer": "Cloud architecture is the design and build of the infrastructure your software runs on: AWS cloud infrastructure, Docker and Kubernetes orchestration, CI/CD pipeline setup, high availability and monitoring, and cost optimization strategies. DevoraX builds robust cloud infrastructures for high availability, scalability, and security using industry-proven DevOps practices. Workloads run serverless, containerized, or a mix of both.",
     "sections": [
@@ -234,6 +244,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
   "4": {
     "service_id": 4,
     "title": "Modern UI/UX Design Services | DevoraX",
+    "seo_title": "UI/UX Design & Front-End Development",
     "meta_description": "UX research, user flows, design systems and accessible responsive interfaces, carried from Figma components through to production-ready front-end code.",
     "hero_answer": "Modern UI/UX is the design practice that turns a product idea into interfaces people can actually use: researched user flows, a reusable design system, responsive and accessible layouts, and motion that guides attention. DevoraX covers this service from Figma through to production-ready UI, so design decisions carry into the front-end code.",
     "sections": [

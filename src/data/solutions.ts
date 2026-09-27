@@ -616,7 +616,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "Which build proves you have done this before?",
-        "body": "One build, and it is public. WOD Pro League is a global functional fitness competition platform: a Flutter app on the App Store and Google Play, a web platform at wodproleague.es, a React administrative dashboard, and a Node.js backend on AWS with Redis and Socket.io handling real-time data.\n\nThe client reports 12,778 total athletes and 8,567 submitted scores, competitions listed as 24/7 active, a 68.3% qualification rate, and reach across more than 120 countries. Those are the client's figures, not measurements DevoraX took or audited. The one that carries technical weight is the submitted-score count, because every entry is a write that had to be accepted, ranked and pushed out to connected clients without breaking the integrity of a live leaderboard.\n\nYou do not have to take any of this on description. The web platform, the iOS app and the Android app are all live and inspectable, and the full engineering case study is published on this site at /projects/31."
+        "body": "One build, and it is public. WOD Pro League is a global functional fitness competition platform: a Flutter app on the App Store and Google Play, a web platform at wodproleague.es, a React administrative dashboard, and a Node.js backend on AWS with Redis and Socket.io handling real-time data.\n\nThe client reports 12,778 total athletes and 8,567 submitted scores, competitions listed as 24/7 active, a 68.3% qualification rate, and reach across more than 120 countries. Those are the client's figures, not measurements DevoraX took or audited. The one that carries technical weight is the submitted-score count, because every entry is a write that had to be accepted, ranked and pushed out to connected clients without breaking the integrity of a live leaderboard.\n\nThe web platform and both store listings have since been taken down, so the build is no longer publicly inspectable; the full engineering case study is published on this site at /projects/31."
       },
       {
         "heading": "How does the leaderboard hold up at a submission deadline?",
@@ -647,7 +647,7 @@ export const SOLUTIONS: Solution[] = [
       {
         "project_id": 31,
         "name": "WOD Pro League",
-        "one_line": "A global functional fitness competition platform: a Flutter athlete app on iOS and Android, a web platform at wodproleague.es, and a React administrative dashboard, all on a Node.js and AWS backend with Redis and Socket.io driving real-time leaderboards.",
+        "one_line": "A global functional fitness competition platform: a Flutter athlete app on iOS and Android, a web platform, and a React administrative dashboard, all on a Node.js and AWS backend with Redis and Socket.io driving real-time leaderboards. The public surfaces have since been retired.",
         "what_it_proves": "That DevoraX has shipped what this page sells: server-side scoring and ranking that every client renders identically, live leaderboard delivery over persistent Socket.io channels, Redis-backed ranking built for deadline-hour submission bursts, serverless capacity that follows a competition calendar, and an organizer dashboard covering events, divisions, workouts, score review and qualification. Shipped to both app stores and publicly inspectable. It does not evidence access control, anti-cheat, multi-tenancy, payments or video judging.",
         "figures": [
           "The client reports 12,778 total athletes",
@@ -710,7 +710,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "How do I verify you actually shipped this?",
-        "a": "Open it. WOD Pro League is live on the web at wodproleague.es, on the App Store, and on Google Play. The full engineering case study, including the architecture decisions and the client's reported figures, is published at /projects/31. All 25 DevoraX projects have a published case study, so nothing here is a private reference."
+        "a": "The public surfaces have been retired since delivery — wodproleague.es no longer responds and both store listings have been removed — so this one cannot be opened and inspected. The full engineering case study, including the architecture decisions and the client's reported figures, is published at /projects/31. All 25 DevoraX projects have a published case study, so nothing here is a private reference."
       }
     ],
     "word_count": 1502,
