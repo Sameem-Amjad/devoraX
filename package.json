@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "audit:content": "node scripts/content-audit.mjs",
-    "setup:google": "node scripts/google-calendar-setup.mjs"
+    "setup:google": "node scripts/google-calendar-setup.mjs",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
