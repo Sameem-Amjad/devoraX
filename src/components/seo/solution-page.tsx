@@ -6,9 +6,13 @@
  * type most likely to be quoted when someone asks an assistant who builds X.
  *
  * The section order follows what a buyer actually asks, in the order they ask it:
- * what this is, what you get, who has already had it built, how it works, what it
- * costs, and who should not hire us. That last one is not decoration — a page
- * that cannot say who it is wrong for reads as a brochure.
+ * what this is, what work stands behind it and whose work that was, what you get,
+ * how it works, what it costs, and who should not hire us. That last one is not
+ * decoration — a page that cannot say who it is wrong for reads as a brochure.
+ *
+ * The proof cards carry only facts a reader can check today (a store listing, a
+ * live site or demo URL, a release month, a public quote). They are not outcome
+ * figures, and they are labelled as checkable rather than as client-reported.
  */
 import Link from 'next/link';
 import type { Solution } from '@/data/solutions';
@@ -80,11 +84,11 @@ export function SolutionPage({ solution }: { solution: Solution }) {
           </Link>
         </div>
 
-        {/* ── Proof, high on the page: this is the argument ── */}
+        {/* ── The work behind the page, high up: this is the argument ── */}
         {solution.proof.length > 0 && (
           <section className="mt-16 border-t border-white/5 pt-12">
             <h2 className="text-2xl font-bold text-white md:text-3xl">
-              Builds that prove it
+              The work behind this page
             </h2>
             <div className="mt-8 space-y-8">
               {solution.proof.map((p) => {
@@ -104,21 +108,21 @@ export function SolutionPage({ solution }: { solution: Solution }) {
                     </h3>
                     <p className="mt-3 leading-relaxed text-gray-400">{p.one_line}</p>
                     <p className="mt-3 leading-relaxed text-gray-400">
-                      <span className="text-gray-300">What it proves: </span>
+                      <span className="text-gray-300">What it shows: </span>
                       {p.what_it_proves}
                     </p>
                     {p.figures.length > 0 && (
                       <>
-                        <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                        <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-500">
+                          What you can check
+                        </p>
+                        <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                           {p.figures.map((f) => (
                             <li key={f} className="font-mono text-sm text-teal-400">
                               {f}
                             </li>
                           ))}
                         </ul>
-                        <p className="mt-3 text-xs text-gray-500">
-                          Reported by the client, not independently audited by DevoraX.
-                        </p>
                       </>
                     )}
                     {study && (

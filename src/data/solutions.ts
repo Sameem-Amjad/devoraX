@@ -5,15 +5,21 @@
  * candidates found 29 of 80 original keywords were held by agencies running
  * exact-match URLs with years of link equity behind them; head-on competition on
  * those is not a strategy for a domain with no backlink profile. What survived
- * were narrow queries where DevoraX has shipped the exact thing being searched
- * for — "antiques marketplace app development company" rather than "marketplace
- * development", "used car marketplace app development with inspection reports"
- * rather than "car marketplace website development company".
+ * were narrow queries where the founder's own engineering work covers the exact
+ * thing being searched for — "antiques marketplace app development company"
+ * rather than "marketplace development", "used car marketplace app development
+ * with inspection reports" rather than "car marketplace website development
+ * company".
  *
- * Every page here is therefore built on a NAMED, DELIVERED project with a
- * published case study. That constraint is the whole point: a solution page with
- * no project behind it is the thin content this site was already penalised for
- * carrying, and it would mean claiming expertise that does not exist.
+ * Every page here is built on a NAMED, PUBLICLY DESCRIBED project with a write-up
+ * on this site, and says plainly whose work it was. Most of it is work Sameem
+ * Amjad did as an employee of other companies (Zencloud, Webrange Solutions,
+ * Pastel); the rest is products he says he worked on with no confirmed client.
+ * None of it is presented as a DevoraX client delivery. The only figures allowed
+ * are ones a reader can check today: a store listing, a live site or demo URL, a
+ * release month, a public quote. A solution page with no real work behind it is
+ * the thin content this site was already penalised for carrying, and it would
+ * mean claiming expertise that does not exist.
  *
  * The route is /solutions/{slug} rather than /services/{id} because the services
  * route resolves by database primary key and is owned by the admin dashboard.
@@ -22,9 +28,13 @@ export type SolutionProof = {
   project_id: number;
   name: string;
   one_line: string;
-  /** The specific capability this build evidences for this page. */
+  /** The specific capability this work evidences for this page. */
   what_it_proves: string;
-  /** Client-reported figures, each phrased as reported. May be empty. */
+  /**
+   * Facts a reader can check today: a store listing, a live site or demo URL, a
+   * release month, a public quote. Never an outcome figure nobody can verify.
+   * May be empty.
+   */
   figures: string[];
 };
 
@@ -56,10 +66,10 @@ export const SOLUTIONS: Solution[] = [
   {
     "slug": "multi-vendor-marketplace-development",
     "primary_keyword": "multi vendor marketplace development company",
-    "h1": "Multi-Vendor Marketplace Development Company: Three Marketplaces We Have Shipped",
+    "h1": "Multi-Vendor Marketplace Development: Buyer, Vendor and Admin on One Backend",
     "title": "Multi-Vendor Marketplace Development",
-    "meta_description": "Three multi-vendor marketplaces shipped and live: Afriva, Pastel and Dooz. Buyer surface, vendor portal, admin console, payments. Fixed price, agreed first.",
-    "hero_answer": "DevoraX is a software agency, founded in 2019, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. Three are live and publicly inspectable right now. Afriva, Pastel Marketplace and Dooz Inspected Cars. It is for operators who have decided a template will not fit.",
+    "meta_description": "Multi-vendor marketplace development from a two-person studio whose founder worked on Afriva and Pastel. Buyer app, vendor portal, admin. Fixed price.",
+    "hero_answer": "DevoraX is a two-person software studio, founded in 2019, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. The marketplace work behind this page is its founder Sameem Amjad's, most of it done as an employee of other companies: Afriva as an engineer at Webrange Solutions, Pastel's iOS app as a software engineer at Pastel, and, by his account, the backend of Dooz Inspected Cars. DevoraX now takes the same work directly, for operators who have decided a template will not fit.",
     "sections": [
       {
         "heading": "What does a multi-vendor marketplace build include, and what is quoted separately?",
@@ -67,15 +77,15 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "Who is this for, and which marketplace model is closest to mine?",
-        "body": "This is for someone who has decided that independent sellers, rather than a single inventory, is the model, and that a template will not carry it. If a Shopify multi-vendor app covers what you need, use it. A custom build starts to pay when the vendor relationship is itself the product: verification states, inspection data, per-vendor terms, or a catalogue where every item is a single unit that retires on sale.\n\nThree of the four builds named below have their own page, because the models differ more than the word marketplace suggests. Collectibles and one-of-one resale is covered at /solutions/antiques-marketplace-app-development. High-ticket assets with published condition reports is at /solutions/used-car-marketplace-app-development. Mobile vendor discovery, where the vendor moves and the customer is trying to find it, is at /solutions/food-truck-ordering-app-development. Afriva, the general-goods build, is the closest reference for a conventional catalogue marketplace with sellers, stock levels and delivery."
+        "body": "This is for someone who has decided that independent sellers, rather than a single inventory, is the model, and that a template will not carry it. If a Shopify multi-vendor app covers what you need, use it. A custom build starts to pay when the vendor relationship is itself the product: verification states, inspection data, per-vendor terms, or a catalogue where every item is a single unit that retires on sale.\n\nThree of the four products named below have their own page, because the models differ more than the word marketplace suggests. Collectibles and one-of-one resale is covered at /solutions/antiques-marketplace-app-development. High-ticket assets with published condition reports is at /solutions/used-car-marketplace-app-development. Mobile vendor discovery, where the vendor moves and the customer is trying to find it, is at /solutions/food-truck-ordering-app-development. Afriva, a general-goods marketplace, is the closest reference for a conventional catalogue with sellers, stock levels and delivery."
       },
       {
-        "heading": "Which marketplaces has DevoraX actually shipped?",
-        "body": "Three, each with a published case study and reachable without a demo. Afriva is a four-role marketplace on Next.js 15 and Supabase: admin, manager, seller and buyer dashboards with real-time delivery tracking. The client reports 1,245 active vendors, $1.2M in revenue and 120+ cities covered. The buyer storefront is at afriva-buyer.vercel.app.\n\nPastel Marketplace trades antiques on Next.js and Firebase, with Sharetribe carrying the transaction and Shippo insured shipping; the client reports 12k+ curated items and 2.8k+ verified sellers. Dooz Inspected Cars runs Angular web and React Native apps over NestJS and PostgreSQL, with a 150+ point inspection modelled as data rather than a PDF; the client reports 20,000+ verified vehicles and 1.2B+ JD in transactions.\n\nThe fourth build named here is not a marketplace. Food Magnet is a food truck discovery platform: a Flutter app and React admin console on AWS Lambda, with live location tracking and Stripe. Its record has no buyer checkout, no vendor order queue and no outcome figures. It is adjacent work, not a fourth marketplace."
+        "heading": "Which marketplaces has DevoraX's founder worked on?",
+        "body": "Three, and none of them was a DevoraX client project. Two were employer work, and the third is Sameem's own account of a product whose client this page does not name.\n\nAfriva is a four-role marketplace on Next.js 15 and Supabase: admin, manager, seller and buyer dashboards with real-time order tracking. Sameem worked on it as an engineer at Webrange Solutions, on the Next.js 15 front end, the seller dashboard for inventory, pricing and order status, and the Supabase data layer. Its public link is a demo build of the buyer storefront, at afriva-buyer.vercel.app.\n\nPastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live at mypastel.com and on the App Store. Sameem has been a software engineer at Pastel since April 2026, working on its iOS app, which first launched in November 2025, before he joined. Dooz Inspected Cars is a used-car marketplace in Jordan, with an Angular web client and iOS and Android apps over one backend. Sameem says he worked on that shared NestJS backend. Dooz's Google Play listing shows 100K+ downloads.\n\nFood Magnet, also named on this page, is not a marketplace. It is a food truck discovery platform: a Flutter app and a React admin console on AWS Lambda, with live location tracking and Stripe. Sameem worked on it as an engineer at Zencloud, on a product that already existed. It is adjacent work, not a fourth marketplace."
       },
       {
         "heading": "How do you keep one vendor from reading another vendor's data?",
-        "body": "A vendor boundary is a database property, not an interface one. A client-side check hides a button; it does not stop a request, because the request can be issued without the interface. Ownership is expressed in the schema, and the check runs where every client has to pass.\n\nOn Afriva that meant managed Postgres rather than a document store. Vendors own products, products appear in orders, orders split into shipments, and foreign keys and constraints give one authoritative place to state that a seller cannot mutate another seller's stock. Supabase also bundles authentication with the database, so the identity that signed a user in is the identity Postgres sees on the query, which removes the drift between what the interface believes and what the database permits.\n\nDooz reaches the same place differently: valuation, inspection status and listing availability resolve server-side, so NestJS owns the rules and the three clients render state. Food Magnet's case study does not publish its permission model, so this page does not describe one."
+        "body": "A vendor boundary is a database property, not an interface one. A client-side check hides a button; it does not stop a request, because the request can be issued without the interface. Ownership is expressed in the schema, and the check runs where every client has to pass.\n\nOn Afriva that meant managed Postgres rather than a document store. Vendors own products, products appear in orders, orders split into shipments, and foreign keys and constraints give one authoritative place to state that a seller cannot mutate another seller's stock. Supabase also bundles authentication with the database, so the identity that signed a user in is the identity Postgres sees on the query, which removes the drift between what the interface believes and what the database permits.\n\nDooz, by Sameem's account of its backend, reaches the same place differently: valuation, inspection status and listing availability resolve server-side, so NestJS owns the rules and the three clients render state. Food Magnet's write-up does not describe its permission model, so this page does not describe one."
       },
       {
         "heading": "What happens when one basket spans several vendors?",
@@ -91,55 +101,54 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "What happens after launch, and who owns the code?",
-        "body": "You own all code and IP on final payment. That is the ownership commitment, stated at its edges. Owning the code is not owning every account the platform runs on: where hosting, payment and third-party accounts sit is a per-project decision recorded in the proposal, not a guarantee this page makes.\n\nSupport after launch is quoted separately rather than assumed. A support arrangement priced into a build fee is either padding, if you do not need it, or inadequate, if you do. Decide it once you can see the traffic.\n\nVendor onboarding deserves a direct answer, because it is what marketplace buyers most want proven and what our record does not prove. Pastel holds seller verification as a property of an account, stored and checked when a listing is created. Afriva has admin and manager surfaces for catalogue and order oversight. Neither case study describes the workflow by which a vendor is reviewed and approved, so this page does not claim one was built. Recruiting and vetting sellers stays yours."
+        "body": "You own all code and IP on final payment. That is the ownership commitment, stated at its edges. Owning the code is not owning every account the platform runs on: where hosting, payment and third-party accounts sit is a per-project decision recorded in the proposal, not a guarantee this page makes.\n\nSupport after launch is quoted separately rather than assumed. A support arrangement priced into a build fee is either padding, if you do not need it, or inadequate, if you do. Decide it once you can see the traffic.\n\nVendor onboarding deserves a direct answer, because it is what marketplace buyers most want proven and what the work behind this page does not prove. Afriva has admin and manager surfaces for catalogue and order oversight, and Pastel lets sellers open shops and list their own pieces. Neither write-up describes the workflow by which a vendor is reviewed and approved, so this page does not claim one was built. Recruiting and vetting sellers stays yours."
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "If a Shopify multi-vendor app, Sharetribe's hosted product or a marketplace template covers your model, buy it. It is cheaper than anything here and it will be running next week. We used Sharetribe ourselves on Pastel for exactly that reason: marketplace money movement is a state machine with commissions, held funds, refunds, disputes and cross-border payouts, and reimplementing it is a poor trade without a reason.\n\nDo not hire us if you need a committed launch date before anyone has seen the scope. We do not publish delivery timelines and will not invent one on a call.\n\nDo not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one. And if you have not yet decided what a vendor is allowed to do, that decision comes before a supplier does."
+        "body": "If a Shopify multi-vendor app, Sharetribe's hosted product or a marketplace template covers your model, buy it. It is cheaper than anything here and it will be running next week. Pastel itself is built on Sharetribe rather than on custom payment code, and the case for that generalises: marketplace money movement is a state machine with commissions, held funds, refunds, disputes and cross-border payouts, and reimplementing it is a poor trade without a reason.\n\nDo not hire us if you need a committed launch date before anyone has seen the scope. We do not publish delivery timelines and will not invent one on a call.\n\nDo not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one. And if you have not yet decided what a vendor is allowed to do, that decision comes before a supplier does."
       }
     ],
     "proof": [
       {
         "project_id": 32,
         "name": "Afriva E-Commerce Platform",
-        "one_line": "A four-role multi-vendor marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and real-time delivery tracking.",
-        "what_it_proves": "Role-separated dashboards shipped from one deployment, vendor ownership enforced by the Postgres schema rather than the interface, and order tracking streamed from database changes instead of polled. The closest reference build for a conventional catalogue marketplace with sellers, stock and delivery.",
+        "one_line": "A four-role multi-vendor marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and real-time order tracking. Sameem worked on it as an engineer at Webrange Solutions.",
+        "what_it_proves": "Role-separated dashboards from one deployment, vendor ownership expressed in the Postgres schema rather than the interface, and order tracking streamed from database changes instead of polled. The closest reference for a conventional catalogue marketplace with sellers, stock and delivery. Its public link is a demo build, not a production marketplace.",
         "figures": [
-          "The client reports 1,245 active vendors on the platform",
-          "The client reports $1.2M in total revenue transacted through the marketplace",
-          "The client reports coverage across 120+ cities"
+          "Demo build of the buyer storefront at afriva-buyer.vercel.app"
         ]
       },
       {
         "project_id": 23,
         "name": "Pastel Marketplace",
-        "one_line": "A luxury antiques marketplace on Next.js and Firebase, with Sharetribe carrying the transaction layer and Shippo carrying insured global shipping.",
-        "what_it_proves": "Single-unit catalogues that retire cleanly on sale rather than decrementing stock, seller verification held as an account property checked at listing time, curated collections composed without a code change, and marketplace money movement handled as a modelled state machine rather than a checkout. Ships on web and iOS from one backend.",
+        "one_line": "A US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live on the web, iOS and Android. Sameem has worked on its iOS app as a software engineer at Pastel since April 2026.",
+        "what_it_proves": "A live catalogue of one-of-one pieces that retire on sale rather than decrementing stock, with marketplace money movement handled by Sharetribe's transaction process rather than custom checkout code, and web and app clients reading one marketplace. Sameem's part is the iOS app, which first launched in November 2025, before he joined. This page claims nothing about who built the web storefront or chose the platform.",
         "figures": [
-          "The client reports 12k+ curated items",
-          "The client reports 2.8k+ verified sellers",
-          "The client reports 48k+ collectors",
-          "The client reports a 98% positive review rate"
+          "Live at mypastel.com",
+          "On the App Store as Pastel - Antique Marketplace (id6753628917), first released November 2025"
         ]
       },
       {
         "project_id": 25,
         "name": "Dooz Inspected Cars",
-        "one_line": "A verified used-vehicle marketplace: an Angular web client and React Native iOS and Android apps over a NestJS and PostgreSQL backend.",
-        "what_it_proves": "Faceted search across a large catalogue where every listing is a unique unit, a 150+ point inspection modelled as queryable data rather than an attached document, valuation resolved behind the API so three clients cannot disagree on a price, and ACID transactions holding reservations and financial records consistent under concurrency.",
+        "one_line": "A used-car marketplace in Jordan: an Angular web client and iOS and Android apps over one NestJS and PostgreSQL backend. Sameem says he worked on that shared backend.",
+        "what_it_proves": "A catalogue where every listing is a unique unit, inspection reports published as part of the listing, a financing calculator and insurance in the buying flow, and, by Sameem's account, valuation and availability resolved behind one API so three clients cannot disagree on a price. This page makes no claim about who Dooz was built for.",
         "figures": [
-          "The client reports 20,000+ verified vehicles",
-          "The client reports 1.2B+ JD in total transactions supported",
-          "The client reports a 98% customer satisfaction rate",
-          "The client's record puts each vehicle at 150+ inspection points"
+          "Live at dooz.com",
+          "On Google Play as com.dooz.app, where the listing shows 100K+ downloads (https://play.google.com/store/apps/details?id=com.dooz.app)",
+          "On the App Store as Dooz Cars (id1627030530)"
         ]
       },
       {
         "project_id": 14,
         "name": "Food Magnet",
-        "one_line": "A food truck discovery and vendor engagement platform: a Flutter mobile app and a React admin dashboard on an AWS Lambda serverless backend.",
-        "what_it_proves": "Two clients, one mobile and one admin web, over a single serverless backend, with four user roles: admin, manager, vendor and customer. Live vendor location tracking, Stripe payments, and Firebase plus OneSignal for realtime and push. Published on web, Google Play and the App Store. It is not a marketplace build: it covers discovery, menus and vendor profiles, not a buyer checkout or a vendor order queue, and we have not published how the four roles are enforced.",
-        "figures": []
+        "one_line": "A food truck discovery and vendor platform: a Flutter mobile app and a React admin dashboard on an AWS Lambda serverless backend. Sameem worked on this existing product as an engineer at Zencloud.",
+        "what_it_proves": "Two clients, one mobile and one admin web, over a single serverless backend, with four user roles: admin, manager, vendor and customer. Live vendor location tracking, Stripe payments, and Firebase plus OneSignal for realtime updates and push. It is not a marketplace build: it covers discovery, menus and vendor profiles rather than a multi-vendor checkout, and this page does not describe how the four roles are enforced.",
+        "figures": [
+          "Live at foodmagnet.app",
+          "On Google Play as com.foodmagnet.foodTruck",
+          "On the App Store as Food Magnet Vendor (id6444549450)"
+        ]
       }
     ],
     "included": [
@@ -151,22 +160,22 @@ export const SOLUTIONS: Solution[] = [
       "One payment provider integration for checkout",
       "Order records with status visible to the buyer, the vendor and the admin",
       "Server-rendered catalogue and listing pages, so the marketplace is indexable rather than an empty shell",
-      "Deployment to a live environment you can open and inspect, as every named build here is",
+      "Deployment to a live environment you can open and inspect",
       "A written fixed-price scope agreed before any code is written"
     ],
     "quoted_separately": [
       "Native iOS and Android clients added on top of a web build",
-      "Multi-carrier and insured shipping integrations of the kind Pastel uses",
+      "Multi-carrier and insured shipping integrations",
       "Live location tracking of vendors or couriers, as on Food Magnet",
       "Third-party quote integrations such as financing or insurance, as on Dooz",
       "Ongoing support, maintenance and feature work after handover",
       "Vendor recruitment, catalogue data entry and content production"
     ],
-    "when_not_to_hire": "If a Shopify multi-vendor app, Sharetribe's hosted product or an off-the-shelf template covers your model, buy it. It is cheaper and faster than a custom build, and we used Sharetribe ourselves on Pastel rather than reimplement marketplace payments. Do not hire us if you need a committed launch date before anyone has seen the scope; we do not publish timelines. Do not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one.",
+    "when_not_to_hire": "If a Shopify multi-vendor app, Sharetribe's hosted product or an off-the-shelf template covers your model, buy it. It is cheaper and faster than a custom build, and Pastel itself is built on Sharetribe rather than on custom payment code. Do not hire us if you need a committed launch date before anyone has seen the scope; we do not publish timelines. Do not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one.",
     "faqs": [
       {
         "q": "Should I use Sharetribe or a Shopify multi-vendor app instead of a custom build?",
-        "a": "If your model fits one, yes. They are cheaper and they run immediately. A custom build pays off when the vendor relationship is the product: verification states, inspection data, per-vendor terms, or a catalogue of single units that retire when sold. The two are not exclusive either. Pastel is a custom Next.js and Firebase marketplace that uses Sharetribe for the transaction layer, because marketplace money movement is not worth rewriting."
+        "a": "If your model fits one, yes. They are cheaper and they run immediately. A custom build pays off when the vendor relationship is the product: verification states, inspection data, per-vendor terms, or a catalogue of single units that retire when sold. The two are not exclusive either. A hosted marketplace engine can carry the transactions while custom clients carry the browsing. Pastel, where Sameem works on the iOS app, is built on Sharetribe; marketplace money movement is rarely worth rewriting without a reason."
       },
       {
         "q": "How long does a marketplace build take?",
@@ -174,11 +183,11 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Can you build mobile apps as well as the web marketplace?",
-        "a": "Yes, and three of the four builds here ship on the stores. Dooz runs React Native on iOS and Android over the same NestJS backend as its Angular web client. Food Magnet is a Flutter app with a React admin console. Pastel ships on web and iOS. Mobile clients are quoted separately from a web build, because they are separate work with their own release process."
+        "a": "Yes. Three of the four products named here are on the app stores, and Sameem's part in them touches mobile directly: he works on Pastel's iOS app as an engineer at Pastel, and says he worked on the NestJS backend that Dooz's iOS and Android apps share with its Angular web client. Food Magnet is a Flutter app with a React admin console. Mobile clients are quoted separately from a web build, because they are separate work with their own release process."
       },
       {
         "q": "Do you handle marketplace payments and vendor payouts?",
-        "a": "Payments through a provider, yes. Afriva and Food Magnet both integrate one. Payouts, held funds, commissions and disputes are a much larger surface than checkout, and on Pastel we used Sharetribe's transaction process rather than build that state machine ourselves. Which approach suits you depends on your commission model and where your sellers are, and that is one of the things the discovery call decides."
+        "a": "Payments through a provider, yes. Food Magnet takes payments through Stripe. Payouts, held funds, commissions and disputes are a much larger surface than checkout, and Pastel uses Sharetribe's transaction process for that rather than its own state machine. Which approach suits you depends on your commission model and where your sellers are, and that is one of the things the discovery call decides."
       },
       {
         "q": "What happens if the scope changes after we start?",
@@ -186,18 +195,18 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Who actually writes the code?",
-        "a": "Two people. Sameem Amjad and Usman. DevoraX has been running since 2019 and has delivered 25 projects, every one of which has a published case study on this site. You will not be handed to an account manager, and you will not discover at kickoff that the people on the call are not the people building it."
+        "a": "Two people: Sameem Amjad and Usman. DevoraX has been running since 2019. The marketplaces named on this page are Sameem's work, most of it done as an employee of other companies, and each write-up on this site says whose project it was. You will not be handed to an account manager, and you will not discover at kickoff that the people on the call are not the people building it."
       },
       {
-        "q": "Are the figures on this page yours or the client's?",
-        "a": "The client's. Every number here, 1,245 active vendors on Afriva, 20,000+ verified vehicles on Dooz, 12k+ curated items on Pastel, is reported by the client who owns that platform. DevoraX did not measure or audit them. Food Magnet publishes no outcome figures, so none are quoted for it. What we can evidence directly is that the products are live and the case studies are public."
+        "q": "Were these marketplaces DevoraX client projects?",
+        "a": "No. Sameem worked on Afriva as an engineer at Webrange Solutions. Pastel is his current employer, where he works on the iOS app. Dooz is a product he says he worked on, and this page makes no claim about who it was built for. DevoraX is the studio through which he and Usman now take this kind of work directly. What you can check is that the products exist: Pastel and Dooz are live on the web and the app stores, and Afriva's buyer storefront is a public demo build."
       },
       {
         "q": "What is the first step?",
         "a": "A free 30-minute discovery call. Bring your role model, your commission model, and your view on whether the catalogue holds stock-keeping items or single units. The output is a written fixed-price proposal covering scope, exclusions and price. If the honest answer is that a template would serve you better, that is what the proposal will say."
       }
     ],
-    "word_count": 1434,
+    "word_count": 3034,
     "role": "hub",
     "related_slugs": [
       "antiques-marketplace-app-development",
@@ -211,32 +220,32 @@ export const SOLUTIONS: Solution[] = [
     "primary_keyword": "antiques marketplace app development company",
     "h1": "Antiques marketplace app development for provenance-led resale",
     "title": "Antiques Marketplace App Development",
-    "meta_description": "We built Pastel, a live antiques marketplace with verified sellers, held funds and insured global shipping. Fixed price, and the case study is public.",
-    "hero_answer": "DevoraX is a software agency. We built Pastel Marketplace, a live antiques marketplace at mypastel.com with verified sellers, curated collections, funds held between payment and fulfilment, and insured global shipping. That is one antiques build, not a portfolio in the category. It suits dealers, consignment businesses and collector platforms trading one-of-one pieces. Fixed price, quoted after a free 30-minute call.",
+    "meta_description": "Antiques marketplace development for one-of-one listings, seller shops and shipping, from an engineer who works on Pastel's iOS app. Fixed price.",
+    "hero_answer": "DevoraX is a two-person software studio that builds marketplaces for one-of-one goods. Its founder, Sameem Amjad, is a software engineer at Pastel, a live antiques marketplace at mypastel.com, where he has worked on the iOS app since April 2026; that app first launched in November 2025, before he joined. That is one antiques product, worked on as an employee, not a DevoraX client project. The studio takes antiques, collectibles and consignment marketplace builds directly. Fixed price, quoted after a free 30-minute call.",
     "sections": [
       {
-        "heading": "What do you actually ship in an antiques marketplace build?",
-        "body": "Base scope is a working two-sided marketplace. A buyer-facing storefront with curated collections and individual listing pages. Seller onboarding with verification held on the account. Listing creation built around heavy photography and a provenance narrative. A transaction flow that holds funds between payment and fulfilment. Shipping with rates, labels, tracking and insured cover. An admin console for curation and order oversight.\n\nOn Pastel Marketplace that split across four systems rather than one. Next.js renders the storefront. Firebase holds accounts, listing data and media. Sharetribe carries the transaction. Shippo carries the shipment. The two parts that hold legal and financial risk, money movement and cross-border logistics, sit inside platforms built for them instead of being reimplemented in application code.\n\nThe full in-scope and out-of-scope lists are on this page. The short version is that the marketplace works end to end, and anything requiring a commercial contract of yours is scoped and quoted separately."
+        "heading": "What does an antiques marketplace build include?",
+        "body": "Base scope is a working two-sided marketplace. A buyer-facing storefront with curated collections and individual listing pages. Seller onboarding with verification held on the account. Listing creation built around heavy photography and a provenance narrative. A transaction flow that holds funds between payment and fulfilment. Shipping with rates, labels, tracking and insured cover. An admin console for curation and order oversight.\n\nPastel shows one way to split that work. It is built on Sharetribe, which carries the marketplace and its transaction process, and it uses Shippo for shipping labels. The two parts that hold legal and financial risk, money movement and cross-border logistics, sit inside platforms built for them instead of being reimplemented in application code. A custom build can make the same split or own more of the stack itself; the proposal says which, and why.\n\nThe full in-scope and out-of-scope lists are on this page. The short version is that the marketplace works end to end, and anything requiring a commercial contract of yours is scoped and quoted separately."
       },
       {
         "heading": "Who is this built for?",
         "body": "Businesses trading one-of-one goods where the value sits in the object's history rather than a spec sheet. Antiques dealers, collectibles resale platforms, estate and consignment businesses, and anyone running a curated catalogue where each item sells once and is then gone.\n\nThe defining constraint is the data model, not the category. A conventional catalogue assumes a product record with variants, stock depth and a price repeated across identical units. An antique inverts all three. Each listing is a single record whose worth is carried by provenance, condition and the evidence behind them, and once it sells it has to retire cleanly rather than decrement a count.\n\nIf your catalogue has restock, SKUs and repeat units, the general page is the better starting point: /solutions/multi-vendor-marketplace-development. Come back here when the objects are unique and trust is the thing you are actually selling."
       },
       {
-        "heading": "Which builds prove you have done this before?",
-        "body": "Pastel Marketplace is the direct proof, and it is one build rather than a category portfolio. It is a luxury antiques marketplace on Next.js and Firebase, running publicly at mypastel.com, and the product is also listed on the App Store as Pastel Antique Marketplace. The client reports 12k+ curated items, 2.8k+ verified sellers, 48k+ collectors and a 98% positive review rate. Those are the client's figures, not measurements we took. The case study is at /projects/23.\n\nAfriva E-Commerce Platform is the second. It is a four-role marketplace on Next.js 15 and Supabase, with admin, manager, seller and buyer dashboards and delivery tracking streamed from Postgres. The client reports $1.2M transacted, 1,245 active vendors and coverage across 120+ cities. It runs at afriva-buyer.vercel.app and the case study is at /projects/32.\n\nBoth front ends are open to inspection before you speak to us. What a visitor cannot see from outside is the seller and admin side of either platform, and the case studies describe that rather than demonstrate it."
+        "heading": "What antiques marketplace work stands behind this page?",
+        "body": "One product, and the honest description is narrow. Pastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe, running publicly at mypastel.com and listed on the App Store as Pastel - Antique Marketplace. Sameem Amjad, DevoraX's founder, has been a software engineer at Pastel since April 2026, working on its iOS app. The iOS app first launched in November 2025, before he joined, and this page claims nothing about who built the web storefront or chose the platform. It is employer work, not a DevoraX engagement. The write-up is at /projects/23.\n\nAfriva is the second reference, for the operations side rather than the category. It is a four-role marketplace on Next.js 15 and Supabase, with admin, manager, seller and buyer dashboards and order tracking streamed from Postgres. Sameem worked on it as an engineer at Webrange Solutions. Its public link is a demo build of the buyer storefront, at afriva-buyer.vercel.app, and the write-up is at /projects/32.\n\nPastel's storefront and app, and Afriva's demo, are open to inspection before you speak to us. What a visitor cannot see from outside is the seller and admin side of either platform, and the write-ups describe that rather than demonstrate it."
       },
       {
         "heading": "How do you model provenance and one-of-one listings?",
-        "body": "Provenance is narrative and evidence, not attributes, so it does not fit a variant table. On Pastel the weight of a listing sits on photography and the supporting history: where the piece came from, who owned it, what condition it is in now, and what backs those claims. The images have to substitute for handling the object.\n\nThat has two engineering consequences. Image handling becomes the dominant cost on every page, which is part of why the storefront is rendered with Next.js and uses its image pipeline. And listing state becomes delicate. A sold piece is gone permanently, so the catalogue has to retire it cleanly instead of decrementing inventory, and every surface showing it has to agree that it is gone.\n\nIt is also why that state belongs on the backend. Pastel's accounts and listing data sit in Firebase and its transactions in Sharetribe, so every client reads the same state rather than a second implementation of the same rules."
+        "body": "Provenance is narrative and evidence, not attributes, so it does not fit a variant table. In an antiques marketplace the weight of a listing sits on photography and the supporting history: where the piece came from, who owned it, what condition it is in now, and what backs those claims. Pastel describes every listing as telling a story, with documentation that lets buyers shop with confidence. The images have to substitute for handling the object.\n\nThat has two engineering consequences. Image handling becomes the dominant cost on every page, so image sizing, delivery and caching deserve design time of their own rather than a default. And listing state becomes delicate. A sold piece is gone permanently, so the catalogue has to retire it cleanly instead of decrementing inventory, and every surface showing it has to agree that it is gone.\n\nIt is also why that state belongs on the backend. When a web storefront and one or more apps read the same listing, the rule that a piece is sold has to live in one place, rather than in a second implementation of the same rule on each client."
       },
       {
         "heading": "How do you keep one seller's data out of another seller's hands?",
-        "body": "Verified status belongs on the account rather than drawn in the interface. It has to be stored, checked when a listing is created, and surfaced anywhere that seller appears. A buyer who sees the mark on a profile but not on the listing learns to distrust both, which is the whole reason it lives in one place.\n\nSeparation itself belongs in the data layer. Afriva's backend is managed Postgres through Supabase, so vendors owning products and products appearing in orders live in the schema rather than being reassembled in application code. That is where an ownership rule goes: expressed once and checked by the database, rather than implied by which button a screen renders. Supabase also bundles authentication with the database, so the identity that signs a user in is the identity the query runs as. We publish no security assessment of Afriva and do not offer its schema as a guarantee, but hiding a button is not a permission model.\n\nThe tenancy question in more depth: /solutions/multi-vendor-marketplace-development."
+        "body": "Verified status belongs on the account rather than drawn in the interface. It has to be stored, checked when a listing is created, and surfaced anywhere that seller appears. A buyer who sees the mark on a profile but not on the listing learns to distrust both, which is the whole reason it lives in one place.\n\nSeparation itself belongs in the data layer. Afriva's backend is managed Postgres through Supabase, so vendors owning products and products appearing in orders live in the schema rather than being reassembled in application code. That is where an ownership rule goes: expressed once and checked by the database, rather than implied by which button a screen renders. Supabase also bundles authentication with the database, so the identity that signs a user in is the identity the query runs as. This page offers no security assessment of Afriva and does not present its schema as a guarantee, but hiding a button is not a permission model.\n\nThe tenancy question in more depth: /solutions/multi-vendor-marketplace-development."
       },
       {
         "heading": "How is money held between payment and the piece arriving?",
-        "body": "A marketplace payment is not a checkout. Funds move from buyer to platform, are held while the piece is packed and shipped, and reach the seller once the exchange completes. Commissions, refunds, disputes and payouts to sellers in different countries all hang off that single flow. On Pastel we used Sharetribe, which models it as a state machine, so the path between enquiry, payment, fulfilment and completion is enforced by infrastructure built for two-sided commerce. The frontend reads a transaction's current state and never takes custody of funds.\n\nShipping is the other half, and it is where antiques marketplaces usually break. Every sale is a one-off shipment. A framed print, a chandelier and a chest of drawers share no packaging profile, no dimensional weight and no obvious carrier, and sellers are not logistics professionals. Shippo sits in front of many carriers behind one interface: rate selection, label purchase, tracking and insured cover. For an irreplaceable object there is no replacement unit, so cover has to attach to the shipment itself."
+        "body": "A marketplace payment is not a checkout. Funds move from buyer to platform, are held while the piece is packed and shipped, and reach the seller once the exchange completes. Commissions, refunds, disputes and payouts to sellers in different countries all hang off that single flow. Sharetribe, which Pastel is built on, models it as a state machine, so the path between enquiry, payment, fulfilment and completion is enforced by infrastructure built for two-sided commerce. Each storefront or app reads a transaction's current state and never takes custody of funds.\n\nShipping is the other half, and it is where antiques marketplaces usually break. Every sale is a one-off shipment. A framed print, a chandelier and a chest of drawers share no packaging profile, no dimensional weight and no obvious carrier, and sellers are not logistics professionals. A multi-carrier service such as Shippo, which Pastel uses for labels, sits in front of many carriers behind one interface: rate selection, label purchase, tracking and insured cover. For an irreplaceable object there is no replacement unit, so cover has to attach to the shipment itself."
       },
       {
         "heading": "What does the build look like, and what do you need from me?",
@@ -248,31 +257,27 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "If you need timed auctions with live bidding, reserve prices and proxy bids, do not hire us. No project we have delivered includes an auction engine, and bidding concurrency is its own discipline. Buy an auction platform, or hire a team that has shipped one.\n\nIf a native mobile app is the core of the product, start elsewhere. The stack we publish for Pastel is Next.js and Firebase, so native mobile is work we would scope from scratch. And if you want people you can redirect week to week on an hourly retainer, we are the wrong shape: the scope has to settle before the work starts.\n\nIf your budget sits below our published MVP starting point, a hosted marketplace product will serve you better than a custom build. Sharetribe, which we used on Pastel, sells its own platform, and starting there and replacing it later is a legitimate plan. DevoraX is also two people, Sameem Amjad and Usman. If you need ten engineers next month, that is not us."
+        "body": "If you need timed auctions with live bidding, reserve prices and proxy bids, do not hire us. Nothing in the DevoraX portfolio includes an auction engine, and bidding concurrency is its own discipline. Buy an auction platform, or hire a team that has shipped one.\n\nIf you want people you can redirect week to week on an hourly retainer, we are the wrong shape: the scope has to settle before the work starts.\n\nIf your budget sits below our published MVP starting point, a hosted marketplace product will serve you better than a custom build. Sharetribe, which Pastel is built on, sells its own platform, and starting there and replacing it later is a legitimate plan. DevoraX is also two people, Sameem Amjad and Usman. If you need ten engineers next month, that is not us."
       }
     ],
     "proof": [
       {
         "project_id": 23,
         "name": "Pastel Marketplace",
-        "one_line": "A luxury antiques marketplace on Next.js and Firebase, with Sharetribe carrying the transaction and Shippo carrying insured global shipping, live at mypastel.com.",
-        "what_it_proves": "This is the build itself: one-of-one listings weighted on provenance and photography, verified seller status held on the account, a transaction layer that holds funds between payment and fulfilment, and insured multi-carrier shipping. The catalogue is the part an outsider can check directly. The transaction and shipping behaviour sits behind a purchase, so we describe it rather than invite you to verify it from the storefront.",
+        "one_line": "A US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live at mypastel.com and on the App Store. Sameem has worked on its iOS app as a software engineer at Pastel since April 2026.",
+        "what_it_proves": "The category itself: one-of-one listings weighted on photography and documentation, seller shops, a Sharetribe transaction process that carries each order from payment to fulfilment, and shipping labels bought inside the marketplace. Sameem's part is the iOS app, which first launched in November 2025, before he joined. It is employer work, not a DevoraX client project, and this page claims nothing about who built the web storefront.",
         "figures": [
-          "The client reports 12k+ curated items",
-          "The client reports 48k+ collectors",
-          "The client reports 2.8k+ verified sellers",
-          "The client reports a 98% positive review rate"
+          "Live at mypastel.com",
+          "On the App Store as Pastel - Antique Marketplace (id6753628917), first released November 2025"
         ]
       },
       {
         "project_id": 32,
         "name": "Afriva E-Commerce Platform",
-        "one_line": "A four-role multi-vendor marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and delivery tracking streamed from Postgres.",
-        "what_it_proves": "The operations side an antiques platform needs once real sellers are on it: role-separated dashboards each querying their own slice, a relational Postgres model where ownership can be expressed in the schema rather than in interface checks, and delivery status that reaches the buyer as an event instead of a poll.",
+        "one_line": "A four-role multi-vendor marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and order tracking streamed from Postgres. Sameem worked on it as an engineer at Webrange Solutions.",
+        "what_it_proves": "The operations side an antiques platform needs once real sellers are on it: role-separated dashboards each querying their own slice, a relational Postgres model where ownership can be expressed in the schema rather than in interface checks, and delivery status that reaches the buyer as an event instead of a poll. Its public link is a demo build.",
         "figures": [
-          "The client reports $1.2M in total revenue through the marketplace",
-          "The client reports 1,245 active vendors",
-          "The client reports coverage across 120+ cities"
+          "Demo build of the buyer storefront at afriva-buyer.vercel.app"
         ]
       }
     ],
@@ -288,34 +293,34 @@ export const SOLUTIONS: Solution[] = [
       "Deployment to hosting and third-party accounts in your name, with the code in a repository you own"
     ],
     "quoted_separately": [
-      "Any native mobile app, iOS or Android. The stack we publish for Pastel is Next.js and Firebase, so native mobile is scoped as new work",
-      "Timed auctions, live bidding and reserve prices. No project of ours evidences an auction engine",
+      "iOS and Android apps on top of the web marketplace, each priced as its own line",
+      "Timed auctions, live bidding and reserve prices. Nothing in the DevoraX portfolio includes an auction engine",
       "Integrations with third-party appraisal, authentication or certificate services",
       "Migration of an existing catalogue and its photography from your current platform",
       "Ongoing support, maintenance and feature work after handover",
       "Storefront localisation and multi-currency display beyond what the payment and shipping providers give you"
     ],
-    "when_not_to_hire": "If you need timed auctions with live bidding, reserve prices and proxy bids, hire someone else. No DevoraX project includes an auction engine, and bidding concurrency is its own discipline. If a native mobile app is the core of the product, start elsewhere: the stack we publish for Pastel is Next.js and Firebase. If you want an hourly team you can redirect weekly, our fixed-price model will frustrate you. If your budget sits below our published MVP starting point, a hosted marketplace product such as Sharetribe will serve you better. And DevoraX is two people.",
+    "when_not_to_hire": "If you need timed auctions with live bidding, reserve prices and proxy bids, hire someone else. Nothing in the DevoraX portfolio includes an auction engine, and bidding concurrency is its own discipline. If you want an hourly team you can redirect weekly, our fixed-price model will frustrate you. If your budget sits below our published MVP starting point, a hosted marketplace product such as Sharetribe will serve you better. And DevoraX is two people.",
     "faqs": [
       {
         "q": "Have you actually built an antiques marketplace, or just marketplaces in general?",
-        "a": "One antiques marketplace, and it is live. Pastel Marketplace runs at mypastel.com with verified sellers, curated collections, funds held between payment and fulfilment and insured global shipping. The client reports 12k+ curated items and 2.8k+ verified sellers. That is a single build in this category rather than a shelf of them, which is the honest answer. The full case study is public at /projects/23."
+        "a": "Not as DevoraX. DevoraX's founder, Sameem Amjad, works at one: he has been a software engineer at Pastel since April 2026, on its iOS app, which first launched in November 2025, before he joined. Pastel runs at mypastel.com and is built on Sharetribe. That is a single product in this category, worked on as an employee, rather than a shelf of client builds, and that is the honest answer. The write-up is at /projects/23."
       },
       {
         "q": "Do you build a mobile app as well as the web marketplace?",
-        "a": "Not on evidence we can show you. The stack we publish for Pastel is Next.js and Firebase. The product is listed on the App Store as Pastel Antique Marketplace, but that listing evidences the product, not who wrote the mobile client, so we do not claim it as our work. Treat native mobile as new work with its own line in the proposal rather than something thrown in."
+        "a": "Yes, as a separately priced line. Sameem's work at Pastel is on its iOS app, so a marketplace app over a shared backend is familiar ground, but that is employer work and this page does not present it as a DevoraX delivery. In a proposal, iOS and Android each get their own line rather than being thrown in with the web build."
       },
       {
         "q": "How do you stop one seller reading another seller's data?",
-        "a": "In the data layer, not the interface. Afriva's backend is Postgres through Supabase, which is where an ownership rule belongs: expressed once in the schema and checked by the database rather than implied by which button renders. Supabase bundles authentication with the database, so the identity that signs a user in is the identity the query runs under. We publish no security assessment of that build. Hiding a button is not a permission model."
+        "a": "In the data layer, not the interface. Afriva's backend is Postgres through Supabase, which is where an ownership rule belongs: expressed once in the schema and checked by the database rather than implied by which button renders. Supabase bundles authentication with the database, so the identity that signs a user in is the identity the query runs under. This page offers no security assessment of that build. Hiding a button is not a permission model."
       },
       {
         "q": "Can you build timed auctions and live bidding?",
-        "a": "We have not shipped one. None of our 25 delivered projects includes an auction engine, so we will not tell you we have done it. If auctions are the core of your product, hire a team that has built one. If they are a later phase sitting on top of a fixed-price marketplace, raise it at the scoping call and we will tell you plainly whether we would take it."
+        "a": "Not on evidence we can show you. Nothing in the DevoraX portfolio includes an auction engine, so this page will not tell you otherwise. If auctions are the core of your product, hire a team that has built one. If they are a later phase sitting on top of a fixed-price marketplace, raise it at the scoping call and we will tell you plainly whether we would take it."
       },
       {
         "q": "Should I use Sharetribe or commission a custom build?",
-        "a": "Possibly both. On Pastel we used Sharetribe for the transaction layer and built the storefront ourselves. Marketplace money movement is a state machine with commissions, refunds, disputes and cross-border payouts, and reimplementing it in application code is a large and risky surface. If Sharetribe's own front end will do, start there. A custom storefront earns its cost when browsing is the product, which is usually true in antiques."
+        "a": "Possibly both. Pastel is built on Sharetribe. Marketplace money movement is a state machine with commissions, refunds, disputes and cross-border payouts, and reimplementing it in application code is a large and risky surface. If Sharetribe's own front end will do, start there. A custom storefront or app on top of it earns its cost when browsing is the product, which is usually true in antiques."
       },
       {
         "q": "What does an antiques marketplace cost to build?",
@@ -327,10 +332,10 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "How do you handle insured shipping for fragile, irreplaceable pieces?",
-        "a": "Through one multi-carrier integration rather than carrier-by-carrier work. On Pastel that is Shippo. The seller sees rate options, buys a label, and the shipment becomes trackable for both parties. Insurance attaches to the shipment itself, which matters because a one-of-one object has no replacement unit. We do not underwrite anything. We integrate the provider that does and keep the tracking state visible while the piece is in transit."
+        "a": "Through one multi-carrier integration rather than carrier-by-carrier work. Shippo, which Pastel uses for labels, is one such service. The seller sees rate options, buys a label, and the shipment becomes trackable for both parties. Insurance attaches to the shipment itself, which matters because a one-of-one object has no replacement unit. We do not underwrite anything. We integrate the provider that does and keep the tracking state visible while the piece is in transit."
       }
     ],
-    "word_count": 1494,
+    "word_count": 2775,
     "role": "spoke",
     "hub": "multi-vendor-marketplace-development",
     "related_slugs": [
@@ -343,32 +348,32 @@ export const SOLUTIONS: Solution[] = [
     "primary_keyword": "used car marketplace app development with inspection reports",
     "h1": "Used car marketplace app development, with inspection reports inside the listing",
     "title": "Used Car Marketplace App Development",
-    "meta_description": "We built Dooz Inspected Cars: inspections published inside the listing, financing and insurance in one flow. The client reports 20,000+ verified vehicles.",
-    "hero_answer": "DevoraX builds used-car marketplaces where the inspection report is part of the listing rather than a PDF sent on request. We shipped Dooz Inspected Cars: an Angular web marketplace, React Native iOS and Android apps, and a NestJS backend on PostgreSQL, with financing and insurance in one flow. The client reports 150+ inspection points per vehicle. It is live on the web and both app stores.",
+    "meta_description": "Used car marketplace development: inspection reports inside the listing, financing, insurance and dealer accounts. Fixed price, from a two-person studio.",
+    "hero_answer": "DevoraX builds used-car marketplaces where the inspection report is part of the listing rather than a PDF sent on request. The reference is Dooz Inspected Cars, a used-car marketplace in Jordan with an Angular web client, iOS and Android apps, inspection reports inside the listing, and financing and insurance in the buying flow. DevoraX's founder, Sameem Amjad, says he worked on the NestJS backend those three clients share; this page makes no claim about who Dooz was built for. It is live on the web and both app stores, and its Google Play listing shows 100K+ downloads.",
     "sections": [
       {
         "heading": "What do you actually get in a used car marketplace build?",
-        "body": "Three layers, and they are not equally hard. The catalogue is the straightforward part: vehicles, photos, faceted search over make, model, year, mileage and price, server-rendered so listing pages are readable by crawlers. The inspection layer is the part most quotes underestimate. The transaction layer, where a reservation, a financing application and a unique physical asset must agree, is where the engineering cost sits.\n\nBase scope is listed in full below. In short: a buyer-facing web marketplace, a dealer account with its own listing tools, an admin console for reviewing inspections and approving listings, structured inspection records rendered inside the listing, a server-side financing calculator, and reservation handling so a sold car leaves search everywhere at once.\n\nNative apps, insurer integrations and automated valuation are things we have shipped, but each is quoted on its own rather than folded into a base price."
+        "body": "Three layers, and they are not equally hard. The catalogue is the straightforward part: vehicles, photos, faceted search over make, model, year, mileage and price, server-rendered so listing pages are readable by crawlers. The inspection layer is the part most quotes underestimate. The transaction layer, where a reservation, a financing application and a unique physical asset must agree, is where the engineering cost sits.\n\nBase scope is listed in full below. In short: a buyer-facing web marketplace, a dealer account with its own listing tools, an admin console for reviewing inspections and approving listings, structured inspection records rendered inside the listing, a server-side financing calculator, and reservation handling so a sold car leaves search everywhere at once.\n\nNative apps, insurer integrations and automated valuation are each quoted on their own rather than folded into a base price."
       },
       {
-        "heading": "Have you actually built one of these before?",
-        "body": "Yes, once, and it is publicly installable, so you can check rather than take our word. Dooz Inspected Cars runs at dooz.com, the Android app is on Google Play as com.dooz.app, and the iOS app is on the App Store as Dooz Cars. All three are served by the same NestJS backend.\n\nDooz was built against the exact problem this page describes. Buyers could not verify condition because inspection protocols were insufficient, and financing was complex enough to push deals offline. Every listed car is an inspected car, the inspection is published as part of the listing, and financing and insurance attach to a vehicle whose condition has already been established.\n\nThe client reports 150+ inspection points per vehicle, 20,000+ verified vehicles, 1.2B+ JD in total transactions supported, and a 98% customer satisfaction rate. Those come from the client's systems; DevoraX did not measure or audit them. The full case study is at /projects/25."
+        "heading": "Has DevoraX's founder worked on one of these before?",
+        "body": "Once, by his account, and the product is public, so you can check it rather than take anyone's word. Dooz Inspected Cars runs at dooz.com, the Android app is on Google Play as com.dooz.app, where the listing shows 100K+ downloads, and the iOS app is on the App Store as Dooz Cars. Sameem Amjad, DevoraX's founder, says he worked on the NestJS backend that serves all three. This page makes no claim about who Dooz was built for, or under what arrangement.\n\nThe product addresses the problem this page describes. Buyers struggle to verify a used car's condition, and financing complicated enough pushes deals offline. On Dooz every listed car is an inspected car, the inspection report is published as part of the listing, and a financing calculator and insurance sit in the same flow as a vehicle whose condition has already been established. The write-up is at /projects/25."
       },
       {
-        "heading": "How does a 150+ point inspection become something a buyer can filter on?",
-        "body": "By being data rather than a document. A PDF tells a buyer about one car. A structured inspection lets them compare every car against the same rubric, which is the point of a verified marketplace.\n\nOn Dooz that shows up in what a buyer can search on: make, model, year, mileage, price, financing eligibility and inspection outcomes, at once. The client reports 150+ inspection points per vehicle. PostgreSQL is the system of record, and vehicles, inspection records, listings and transactions are held as related data rather than as documents.\n\nFor your own build, that shape sets requirements we put in the proposal rather than leave to discovery. Each checkpoint needs its own identity and result so it can be queried. The rubric needs versioning, because a report captured under one revision still has to render after the checklist changes. Photographic evidence needs to be addressable per point and delivered efficiently to a phone. Those are scope lines for your system, not a description of anyone else's schema."
+        "heading": "How does an inspection become something a buyer can filter on?",
+        "body": "By being data rather than a document. A PDF tells a buyer about one car. A structured inspection lets them compare every car against the same rubric, which is the point of a verified marketplace.\n\nDooz publishes the inspection report as part of the listing rather than sending it on request. By Sameem's account of the backend, PostgreSQL is the system of record, and vehicles, inspection records, listings and transactions are held as related data rather than as documents.\n\nFor your own build, that shape sets requirements we put in the proposal rather than leave to discovery. Each checkpoint needs its own identity and result so it can be queried. The rubric needs versioning, because a report captured under one revision still has to render after the checklist changes. Photographic evidence needs to be addressable per point and delivered efficiently to a phone. Those are scope lines for your system, not a description of anyone else's schema."
       },
       {
         "heading": "How do financing and insurance fit into the buying flow?",
-        "body": "Buying, financing and insuring in one place is an integration problem more than an interface problem. A financing calculator has to model term, rate and deposit consistently, and the figure on the listing page has to be the figure at checkout. On Dooz, financing terms, valuation, inspection status and listing availability all resolve server-side rather than in the clients.\n\nInsurance is harder because the quote is not yours. A third-party response arrives on someone else's latency budget and can be slow or absent. Anything the platform does not control is treated as unreliable by design: timeouts, retries and an explicit degraded state, so one slow insurer does not block the rest of the flow.\n\nNestJS module boundaries let listings, inspections, valuation, financing and insurance live as separate domains behind stable interfaces, which is how Dooz is put together, and typed contracts mean a partner changing a field fails at compile time rather than showing a buyer a wrong number."
+        "body": "Buying, financing and insuring in one place is an integration problem more than an interface problem. A financing calculator has to model term, rate and deposit consistently, and the figure on the listing page has to be the figure at checkout. By Sameem's account, Dooz resolves financing terms, valuation, inspection status and listing availability server-side rather than in the clients.\n\nInsurance is harder because the quote is not yours. A third-party response arrives on someone else's latency budget and can be slow or absent. Anything the platform does not control is treated as unreliable by design: timeouts, retries and an explicit degraded state, so one slow insurer does not block the rest of the flow.\n\nNestJS module boundaries let listings, inspections, valuation, financing and insurance live as separate domains behind stable interfaces, which is how Sameem describes the Dooz backend, and typed contracts mean a partner changing a field fails at compile time rather than showing a buyer a wrong number."
       },
       {
         "heading": "How do you keep dealer accounts separated from each other?",
-        "body": "A marketplace with independent dealers is a multi-vendor system, and the rule that matters is that one seller cannot read or mutate another seller's stock. The wrong place to enforce that is the interface. A dashboard that hides a row is a presentation decision; a query that cannot return the row is a boundary.\n\nAfriva is the build that evidences this. Four roles, admin, manager, seller and buyer, each with a dashboard querying only the slice of data that role is entitled to, on Supabase's managed Postgres. Because Supabase bundles authentication with the database, the identity that signs a user in is the identity Postgres sees on the query, so ownership rules live once in the schema rather than in every screen. The client reports 1,245 active vendors and $1.2M in revenue across 120+ cities.\n\nAfriva is general-goods e-commerce, not automotive. It evidences the separation model; Dooz supplies the vehicle domain."
+        "body": "A marketplace with independent dealers is a multi-vendor system, and the rule that matters is that one seller cannot read or mutate another seller's stock. The wrong place to enforce that is the interface. A dashboard that hides a row is a presentation decision; a query that cannot return the row is a boundary.\n\nAfriva is the work that evidences this. Four roles, admin, manager, seller and buyer, each with a dashboard querying only the slice of data that role is entitled to, on Supabase's managed Postgres. Because Supabase bundles authentication with the database, the identity that signs a user in is the identity Postgres sees on the query, so ownership rules live once in the schema rather than in every screen. Sameem worked on Afriva as an engineer at Webrange Solutions, and its public link is a demo build.\n\nAfriva is general-goods e-commerce, not automotive. It evidences the separation model; Dooz supplies the vehicle domain."
       },
       {
         "heading": "What does the build process look like, and what do you need from me?",
-        "body": "It starts with a free 30-minute discovery call and ends with a written fixed-price proposal listing scope line by line. There is no hourly billing, so the scoping conversation has to be honest on both sides. An under-specified fixed price is bad for the client and worse for us.\n\nThe thing we need from you first is the inspection rubric. Not a description of it, the actual checklist, with the points, the result types and the pass criteria, because that document determines the data model and every filter built on top of it. We also need to know which lenders and insurers you intend to work with and whether they expose an API, whether listings come from your own inspectors or independent dealers, and where existing inventory lives. If you do not have a rubric yet, that is a scoping conversation rather than a blocker."
+        "body": "It starts with a free 30-minute discovery call and ends with a written fixed-price proposal listing scope line by line. There is no hourly billing, so the scoping conversation has to be honest on both sides. An under-specified fixed price is bad for you and worse for us.\n\nThe thing we need from you first is the inspection rubric. Not a description of it, the actual checklist, with the points, the result types and the pass criteria, because that document determines the data model and every filter built on top of it. We also need to know which lenders and insurers you intend to work with and whether they expose an API, whether listings come from your own inspectors or independent dealers, and where existing inventory lives. If you do not have a rubric yet, that is a scoping conversation rather than a blocker."
       },
       {
         "heading": "How is this priced?",
@@ -387,24 +392,21 @@ export const SOLUTIONS: Solution[] = [
       {
         "project_id": 25,
         "name": "Dooz Inspected Cars",
-        "one_line": "An all-in-one platform for buying, financing and insuring verified used vehicles, built as an Angular web marketplace and React Native iOS and Android apps over a NestJS backend on PostgreSQL.",
-        "what_it_proves": "A used-car marketplace where the inspection is published as part of the listing and buyers filter on inspection outcomes alongside make, model, year, mileage, price and financing eligibility, with valuation, financing terms and listing availability resolving server-side against a vehicle whose condition has already been established. Live on the web, Google Play and the App Store.",
+        "one_line": "A used-car marketplace in Jordan for buying, financing and insuring inspected vehicles: an Angular web client and iOS and Android apps over one NestJS backend on PostgreSQL. Sameem says he worked on that shared backend.",
+        "what_it_proves": "A used-car marketplace where the inspection report is published as part of the listing, with a financing calculator and insurance in the same flow, and, by Sameem's account, valuation, financing terms and listing availability resolved server-side so the web client and both apps show the same answer. Live on the web, Google Play and the App Store. This page makes no claim about who Dooz was built for.",
         "figures": [
-          "The client reports 150+ inspection points per vehicle",
-          "The client reports 20,000+ verified vehicles on the platform",
-          "The client reports 1.2B+ JD in total transactions supported",
-          "The client reports a 98% customer satisfaction rate"
+          "Live at dooz.com",
+          "On Google Play as com.dooz.app, where the listing shows 100K+ downloads (https://play.google.com/store/apps/details?id=com.dooz.app)",
+          "On the App Store as Dooz Cars (id1627030530)"
         ]
       },
       {
         "project_id": 32,
         "name": "Afriva E-Commerce Platform",
-        "one_line": "A multi-vendor e-commerce marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and real-time delivery tracking over Postgres changes.",
-        "what_it_proves": "Seller separation pushed down into the data layer rather than left as a UI concern, four role-scoped dashboards shipping from one deployment, and server-rendered catalogue pages a crawler can read. General goods rather than automotive, so it evidences the multi-vendor mechanics a dealer marketplace needs, not vehicle domain knowledge.",
+        "one_line": "A multi-vendor e-commerce marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and real-time delivery tracking over Postgres changes. Sameem worked on it as an engineer at Webrange Solutions.",
+        "what_it_proves": "Seller separation pushed down into the data layer rather than left as a UI concern, four role-scoped dashboards from one deployment, and server-rendered catalogue pages a crawler can read. General goods rather than automotive, so it evidences the multi-vendor mechanics a dealer marketplace needs, not vehicle domain knowledge. Its public link is a demo build.",
         "figures": [
-          "The client reports 1,245 active vendors",
-          "The client reports $1.2M in total revenue",
-          "The client reports coverage across 120+ cities"
+          "Demo build of the buyer storefront at afriva-buyer.vercel.app"
         ]
       }
     ],
@@ -421,7 +423,7 @@ export const SOLUTIONS: Solution[] = [
       "Buyer accounts, saved vehicles and enquiry capture"
     ],
     "quoted_separately": [
-      "Native iOS and Android apps alongside the web marketplace. Dooz has both, built in React Native from one codebase, but they are a separate line rather than base scope",
+      "Native iOS and Android apps alongside the web marketplace. Dooz has both, but they are a separate line rather than base scope",
       "Insurer quote integrations. Each partner is scoped individually, because the work depends entirely on what API they expose and what it returns",
       "Lender and payment gateway integrations beyond the first",
       "Automated or AI-assisted valuation. It depends on having enough structured condition data to price against, which a new catalogue does not have on day one",
@@ -432,19 +434,19 @@ export const SOLUTIONS: Solution[] = [
     "faqs": [
       {
         "q": "Can you attach a full inspection report to every listing?",
-        "a": "Yes. On Dooz the inspection is published as part of the listing rather than sent on request, and the client reports 150+ inspection points per vehicle. Buyers filter on inspection outcomes alongside make, model, year, mileage and price. For your build we model each checkpoint as a record rather than a document, because that is what makes condition comparable across a catalogue instead of readable one PDF at a time."
+        "a": "Yes. On Dooz the inspection report is published as part of the listing rather than sent on request. For your build we model each checkpoint as a record rather than a document, because that is what makes condition comparable across a catalogue instead of readable one PDF at a time, and it is what lets buyers filter on inspection outcomes alongside make, model, year, mileage and price."
       },
       {
         "q": "Do I get mobile apps as well as a web marketplace?",
-        "a": "Dooz has both: an Angular web marketplace plus React Native iOS and Android apps, all on one NestJS backend. For a new build, the web marketplace is base scope and the apps are quoted separately. React Native means one codebase serves both stores, so a listing or financing flow is implemented once and behaves the same on each. What that is worth against a web-only scope comes out of the discovery call."
+        "a": "Dooz has both: an Angular web marketplace plus iOS and Android apps, all on one NestJS backend, which is the part Sameem says he worked on. For a new build, the web marketplace is base scope and the apps are quoted separately. React Native or Flutter means one codebase serves both stores, so a listing or financing flow is implemented once and behaves the same on each. What that is worth against a web-only scope comes out of the discovery call."
       },
       {
         "q": "Can buyers apply for financing and get insurance inside the app?",
-        "a": "On Dooz, yes. Financing and insurance attach to a vehicle whose condition has already been established, which is the point of the product. For your build, each lender or insurer is scoped and quoted individually, because the work depends on whether that partner exposes a usable API and how reliable its responses are."
+        "a": "On Dooz, financing and insurance sit in the same flow as a vehicle whose condition has already been established, which is the point of the product. For your build, each lender or insurer is scoped and quoted individually, because the work depends on whether that partner exposes a usable API and how reliable its responses are."
       },
       {
-        "q": "Are the figures on this page yours or the client's?",
-        "a": "The client's, all of them. On Dooz: 150+ inspection points per vehicle, 20,000+ verified vehicles, 1.2B+ JD in total transactions and a 98% customer satisfaction rate. On Afriva: 1,245 active vendors, $1.2M in revenue and coverage across 120+ cities. Every one comes from the clients' own systems. DevoraX did not measure or audit any of them, and the published case studies say the same thing."
+        "q": "Was Dooz a DevoraX client project?",
+        "a": "This page does not claim so. Sameem says he worked on the NestJS backend shared by Dooz's web client and apps, and that is the extent of the claim: no client relationship and no agency engagement are stated. What you can check is the product itself. It is live at dooz.com, on the App Store as Dooz Cars, and on Google Play, where the listing shows 100K+ downloads."
       },
       {
         "q": "What will it cost?",
@@ -456,14 +458,14 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "How do you stop one dealer from seeing another dealer's stock?",
-        "a": "By enforcing ownership in the database rather than the interface. On Afriva each role queries only the slice of data it is entitled to, and because Supabase bundles authentication with Postgres, the identity that signs a user in is the identity the database sees on the query. A hidden row is a presentation choice; a query that cannot return it is a boundary."
+        "a": "By enforcing ownership in the database rather than the interface. On Afriva, which Sameem worked on as an engineer at Webrange Solutions, each role queries only the slice of data it is entitled to, and because Supabase bundles authentication with Postgres, the identity that signs a user in is the identity the database sees on the query. A hidden row is a presentation choice; a query that cannot return it is a boundary."
       },
       {
         "q": "Is this the same build as a general multi-vendor marketplace?",
         "a": "The vendor mechanics overlap: seller accounts, role-separated dashboards, ownership rules in the schema, order state that has to stay fresh on every surface. What differs is uniqueness, since every car is one unit rather than a stock item with a quantity, plus the inspection layer itself. For general goods, start from our multi-vendor marketplace development page."
       }
     ],
-    "word_count": 1444,
+    "word_count": 2680,
     "role": "spoke",
     "hub": "multi-vendor-marketplace-development",
     "related_slugs": [
@@ -474,30 +476,30 @@ export const SOLUTIONS: Solution[] = [
   {
     "slug": "food-truck-ordering-app-development",
     "primary_keyword": "food truck ordering app development company",
-    "h1": "A food truck ordering app development company with a live food truck platform and a live food ordering marketplace",
+    "h1": "Food truck ordering app development: live location, menus and ordering",
     "title": "Food Truck Ordering App Development",
-    "meta_description": "Food truck ordering app development by a two-person team. Proof: Food Magnet, a live food truck platform, and Koor, a live food ordering marketplace.",
-    "hero_answer": "DevoraX builds discovery and ordering apps for food trucks and other mobile vendors, whether you run your own trucks or sign up independent ones. Two live projects sit behind that: Food Magnet, a food truck discovery and vendor platform, and Koor, a homemade-food ordering marketplace. Neither is a food truck ordering app on its own. Fixed price after a free 30-minute discovery call.",
+    "meta_description": "Food truck ordering app development by a two-person studio whose founder worked on Food Magnet, a live food truck platform, at Zencloud. Fixed price.",
+    "hero_answer": "DevoraX builds discovery and ordering apps for food trucks and other mobile vendors, whether you run your own trucks or sign up independent ones. Two products sit behind that. DevoraX's founder, Sameem Amjad, worked on Food Magnet, an existing food truck discovery and vendor platform, as an engineer at Zencloud, and says he worked on Koor, a homemade-food ordering marketplace. Neither is a food truck ordering app on its own. Fixed price after a free 30-minute discovery call.",
     "sections": [
       {
         "heading": "What is included in a food truck ordering app build?",
-        "body": "Base scope is what our two shipped food platforms already contain between them. A customer app that finds nearby vendors and reads current menus. A vendor surface for updating location, menu items, availability and profile. A web admin dashboard for the people who run the platform rather than trade on it. Card payments through Stripe. Push notifications. A realtime channel so an open screen stays in step with the backend instead of polling.\n\nWhich project evidences which matters. Food Magnet's record covers discovery, live location tracking, menus, vendor profiles and four roles, and describes no customer ordering or checkout flow. Koor's record covers ordering and live order status, on home chefs rather than trucks. The proposal says which half each line came from.\n\nAnything neither project evidences sits outside base scope. We have published no work on point-of-sale hardware, kitchen printers or accounting systems, so we will not put them on a proposal as though they were routine. Running costs sit outside the fixed price: AWS, Firebase, Stripe fees and store developer accounts are billed to you by those vendors."
+        "body": "Base scope is what the two food platforms behind this page contain between them. A customer app that finds nearby vendors and reads current menus. A vendor surface for updating location, menu items, availability and profile. A web admin dashboard for the people who run the platform rather than trade on it. Card payments through Stripe. Push notifications. A realtime channel so an open screen stays in step with the backend instead of polling.\n\nWhich product evidences which matters. Food Magnet covers discovery, live location tracking, menus, vendor profiles and four roles, and this page does not claim a customer order-and-checkout flow on it. Koor covers ordering and live order status, on home chefs rather than trucks. The proposal says which half each line came from.\n\nAnything neither product evidences sits outside base scope. Nothing in the DevoraX portfolio covers point-of-sale hardware, kitchen printers or accounting systems, so they will not appear on a proposal as though they were routine. Running costs sit outside the fixed price: AWS, Firebase, Stripe fees and store developer accounts are billed to you by those vendors."
       },
       {
         "heading": "Who is this built for?",
-        "body": "Three kinds of buyer. An operator who wants a branded ordering app for their own trucks. A platform business signing up independent vendors and taking a cut, which is a two-sided marketplace where the supply side happens to move. And market or event organisers who need the vendors on a site to be findable and orderable from a phone while that site is open.\n\nThe common property is that location is state rather than an address. A restaurant can be indexed once and relied on for years. A truck's position has a short useful life, and so does its menu. That one fact changes how search, caching, ranking and notifications have to be built, which is why a generic restaurant ordering template rarely survives contact with a vendor that moves. If your platform is multi-vendor first and mobility is secondary, the weight of the work moves from freshness to vendor onboarding and catalogue structure, which is closer to what Koor's case study describes than to Food Magnet's. Say which one you are on the call, because the two scope differently."
+        "body": "Three kinds of buyer. An operator who wants a branded ordering app for their own trucks. A platform business signing up independent vendors and taking a cut, which is a two-sided marketplace where the supply side happens to move. And market or event organisers who need the vendors on a site to be findable and orderable from a phone while that site is open.\n\nThe common property is that location is state rather than an address. A restaurant can be indexed once and relied on for years. A truck's position has a short useful life, and so does its menu. That one fact changes how search, caching, ranking and notifications have to be built, which is why a generic restaurant ordering template rarely survives contact with a vendor that moves. If your platform is multi-vendor first and mobility is secondary, the weight of the work moves from freshness to vendor onboarding and catalogue structure, which is closer to Koor than to Food Magnet. Say which one you are on the call, because the two scope differently."
       },
       {
-        "heading": "Which builds prove DevoraX has done this before?",
-        "body": "Two, both live, both with a full public case study on this site. Between them they cover the two halves of this page, and neither covers both on its own.\n\nFood Magnet is a food truck discovery and vendor engagement platform. It runs as a Flutter mobile app with a React admin dashboard over a serverless AWS Lambda backend, with Firebase for realtime updates, Firebase and OneSignal for push, and Stripe for payments. Live food truck location tracking is a named part of the stack, and the platform has four user roles: admin, manager, vendor and customer. It is published at foodmagnet.app, on Google Play under com.foodmagnet.foodTruck, and on the App Store. Its record covers discovery, tracking, menus and vendor engagement, not a customer order flow, and the study states we have not published what Stripe charges or on whose behalf. The recorded outcome is descriptive rather than numeric: increased vendor visibility and real-time discovery for customers.\n\nKoor covers the ordering half, on home chefs rather than food trucks. It is a homemade-food marketplace on React Native and NestJS, with Elasticsearch for discovery, Firebase for live order status and AWS for hosting. The client reports 120,000+ completed orders and a 4.8 out of 5 user rating. The customer app is on Google Play under com.koor_user."
+        "heading": "What food platform work stands behind this page?",
+        "body": "Two products. Between them they cover the two halves of this page, neither covers both on its own, and neither was a DevoraX client project.\n\nFood Magnet is a food truck discovery and vendor engagement platform. It runs as a Flutter mobile app with a React admin dashboard over a serverless AWS Lambda backend, with Firebase for realtime updates, Firebase and OneSignal for push, and Stripe for payments. Live truck location tracking is part of the product, and it has four user roles: admin, manager, vendor and customer. Sameem worked on it as an engineer at Zencloud, on a product that already existed; his own account of that work covers React and TypeScript web surfaces, vendor dashboards and admin panels, live GPS tracking, menus, bookings, Apple Pay and Google Pay, and AWS Lambda APIs. It is published at foodmagnet.app, on Google Play as com.foodmagnet.foodTruck, and on the App Store as Food Magnet Vendor.\n\nKoor covers the ordering half, on home chefs rather than food trucks. It is a homemade-food marketplace on React Native and NestJS, with Elasticsearch for discovery, Firebase for live order status and AWS for hosting. Sameem says he worked on it; this page makes no claim about who it was built for. The customer app is on Google Play as com.koor_user, first released in October 2025."
       },
       {
         "heading": "How does live location tracking work when the vendor keeps moving?",
-        "body": "Live location tracking is named in Food Magnet's stack, but we have not published how it is implemented, so what follows is general reasoning rather than an account of that code.\n\nPosition is continuous state, not a request-response value. It changes while the vendor is working and loses its worth as it ages, so the system needs a write path running on its own schedule rather than only when someone taps something. On the device the trade is between truthfulness and cost, because frequent sampling keeps the data accurate and spends battery and cellular data on a handset the vendor is also using to run a business.\n\nOn the read side, proximity is a spatial query with a freshness constraint attached, and the failure mode deserves as much attention as the happy path. A position that cannot be refreshed is better shown as unknown than as a stale value presented with the confidence of a live one. A confident wrong answer costs a customer a wasted journey."
+        "body": "Live location tracking is part of Food Magnet, but this page does not describe how it is implemented there, so what follows is general reasoning rather than an account of that code.\n\nPosition is continuous state, not a request-response value. It changes while the vendor is working and loses its worth as it ages, so the system needs a write path running on its own schedule rather than only when someone taps something. On the device the trade is between truthfulness and cost, because frequent sampling keeps the data accurate and spends battery and cellular data on a handset the vendor is also using to run a business.\n\nOn the read side, proximity is a spatial query with a freshness constraint attached, and the failure mode deserves as much attention as the happy path. A position that cannot be refreshed is better shown as unknown than as a stale value presented with the confidence of a live one. A confident wrong answer costs a customer a wasted journey."
       },
       {
         "heading": "How is vendor, operator and customer data kept separate?",
-        "body": "Food Magnet has four roles across two clients: admin, manager, vendor and customer, on a mobile app and a web dashboard. That configuration is exactly where authorization tends to go wrong, because each client can look correct while enforcing a slightly different reading of the same rule.\n\nA check in the client is a user interface decision. It is useful for hiding controls a person cannot use, and it is not a security boundary, because the request it guards can be issued without going through the interface at all. The boundary belongs where every client passes through, which on Food Magnet is the Lambda layer, and on Koor is the single NestJS service allowed to write authoritative order data.\n\nThe same reasoning is why an admin dashboard is a separate web client rather than a privileged mode inside the consumer app. Keeping operational capability out of the app customers install limits what a compromised customer session can reach. We have not published either project's permission table, so the structure is what we can state and the rules inside it are yours to define."
+        "body": "Food Magnet has four roles across two clients: admin, manager, vendor and customer, on a mobile app and a web dashboard. That configuration is exactly where authorization tends to go wrong, because each client can look correct while enforcing a slightly different reading of the same rule.\n\nA check in the client is a user interface decision. It is useful for hiding controls a person cannot use, and it is not a security boundary, because the request it guards can be issued without going through the interface at all. The boundary belongs where every client passes through, which on Food Magnet is the Lambda layer, and on Koor is the single NestJS service allowed to write authoritative order data.\n\nThe same reasoning is why an admin dashboard is a separate web client rather than a privileged mode inside the consumer app. Keeping operational capability out of the app customers install limits what a compromised customer session can reach. Neither write-up publishes a permission table, so the structure is what this page can state and the rules inside it are yours to define."
       },
       {
         "heading": "How does the build run, and what do you need from us?",
@@ -509,29 +511,32 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "What happens after launch, and who owns the code?",
-        "body": "You own all code and IP on final payment. No licence-back, no hosting lock, no arrangement where the repository stays with us. It is handed over in your accounts, on your infrastructure, and you can take it to another developer the week after launch.\n\nSupport after launch is scoped and quoted separately rather than folded into the build price. We would rather quote it against what the product actually needs once it is live than charge you in advance for a retainer neither of us can size yet.\n\nEvery project we deliver gets a published case study, including the parts we could not evidence. Food Magnet's study states plainly that its outcome carries no metrics and that the tracking implementation was never published. Twenty-five delivered projects, twenty-five public studies."
+        "body": "You own all code and IP on final payment. No licence-back, no hosting lock, no arrangement where the repository stays with us. It is handed over in your accounts, on your infrastructure, and you can take it to another developer the week after launch.\n\nSupport after launch is scoped and quoted separately rather than folded into the build price. We would rather quote it against what the product actually needs once it is live than charge you in advance for a retainer neither of us can size yet."
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "If you need point-of-sale integration, kitchen hardware, a driver dispatch and routing engine, or a named compliance regime signed off, we have not shipped those and will not learn on your budget. Hire a supplier with that exact scope already in their portfolio.\n\nIf you need a supplier who has already shipped ordering and checkout inside a food truck product, we are not it. Food Magnet is the food truck half and its record describes no order flow. Koor is the ordering half and its vendors are home chefs. That gap is real and you should price it into the decision.\n\nIf you need a contractual delivery date you can hold a supplier to, look elsewhere: we do not publish timelines and will not invent one on a first call to win the work. And if you want a large team, an account manager and a 24/7 support desk, we are two people. You deal directly with whoever writes the code, and there is nobody else to hand the work to when they are unavailable."
+        "body": "If you need point-of-sale integration, kitchen hardware, a driver dispatch and routing engine, or a named compliance regime signed off, nothing in the DevoraX portfolio covers those, and your budget is the wrong place to learn them. Hire a supplier with that exact scope already in their portfolio.\n\nIf you need a supplier who has already shipped ordering and checkout inside a food truck product, we are not it. Food Magnet is the food truck half, and this page does not claim an order flow on it. Koor is the ordering half, and its vendors are home chefs. That gap is real and you should price it into the decision.\n\nIf you need a contractual delivery date you can hold a supplier to, look elsewhere: we do not publish timelines and will not invent one on a first call to win the work. And if you want a large team, an account manager and a round-the-clock support desk, we are two people. You deal directly with whoever writes the code, and there is nobody else to hand the work to when they are unavailable."
       }
     ],
     "proof": [
       {
         "project_id": 14,
         "name": "Food Magnet",
-        "one_line": "A food truck discovery and vendor engagement platform built as a Flutter mobile app and a React admin dashboard over a serverless AWS Lambda backend, live on web, Android and iOS.",
-        "what_it_proves": "The food truck half: live truck location tracking, menu management, vendor profiles, a four-role model of admin, manager, vendor and customer, Stripe payments, Firebase realtime updates and Firebase plus OneSignal push, shipped to three published surfaces. It does not evidence a customer ordering and checkout flow, and we have not published what Stripe charges or on whose behalf.",
-        "figures": []
+        "one_line": "A food truck discovery and vendor engagement platform built as a Flutter mobile app and a React admin dashboard over a serverless AWS Lambda backend, live on web, Android and iOS. Sameem worked on this existing product as an engineer at Zencloud.",
+        "what_it_proves": "The food truck half: live truck location tracking, menu management, vendor profiles, a four-role model of admin, manager, vendor and customer, Stripe payments, Firebase realtime updates and Firebase plus OneSignal push, on three published surfaces. This page does not claim a customer ordering and checkout flow on it.",
+        "figures": [
+          "Live at foodmagnet.app",
+          "On Google Play as com.foodmagnet.foodTruck",
+          "On the App Store as Food Magnet Vendor (id6444549450)"
+        ]
       },
       {
         "project_id": 17,
         "name": "Koor Food Delivery",
-        "one_line": "A homemade-food marketplace on React Native and NestJS, with Elasticsearch for discovery, Firebase for live order status and AWS (EC2, S3, CloudFront) for hosting.",
-        "what_it_proves": "The ordering and delivery half at real volume, on home chefs rather than food trucks: search over a supply that changes constantly, live order status pushed rather than polled, and authoritative order writes held behind a single service layer.",
+        "one_line": "A homemade-food marketplace on React Native and NestJS, with Elasticsearch for discovery, Firebase for live order status and AWS (EC2, S3, CloudFront) for hosting. Sameem says he worked on it.",
+        "what_it_proves": "The ordering half, on home chefs rather than food trucks: search over a supply that changes constantly, live order status pushed rather than polled, and authoritative order writes held behind a single service layer. This page makes no claim about who Koor was built for.",
         "figures": [
-          "The client reports 120,000+ completed orders",
-          "The client reports a user rating of 4.8 out of 5"
+          "On Google Play as com.koor_user, first released October 2025"
         ]
       }
     ],
@@ -540,12 +545,12 @@ export const SOLUTIONS: Solution[] = [
       "Vendor surface for updating location, menu items, availability and profile",
       "Live location tracking for vendors that move during a working day",
       "React web admin dashboard for the people operating the platform",
-      "Role model with authorization enforced server-side (Food Magnet ships admin, manager, vendor and customer)",
+      "Role model with authorization enforced server-side (Food Magnet has admin, manager, vendor and customer)",
       "Card payments through Stripe, including idempotent webhook handling",
       "Push notifications via Firebase Cloud Messaging and OneSignal",
       "Realtime order and status updates pushed over a Firebase subscription instead of client polling",
       "Cloud object storage and CDN delivery for menu and vendor imagery",
-      "Search and discovery over changing vendor supply (Elasticsearch, as used on Koor)"
+      "Search and discovery over changing vendor supply (Elasticsearch, as on Koor)"
     ],
     "quoted_separately": [
       "Cloud and third-party running costs: AWS, Firebase and Stripe processing fees, billed to you by those vendors",
@@ -555,15 +560,15 @@ export const SOLUTIONS: Solution[] = [
       "A second mobile platform where only one is in the agreed base scope",
       "Brand identity and design work beyond the agreed screen set"
     ],
-    "when_not_to_hire": "Not us if you need point-of-sale integration, kitchen hardware, a driver dispatch and routing engine, or a named compliance regime signed off. We have shipped none of those. Not us if you need a supplier that has already shipped ordering and checkout inside a food truck product: for us those are two different projects. Not us if you need a contractual delivery date, because we do not publish timelines and will not invent one. Not us if you want an account manager and a 24/7 support desk, because DevoraX is two people. And if a $2,900 to $7,500 range is above budget, a no-code ordering product will serve you better.",
+    "when_not_to_hire": "Not us if you need point-of-sale integration, kitchen hardware, a driver dispatch and routing engine, or a named compliance regime signed off. Nothing in the DevoraX portfolio covers those. Not us if you need a supplier that has already shipped ordering and checkout inside a food truck product: in the work behind this page, those are two different products. Not us if you need a contractual delivery date, because we do not publish timelines and will not invent one. Not us if you want an account manager and a round-the-clock support desk, because DevoraX is two people. And if a $2,900 to $7,500 range is above budget, a no-code ordering product will serve you better.",
     "faqs": [
       {
         "q": "Have you actually built a food truck app, or just a restaurant app?",
-        "a": "Food Magnet is a food truck discovery and vendor engagement platform with live truck location tracking, menu management and vendor profiles, published on web, Android and iOS. Its record describes no customer ordering or checkout flow. Koor is a homemade-food ordering marketplace on React Native and NestJS, so it evidences the ordering half, on home chefs rather than trucks. Both case studies state those limits. Read them before the call."
+        "a": "Not as DevoraX. Its founder, Sameem Amjad, worked on Food Magnet, a food truck discovery and vendor platform with live truck location tracking, menu management and vendor profiles, as an engineer at Zencloud. It is published on web, Android and iOS, and this page does not claim a customer ordering and checkout flow on it. Koor, which Sameem says he worked on, is a homemade-food ordering marketplace on React Native and NestJS, so it covers the ordering half, on home chefs rather than trucks. Read both write-ups before the call."
       },
       {
         "q": "Can you build the customer app, the vendor app and the admin dashboard?",
-        "a": "Food Magnet ships a Flutter mobile app and a React web admin dashboard over one AWS Lambda backend, with four roles: admin, manager, vendor and customer. Whether vendors get a separate app or a role inside one app is a scoping decision we make on the call. Both cost more than a single-surface customer app, and the proposal states which one you are buying. Koor's case study covers the multi-vendor version of the same problem."
+        "a": "Food Magnet runs a Flutter mobile app and a React web admin dashboard over one AWS Lambda backend, with four roles: admin, manager, vendor and customer. Whether vendors get a separate app or a role inside one app is a scoping decision we make on the call. Both cost more than a single-surface customer app, and the proposal states which one you are buying. Koor's write-up covers the multi-vendor version of the same problem."
       },
       {
         "q": "Do you ship iOS as well as Android?",
@@ -571,11 +576,11 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "How accurate will the live location be?",
-        "a": "We have not published Food Magnet's tracking implementation and will not claim a figure for it. In general, accuracy on a moving vendor is a trade against battery and cellular data on a phone the vendor is also using to work. The question worth arguing about on your project is what the app shows when a position cannot be refreshed. Stale data presented as live is the expensive failure."
+        "a": "This page does not describe Food Magnet's tracking implementation and claims no accuracy figure for it. In general, accuracy on a moving vendor is a trade against battery and cellular data on a phone the vendor is also using to work. The question worth arguing about on your project is what the app shows when a position cannot be refreshed. Stale data presented as live is the expensive failure."
       },
       {
         "q": "Do you take a percentage of orders or transactions?",
-        "a": "No. We charge a fixed price for the build and nothing on your revenue. Food Magnet's record names Stripe under payments, and Stripe's processing fees are billed to you directly by Stripe rather than through us. Your Stripe account, your money. The same applies to AWS, Firebase and app store developer fees, which are not marked up."
+        "a": "No. We charge a fixed price for the build and nothing on your revenue. Food Magnet takes payments through Stripe, and Stripe's processing fees are billed to you directly by Stripe rather than through us. Your Stripe account, your money. The same applies to AWS, Firebase and app store developer fees, which are not marked up."
       },
       {
         "q": "What happens if something breaks after launch?",
@@ -587,10 +592,10 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Why would I trust a two-person team with this?",
-        "a": "Check rather than trust. DevoraX has been running since 2019, has delivered 25 projects, and every one has a published case study on this site, including the ones whose outcomes carry no numbers. Our public Fiverr profile shows 20 five-star reviews from 16 clients across four countries, three of them repeat clients. Food Magnet and Koor are both downloadable today."
+        "a": "Check rather than trust. DevoraX has been running since 2019. Sameem's Fiverr profile shows a 5.0 rating across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Both food products on this page can be downloaded today, Food Magnet from both app stores and Koor from Google Play, and their write-ups say whose work each one was."
       }
     ],
-    "word_count": 1576,
+    "word_count": 2750,
     "role": "spoke",
     "hub": "multi-vendor-marketplace-development",
     "related_slugs": [
@@ -603,8 +608,8 @@ export const SOLUTIONS: Solution[] = [
     "primary_keyword": "crossfit competition leaderboard app development company",
     "h1": "CrossFit Competition and Leaderboard App Development",
     "title": "CrossFit Competition App Development",
-    "meta_description": "We built one competition and leaderboard platform: WOD Pro League, in Flutter and Node.js. The client reports 12,778 athletes. Fixed-price, code is yours.",
-    "hero_answer": "DevoraX is a two-person studio that builds competition and leaderboard software for functional fitness. We have shipped one: WOD Pro League, a Flutter athlete app on iOS and Android, a React organizer dashboard, and a Node.js backend where scoring and ranking are computed server-side. The client reports 12,778 athletes and 8,567 submitted scores. Founded 2019, fixed-price, case study published.",
+    "meta_description": "Competition and leaderboard app development: server-side ranking and live standings, from an engineer who worked on WOD Pro League at Zencloud. Fixed price.",
+    "hero_answer": "DevoraX is a two-person studio that builds competition and leaderboard software for functional fitness. Its founder, Sameem Amjad, worked on one such platform as an engineer at Zencloud: WOD Pro League, a Flutter athlete app, a React organizer dashboard and a Node.js backend where scoring and ranking are computed server-side and pushed live over Socket.io and Redis. Sameem's part was the backend. The league's organizers are quoted on zencloudtechnologies.com saying more than 600 athletes joined in its first season; its own site and store listings are no longer live. Founded 2019, fixed-price.",
     "sections": [
       {
         "heading": "What do you actually ship in a competition and leaderboard app?",
@@ -612,19 +617,19 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "Who is this built for?",
-        "body": "Anyone whose product is a ranking. Online qualifiers, multiple divisions, workouts released on a schedule, scores submitted against a deadline, a qualification cut at the end. If the standings are wrong or late, nothing else about the app matters to an athlete.\n\nWe have built that shape once, for one operator. The WOD Pro League record does not describe its client as a federation, a gym chain or an event organizer, so we do not list them as segments we serve. What the record does state is the problem the build addressed: athletes lacked a comprehensive platform to compete across global regions with real-time tracking and analysis. That platform runs global online competition, and that is the shape we can show you.\n\nBe honest about your own scale on the discovery call. A one-off throwdown for a single affiliate does not need Redis, Socket.io and a serverless backend, and we will tell you so. This architecture earns its cost when submissions arrive in deadline-hour bursts rather than a trickle."
+        "body": "Anyone whose product is a ranking. Online qualifiers, multiple divisions, workouts released on a schedule, scores submitted against a deadline, a qualification cut at the end. If the standings are wrong or late, nothing else about the app matters to an athlete.\n\nSameem has worked on that shape once, as an engineer at Zencloud, on WOD Pro League. Its write-up does not describe the league's operator as a federation, a gym chain or an event organizer, so this page does not list those as segments DevoraX serves. The problem the product addressed is narrower and clearer: athletes needed one platform to compete online across regions, with standings tracked as scores came in. That is the shape the work evidences.\n\nBe honest about your own scale on the discovery call. A one-off throwdown for a single affiliate does not need Redis, Socket.io and a serverless backend, and we will tell you so. This architecture earns its cost when submissions arrive in deadline-hour bursts rather than a trickle."
       },
       {
-        "heading": "Which build proves you have done this before?",
-        "body": "One build, and it is public. WOD Pro League is a global functional fitness competition platform: a Flutter app on the App Store and Google Play, a web platform at wodproleague.es, a React administrative dashboard, and a Node.js backend on AWS with Redis and Socket.io handling real-time data.\n\nThe client reports 12,778 total athletes and 8,567 submitted scores, competitions listed as 24/7 active, a 68.3% qualification rate, and reach across more than 120 countries. Those are the client's figures, not measurements DevoraX took or audited. The one that carries technical weight is the submitted-score count, because every entry is a write that had to be accepted, ranked and pushed out to connected clients without breaking the integrity of a live leaderboard.\n\nThe web platform and both store listings have since been taken down, so the build is no longer publicly inspectable; the full engineering case study is published on this site at /projects/31."
+        "heading": "What competition platform work stands behind this page?",
+        "body": "One product. WOD Pro League is a functional fitness competition platform: a Flutter athlete app for iOS and Android, a web platform, a React administrative dashboard, and a Node.js backend on AWS with Redis and Socket.io handling real-time data. Sameem Amjad, DevoraX's founder, worked on its backend as an engineer at Zencloud: the Node.js and Express services and the Socket.io and Redis leaderboard. It was Zencloud's project, not a DevoraX engagement, and Zencloud's own site credits it.\n\nThe one public figure comes from the league's organizers, who are quoted on zencloudtechnologies.com saying that more than 600 athletes joined in the first season.\n\nThe league's own site and its App Store and Google Play listings are no longer live, so the product cannot be opened today. The engineering write-up is at /projects/31."
       },
       {
         "heading": "How does the leaderboard hold up at a submission deadline?",
-        "body": "Competition traffic is not flat. It clusters around workout releases and submission deadlines, then falls away between events. The peak decides whether athletes trust the platform.\n\nThree decisions carry that load in WOD Pro League. Redis holds the ranked score data, because a leaderboard is a ranking query and re-sorting a primary database on every submission does not survive a burst. Socket.io replaces polling with persistent push channels, and its transport negotiation and reconnection matter because athletes move between cellular and wifi mid-session. AWS Lambda scales out per invocation and back down afterwards, so capacity follows the competition calendar rather than a fixed fleet sized for the average.\n\nWe publish no concurrency, latency or throughput figures and will not estimate any; the only counts in the record are the client's, and they are cumulative totals, not peak load. Timing is the quieter problem: deadlines are held in absolute time on the server and shown in local time in the client, so a cutoff means the same instant everywhere."
+        "body": "Competition traffic is not flat. It clusters around workout releases and submission deadlines, then falls away between events. The peak decides whether athletes trust the platform.\n\nThree decisions carry that load in WOD Pro League. Redis holds the ranked score data, because a leaderboard is a ranking query and re-sorting a primary database on every submission does not survive a burst. Socket.io replaces polling with persistent push channels, and its transport negotiation and reconnection matter because athletes move between cellular and wifi mid-session. AWS Lambda scales out per invocation and back down afterwards, so capacity follows the competition calendar rather than a fixed fleet sized for the average.\n\nThis page publishes no concurrency, latency or throughput figures for WOD Pro League and will not estimate any. Timing is the quieter problem: deadlines are held in absolute time on the server and shown in local time in the client, so a cutoff means the same instant everywhere."
       },
       {
         "heading": "How separate are the athlete side and the organizer side?",
-        "body": "Separate clients, one shared backend. Three client surfaces, the Flutter athlete app, the web platform and the React administrative dashboard, sit on one Node.js service layer. The athlete app submits and displays. It cannot compute or alter a rank, because the scoring and ranking logic lives on the server, which is what makes every surface agree.\n\nBe clear on what that is: separation of surfaces and of authority, not of data. We have published nothing on roles, permissions, row-level access or anti-cheat for WOD Pro League, so we will not describe an access model we cannot evidence. Server-side ranking alone does not stop a tampered client posting a false score through the same API; submission validation and judging do, and both are rules you define.\n\nIf you need a written access model, or several organizers running isolated competitions from one instance, raise it on the call. Role-separated dashboards over one shared backend is a pattern we describe on our multi-vendor marketplace development page, at /solutions/multi-vendor-marketplace-development."
+        "body": "Separate clients, one shared backend. Three client surfaces, the Flutter athlete app, the web platform and the React administrative dashboard, sit on one Node.js service layer. The athlete app submits and displays. It cannot compute or alter a rank, because the scoring and ranking logic lives on the server, which is what makes every surface agree.\n\nBe clear on what that is: separation of surfaces and of authority, not of data. WOD Pro League's write-up documents no roles, permissions, row-level access or anti-cheat model, so this page does not describe one. Server-side ranking alone does not stop a tampered client posting a false score through the same API; submission validation and judging do, and both are rules you define.\n\nIf you need a written access model, or several organizers running isolated competitions from one instance, raise it on the call. Role-separated dashboards over one shared backend is a pattern described on our multi-vendor marketplace development page, at /solutions/multi-vendor-marketplace-development."
       },
       {
         "heading": "What does the build process look like, and what do you need from us?",
@@ -636,25 +641,21 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "What happens after launch, and who owns the code?",
-        "body": "You own all code and IP on final payment. That covers the Flutter app, the backend services, the admin dashboard and the infrastructure configuration. That transfer is the commitment we publish, and it is the one worth holding us to in writing.\n\nSupport after handover is scoped and quoted separately rather than assumed. Competition platforms have a particular operational shape: the risk is concentrated into a few hours around a deadline, so the useful question is not a generic uptime promise but who is reachable during your qualifier window and how you reach them. Settle that before your first event, not during it.\n\nDevoraX is two people, Sameem Amjad and Usman, working since 2019 across 25 delivered projects, every one with a published case study. Price that constraint in. It also means the people who wrote your ranking pipeline are the people who answer when it misbehaves."
+        "body": "You own all code and IP on final payment. That covers the Flutter app, the backend services, the admin dashboard and the infrastructure configuration. That transfer is the commitment we publish, and it is the one worth holding us to in writing.\n\nSupport after handover is scoped and quoted separately rather than assumed. Competition platforms have a particular operational shape: the risk is concentrated into a few hours around a deadline, so the useful question is not a generic uptime promise but who is reachable during your qualifier window and how you reach them. Settle that before your first event, not during it.\n\nDevoraX is two people, Sameem Amjad and Usman, working since 2019. Price that constraint in. It also means the people who wrote your ranking pipeline are the people who answer when it misbehaves."
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "Do not hire us for on-site live event production: heat scheduling against physical floor lanes, judge tablets running offline in a venue with no signal, arena screen graphics. We have shipped online competition with real-time leaderboards. We have not shipped venue floor operations, and buying that from a team learning it during your event is a bad trade for both of us.\n\nSkip us too if you need coverage in your timezone on a rota, or an agency with a bench it can surge onto a fixed event date. Two people cannot honestly promise either.\n\nAnd if you only need scoring for one gym's internal throwdown, a spreadsheet or an existing off-the-shelf scoring tool will beat a custom build on both cost and time to your first event. Come back when you are running qualifiers at a scale that breaks them."
+        "body": "Do not hire us for on-site live event production: heat scheduling against physical floor lanes, judge tablets running offline in a venue with no signal, arena screen graphics. The competition work behind this page is online competition with real-time leaderboards. Nothing in the DevoraX portfolio covers venue floor operations, and buying that from a team learning it during your event is a bad trade for both of us.\n\nSkip us too if you need coverage in your timezone on a rota, or an agency with a bench it can surge onto a fixed event date. Two people cannot honestly promise either.\n\nAnd if you only need scoring for one gym's internal throwdown, a spreadsheet or an existing off-the-shelf scoring tool will beat a custom build on both cost and time to your first event. Come back when you are running qualifiers at a scale that breaks them."
       }
     ],
     "proof": [
       {
         "project_id": 31,
         "name": "WOD Pro League",
-        "one_line": "A global functional fitness competition platform: a Flutter athlete app on iOS and Android, a web platform, and a React administrative dashboard, all on a Node.js and AWS backend with Redis and Socket.io driving real-time leaderboards. The public surfaces have since been retired.",
-        "what_it_proves": "That DevoraX has shipped what this page sells: server-side scoring and ranking that every client renders identically, live leaderboard delivery over persistent Socket.io channels, Redis-backed ranking built for deadline-hour submission bursts, serverless capacity that follows a competition calendar, and an organizer dashboard covering events, divisions, workouts, score review and qualification. Shipped to both app stores and publicly inspectable. It does not evidence access control, anti-cheat, multi-tenancy, payments or video judging.",
+        "one_line": "A functional fitness competition platform: a Flutter athlete app for iOS and Android, a web platform and a React administrative dashboard on a Node.js and AWS backend, with Redis and Socket.io driving real-time leaderboards. Sameem worked on the backend as an engineer at Zencloud. The league's site and store listings are no longer live.",
+        "what_it_proves": "The core of what this page sells: server-side scoring and ranking that every client renders identically, live leaderboard delivery over persistent Socket.io channels, Redis-backed ranking for deadline-hour submission bursts, and serverless capacity that follows a competition calendar. It was Zencloud's project rather than a DevoraX engagement, and it does not evidence access control, anti-cheat, multi-tenancy or video judging.",
         "figures": [
-          "The client reports 12,778 total athletes",
-          "The client reports 8,567 submitted scores",
-          "The client reports a 68.3% qualification rate",
-          "The client reports competitions running 24/7 active",
-          "The client reports reach across more than 120 countries"
+          "Organizers' quote on zencloudtechnologies.com: \"more than 600 athletes joined\" in the first season"
         ]
       }
     ],
@@ -678,19 +679,19 @@ export const SOLUTIONS: Solution[] = [
       "Multi-tenant hosting where independent federations share one deployment with partitioned data",
       "Ongoing support, monitoring and app store release management after handover"
     ],
-    "when_not_to_hire": "Do not hire us for on-site live event production. Heat scheduling against floor lanes, offline judge tablets in a venue with no signal, arena screen graphics: we have not shipped those, and your event is the wrong place for us to learn. Skip us if you need timezone coverage on a rota or a bench to surge onto a fixed date, because two people cannot promise it. And for one gym's internal throwdown, a spreadsheet will beat a custom build on cost and on time to your first event.",
+    "when_not_to_hire": "Do not hire us for on-site live event production. Heat scheduling against floor lanes, offline judge tablets in a venue with no signal, arena screen graphics: nothing in the DevoraX portfolio covers those, and your event is the wrong place for us to learn. Skip us if you need timezone coverage on a rota or a bench to surge onto a fixed date, because two people cannot promise it. And for one gym's internal throwdown, a spreadsheet will beat a custom build on cost and on time to your first event.",
     "faqs": [
       {
-        "q": "Is the athlete app built in React Native?",
-        "a": "No. WOD Pro League's athlete app is Flutter, compiled from one Dart codebase to native iOS and Android builds, and both are live on the App Store and Google Play. Flutter renders its own widgets through a compiled pipeline, which keeps a long leaderboard list scrolling predictably while incoming socket events mutate it underneath the athlete reading it."
+        "q": "Will the athlete app be Flutter or React Native?",
+        "a": "Either works, and the choice is made in discovery. WOD Pro League's athlete app was Flutter, compiled from one Dart codebase to iOS and Android; Sameem's part was the backend it talked to. Flutter renders its own widgets through a compiled pipeline, which keeps a long leaderboard list scrolling predictably while incoming socket events change it underneath the athlete reading it."
       },
       {
         "q": "Can the leaderboard update live while scores are still being submitted?",
-        "a": "Yes, that is the core of the build. Connected clients hold persistent Socket.io channels and receive standings changes as pushed events instead of polling for them. Ranked score data sits in Redis, so a position query is answered in memory. WOD Pro League runs this pattern, and the client reports 8,567 submitted scores through it."
+        "a": "Yes, that is the core of the build. Connected clients hold persistent Socket.io channels and receive standings changes as pushed events instead of polling for them. Ranked score data sits in Redis, so a position query is answered in memory. WOD Pro League ran this pattern, and by Sameem's account the Socket.io and Redis leaderboard was the part he built as an engineer at Zencloud."
       },
       {
         "q": "What stops an athlete submitting a false score?",
-        "a": "Your rules do, not our architecture. Ranking runs server-side in WOD Pro League, so no client can rewrite a placement, but a tampered client can still post a score through the same API. We have not published any anti-cheat or validation tooling on that build, so we claim none. Video review, judging queues and appeals are quoted as a separate workstream. Tell us how you verify a score today and it gets priced as defined work."
+        "a": "Your rules do, not our architecture. Ranking ran server-side in WOD Pro League, so no client could rewrite a placement, but a tampered client could still post a score through the same API. Its write-up documents no anti-cheat or validation tooling, so this page claims none. Video review, judging queues and appeals are quoted as a separate workstream. Tell us how you verify a score today and it gets priced as defined work."
       },
       {
         "q": "How long does a build like this take?",
@@ -698,22 +699,22 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Can you take entry fee payments and pay out prize money?",
-        "a": "Payments are scoped and quoted separately. Nothing in the WOD Pro League record covers entry fees, payouts or subscription billing, so we are not going to imply we have shipped it. Bring your payment provider, the jurisdictions you sell into and your payout model to the discovery call, and it gets priced as defined work."
+        "a": "Payments are scoped and quoted separately. Sameem's own account of WOD Pro League mentions a Stripe integration, but this page documents no entry-fee, payout or subscription flow on it and claims none. Bring your payment provider, the jurisdictions you sell into and your payout model to the discovery call, and it gets priced as defined work."
       },
       {
         "q": "Can several federations run on one installation, each seeing only their own data?",
-        "a": "That is multi-tenancy, and it is a different data model from the one WOD Pro League runs. We have not shipped tenant-partitioned competition hosting, so treat it as scoped work rather than something we have proven. It is answerable, but it has to be decided before the schema is written rather than retrofitted. Our multi-vendor marketplace development page covers role-separated dashboards on a shared backend, which is related but not the same thing."
+        "a": "That is multi-tenancy, and it is a different data model from the one WOD Pro League ran. Nothing in the DevoraX portfolio includes tenant-partitioned competition hosting, so treat it as scoped work rather than something proven. It is answerable, but it has to be decided before the schema is written rather than retrofitted. Our multi-vendor marketplace development page covers role-separated dashboards on a shared backend, which is related but not the same thing."
       },
       {
         "q": "Who owns the app once it is built?",
         "a": "You do. All code and IP transfer on final payment, including the Flutter app, the backend services, the admin dashboard and the infrastructure configuration. Whose Apple Developer, Google Play and cloud accounts the build ships under is a scoping decision, not something we state as house practice, so get it named in the proposal before the first release."
       },
       {
-        "q": "How do I verify you actually shipped this?",
-        "a": "The public surfaces have been retired since delivery — wodproleague.es no longer responds and both store listings have been removed — so this one cannot be opened and inspected. The full engineering case study, including the architecture decisions and the client's reported figures, is published at /projects/31. All 25 DevoraX projects have a published case study, so nothing here is a private reference."
+        "q": "Can I see WOD Pro League?",
+        "a": "Not any more. The league's own site and its App Store and Google Play listings are no longer live, so the product cannot be opened today. What remains public is Zencloud's own page crediting the project, where the organizers are quoted saying more than 600 athletes joined in the first season, and the engineering write-up at /projects/31. It was Zencloud's project; Sameem worked on its backend as an engineer there."
       }
     ],
-    "word_count": 1502,
+    "word_count": 2578,
     "role": "spoke",
     "related_slugs": [
       "food-truck-ordering-app-development"
@@ -725,28 +726,28 @@ export const SOLUTIONS: Solution[] = [
     "primary_keyword": "Duffel API integration development for travel booking platforms",
     "h1": "Duffel API integration development for travel booking platforms",
     "title": "Duffel API Integration for Travel Platforms",
-    "meta_description": "Duffel API integration for travel booking platforms. We shipped Barfly Risk Engine on Node.js and Duffel, live at got2.travel. Fixed price, code is yours.",
-    "hero_answer": "DevoraX is a software agency founded in 2019. We have built one Duffel API integration for a live travel product: Barfly Risk Engine, a Node.js system that pairs Duffel flight data with heuristic algorithms to score transfer risk on codeshare and non-codeshare itineraries in real time. It is live at got2.travel and the case study is public.",
+    "meta_description": "Duffel API integration for travel booking platforms, from an engineer who worked on a Duffel-based risk module at Zencloud, live in got2.travel. Fixed price.",
+    "hero_answer": "DevoraX is a two-person software studio founded in 2019. Its founder, Sameem Amjad, has worked on one Duffel API integration for a live travel product, as an engineer at Zencloud: Barfly, a Node.js risk module that pairs Duffel flight data with heuristic rules to assess transfer risk on codeshare and non-codeshare itineraries. It runs inside got2.travel. DevoraX now takes Duffel integration work directly, at a fixed price.",
     "sections": [
       {
         "heading": "What does a Duffel API integration from DevoraX include?",
-        "body": "The base scope is the integration and the layer you own around it. Duffel sits behind your own Node.js service rather than in your front end, so credentials never reach a browser and supplier behaviour can change without shipping a client release.\n\nInside that service we build the itinerary model. A connecting flight is not one product. It is two or more separately operated segments joined by a layover, and on a codeshare the carrier that sells a segment is not the carrier that operates it. We carry marketing and operating identity separately through the model instead of collapsing them into a single airline field, because any rule that depends on a carrier has to know which carrier it means.\n\nScoring and annotation sit on top of that structure. The full base scope is listed below, and so is what we quote separately. Order creation and ticketing are on the second list for a reason we set out further down."
+        "body": "The base scope is the integration and the layer you own around it. Duffel sits behind your own Node.js service rather than in your front end, so credentials never reach a browser and supplier behaviour can change without shipping a client release.\n\nInside that service we build the itinerary model. A connecting flight is not one product. It is two or more separately operated segments joined by a layover, and on a codeshare the carrier that sells a segment is not the carrier that operates it. We carry marketing and operating identity separately through the model instead of collapsing them into a single airline field, because any rule that depends on a carrier has to know which carrier it means.\n\nScoring and annotation sit on top of that structure. The full base scope is listed below, and so is what we quote separately. Order creation and ticketing are on the second list for a reason set out further down."
       },
       {
-        "heading": "Which build proves DevoraX has shipped this?",
-        "body": "Barfly Risk Engine. It is a Node.js flight transfer risk assessment system that integrates the Duffel API with heuristic algorithms to produce real-time risk predictions for codeshare and non-codeshare itineraries, with React.js as the interface technology. The build also includes an AI travel assistant, disruption prediction and a global flight risk index. It is live at got2.travel and the full case study is at /projects/29.\n\nThe client reports 88% on-time performance and 78% flight risk prediction accuracy, describes user satisfaction as high, and gives the disruption prediction level as moderate. Those four figures are the whole of the reported numbers. DevoraX did not measure or audit them and how they were arrived at has not been published, so they are reproduced exactly as reported.\n\nThat is one project, not a portfolio of them. DevoraX has delivered 25 projects since 2019, each with a published case study. Barfly is the one that evidences Duffel."
+        "heading": "What Duffel work stands behind this page?",
+        "body": "Barfly. It is a flight transfer risk assessment module on Node.js that integrates Duffel API data with heuristic algorithms to assess disruption risk for codeshare and non-codeshare itineraries, with React.js on the interface side. It runs inside got2.travel, a live travel product. Sameem Amjad, DevoraX's founder, worked on it as an engineer at Zencloud, and by his account he architected the module, from the Duffel integration to the risk heuristics. It was Zencloud's project, not a DevoraX engagement. The write-up is at /projects/29.\n\nThat is one project, not a portfolio of them, and this page makes no claim about how accurate its predictions are. What it evidences is the engineering: a Duffel integration taken into a live product, with domain logic built on top of it."
       },
       {
-        "heading": "What does the Barfly record not prove?",
-        "body": "The published record covers the search and assessment path. It does not document order creation, payment or ticketing, so this page claims none. If your product needs booking through to an issued ticket, that is work we will scope and quote against proof that stops short of it.\n\nNor does it describe the internals. It states that the engine treats codeshare and non-codeshare itineraries as distinct cases, but not the schema behind that, so the data modelling described above is method rather than a delivered artefact. The same holds for the AI travel assistant, disruption prediction and risk index.\n\nThe project is categorised as Node.js Backend and AWS, but the technologies named for it are React.js and Node.js only. No hosting topology, database, cache or queue is published, so none is claimed. The risk model's inputs are given as airline protocols and aviation variables and no further. Barfly is a web product with no Android or iOS build. Know the shape of the evidence before a call, not after one."
+        "heading": "What does the Barfly work not cover?",
+        "body": "Barfly's write-up covers the search and assessment path. It documents no order creation, payment or ticketing, so this page claims none. If your product needs booking through to an issued ticket, that is work we will scope and quote against evidence that stops short of it.\n\nNor does it describe the internals. It states that the engine treats codeshare and non-codeshare itineraries as distinct cases, but not the schema behind that, so the data modelling described above is method rather than a description of Barfly's code.\n\nThe technologies named for it are Node.js and React.js. No hosting topology, database, cache or queue is published, so none is claimed. The risk model's inputs are airline protocols and aviation variables, and no further detail is public. This page describes no Android or iOS work on it. Know the shape of the evidence before a call, not after one."
       },
       {
         "heading": "Who is this page for?",
-        "body": "Travel booking platforms, OTAs and metasearch products that have decided to integrate Duffel and want the integration, and whatever sits on top of it, built once and properly.\n\nThe closest fit to what we have shipped is a platform whose difficulty is in the reasoning over itineraries rather than in the distribution itself. Connection risk, disruption exposure, ranking that is not purely price, or any rule set that has to know which carrier actually operates a segment. That is the problem Barfly is. If you are searching flights and displaying them with no derived logic on top, the integration is smaller than this page describes and you may not need an agency for it.\n\nCorporate travel tools and vertical booking products with their own policy rules are the same shape of problem: rules that have to run over a normalized itinerary structure rather than over per-carrier formats."
+        "body": "Travel booking platforms, OTAs and metasearch products that have decided to integrate Duffel and want the integration, and whatever sits on top of it, built once and properly.\n\nThe closest fit to the Barfly work is a platform whose difficulty is in the reasoning over itineraries rather than in the distribution itself. Connection risk, disruption exposure, ranking that is not purely price, or any rule set that has to know which carrier actually operates a segment. That is the problem Barfly addresses. If you are searching flights and displaying them with no derived logic on top, the integration is smaller than this page describes and you may not need an agency for it.\n\nCorporate travel tools and vertical booking products with their own policy rules are the same shape of problem: rules that have to run over a normalized itinerary structure rather than over per-carrier formats."
       },
       {
         "heading": "How do you keep supplier, agent and traveller data separate?",
-        "body": "This matters when more than one party lives inside your platform: agencies booking under their own accounts, suppliers beyond flights, or white-labelled partners with their own customers.\n\nBe clear about the evidence first. The Barfly record documents no multi-tenant model, so nothing here claims we have shipped one, and no other page on this site is offered as proof of it either. What we will state is method. Tenancy belongs in the data model from the first migration rather than being retrofitted. Every row that belongs to a party carries that party's identifier, the identifier is derived from the authenticated session and never from a request parameter, and the check is enforced server-side on every read and write.\n\nIf a genuine multi-party marketplace is the product rather than a side effect of it, say so before we quote. That is a different build with a different data model at its centre, and we would scope it as its own project rather than as an extension of a Duffel integration."
+        "body": "This matters when more than one party lives inside your platform: agencies booking under their own accounts, suppliers beyond flights, or white-labelled partners with their own customers.\n\nBe clear about the evidence first. Barfly's write-up documents no multi-tenant model, so nothing here claims one, and no other page on this site is offered as proof of it either. What we will state is method. Tenancy belongs in the data model from the first migration rather than being retrofitted. Every row that belongs to a party carries that party's identifier, the identifier is derived from the authenticated session and never from a request parameter, and the check is enforced server-side on every read and write.\n\nIf a genuine multi-party marketplace is the product rather than a side effect of it, say so before we quote. That is a different build with a different data model at its centre, and we would scope it as its own project rather than as an extension of a Duffel integration."
       },
       {
         "heading": "What does the build look like, and what do you need from us?",
@@ -758,24 +759,21 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "What happens after launch?",
-        "body": "You own everything. All code and IP transfer to you on final payment. The repository is yours, the Duffel account was always yours, and there is no license to renew and no runtime dependency on DevoraX.\n\nSupport is scoped and quoted separately, and it is worth saying what it is not. DevoraX is two named people, so there is no 24/7 rota and we will not pretend there is. What we offer is a defined arrangement with an agreed response window during working hours, written into the proposal so you know what you bought before you buy it.\n\nTaking the work in-house after handover is a normal outcome rather than a failure of the relationship. The handover document exists so that another engineer can pick the integration up without calling us."
+        "body": "You own everything. All code and IP transfer to you on final payment. The repository is yours, the Duffel account was always yours, and there is no license to renew and no runtime dependency on DevoraX.\n\nSupport is scoped and quoted separately, and it is worth saying what it is not. DevoraX is two named people, so there is no round-the-clock rota and we will not pretend there is. What we offer is a defined arrangement with an agreed response window during working hours, written into the proposal so you know what you bought before you buy it.\n\nTaking the work in-house after handover is a normal outcome rather than a failure of the relationship. The handover document exists so that another engineer can pick the integration up without calling us."
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "If your distribution requirement is GDS, meaning Amadeus, Sabre or Travelport, or direct NDC connections to carriers, hire a supplier who has those running in production. We have not shipped them and you should not fund the learning.\n\nIf you need someone on call around the clock for a live booking desk, two people cannot honestly provide it. If you need IATA accreditation, consolidator relationships or a regulated payments operation, those are commercial and regulatory problems rather than engineering ones and we do not solve them.\n\nIf you already have a working Duffel integration and want extra hands by the hour to extend it, the fixed-price model will frustrate you. And if the only thing you need is flight search rendered on a page with no derived logic above it, that is a smaller job than this page describes and you may not need an agency for it."
+        "body": "If your distribution requirement is GDS, meaning Amadeus, Sabre or Travelport, or direct NDC connections to carriers, hire a supplier who has those running in production. Nothing in the DevoraX portfolio includes them, and you should not fund the learning.\n\nIf you need someone on call around the clock for a live booking desk, two people cannot honestly provide it. If you need IATA accreditation, consolidator relationships or a regulated payments operation, those are commercial and regulatory problems rather than engineering ones and we do not solve them.\n\nIf you already have a working Duffel integration and want extra hands by the hour to extend it, the fixed-price model will frustrate you. And if the only thing you need is flight search rendered on a page with no derived logic above it, that is a smaller job than this page describes and you may not need an agency for it."
       }
     ],
     "proof": [
       {
         "project_id": 29,
         "name": "Barfly Risk Engine",
-        "one_line": "A Node.js flight transfer risk assessment system that integrates the Duffel API with heuristic algorithms to produce real-time risk predictions for codeshare and non-codeshare itineraries, with React.js as the interface technology, live at got2.travel.",
-        "what_it_proves": "That DevoraX has taken a Duffel integration into a live travel product and built domain logic on top of it. The build carries an engine that treats codeshare and non-codeshare itineraries as distinct cases rather than collapsing them into one path, and a heuristic layer that synthesizes airline protocols and aviation variables into an assessment computed on demand rather than prepared offline. The build also carries an AI travel assistant, disruption prediction and a global flight risk index. The internals of those three are not published, so no conclusion about the delivered architecture is drawn from them here.",
+        "one_line": "A Node.js flight transfer risk module that integrates the Duffel API with heuristic algorithms to assess risk on codeshare and non-codeshare itineraries, with React.js on the interface side. Sameem worked on it as an engineer at Zencloud, and it runs inside got2.travel.",
+        "what_it_proves": "A Duffel integration taken into a live travel product, with domain logic built on top of it: codeshare and non-codeshare itineraries handled as distinct cases rather than collapsed into one path, and a heuristic layer that turns airline protocols and aviation variables into an assessment computed on demand. It was Zencloud's project rather than a DevoraX engagement, and this page makes no claim about the accuracy of its predictions.",
         "figures": [
-          "The client reports 88% on-time performance",
-          "The client reports 78% flight risk prediction accuracy",
-          "The client reports user satisfaction as high",
-          "The client reports the disruption prediction level as moderate"
+          "Live inside got2.travel"
         ]
       }
     ],
@@ -791,30 +789,30 @@ export const SOLUTIONS: Solution[] = [
       "Written handover covering what was built, how it is configured and how to run it"
     ],
     "quoted_separately": [
-      "Duffel order creation, payment and ticketing. Our published proof covers the search and assessment path, so this is scoped, quoted and priced as new work",
+      "Duffel order creation, payment and ticketing. The Barfly work covers the search and assessment path, so this is scoped, quoted and priced as new work",
       "Post-booking servicing: changes, cancellations, refunds, ancillaries and seat selection",
       "Your Duffel account, airline content arrangements and payment processing fees, which are commercial relationships between you and your providers rather than part of a build",
       "Additional supplier APIs for hotels, rail or cars, and the reconciliation layer between them",
       "A multi-supplier or multi-agency marketplace layer, which is a different build with its own data model and is scoped and quoted as its own project",
-      "Native iOS and Android apps. Barfly is a web product and there is no published mobile build for it"
+      "Native iOS and Android apps. This page describes no mobile work on Barfly"
     ],
-    "when_not_to_hire": "If you need GDS distribution, meaning Amadeus, Sabre or Travelport, or direct NDC connections to carriers, hire an agency that already runs those in production. We have not shipped them. If you need round-the-clock on-call cover for a live booking desk, DevoraX is two named people and cannot provide it. If you need IATA accreditation, consolidator relationships or a regulated payments operation, those are commercial and regulatory problems rather than engineering ones and we do not solve them. If you want hourly hands on an integration you already have, the fixed-price model will not suit you.",
+    "when_not_to_hire": "If you need GDS distribution, meaning Amadeus, Sabre or Travelport, or direct NDC connections to carriers, hire an agency that already runs those in production. Nothing in the DevoraX portfolio includes them. If you need round-the-clock on-call cover for a live booking desk, DevoraX is two named people and cannot provide it. If you need IATA accreditation, consolidator relationships or a regulated payments operation, those are commercial and regulatory problems rather than engineering ones and we do not solve them. If you want hourly hands on an integration you already have, the fixed-price model will not suit you.",
     "faqs": [
       {
         "q": "Have you actually shipped a Duffel integration, or only worked with similar APIs?",
-        "a": "Shipped one. Barfly Risk Engine integrates the Duffel API on a Node.js backend and is live at got2.travel. The full case study is published at /projects/29, including a section on what it deliberately does not claim. It is one project rather than five. If you want a supplier with a long list of travel integrations behind them, we are not it."
+        "a": "One, as employer work. Sameem worked on Barfly, a Duffel-based risk module on a Node.js backend, as an engineer at Zencloud, and it runs inside got2.travel. The write-up is at /projects/29, including a section on what it does not cover. It is one project rather than five. If you want a supplier with a long list of travel integrations behind them, we are not it."
       },
       {
         "q": "Does Barfly book flights through Duffel, or only search them?",
-        "a": "The published record covers the search and assessment path. It does not document order creation, payment or ticketing, so we do not claim it. Booking through to an issued ticket is work we will scope and quote, and when you compare us against an agency that has already shipped ticketing, price the difference in evidence honestly."
+        "a": "Barfly's write-up covers the search and assessment path. It documents no order creation, payment or ticketing, so this page does not claim them. Booking through to an issued ticket is work we will scope and quote, and when you compare us against an agency that has already shipped ticketing, price the difference in evidence honestly."
       },
       {
-        "q": "Where do the 78% and 88% figures come from?",
-        "a": "The client reports them. DevoraX did not measure or audit either figure, and how they were arrived at has not been published, so we reproduce them as reported and read nothing further into them. The same applies to the high user satisfaction rating and the moderate disruption prediction level. Four client-reported figures, and no others exist."
+        "q": "Was Barfly a DevoraX client project?",
+        "a": "No. Barfly was Zencloud's project, and Sameem worked on it as an engineer there. DevoraX is the two-person studio through which he and Usman now take this kind of work directly. What you can check is that the product is live: it runs inside got2.travel."
       },
       {
         "q": "Can you build the risk scoring, or only the API plumbing?",
-        "a": "Both. Barfly is the scoring engine, not only the integration underneath it. It synthesizes airline protocols and aviation variables through heuristic algorithms rather than a trained model. Connection risk is conditional on two flights and the relationship between them, which is why it cannot be reduced to arithmetic on departure and arrival timestamps."
+        "a": "Both. Barfly is the scoring layer, not only the integration underneath it. It synthesizes airline protocols and aviation variables through heuristic algorithms rather than a trained model. Connection risk is conditional on two flights and the relationship between them, which is why it cannot be reduced to arithmetic on departure and arrival timestamps."
       },
       {
         "q": "Why heuristics rather than a machine learning model?",
@@ -833,7 +831,7 @@ export const SOLUTIONS: Solution[] = [
         "a": "Usually yes, if it is a JavaScript or TypeScript stack. Barfly is Node.js with a React.js interface. On an existing codebase we want a read-only look before quoting, because a fixed price on code nobody has read is a guess, and we would rather not guess at your expense."
       }
     ],
-    "word_count": 1419,
+    "word_count": 2435,
     "role": "spoke",
     "related_slugs": [
       "multi-vendor-marketplace-development"
@@ -842,7 +840,7 @@ export const SOLUTIONS: Solution[] = [
   }
 ];
 
-export const SOLUTIONS_UPDATED = '2026-09-17T00:00:00.000Z';
+export const SOLUTIONS_UPDATED = '2026-10-08T00:00:00.000Z';
 
 export function getSolution(slug: string): Solution | undefined {
   return SOLUTIONS.find((s) => s.slug === slug);

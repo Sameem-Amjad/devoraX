@@ -6,9 +6,11 @@
  * question-form headings and no comparison table anywhere on the site, which are
  * the two structures generative engines extract most reliably.
  *
- * Every sentence here is assembled from `SERVICE_CONTENT`, which was already
- * written from the real `services` and `projects` rows and put through an
- * adversarial fact-check. Nothing new is asserted.
+ * Every sentence here is assembled from `SERVICE_CONTENT`, which attributes each
+ * project to whoever it was really for (an employer, a product Sameem says he
+ * worked on, or a build with no client and no public link) and carries no figure
+ * a reader cannot check. Nothing new is asserted here, so keep it that way: the
+ * hardcoded copy below is navigation and framing only.
  */
 import Link from 'next/link';
 import { SERVICE_CONTENT } from '@/data/serviceContent';
