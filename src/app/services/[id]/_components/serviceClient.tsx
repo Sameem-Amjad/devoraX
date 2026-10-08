@@ -34,11 +34,13 @@ const ServiceDetailClient = ({ service, initialProjects }: { service: any, initi
           <div className="bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-3xl p-8 h-[400px] flex items-center justify-center relative overflow-hidden">
             <div className="absolute inset-0 bg-[linear-gradient(rgba(45,212,191,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(45,212,191,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
             {/* Was a hardcoded "100% Satisfaction Rate" with no source, sample
-                size or supporting artifact, on all four service pages. Replaced
-                with a figure that can be checked on the public Fiverr profile. */}
+                size or supporting artifact, on all four service pages, then "20
+                Five-Star Reviews". Review counts in circulation disagree with
+                each other (20/21/30+/56), so the rating is shown instead; it can
+                be checked on the public Fiverr profile. */}
             <div className="text-center relative z-10">
-              <div className="text-6xl font-bold text-white mb-2">20</div>
-              <div className="text-teal-400 uppercase tracking-widest text-sm">Five-Star Reviews</div>
+              <div className="text-6xl font-bold text-white mb-2">5.0</div>
+              <div className="text-teal-400 uppercase tracking-widest text-sm">Fiverr Rating · 50+ Projects</div>
               <a
                 href="https://www.fiverr.com/sameemamjad"
                 target="_blank"
@@ -51,7 +53,7 @@ const ServiceDetailClient = ({ service, initialProjects }: { service: any, initi
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-white mb-8">Related Success Stories</h2>
+        <h2 className="text-3xl font-bold text-white mb-8">Related Projects</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {initialProjects.length > 0 ? initialProjects.map(p => (
             <Link key={p.id} href={`/projects/${p.id}`} className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-teal-500/40 transition-all">
