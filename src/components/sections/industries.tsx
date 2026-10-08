@@ -1,8 +1,17 @@
 "use client";
 import { motion } from "framer-motion";
-import { CreditCard, Heart, ShoppingCart, Rocket, Building2, GraduationCap, Car, Zap } from "lucide-react";
+import { ShoppingCart, UtensilsCrossed, Plane, Trophy, Video, FileSignature, HardHat, GraduationCap } from "lucide-react";
 import React from "react";
 
+// Only industries with a real product in the portfolio, and each card names it.
+//
+// This grid previously claimed "deep expertise across every vertical", with
+// FinTech ("core banking systems built to handle millions of transactions"),
+// HealthTech ("HIPAA-compliant patient portals", HL7/FHIR), PropTech and Energy
+// cards that no project in the portfolio supports, and PCI DSS / HIPAA tags that
+// read as compliance capability. DevoraX holds no certifications and has run no
+// audits. Several products below were built while Sameem was an engineer at
+// other companies; the project pages say which.
 const INDUSTRIES: {
   icon: React.ReactNode;
   title: string;
@@ -12,68 +21,68 @@ const INDUSTRIES: {
   border: string;
 }[] = [
   {
-    icon: <CreditCard className="w-7 h-7 text-emerald-400" />,
-    title: "FinTech & Banking",
-    description: "Payment platforms, trading apps, digital wallets, and core banking systems built to handle millions of transactions securely.",
-    tags: ["PCI DSS", "KYC/AML", "Real-time Payments"],
-    gradient: "from-emerald-500/15 to-teal-500/5",
-    border: "hover:border-emerald-500/30",
-  },
-  {
-    icon: <Heart className="w-7 h-7 text-blue-400" />,
-    title: "HealthTech & MedTech",
-    description: "HIPAA-compliant patient portals, telemedicine platforms, wearable integrations, and AI-powered diagnostic tools.",
-    tags: ["HIPAA", "HL7/FHIR", "IoT Wearables"],
-    gradient: "from-blue-500/15 to-cyan-500/5",
-    border: "hover:border-blue-500/30",
-  },
-  {
     icon: <ShoppingCart className="w-7 h-7 text-orange-400" />,
-    title: "E-Commerce & Retail",
-    description: "High-conversion storefronts, AI recommendation engines, inventory management systems, and omnichannel retail platforms.",
-    tags: ["Headless CMS", "AR Try-On", "Real-time Inventory"],
+    title: "Marketplaces & E-Commerce",
+    description: "Multi-vendor marketplaces with separate buyer, seller and admin surfaces: Afriva, Pastel's iOS app and the Dooz used-car marketplace.",
+    tags: ["Next.js", "Supabase", "Sharetribe", "NestJS"],
     gradient: "from-orange-500/15 to-amber-500/5",
     border: "hover:border-orange-500/30",
   },
   {
-    icon: <Rocket className="w-7 h-7 text-violet-400" />,
-    title: "SaaS & Startups",
-    description: "From zero to Series A — MVPs, product-market-fit iterations, and scalable multi-tenant architectures built for rapid growth.",
-    tags: ["Multi-tenant", "Freemium", "Usage Billing"],
-    gradient: "from-violet-500/15 to-purple-500/5",
-    border: "hover:border-violet-500/30",
+    icon: <UtensilsCrossed className="w-7 h-7 text-emerald-400" />,
+    title: "Food & Delivery",
+    description: "Food Magnet's live food-truck locations and vendor menus, and Koor, a home-chef ordering app.",
+    tags: ["Live GPS", "AWS Lambda", "React Native"],
+    gradient: "from-emerald-500/15 to-teal-500/5",
+    border: "hover:border-emerald-500/30",
   },
   {
-    icon: <Building2 className="w-7 h-7 text-teal-400" />,
-    title: "PropTech & Real Estate",
-    description: "Property listing platforms, virtual tour experiences, smart building IoT dashboards, and investment analytics tools.",
-    tags: ["3D Tours", "IoT Sensors", "Market Analytics"],
-    gradient: "from-teal-500/15 to-cyan-500/5",
-    border: "hover:border-teal-500/30",
-  },
-  {
-    icon: <GraduationCap className="w-7 h-7 text-pink-400" />,
-    title: "EdTech & Learning",
-    description: "LMS platforms, AI tutoring systems, live cohort experiences, and adaptive learning engines that personalize at scale.",
-    tags: ["AI Tutoring", "Live Cohorts", "Gamification"],
-    gradient: "from-pink-500/15 to-rose-500/5",
-    border: "hover:border-pink-500/30",
-  },
-  {
-    icon: <Car className="w-7 h-7 text-sky-400" />,
-    title: "Mobility & Logistics",
-    description: "Fleet management platforms, ride-hailing apps, last-mile delivery tracking, and route optimization powered by ML.",
-    tags: ["Real-time GPS", "Route ML", "Fleet IoT"],
+    icon: <Plane className="w-7 h-7 text-sky-400" />,
+    title: "Travel",
+    description: "Barfly, a flight-transfer risk check inside got2.travel that scores connections using Duffel flight data.",
+    tags: ["Duffel API", "Node.js", "Heuristics"],
     gradient: "from-sky-500/15 to-blue-500/5",
     border: "hover:border-sky-500/30",
   },
   {
-    icon: <Zap className="w-7 h-7 text-yellow-400" />,
-    title: "Energy & CleanTech",
-    description: "Smart grid monitoring, EV charging networks, carbon tracking platforms, and renewable energy management dashboards.",
-    tags: ["Smart Grid", "EV Charging", "Carbon API"],
+    icon: <Trophy className="w-7 h-7 text-yellow-400" />,
+    title: "Fitness & Sport",
+    description: "Real-time competition leaderboards on WOD Pro League, and an admin panel for a trainer-and-client fitness platform.",
+    tags: ["Socket.io", "Redis", "Flutter"],
     gradient: "from-yellow-500/15 to-green-500/5",
     border: "hover:border-yellow-500/30",
+  },
+  {
+    icon: <Video className="w-7 h-7 text-pink-400" />,
+    title: "Social, Video & Creators",
+    description: "HLS video and real-time messaging on LoopedIn, JUJU's media-processing backend, and Three28's creator-priced video.",
+    tags: ["AWS MediaConvert", "FFmpeg", "BullMQ"],
+    gradient: "from-pink-500/15 to-rose-500/5",
+    border: "hover:border-pink-500/30",
+  },
+  {
+    icon: <FileSignature className="w-7 h-7 text-blue-400" />,
+    title: "Legal Tech & Digital Identity",
+    description: "e-fuldmagt, a Danish digital power-of-attorney service: MitID sign-in through Criipto and generated PDF documents, built to GDPR requirements.",
+    tags: ["MitID", "OIDC", "PDF generation"],
+    gradient: "from-blue-500/15 to-cyan-500/5",
+    border: "hover:border-blue-500/30",
+  },
+  {
+    icon: <HardHat className="w-7 h-7 text-teal-400" />,
+    title: "Field & Workforce Apps",
+    description: "TAL, a UK welfare app that maps facilities for mobile workers, and CEDMAT, a documentation app for roller-shutter installers.",
+    tags: ["Google Maps API", "Flutter", "Elasticsearch"],
+    gradient: "from-teal-500/15 to-cyan-500/5",
+    border: "hover:border-teal-500/30",
+  },
+  {
+    icon: <GraduationCap className="w-7 h-7 text-violet-400" />,
+    title: "Education",
+    description: "Pathana, a planning platform that takes students from high school to career readiness, with views for counsellors and families.",
+    tags: ["Next.js", "Firebase", "Serverless"],
+    gradient: "from-violet-500/15 to-purple-500/5",
+    border: "hover:border-violet-500/30",
   },
 ];
 
@@ -94,14 +103,14 @@ export const IndustriesSection = () => {
             Industries
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            Deep Expertise Across{" "}
+            Industries We Have{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-              Every Vertical
+              Worked In
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            We don't just write code — we understand the domain, the regulations,
-            and the user psychology of the industry we're building for.
+            Each card names real products from the portfolio. Several were built while
+            Sameem was an engineer at other companies; each project page says which.
           </p>
         </motion.div>
 

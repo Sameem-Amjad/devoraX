@@ -18,7 +18,7 @@ const PORTFOLIO_ITEMS = [
     id: 1,
     title: "FinTech Mobile App",
     category: "React Native & Node.js",
-    description: "A cross-platform banking application processing 50k+ daily transactions with 99.9% uptime.",
+    description: "A cross-platform banking app: React Native on a Node.js API. No public link and no named client.",
     image: "linear-gradient(135deg, #022c22 0%, #115e59 100%)",
     accent: "from-teal-400 to-emerald-400"
   },
@@ -67,7 +67,7 @@ const EXTENDED_SERVICES = [
   {
     title: "Cloud & DevOps",
     icon: "Server",
-    desc_text: "Enterprise-grade infrastructure on AWS, GCP, and Azure. Fully automated CI/CD, containerized microservices, and 99.99% SLA guarantees.",
+    desc_text: "AWS infrastructure (Lambda, S3, EC2, CloudFront, MediaConvert), Docker containers and automated CI/CD pipelines, with monitoring and alerts set up before launch.",
     tags: ["AWS", "Docker", "Kubernetes", "Terraform"],
     gradient: "from-violet-500 to-purple-500",
     glow: "rgba(139,92,246,0.3)",
@@ -105,10 +105,10 @@ const EXTENDED_SERVICES = [
     glow: "rgba(14,165,233,0.3)",
   },
   {
-    title: "Cybersecurity & Compliance",
+    title: "Secure-by-Default Builds",
     icon: "Shield",
-    desc_text: "Security-first development with penetration testing, SOC 2 readiness, GDPR compliance, and zero-trust architecture to protect your users.",
-    tags: ["OWASP", "SOC 2", "GDPR", "Pen Testing"],
+    desc_text: "Security built into the code: OWASP Top 10 checks, role-based access, encrypted storage and signed media URLs. DevoraX holds no security certifications and does not sell penetration tests or audits.",
+    tags: ["OWASP Top 10", "RBAC", "Signed URLs", "Encryption"],
     gradient: "from-red-500 to-orange-500",
     glow: "rgba(239,68,68,0.3)",
   },
@@ -182,8 +182,8 @@ const PRICING_PLANS = [
     name: "Enterprise Transformation",
     price: "Custom",
     period: "",
-    description: "End-to-end digital transformation with dedicated teams.",
-    features: ["Dedicated Team", "Microservices Architecture", "24/7 DevOps Monitoring", "Long-term SLA"],
+    description: "Larger builds scoped in phases, with specialists brought in where the scope needs them.",
+    features: ["Both Founders on Your Project", "Microservices Architecture", "Automated Uptime Alerts", "Long-term SLA"],
     cta: "Contact Sales",
     highlight: false
   }
