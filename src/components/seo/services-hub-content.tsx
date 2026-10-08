@@ -7,9 +7,9 @@
  * the two structures generative engines extract most reliably.
  *
  * Every sentence here is assembled from `SERVICE_CONTENT`, which attributes each
- * project to whoever it was really for (an employer, a product Sameem says he
- * worked on, or a build with no client and no public link) and carries no figure
- * a reader cannot check. Nothing new is asserted here, so keep it that way: the
+ * project to whoever it was really for (an employer, a product Sameem worked on
+ * whose client is not named, or a build with no client and no public link) and
+ * carries no figure a reader cannot check. Nothing new is asserted here, so keep it that way: the
  * hardcoded copy below is navigation and framing only.
  */
 import Link from 'next/link';

@@ -14,8 +14,8 @@
  *
  * Attribution rules for every project named here. Most of the portfolio is work
  * Sameem Amjad did as an employee (Zencloud: Food Magnet, LoopedIn, WOD Pro
- * League; Webrange Solutions: Afriva, Bondly), products he says he worked on with
- * no confirmed client (Dooz, Koor), or builds with no client and no public link
+ * League; Webrange Solutions: Afriva, Bondly), products he worked on whose client
+ * is not named here (Dooz, Koor), or builds with no client and no public link
  * (FinTech Mobile App, AgroBridge, AI E-Commerce Ecosystem, AI Art Stylization
  * Platform, Predictive Analytics Dashboard). Say which, every time. Never "we
  * built" or "the client reports". Add no figure a reader cannot check on a store
@@ -49,11 +49,11 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
     "sections": [
       {
         "heading": "What does a cross-platform mobile app build include?",
-        "body": "A cross-platform build means one codebase produces both an iOS app and an Android app, instead of two separate native teams maintaining two separate products. The work covers the app on both platforms, the interface and animation layer that makes it feel native, secure integrations with your APIs and third-party services, performance tuning, and App Store and Play Store deployment support.\n\nScope is agreed before code is written, so you know which screens, user roles and integrations belong to the first release and which are deliberately held back.\n\nThe commercial logic is simple. One codebase is one set of features to build, test and maintain, so a fixed bug or a redesigned screen ships to both platforms at once rather than being implemented twice. The FinTech Mobile App in the portfolio follows that pattern, a React Native client over a Node.js backend, though it is a build with no public link and no named client."
+        "body": "A cross-platform build means one codebase produces both an iOS app and an Android app, instead of two separate native teams maintaining two separate products. The work covers the app on both platforms, the interface and animation layer that makes it feel native, secure integrations with your APIs and third-party services, performance tuning, and App Store and Play Store deployment support.\n\nScope is agreed before code is written, so you know which screens, user roles and integrations belong to the first release and which are deliberately held back.\n\nThe commercial logic is simple. One codebase is one set of features to build, test and maintain, so a fixed bug or a redesigned screen ships to both platforms at once rather than being implemented twice. The FinTech Mobile App in the portfolio follows that pattern, a React Native client over a Node.js backend."
       },
       {
         "heading": "Who is this mobile app development service for?",
-        "body": "This service is for teams that need a real product in users' hands, not a prototype. The mobile work in the portfolio spans three very different kinds of product, which is a fair map of who it suits.\n\nThe first is banking and transaction-heavy products, where reliability and security decide whether people trust the app at all. The FinTech Mobile App, a React Native build with no public link and no named client, was designed around that pressure: scalability, transaction reliability and security across platforms.\n\nThe second is subscription and service businesses. Bondly, a pet-care marketplace connecting owners with care professionals, is built around subscriptions, credits, payments and notifications. Sameem Amjad, DevoraX's founder, led its backend as an engineer at Webrange Solutions.\n\nThe third is marketplaces that live or die on fresh data. AgroBridge, a mobile agricultural marketplace with real-time data sync, is that case, and it too is a build with no public link and no named client. If your product looks like one of those three, this service is aimed at you."
+        "body": "This service is for teams that need a real product in users' hands, not a prototype. The mobile work in the portfolio spans three very different kinds of product, which is a fair map of who it suits.\n\nThe first is banking and transaction-heavy products, where reliability and security decide whether people trust the app at all. The FinTech Mobile App, a React Native build, was designed around that pressure: scalability, transaction reliability and security across platforms.\n\nThe second is subscription and service businesses. Bondly, a pet-care marketplace connecting owners with care professionals, is built around subscriptions, credits, payments and notifications. Sameem Amjad, DevoraX's founder, led its backend as an engineer at Webrange Solutions.\n\nThe third is marketplaces that live or die on fresh data. AgroBridge, a mobile agricultural marketplace with real-time data sync, is that case. If your product looks like one of those three, this service is aimed at you."
       },
       {
         "heading": "How does the mobile app development process work?",
@@ -61,11 +61,11 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "heading": "Which technologies do you use to build mobile apps?",
-        "body": "The front end is React Native or Flutter, chosen per project rather than by default. Most of the mobile work in the portfolio is React Native, including the FinTech Mobile App and AgroBridge, so that is where the deepest evidence sits. Flutter is offered for teams whose existing stack or design requirements point that way.\n\nBehind the app, the work used what each problem needed. The FinTech Mobile App pairs its client with a Node.js backend for authenticated APIs and transaction handling. AgroBridge is a React Native and Firebase platform with real-time synchronization and file uploads to cloud storage. Both are builds with no public link and no named client.\n\nCommercial features are wired to proven services rather than rebuilt. On Bondly, the backend Sameem led at Webrange Solutions runs on Node.js and Firebase, with Stripe subscription billing, credit-based service unlocking and OneSignal push notifications.\n\nWhat this service itself covers is the app and its secure API integrations. If you already run a backend, the app is built against it."
+        "body": "The front end is React Native or Flutter, chosen per project rather than by default. Most of the mobile work in the portfolio is React Native, including the FinTech Mobile App and AgroBridge, so that is where the deepest evidence sits. Flutter is offered for teams whose existing stack or design requirements point that way.\n\nBehind the app, the work used what each problem needed. The FinTech Mobile App pairs its client with a Node.js backend for authenticated APIs and transaction handling. AgroBridge is a React Native and Firebase platform with real-time synchronization and file uploads to cloud storage.\n\nCommercial features are wired to proven services rather than rebuilt. On Bondly, the backend Sameem led at Webrange Solutions runs on Node.js and Firebase, with Stripe subscription billing, credit-based service unlocking and OneSignal push notifications.\n\nWhat this service itself covers is the app and its secure API integrations. If you already run a backend, the app is built against it."
       },
       {
         "heading": "How is security handled in an app that moves money?",
-        "body": "Mostly outside the framework. Whether an app is React Native, Flutter or native, the decisions that carry the risk are the same: how users authenticate, how tokens are stored on the device, what the API accepts and rejects, how a payment request is made safe to retry, and what the app shows when the network drops halfway through a transaction.\n\nThe FinTech Mobile App in the portfolio is a React Native client over a Node.js backend with authenticated APIs and transaction handling. It is a build with no public link and no named client, so it shows the shape of the work rather than a production record.\n\nDevoraX holds no certifications and has run no audits. If your product needs a formal security assessment or a regulator's sign-off, that comes from a specialist firm, and the build is designed so their findings can be acted on. What gets settled with you during architecture is the security model itself, written down before the screens are built."
+        "body": "Mostly outside the framework. Whether an app is React Native, Flutter or native, the decisions that carry the risk are the same: how users authenticate, how tokens are stored on the device, what the API accepts and rejects, how a payment request is made safe to retry, and what the app shows when the network drops halfway through a transaction.\n\nThe FinTech Mobile App in the portfolio is a React Native client over a Node.js backend with authenticated APIs and transaction handling.\n\nDevoraX holds no certifications and has run no audits. If your product needs a formal security assessment or a regulator's sign-off, that comes from a specialist firm, and the build is designed so their findings can be acted on. What gets settled with you during architecture is the security model itself, written down before the screens are built."
       },
       {
         "heading": "How do you keep a cross-platform app fast on both iOS and Android?",
@@ -73,7 +73,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "heading": "Which mobile apps can you look at?",
-        "body": "The mobile work in the portfolio is a mix, and each piece is labelled for what it is.\n\nBondly is a pet-care marketplace connecting pet owners with care professionals, with a Flutter mobile app over a backend Sameem led as an engineer at Webrange Solutions: Node.js and Firebase, Stripe subscriptions with credit-based service unlocking, and OneSignal notifications. It is live at bondlypets.com.\n\nSeveral apps Sameem worked on are in the stores today. Food Magnet, which he worked on as an engineer at Zencloud, is on Google Play and the App Store. LoopedIn, a short-video and local-events app whose backend he built at Zencloud, launched on both stores in September 2026. Dooz Inspected Cars, whose shared NestJS backend he says he worked on, is on both stores, and its Google Play listing shows 100K+ downloads. Koor, a homemade-food marketplace he says he worked on, is on Google Play.\n\nThe FinTech Mobile App and AgroBridge, both React Native, are builds with no public link and no named client. Their write-ups cover the problem, the stack and the architecture, not a production record."
+        "body": "Bondly is a pet-care marketplace connecting pet owners with care professionals, with a Flutter mobile app over a backend Sameem led as an engineer at Webrange Solutions: Node.js and Firebase, Stripe subscriptions with credit-based service unlocking, and OneSignal notifications. It is live at bondlypets.com.\n\nSeveral apps Sameem worked on are in the stores today. Food Magnet, which he worked on as an engineer at Zencloud, is on Google Play and the App Store. LoopedIn, a short-video and local-events app whose backend he built at Zencloud, launched on both stores in September 2026. Dooz Inspected Cars, whose shared NestJS backend he worked on, is on both stores, and its Google Play listing shows 100K+ downloads. Koor, a homemade-food marketplace he worked on, is on Google Play.\n\nThe FinTech Mobile App and AgroBridge, both React Native, are builds with no public link and no named client; their write-ups cover the problem, the stack and the architecture."
       }
     ],
     "deliverables": [
@@ -92,7 +92,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "q": "Can a cross-platform app be secure enough for financial transactions?",
-        "a": "The framework is rarely the weak point; authentication, token storage, API validation and safe retries are. The FinTech Mobile App in the portfolio, a React Native client over a Node.js backend and a build with no public link and no named client, shows the shape of that work. DevoraX holds no certifications and has run no audits, so a product that needs a formal security assessment should budget for a specialist firm alongside the build."
+        "a": "The framework is rarely the weak point; authentication, token storage, API validation and safe retries are. The FinTech Mobile App in the portfolio, a React Native client over a Node.js backend, shows the shape of that work. DevoraX holds no certifications and has run no audits, so a product that needs a formal security assessment should budget for a specialist firm alongside the build."
       },
       {
         "q": "Can you connect the app to my existing backend, payment provider and notification service?",
@@ -104,10 +104,10 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "q": "Is there a live product I can look at before hiring you?",
-        "a": "Yes, though most of what is live was employer work, and it is labelled that way. Bondly, a pet-care marketplace whose backend Sameem led as an engineer at Webrange Solutions, is live at bondlypets.com. Food Magnet and LoopedIn, both Zencloud projects he worked on, are on Google Play and the App Store. The FinTech Mobile App and AgroBridge have no public link and no named client, so they can only be walked through as write-ups."
+        "a": "Yes. Bondly, a pet-care marketplace whose backend Sameem led as an engineer at Webrange Solutions, is live at bondlypets.com. Food Magnet and LoopedIn, both Zencloud projects he worked on as an engineer there, are on Google Play and the App Store."
       }
     ],
-    "word_count": 1695
+    "word_count": 1553
   },
   "2": {
     "service_id": 2,
@@ -122,7 +122,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "heading": "Who is this service for?",
-        "body": "This service fits teams that need a production web application rather than a prototype. The AI builds behind it cover two shapes: a multi-vendor eCommerce marketplace with recommendations, and an AI image stylization platform. Both are builds with no public link and no named client.\n\nIt suits you if you have a model or a workflow that already works in isolation and now needs to be wrapped in a usable, authenticated, deployable product. It also suits a product whose front end, API, AI layer, and deployment path are better owned by one team than split across several.\n\nIt is probably not the right fit for a brochure site, a one-page template, or a static landing page, because that work does not need this architecture and the cost would not be justified by it.\n\nEngagements start with a scoped discovery conversation, so the architecture is agreed before production code is written."
+        "body": "This service fits teams that need a production web application rather than a prototype. The AI builds behind it cover two shapes: a multi-vendor eCommerce marketplace with recommendations, and an AI image stylization platform.\n\nIt suits you if you have a model or a workflow that already works in isolation and now needs to be wrapped in a usable, authenticated, deployable product. It also suits a product whose front end, API, AI layer, and deployment path are better owned by one team than split across several.\n\nIt is probably not the right fit for a brochure site, a one-page template, or a static landing page, because that work does not need this architecture and the cost would not be justified by it.\n\nEngagements start with a scoped discovery conversation, so the architecture is agreed before production code is written."
       },
       {
         "heading": "How does the delivery process work?",
@@ -162,7 +162,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "q": "Can you work with an existing codebase, or does it have to be a new build?",
-        "a": "Both AI builds linked to this service, the AI E-Commerce Ecosystem and the AI Art Stylization Platform, were new builds with no named client, so that is where the documented work sits. For an existing application, discovery starts with a review of the current repository, data model, API surface, and deployment setup, and that review is what decides whether extending what exists, replacing one layer, or rebuilding is sensible. No recommendation is made before that assessment."
+        "a": "Both AI builds linked to this service, the AI E-Commerce Ecosystem and the AI Art Stylization Platform, were new builds, so that is where the documented work sits. For an existing application, discovery starts with a review of the current repository, data model, API surface, and deployment setup, and that review is what decides whether extending what exists, replacing one layer, or rebuilding is sensible. No recommendation is made before that assessment."
       },
       {
         "q": "What if we are not sure we actually need AI?",
@@ -177,7 +177,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
         "a": "Next.js with modern React architecture is the default, which gives server rendering for pages that need to be indexed and client-side interactivity for the parts of the product that are genuinely interactive. It is the front end on the AI E-Commerce Ecosystem, and Afriva, which Sameem worked on at Webrange Solutions, runs on Next.js 15. The final choice is confirmed during the architecture stage, based on your indexing needs, expected traffic pattern, and how the AI layer is consumed."
       }
     ],
-    "word_count": 1676
+    "word_count": 1661
   },
   "3": {
     "service_id": 3,
@@ -204,7 +204,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "heading": "What does a serverless AWS backend look like in production?",
-        "body": "Food Magnet: Vender is the clearest production example, and it is employer work: Sameem worked on it, on a product that already existed, as an engineer at Zencloud. Food truck vendors struggle with discoverability and real-time customer engagement, which is an infrastructure problem as much as a product one: locations change constantly and customers expect to see them update live.\n\nThe platform is a Flutter mobile app with a React admin dashboard and a serverless AWS backend supporting live location tracking. Backend logic runs as AWS Lambda functions, with cloud storage, Firebase for real-time data and notifications, OneSignal for push, and Stripe for payments, across four user roles: admin, manager, vendor, and customer. Sameem's own account of his part covers the React and TypeScript web surfaces, vendor and admin dashboards, live GPS tracking and the AWS Lambda APIs.\n\nThe platform runs live on the web at foodmagnet.app and ships as Flutter apps on both the Google Play Store and the Apple App Store, which is the practical test of whether an architecture holds up outside a demo environment."
+        "body": "Food Magnet: Vender is the clearest production example, and it is employer work: Sameem worked on it, on a product that already existed, as an engineer at Zencloud. Food truck vendors struggle with discoverability and real-time customer engagement, which is an infrastructure problem as much as a product one: locations change constantly and customers expect to see them update live.\n\nThe platform is a Flutter mobile app with a React admin dashboard and a serverless AWS backend supporting live location tracking. Backend logic runs as AWS Lambda functions, with cloud storage, Firebase for real-time data and notifications, OneSignal for push, and Stripe for payments, across four user roles: admin, manager, vendor, and customer. His part covered the React and TypeScript web surfaces, vendor and admin dashboards, live GPS tracking and the AWS Lambda APIs.\n\nThe platform runs live on the web at foodmagnet.app and ships as Flutter apps on both the Google Play Store and the Apple App Store, which is the practical test of whether an architecture holds up outside a demo environment."
       },
       {
         "heading": "Can you modernize an existing application instead of rebuilding it?",
@@ -246,7 +246,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
         "a": "Cost optimization starts with visibility. We review where resources are over-provisioned, where storage and data transfer are being wasted, and where serverless components such as AWS Lambda functions can replace idle capacity you pay for around the clock. Because cost and architecture are the same set of decisions, your team can weigh spend against performance and redundancy."
       }
     ],
-    "word_count": 1688
+    "word_count": 1684
   },
   "4": {
     "service_id": 4,

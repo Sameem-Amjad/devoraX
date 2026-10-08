@@ -48,8 +48,7 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
             </ul>
             <p className="mt-5 border-t border-teal-500/10 pt-4 text-xs leading-relaxed text-gray-500">
               Each item points to something public: a store listing, a live site
-              or a demo build. We do not publish usage, revenue or uptime figures
-              we cannot point to. See our{' '}
+              or a demo build. See our{' '}
               <a
                 href="/terms"
                 className="underline underline-offset-4 hover:text-teal-400"
