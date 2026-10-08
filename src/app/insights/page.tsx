@@ -7,12 +7,12 @@ const BASE_URL = 'https://thedevorax.tech';
 export const metadata: Metadata = {
   title: 'Engineering Insights & Research',
   description:
-    'Data-backed research from 25 shipped production builds — stack choices, platform mix and measured outcomes, with the limits of the dataset stated openly.',
+    'Research from the 25 projects in the DevoraX portfolio, including work done as employees elsewhere: stack choices and platform mix, with the limits stated.',
   keywords: [
     'software engineering research',
     'React Native vs Flutter production',
     'Supabase vs Firebase marketplace',
-    'agency delivery data',
+    'portfolio stack data',
   ],
   robots: {
     index: true,
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: 'DevoraX',
     title: 'Engineering Insights & Research | DevoraX',
     description:
-      'Data-backed research from 25 shipped production builds, with the limits of the dataset stated openly.',
+      'Research from the 25 projects in the DevoraX portfolio, with the limits of the dataset stated openly.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'DevoraX Insights' }],
   },
 };
@@ -63,7 +63,8 @@ export default function InsightsPage() {
         <div className="mx-auto max-w-5xl px-6">
           <h1 className="text-4xl font-bold text-white md:text-5xl">Engineering insights</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-gray-400">
-            Research drawn from our own delivery record rather than industry
+            Research drawn from the projects in this site&apos;s portfolio, including
+            work done as employees of other companies, rather than industry
             commentary. Each piece states what its dataset can and cannot show.
           </p>
 
@@ -99,12 +100,14 @@ export default function InsightsPage() {
               Where does this research come from?
             </h2>
             <p className="mt-5 leading-relaxed text-gray-400">
-              Every article here is derived from the same source: the record of
-              work we have actually delivered. That is 25 production builds, their
-              technology stacks, the platforms each one shipped to, and whatever
-              outcome figures the clients reported back to us. Nothing is drawn
-              from a survey we did not run, a benchmark we did not measure, or an
-              industry report we did not read in full.
+              Every article here is derived from the same source: the 25 project
+              records in this site&apos;s portfolio, their technology stacks, the
+              platforms each one runs on, and the public links behind them. Those
+              records are not all DevoraX client work. Many are products Sameem
+              worked on as an engineer at other companies, some have no public link,
+              and a few links are demo builds; each project page says which. Nothing
+              is drawn from a survey we did not run, a benchmark we did not measure,
+              or an industry report we did not read in full.
             </p>
             <p className="mt-4 leading-relaxed text-gray-400">
               That makes these articles unusual in one specific way, and it is
@@ -121,19 +124,19 @@ export default function InsightsPage() {
             </h2>
             <p className="mt-5 leading-relaxed text-gray-400">
               It cannot tell you what is true of software projects in general. It
-              is one agency&apos;s book of work, shaped by the kinds of client who
-              approached us and the kinds of problem we were asked to solve, so it
-              carries that selection bias in every direction at once. It also
-              cannot tell you much about failure, because the projects that reach a
-              portfolio are the ones that shipped.
+              is one small portfolio, shaped by the employers Sameem worked for, the
+              clients who approached us and the kinds of problem we were asked to
+              solve, so it carries that selection bias in every direction at once.
+              It also cannot tell you much about failure, because the projects that
+              reach a portfolio are the ones that shipped.
             </p>
             <p className="mt-4 leading-relaxed text-gray-400">
-              Outcome figures come with a second caveat. Where a case study reports
-              user counts, order volumes or uptime, those are numbers the client
-              reported to us or took from their own systems. We did not
-              independently instrument or audit them, and we present them as
-              client-reported for that reason. Each article restates the limits of
-              its own dataset rather than relying on this page to have done it.
+              It cannot tell you how these products perform in use. The portfolio
+              publishes no usage, revenue or uptime figures, because none could be
+              checked against a public source. The only figures it carries are ones
+              a reader can verify, such as a download band on a store listing. Each
+              article restates the limits of its own dataset rather than relying on
+              this page to have done it.
             </p>
 
             <h2 className="mt-14 text-2xl font-bold text-white md:text-3xl">
