@@ -57,17 +57,20 @@ export default function TermsPage() {
                 What the portfolio and case studies mean
               </h2>
               <p className="mt-4 leading-relaxed">
-                Case studies describe work we delivered. Outcome figures shown
-                alongside them — user counts, order volumes, uptime and similar — are
-                as reported to us by the client or taken from the client&apos;s own
-                systems. They were not independently audited or instrumented by us,
-                and we present them as the client&apos;s reported results rather than
-                as a measurement we performed.
+                Case studies and project pages describe work DevoraX&apos;s founders
+                did, and each one says who it was for: a DevoraX client, a company
+                Sameem worked for as an employee, or a build with no public link and
+                no named client. Products built as an employee belong to that
+                employer or its client, not to DevoraX. We publish only figures a
+                reader can check: a public store listing, a live site, or
+                Sameem&apos;s public Fiverr record. We do not publish usage, revenue
+                or uptime figures we cannot point to.
               </p>
               <p className="mt-4 leading-relaxed">
-                Research articles published here are drawn from our own delivery
-                record. Each one states the size and limits of its dataset. They
-                describe our experience across a small number of projects and are not
+                Research articles published here are drawn from the portfolio
+                records on this site, including work done as employees of other
+                companies. Each one states the size and limits of its dataset. They
+                describe experience across a small number of projects and are not
                 industry benchmarks.
               </p>
               <p className="mt-4 leading-relaxed">

@@ -22,8 +22,9 @@ export function RelatedCaseStudies({ serviceId }: { serviceId: number | string }
         Case studies behind this service
       </h2>
       <p className="mt-3 max-w-2xl leading-relaxed text-gray-400">
-        Full engineering write-ups of products we shipped in this practice, including
-        the architecture decisions and the outcomes the client reported.
+        Engineering write-ups of products our founders built or worked on in this
+        practice, many as engineers at other companies. Each one says who the work
+        was for.
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">

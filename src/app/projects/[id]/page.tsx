@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     return {
       title: 'Software Project Portfolio',
       description:
-        'Fintech apps, AI e-commerce platforms, SaaS dashboards and React Native builds — real products shipped to production for clients worldwide.',
+        'Marketplaces, real-time apps, media backends and AI builds that DevoraX\'s founders built or worked on, including as employees of other companies.',
       alternates: { canonical: `${BASE_URL}/projects/${id}` },
     };
   }

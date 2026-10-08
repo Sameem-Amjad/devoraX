@@ -23,19 +23,20 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
   return (
     <section className="mt-20 border-t border-white/5 pt-14">
       <div className="max-w-3xl">
-        <Byline updated={CASE_STUDY_CONTENT_UPDATED} kind="case study" />
+        <Byline updated={content.updated ?? CASE_STUDY_CONTENT_UPDATED} kind="case study" />
         {/* Answer-first summary — the passage most likely to be quoted. */}
         <p className="mt-8 text-xl leading-relaxed text-gray-200">{content.summary_answer}</p>
 
         {content.results?.length > 0 && (
           <div className="mt-10 rounded-2xl border border-teal-500/15 bg-teal-500/[0.03] p-6">
-            {/* Was headed "Measured outcomes", which claims we measured them. We
-                did not: these are figures the client reported or took from their
-                own systems. The provenance belongs next to the numbers, not only
-                in the terms page, because that is where a reader forms the
-                impression and where an AI engine lifts the quote from. */}
+            {/* Was "Measured outcomes", then "Outcomes reported by the client".
+                Both carried usage, revenue and uptime figures that public data
+                contradicted or nothing backed, and several of these projects
+                were never DevoraX client work. The box now lists only facts a
+                reader can check today: a store listing, a release month, a live
+                site, a demo URL. Studies with nothing public to check omit it. */}
             <h2 className="text-sm font-semibold uppercase tracking-widest text-teal-400">
-              Outcomes reported by the client
+              What you can check
             </h2>
             <ul className="mt-4 space-y-2">
               {content.results.map((r) => (
@@ -46,9 +47,9 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
               ))}
             </ul>
             <p className="mt-5 border-t border-teal-500/10 pt-4 text-xs leading-relaxed text-gray-500">
-              These figures were reported to us by the client or taken from the
-              client&apos;s own systems. We did not independently instrument or
-              audit them. See our{' '}
+              Each item points to something public: a store listing, a live site
+              or a demo build. We do not publish usage, revenue or uptime figures
+              we cannot point to. See our{' '}
               <a
                 href="/terms"
                 className="underline underline-offset-4 hover:text-teal-400"

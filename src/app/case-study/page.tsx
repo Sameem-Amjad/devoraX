@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   // is the long-form engineering write-ups only.
   title: "Engineering Case Studies",
   description:
-    "In-depth engineering write-ups of shipped products: the problem, the architecture, the stack and the reasoning. 2,000+ words each, no marketing filler.",
+    "Engineering write-ups of products DevoraX's founders built or worked on, including as employees elsewhere: the problem, the architecture and the stack.",
   keywords: [
     "DevoraX case studies",
     "software development portfolio",
@@ -35,14 +35,14 @@ export const metadata: Metadata = {
     siteName: "DevoraX",
     title: "Case Studies | DevoraX",
     description:
-      "Explore our portfolio of high-impact digital products — web apps, mobile apps, AI solutions, and more built for global clients.",
+      "Engineering write-ups of web, mobile and AI products DevoraX's founders built or worked on. Each study says who the work was for.",
     images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "DevoraX Case Studies" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Case Studies | DevoraX",
     description:
-      "Explore our portfolio of high-impact digital products built for global clients.",
+      "Engineering write-ups of products DevoraX's founders built or worked on, including as employees elsewhere.",
     images: [{ url: `${BASE_URL}/og-image.jpg`, alt: "DevoraX Case Studies" }],
   },
   alternates: {
@@ -65,7 +65,7 @@ const itemListSchema = (projects: { id: number | string; title: string }[]) => (
   "@type": "ItemList",
   name: "DevoraX Case Studies",
   description:
-    "Client projects delivered by DevoraX across web, mobile, AI and cloud.",
+    "Products DevoraX's founders built or worked on across web, mobile, AI and cloud, including work done as employees of other companies.",
   numberOfItems: projects.length,
   itemListElement: projects.map((project, i) => ({
     "@type": "ListItem",

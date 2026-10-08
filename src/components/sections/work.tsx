@@ -261,7 +261,8 @@ export const WorkSection = ({ projects }: { projects: any[] }) => {
               transition={{ delay: 0.14 }}
               className="text-gray-500 max-w-lg text-base"
             >
-              High-impact digital products delivered for global clients — every pixel crafted with purpose.
+              Products our founders built or worked on, including work done as engineers at other
+              companies. Each project page says who it was for.
             </motion.p>
           </div>
 

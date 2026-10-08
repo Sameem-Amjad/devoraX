@@ -8,9 +8,11 @@
  * page; when the page shows none of it, the markup is the only place those claims
  * exist, and a human assessor sees an unsigned, undated document.
  *
- * Everything here is checkable: the author is the organisation that did the work,
- * the date comes from the same constant the sitemap and the Article schema use,
- * and the reviewer link goes to the real profile.
+ * Everything here is checkable: the author is the organisation that publishes the
+ * page, the date comes from the same value the sitemap and the Article schema
+ * use, and the reviewer link goes to the real profile. It no longer says "the
+ * DevoraX engineering team" (DevoraX is two people) or "our own delivery record"
+ * (much of the portfolio is work Sameem did as an employee of other companies).
  */
 import Link from 'next/link';
 
@@ -37,12 +39,12 @@ export function Byline({
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-white/5 pb-6 text-sm text-gray-500">
       <span>
-        Written by the{' '}
+        Written by{' '}
         <Link
           href="/team"
           className="text-gray-300 underline underline-offset-4 hover:text-teal-400"
         >
-          DevoraX engineering team
+          DevoraX
         </Link>
       </span>
       <span aria-hidden="true">·</span>
@@ -64,7 +66,7 @@ export function Byline({
         </>
       )}
       <span aria-hidden="true">·</span>
-      <span className="text-gray-600">Based on our own delivery record ({kind})</span>
+      <span className="text-gray-600">Based on project records and public sources ({kind})</span>
     </div>
   );
 }

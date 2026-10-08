@@ -31,6 +31,10 @@ const safeUrl = (val: any): string | null => {
   return s.startsWith("http") ? s : null;
 };
 
+const isDemoHost = (url: string): boolean => {
+  try { return new URL(url).hostname.endsWith(".vercel.app"); } catch { return false; }
+};
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
 const ProjectDetailClient = ({ project }: { project: any }) => {
@@ -112,16 +116,16 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                 </div>
               ))}
             </div>
-            {/* These are the numbers a reader sees first, above the long-form
-                study, and they were presented with no source at all. The
-                long-form body attributes every figure it states; this strip has
-                to do the same or the attribution below it reads as a hedge on
-                claims the page already made flatly. */}
+            {/* This strip used to carry usage, revenue and uptime figures
+                labelled "reported by the client". Public data contradicted
+                several and nothing backed the rest, so they were removed. It now
+                holds facts about the build and who it was for, plus figures shown
+                on a public store listing. */}
             <p className="mt-4 text-xs text-gray-500">
-              Figures reported by the client or taken from the client&apos;s own
-              systems. Not independently audited by DevoraX —{" "}
+              Facts about the build and who it was for. Any figure here is shown on a public
+              store listing or site linked on this page —{" "}
               <Link href="/terms" className="underline underline-offset-4 hover:text-teal-400">
-                how we present portfolio results
+                how we present portfolio work
               </Link>
               .
             </p>
@@ -152,7 +156,7 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                     <div className="bg-[#0a0a0a] border-l-2 border-blue-500 pl-6 pr-4 py-5 rounded-r-2xl">
                       <div className="text-blue-400 text-xs font-bold uppercase tracking-widest mb-2 flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-blue-400 inline-block" />
-                        Our Solution
+                        What Was Built
                       </div>
                       <p className="text-gray-300 leading-relaxed">{project.solution}</p>
                     </div>
@@ -205,7 +209,7 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
 
             {/* Platform Links */}
             <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Live Platform</h3>
+              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Where to See It</h3>
               <div className="space-y-3">
                 {webUrl && (
                   <a
@@ -215,7 +219,9 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                     className="flex items-center gap-3 w-full py-3 px-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-colors"
                   >
                     <Globe className="w-4 h-4 flex-shrink-0" />
-                    <span>Visit Website</span>
+                    {/* A *.vercel.app link here is a demo deployment, not the
+                        product's own domain; say so on the button. */}
+                    <span>{isDemoHost(webUrl) ? "View Demo Build" : "Visit Website"}</span>
                     <ExternalLink className="w-3.5 h-3.5 ml-auto opacity-60" />
                   </a>
                 )}
@@ -244,7 +250,7 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                   </a>
                 )}
                 {!webUrl && !androidUrl && !iosUrl && (
-                  <p className="text-gray-600 text-sm text-center py-2">No live links available</p>
+                  <p className="text-gray-600 text-sm text-center py-2">No public link for this project</p>
                 )}
               </div>
             </div>

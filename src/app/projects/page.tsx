@@ -10,7 +10,7 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Software Project Portfolio',
   description:
-    'Fintech apps, AI e-commerce platforms, SaaS dashboards and React Native builds — real products shipped to production for clients worldwide.',
+    'Marketplaces, real-time apps, media backends and AI builds that DevoraX\'s founders built or worked on, including as employees of other companies.',
   keywords: [
     'DevoraX portfolio',
     'software development projects',
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     url: `${BASE_URL}/projects`,
     siteName: 'DevoraX',
     title: 'Projects | DevoraX',
-    description: 'Our portfolio of shipped digital products — mobile apps, AI platforms, SaaS tools, and more.',
+    description: 'Products DevoraX\'s founders built or worked on, including as employees elsewhere. Each page says who the work was for.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'DevoraX Projects' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Projects | DevoraX',
-    description: 'Our portfolio of shipped digital products.',
+    description: 'Products DevoraX\'s founders built or worked on, including as employees elsewhere.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, alt: 'DevoraX Projects' }],
   },
 };
@@ -45,7 +45,7 @@ const itemListSchema = (projects: { id: string | number; title: string }[]) => (
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'DevoraX Project Portfolio',
-  description: 'Software products and digital applications built by DevoraX',
+  description: 'Software products built or engineered by DevoraX\'s founders, including work done as employees elsewhere',
   numberOfItems: projects.length,
   itemListElement: projects.map((p, i) => ({
     '@type': 'ListItem',
@@ -115,9 +115,10 @@ export default async function ProjectsPage() {
               </span>
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
-              A selection of digital products we&apos;ve designed, engineered, and launched — from fintech mobile
-              apps and AI e-commerce ecosystems to SaaS dashboards and cloud-native platforms. Each project
-              is a fixed-scope, fixed-price engagement with full IP transfer on delivery.
+              Products our founders built or worked on: marketplaces, real-time apps, media backends
+              and AI builds. Many were built while Sameem was an engineer at other companies, some have
+              no public link, and a few links are demo builds. Each project page says which, and links
+              only to what you can check.
             </p>
           </div>
         </header>

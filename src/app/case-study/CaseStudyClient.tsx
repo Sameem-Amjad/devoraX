@@ -253,7 +253,8 @@ function ProjectCard({
             {project.studyWords && (
               <p className="mt-4 font-mono text-[0.6rem] uppercase tracking-widest text-teal-500/70">
                 {project.studyWords.toLocaleString("en-US")}-word study
-                {project.studyOutcomes > 0 && ` · ${project.studyOutcomes} reported outcomes`}
+                {project.studyOutcomes > 0 &&
+                  ` · ${project.studyOutcomes} checkable ${project.studyOutcomes === 1 ? "fact" : "facts"}`}
               </p>
             )}
 
@@ -430,11 +431,12 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
             transition={{ delay: 0.15, duration: 0.7 }}
             className="text-gray-400 text-lg max-w-2xl mb-12"
           >
-            Deep dives into{" "}
+            Engineering write-ups of{" "}
             <span className="text-white font-medium">
               {projects.length} projects
             </span>{" "}
-            we&apos;ve shipped — real problems, real solutions, measurable results.
+            our founders built or worked on, many as engineers at other companies. Each
+            study says who the work was for and links only to what you can check.
           </motion.p>
 
           {/* Stats row */}
@@ -444,11 +446,15 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
             transition={{ delay: 0.25 }}
             className="flex flex-wrap gap-6 mb-16"
           >
+            {/* Was "Projects Shipped / 40+ Global Clients / 12+ Industries / 6 wks
+                Avg Delivery". The client count and the delivery average had no
+                record behind them, and the project count treated employer work as
+                DevoraX deliveries. These are checkable. */}
             {[
-              { label: "Projects Shipped", value: `${projects.length}+` },
-              { label: "Global Clients", value: "40+" },
-              { label: "Industries", value: "12+" },
-              { label: "Avg Delivery", value: "6 wks" },
+              { label: "Case Studies", value: `${projects.length}` },
+              { label: "Fiverr Rating", value: "5.0" },
+              { label: "Fiverr Projects", value: "50+" },
+              { label: "Client Countries", value: "4" },
             ].map((s) => (
               <div key={s.label} className="flex flex-col">
                 <span className="text-2xl font-bold text-white font-mono">{s.value}</span>
