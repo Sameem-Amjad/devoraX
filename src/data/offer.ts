@@ -9,9 +9,10 @@
  *
  * Honesty rules still apply (claims ledger, Oct 2026):
  *  - Prices Sameem set on 2026-10-09: audit $400 (credited to the fix), finish
- *    sprint $1,200 per week, monthly care $1,500 a month. Payments and store
- *    launch are still quoted after the audit. The $2,900 / $7,500 packages are
- *    for new builds only.
+ *    sprint $1,200 per week, monthly care $1,500 a month. Payments from $1,200
+ *    (Connect payouts from $2,400) and iOS & Android launch from $2,400 were the
+ *    recommended prices he asked to publish the same day, in weeks of the
+ *    $1,200 sprint. The $2,900 / $7,500 packages are for new builds only.
  *  - No delivery guarantee beyond "usually 1–2 weeks" for a finish sprint.
  *  - No claim about past rescues or results; this describes the offer.
  *  - DevoraX is a two-person studio.
@@ -81,13 +82,13 @@ export const OFFER_LADDER: OfferStep[] = [
     title: 'Payments',
     body:
       'Stripe checkout and subscriptions, and Connect payouts to sellers for marketplaces, set up in your own Stripe account.',
-    price: 'Fixed price, quoted after the audit',
+    price: 'From $1,200 · Connect payouts from $2,400',
   },
   {
     title: 'iOS & Android launch',
     body:
       'Native features such as push notifications and deep links, then submission to the App Store and Google Play until approved.',
-    price: 'Fixed price, quoted after the audit',
+    price: 'From $2,400 · a full React Native build is quoted after the audit',
   },
   {
     title: 'Monthly care',
