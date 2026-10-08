@@ -713,13 +713,13 @@ export const AdminProjectsManager = ({ projects, onDelete, onAdd, onUpdate }: Ad
                 {form.stats.map((item, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <input
-                      placeholder="Key (e.g. Uptime)"
+                      placeholder="Key (e.g. Backend)"
                       className="w-36 bg-black border border-white/10 px-3 py-2 rounded-lg text-white text-sm focus:outline-none focus:border-teal-500/50 flex-shrink-0"
                       value={item.key}
                       onChange={(e) => updateStat(i, "key", e.target.value)}
                     />
                     <input
-                      placeholder="Value (e.g. 99.9%)"
+                      placeholder="Value (e.g. NestJS) — no unverifiable figures"
                       className="flex-1 bg-black border border-white/10 px-3 py-2 rounded-lg text-white text-sm focus:outline-none focus:border-teal-500/50"
                       value={item.value}
                       onChange={(e) => updateStat(i, "value", e.target.value)}
