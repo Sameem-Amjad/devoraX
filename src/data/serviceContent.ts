@@ -65,7 +65,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "heading": "How is security handled in an app that moves money?",
-        "body": "Mostly outside the framework. Whether an app is React Native, Flutter or native, the decisions that carry the risk are the same: how users authenticate, how tokens are stored on the device, what the API accepts and rejects, how a payment request is made safe to retry, and what the app shows when the network drops halfway through a transaction.\n\nThe FinTech Mobile App in the portfolio is a React Native client over a Node.js backend with authenticated APIs and transaction handling.\n\nDevoraX holds no certifications and has run no audits. If your product needs a formal security assessment or a regulator's sign-off, that comes from a specialist firm, and the build is designed so their findings can be acted on. What gets settled with you during architecture is the security model itself, written down before the screens are built."
+        "body": "Mostly outside the framework. Whether an app is React Native, Flutter or native, the decisions that carry the risk are the same: how users authenticate, how tokens are stored on the device, what the API accepts and rejects, how a payment request is made safe to retry, and what the app shows when the network drops halfway through a transaction.\n\nThe FinTech Mobile App in the portfolio is a React Native client over a Node.js backend with authenticated APIs and transaction handling.\n\nDevoraX holds no certifications and has run no compliance audits. If your product needs a formal security assessment or a regulator's sign-off, that comes from a specialist firm, and the build is designed so their findings can be acted on. What gets settled with you during architecture is the security model itself, written down before the screens are built."
       },
       {
         "heading": "How do you keep a cross-platform app fast on both iOS and Android?",
@@ -92,7 +92,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "q": "Can a cross-platform app be secure enough for financial transactions?",
-        "a": "The framework is rarely the weak point; authentication, token storage, API validation and safe retries are. The FinTech Mobile App in the portfolio, a React Native client over a Node.js backend, shows the shape of that work. DevoraX holds no certifications and has run no audits, so a product that needs a formal security assessment should budget for a specialist firm alongside the build."
+        "a": "The framework is rarely the weak point; authentication, token storage, API validation and safe retries are. The FinTech Mobile App in the portfolio, a React Native client over a Node.js backend, shows the shape of that work. DevoraX holds no certifications and has run no compliance audits, so a product that needs a formal security assessment should budget for a specialist firm alongside the build."
       },
       {
         "q": "Can you connect the app to my existing backend, payment provider and notification service?",
@@ -107,7 +107,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
         "a": "Yes. Bondly, a pet-care marketplace whose backend Sameem led as an engineer at Webrange Solutions, is live at bondlypets.com. Food Magnet and LoopedIn, both Zencloud projects he worked on as an engineer there, are on Google Play and the App Store."
       }
     ],
-    "word_count": 1553
+    "word_count": 1555
   },
   "2": {
     "service_id": 2,

@@ -69,7 +69,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What does a banking app's security model have to assume?",
-        "body": "A banking app runs on a device its owner controls, over networks the operator does not, against a server that has to assume both are hostile. Every rule that matters therefore has to be decided on the server, because anything the app is permitted to determine, the app can be made to determine differently. DevoraX, which publishes this page, holds no security certifications and has run no audits.\n\nThe practical consequences are well understood and not specific to this build. Secrets do not ship inside a mobile app, because an app binary is distributable and readable. Credentials held on a device belong in the platform's protected key storage rather than in ordinary app storage. Sessions are short-lived and revocable, so a stolen token expires rather than lasting indefinitely. Limits, eligibility and balances are checked again on the server even when the interface has already checked them, since the interface check is a convenience for the user rather than a boundary. Everything that changes money is logged in a form that cannot be quietly edited, which is the same append-only discipline reliability asks for."
+        "body": "A banking app runs on a device its owner controls, over networks the operator does not, against a server that has to assume both are hostile. Every rule that matters therefore has to be decided on the server, because anything the app is permitted to determine, the app can be made to determine differently. DevoraX, which publishes this page, holds no security certifications and has run no compliance audits.\n\nThe practical consequences are well understood and not specific to this build. Secrets do not ship inside a mobile app, because an app binary is distributable and readable. Credentials held on a device belong in the platform's protected key storage rather than in ordinary app storage. Sessions are short-lived and revocable, so a stolen token expires rather than lasting indefinitely. Limits, eligibility and balances are checked again on the server even when the interface has already checked them, since the interface check is a convenience for the user rather than a boundary. Everything that changes money is logged in a form that cannot be quietly edited, which is the same append-only discipline reliability asks for."
       },
       {
         "heading": "Where can the FinTech Mobile App be seen?",
@@ -82,7 +82,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Node.js is the backend runtime. A transaction API like this is dominated by waiting rather than computation: a database read, an authorisation check, a ledger write, a notification handed off. An event loop suits that profile, since a waiting connection costs a callback instead of a parked thread, and phones hold connections open far longer than the server spends working on them. The limit is the same property inverted, so CPU-bound work such as hashing or report generation has to leave the request path. Sharing one language also lets account and transfer types be written once and used on both sides of the API.",
       "Security is one of the three concerns this build is aimed at, and it is a property rather than a technology. What a banking app generally requires is a server that trusts neither the device nor the network: authorisation decided server-side, secrets kept out of the app binary, credentials in platform key storage, short-lived revocable sessions and an append-only record of anything that moves money."
     ],
-    "word_count": 1963,
+    "word_count": 1964,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "2": {
@@ -996,7 +996,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What does building to GDPR requirements mean for the engineering?",
-        "body": "The REST APIs Sameem worked on were built to GDPR requirements. That is a design constraint, and it is best read as one. GDPR turns several ordinary choices into requirements: personal data needs a stated purpose and a retention position, data subjects have rights of access and erasure, collection should be limited to what the purpose needs, and processing has to be recorded. That pulls against the other requirement in this domain, because an authorisation system needs a durable trail of who granted what and when, and an immutable trail is hard to reconcile with a right to erasure.\n\nThe usual resolution is separation and explicit retention. Evidence a relying party may need is held apart from personal data that may have to be removed, retention is decided per category rather than as one all-or-nothing policy, and erasure is handled with the understanding that it is not absolute where the law requires a record to be kept. DevoraX holds no certifications and has run no audits."
+        "body": "The REST APIs Sameem worked on were built to GDPR requirements. That is a design constraint, and it is best read as one. GDPR turns several ordinary choices into requirements: personal data needs a stated purpose and a retention position, data subjects have rights of access and erasure, collection should be limited to what the purpose needs, and processing has to be recorded. That pulls against the other requirement in this domain, because an authorisation system needs a durable trail of who granted what and when, and an immutable trail is hard to reconcile with a right to erasure.\n\nThe usual resolution is separation and explicit retention. Evidence a relying party may need is held apart from personal data that may have to be removed, retention is decided per category rather than as one all-or-nothing policy, and erasure is handled with the understanding that it is not absolute where the law requires a record to be kept. DevoraX holds no certifications and has run no compliance audits."
       },
       {
         "heading": "Where can you see e-fuldmagt?",
@@ -1017,7 +1017,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "MongoDB: the database. A document store suits a service that handles several types of power of attorney for individuals, businesses and public institutions, where each type needs different attributes. Each record can carry what its type needs while common fields stay indexed and queryable. The cost is that schema discipline moves into application code, which is part of why a typed backend matters.",
       "AWS S3: generated documents are immutable once signed and read more often than they are written, so they belong in object storage rather than in a database or on application disks. Keeping them out of the API tier leaves it lighter and replaceable, and addressing objects by key and version suits material that has to be retrievable as the exact bytes a signature covered."
     ],
-    "word_count": 2256,
+    "word_count": 2257,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "28": {

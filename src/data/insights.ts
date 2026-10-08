@@ -1231,7 +1231,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What does a $3,000 budget specifically not buy?",
-        "body": "It does not buy role separation. Four role dashboards like Afriva's are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and a change to seller tooling must not quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. The portfolio holds no test matrix, review step or release procedure for any entry, so nothing here should be read as a description of how DevoraX tests. It does not buy institutional multi-tenancy either. A product like Pathana, where counsellors and families see students' records, has to keep each student's data visible only to the right people by construction rather than by careful coding, and the portfolio documents no assessment of how any build does that.\n\nIt does not buy a native release. All five reference builds are web products, while eight of the 25 entries link a live store listing, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no audits. A starting-tier engagement carries one month of support, after which the system is yours to run and the code and IP are yours on final payment."
+        "body": "It does not buy role separation. Four role dashboards like Afriva's are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and a change to seller tooling must not quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. The portfolio holds no test matrix, review step or release procedure for any entry, so nothing here should be read as a description of how DevoraX tests. It does not buy institutional multi-tenancy either. A product like Pathana, where counsellors and families see students' records, has to keep each student's data visible only to the right people by construction rather than by careful coding, and the portfolio documents no assessment of how any build does that.\n\nIt does not buy a native release. All five reference builds are web products, while eight of the 25 entries link a live store listing, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits. A starting-tier engagement carries one month of support, after which the system is yours to run and the code and IP are yours on final payment."
       },
       {
         "heading": "When is the honest answer not to hire an agency like DevoraX at all?",
@@ -1295,7 +1295,7 @@ export const INSIGHTS: Insight[] = [
       "Surfaces and roles, not features, separate the five: Coffee Shop has one surface and one audience, Augment Fit one admin panel serving two named roles, Waitmate one admin dashboard, Pathana one platform with three parties sharing views, and Afriva four role dashboards, while named feature counts stay within a band of three to four throughout.",
       "No portfolio entry stores a price, a timeline or a team size, so none of the five named builds is evidence of what $2,900 buys.",
       "DevoraX's published starting points are MVP Starter from $2,900, Growth from $7,500 and Enterprise custom-scoped, each priced as a fixed sum in a proposal after a free 30-minute discovery call. The MVP Starter includes one month of support.",
-      "None of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no audits.",
+      "None of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits.",
       "15 of the 25 entries link to something public, 3 of those links are demo builds, and 10 link to nothing. No entry stores a delivery, launch or failure status, so the portfolio cannot be read as a success rate in either direction."
     ],
     "limitations": [
@@ -1312,7 +1312,7 @@ export const INSIGHTS: Insight[] = [
       "What a build costs to run and maintain after handover. No hosting invoices, platform bills or post-launch support costs exist anywhere in the portfolio.",
       "Whether $2,900 is competitive against other suppliers. DevoraX holds no competitor quotes and did not price-check anybody for this article."
     ],
-    "word_count": 3294
+    "word_count": 3296
   }
 ];
 

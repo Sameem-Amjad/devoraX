@@ -107,7 +107,7 @@ const EXTENDED_SERVICES = [
   {
     title: "Secure-by-Default Builds",
     icon: "Shield",
-    desc_text: "Security built into the code: OWASP Top 10 checks, role-based access, encrypted storage and signed media URLs. DevoraX holds no security certifications and does not sell penetration tests or audits.",
+    desc_text: "Security built into the code: OWASP Top 10 checks, role-based access, encrypted storage and signed media URLs. DevoraX holds no security certifications and does not sell penetration tests or compliance audits.",
     tags: ["OWASP Top 10", "RBAC", "Signed URLs", "Encryption"],
     gradient: "from-red-500 to-orange-500",
     glow: "rgba(239,68,68,0.3)",
