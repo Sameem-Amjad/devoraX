@@ -1,70 +1,79 @@
-import { CASE_STUDY_CONTENT } from './caseStudyContent';
-import { TESTIMONIAL_STATS } from './testimonials';
-
 /**
- * The homepage figures, derived rather than typed in.
+ * The homepage figures, derived or sourced rather than typed in loosely.
  *
- * They were hardcoded, and they drifted: the counter advertised "10 In-Depth
- * Case Studies" for a while after the count had reached 20, and "1,200+ words"
- * after the shortest study had grown past that. A number a visitor can disprove
- * in one click costs more trust than it buys, and hand-maintained counts on a
- * database-backed site always end up wrong.
+ * Every figure here must be something a buyer can check today: Sameem's public
+ * Fiverr record (5.0 rating, 50+ projects since January 2022, clients in the US,
+ * UK, Canada and Hong Kong), the team page (two people), or a store listing
+ * linked from the portfolio. Earlier versions showed "Projects Delivered",
+ * "Live Products", "Five-Star Reviews" and "Clients Served" counts. The first two
+ * counted employer work and builds with no public link as DevoraX deliveries, and
+ * the review and client counts disagreed with each other across the site. None of
+ * those is shown any more.
+ *
+ * The store-app count is computed from the projects table, so it cannot drift
+ * when a listing is added or a link dies.
  *
  * This module is imported by a SERVER component, which passes the computed
- * scalars down as props. Do not import it from a client component — that would
- * pull the whole 1,200-line case-study corpus into the browser bundle.
+ * scalars down as props.
  */
 export type SiteStat = {
   value: number;
   suffix: string;
   label: string;
   sub: string;
+  /** Digits after the decimal point when rendering `value`. Defaults to 0. */
+  decimals?: number;
 };
 
-export function getSiteStats(projectCount: number): SiteStat[] {
-  const studies = Object.values(CASE_STUDY_CONTENT);
-  const totalWords = studies.reduce((n, s) => n + (s.word_count || 0), 0);
-  const shortest = studies.length ? Math.min(...studies.map((s) => s.word_count || 0)) : 0;
+type ProjectLinks = { android?: string | null; ios?: string | null };
 
+const STORE_URL = /^https?:\/\/(apps\.apple\.com|play\.google\.com)\//;
+
+/** Portfolio entries with at least one App Store or Google Play listing. */
+export function countStoreApps(projects: ProjectLinks[]): number {
+  return projects.filter(
+    (p) => STORE_URL.test(p.android ?? '') || STORE_URL.test(p.ios ?? '')
+  ).length;
+}
+
+export function getSiteStats(projects: ProjectLinks[]): SiteStat[] {
   return [
     {
-      value: projectCount,
+      value: 5,
+      decimals: 1,
       suffix: '',
-      label: 'Projects Delivered',
-      // True now that every project carries one. It was not true when written.
-      sub: studies.length >= projectCount
-        ? 'Each one a published case study'
-        : `${studies.length} with a published case study`,
+      label: 'Fiverr Rating',
+      sub: 'Public profile, linked below',
     },
     {
-      value: 18,
-      suffix: '',
-      label: 'Live Products',
-      sub: 'Publicly reachable right now',
+      value: 50,
+      suffix: '+',
+      label: 'Fiverr Projects',
+      sub: 'Since January 2022',
     },
     {
-      value: TESTIMONIAL_STATS.totalReviews,
+      value: 4,
       suffix: '',
-      label: 'Five-Star Reviews',
-      sub: 'Every Fiverr review, 5 of 5',
+      label: 'Client Countries',
+      sub: 'US, UK, Canada, Hong Kong',
     },
     {
-      value: TESTIMONIAL_STATS.uniqueClients,
-      suffix: '',
-      label: 'Clients Served',
-      sub: `Across ${TESTIMONIAL_STATS.countries} countries`,
+      value: 4,
+      suffix: '+',
+      label: 'Years of Client Work',
+      sub: 'On Fiverr since 2022',
     },
     {
-      value: Math.floor(totalWords / 1000),
-      suffix: 'k',
-      label: 'Words of Engineering Detail',
-      sub: `Shortest study: ${shortest.toLocaleString('en-US')} words`,
+      value: countStoreApps(projects),
+      suffix: '',
+      label: 'Apps on the Stores',
+      sub: 'Portfolio apps, incl. employer work',
     },
     {
-      value: TESTIMONIAL_STATS.repeatClients,
+      value: 2,
       suffix: '',
-      label: 'Repeat Clients',
-      sub: 'Came back for more work',
+      label: 'Senior Engineers',
+      sub: 'Specialists added when needed',
     },
   ];
 }

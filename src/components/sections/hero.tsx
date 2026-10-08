@@ -53,7 +53,7 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
             <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
           </span>
           <span className="text-[0.72rem] font-semibold text-teal-200 tracking-widest uppercase">
-            Product Engineering Agency · 25 Shipped Projects
+            Two-Person Product Studio · 5.0 on Fiverr
           </span>
         </motion.div>
 
@@ -93,9 +93,10 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ duration: 0.45, delay: 0.2 }}
           className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-5 leading-relaxed"
         >
-          {CONSTANTS.AGENCY_NAME} is a full-service technology agency. We fuse{" "}
-          <span className="text-teal-400 font-medium">AI innovation</span> with scalable engineering to
-          turn your boldest ideas into market-ready products.
+          {CONSTANTS.AGENCY_NAME} is a two-person studio: two senior engineers who build mobile apps,
+          web platforms and{" "}
+          <span className="text-teal-400 font-medium">AI features</span>, and bring in specialists
+          when a scope needs them.
         </motion.p>
 
         {/* Tech pill row */}
@@ -145,14 +146,17 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ duration: 0.4, delay: 0.45 }}
           className="mt-24 pt-8 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto"
         >
-          {/* Verifiable figures only. "100+ Projects", "15+ Expert Engineers" and
-              "100% Client Success Rate" were contradicted by the portfolio, the
-              team page and the review record respectively. */}
+          {/* Verifiable figures only, all on the public Fiverr profile. "100+
+              Projects", "15+ Expert Engineers" and "100% Client Success Rate" were
+              contradicted by the portfolio, the team page and the review record;
+              the later "25 Projects Delivered" and "18 Live Products" counted
+              employer work and builds with no public link as DevoraX deliveries,
+              and the review count disagreed with other pages. */}
           {[
-            { label: "Projects Delivered", val: "25" },
-            { label: "Live Products", val: "18" },
-            { label: "Five-Star Reviews", val: "20" },
-            { label: "Countries Served", val: "4" },
+            { label: "Fiverr Rating", val: "5.0" },
+            { label: "Fiverr Projects", val: "50+" },
+            { label: "Client Countries", val: "4" },
+            { label: "Years on Fiverr", val: "4+" },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <div className={`text-3xl md:text-4xl font-bold mb-1 font-mono text-transparent bg-clip-text bg-gradient-to-r ${CONSTANTS.PRIMARY_GRADIENT}`}>

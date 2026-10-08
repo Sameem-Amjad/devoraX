@@ -11,9 +11,9 @@ export const metadata: Metadata = {
   // this rendered as "DevoraX | … | DevoraX" with the brand duplicated.
   // Keyword first, brand last, 52 chars.
   title: { absolute: "AI-Powered Mobile & Web Development Agency | DevoraX" },
-  // 152 chars — Google truncates around 155-160.
+  // 151 chars — Google truncates around 155-160.
   description:
-    "We build production-grade mobile apps, Next.js platforms and AI integrations for founders and CTOs. Fixed-price proposals, shipped in weeks.",
+    "A two-person studio building mobile apps, Next.js platforms and AI integrations for founders. 5.0 on Fiverr across 50+ projects. Fixed-price proposals.",
   alternates: {
     canonical: BASE_URL,
   },
@@ -43,9 +43,9 @@ export default async function Home() {
       <HomeClient
         initialProjects={projectsRes.data || []}
         initialServices={servicesRes.data || []}
-        // Computed on the server from the real corpus, so the counter cannot
-        // drift out of date the way the hardcoded version did.
-        stats={getSiteStats((projectsRes.data || []).length)}
+        // Fiverr-record figures plus a store-listing count computed from the
+        // projects table, so the counter cannot drift out of date.
+        stats={getSiteStats(projectsRes.data || [])}
       />
     </>
   );

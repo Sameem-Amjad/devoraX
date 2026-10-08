@@ -3,26 +3,30 @@ import { motion, useInView, useMotionValue, useTransform, animate } from "framer
 import { useEffect, useRef } from "react";
 
 /**
- * Every figure here is checkable against something on this site or on a public
- * profile. That is the point.
+ * Every figure here is checkable against a public profile or a store listing.
+ * That is the point.
  *
- * The previous set was not: "98% Client Satisfaction (based on post-project
- * surveys)" described surveys that do not exist, "40% Faster Delivery vs industry
- * average" cited a benchmark nobody ran, "70% Returning Clients" was contradicted
- * by the review record (3 of 16 clients repeat), and "15+ Senior Engineers"
- * contradicted the team page. Numbers a visitor can disprove in one click cost
- * more trust than they buy.
+ * Earlier sets were not. "98% Client Satisfaction" described surveys that do not
+ * exist, "15+ Senior Engineers" contradicted the team page, and later "Projects
+ * Delivered" and "Live Products" counted work Sameem did as an employee of other
+ * companies, and builds with no public link, as DevoraX deliveries. The review
+ * and client counts disagreed with each other across the site. Numbers a visitor
+ * can disprove in one click cost more trust than they buy.
+ *
+ * The server passes the real values (see src/data/siteStats.ts); these literals
+ * are only a fallback.
  */
-const STATS = [
-  { value: 25, suffix: "",  label: "Projects Delivered",  sub: "Each one a published case study" },
-  { value: 18, suffix: "",  label: "Live Products",       sub: "Publicly reachable right now" },
-  { value: 20, suffix: "",  label: "Five-Star Reviews",   sub: "Every Fiverr review, 5 of 5" },
-  { value: 16, suffix: "",  label: "Clients Served",      sub: "Across 4 countries" },
-  { value: 10, suffix: "",  label: "In-Depth Case Studies", sub: "1,200+ words of engineering detail" },
-  { value: 3,  suffix: "",  label: "Repeat Clients",      sub: "Came back for more work" },
+type Stat = { value: number; suffix: string; label: string; sub: string; decimals?: number };
+
+const STATS: Stat[] = [
+  { value: 5,  decimals: 1, suffix: "",  label: "Fiverr Rating",        sub: "Public profile, linked below" },
+  { value: 50, suffix: "+", label: "Fiverr Projects",      sub: "Since January 2022" },
+  { value: 4,  suffix: "",  label: "Client Countries",     sub: "US, UK, Canada, Hong Kong" },
+  { value: 4,  suffix: "+", label: "Years of Client Work", sub: "On Fiverr since 2022" },
+  { value: 2,  suffix: "",  label: "Senior Engineers",     sub: "Specialists added when needed" },
 ];
 
-function CountUp({ to, suffix }: { to: number; suffix: string }) {
+function CountUp({ to, suffix, decimals = 0 }: { to: number; suffix: string; decimals?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const count = useMotionValue(0);
@@ -33,11 +37,11 @@ function CountUp({ to, suffix }: { to: number; suffix: string }) {
       duration: 1.8,
       ease: "easeOut",
       onUpdate(v) {
-        if (ref.current) ref.current.textContent = `${Math.round(v)}${suffix}`;
+        if (ref.current) ref.current.textContent = `${v.toFixed(decimals)}${suffix}`;
       },
     });
     return controls.stop;
-  }, [inView, to, suffix, count]);
+  }, [inView, to, suffix, decimals, count]);
 
   // Server-render the REAL value, not "0". AI crawlers and non-JS fetchers never
   // run the count-up effect, so this component previously published six zeros —
@@ -46,12 +50,12 @@ function CountUp({ to, suffix }: { to: number; suffix: string }) {
   // client because `count` starts at 0; only the SSR/first-paint text changes.
   return (
     <span ref={ref} className="tabular-nums">
-      {`${to}${suffix}`}
+      {`${to.toFixed(decimals)}${suffix}`}
     </span>
   );
 }
 
-export const StatsCounterSection = ({ stats }: { stats?: typeof STATS }) => {
+export const StatsCounterSection = ({ stats }: { stats?: Stat[] }) => {
   // Server-computed figures win; the literals below are only a fallback so the
   // section still renders if the prop is ever missing.
   const rows = stats && stats.length ? stats : STATS;
@@ -72,9 +76,9 @@ export const StatsCounterSection = ({ stats }: { stats?: typeof STATS }) => {
             By the numbers
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-white mt-4">
-            Results that{" "}
+            Numbers you{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-              speak for themselves
+              can check
             </span>
           </h2>
         </motion.div>
@@ -90,7 +94,7 @@ export const StatsCounterSection = ({ stats }: { stats?: typeof STATS }) => {
               className="flex flex-col items-center text-center p-8 bg-[#080808] hover:bg-[#0e0e0e] transition-colors group"
             >
               <div className="text-4xl md:text-5xl font-bold font-mono text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 mb-2 group-hover:drop-shadow-[0_0_12px_rgba(45,212,191,0.5)] transition-all">
-                <CountUp to={stat.value} suffix={stat.suffix} />
+                <CountUp to={stat.value} suffix={stat.suffix} decimals={stat.decimals} />
               </div>
               <div className="text-sm font-semibold text-white mb-1">{stat.label}</div>
               <div className="text-[0.65rem] text-gray-600 uppercase tracking-wider">{stat.sub}</div>

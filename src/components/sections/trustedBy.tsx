@@ -1,65 +1,55 @@
 "use client";
 import { motion } from "framer-motion";
+import { FIVERR_PROFILE_URL } from "@/data/testimonials";
 
-// Real products we shipped, not invented client brands.
+// Checkable facts, not logos.
 //
-// This strip previously listed eight fabricated companies (FinStart, ShopFlow,
-// TechCorp, NovaMed, CloudVault, SwiftPay, DataSphere, AeroLogic) — the same
-// invented names that backed the fabricated testimonials. Every entry below is a
-// real project in the portfolio, and most are publicly reachable, so the claim is
-// checkable rather than decorative.
-const CLIENTS = [
-  { name: "Dooz",           abbr: "DZ" },
-  { name: "Koor",           abbr: "KR" },
-  { name: "Afriva",         abbr: "AF" },
-  { name: "Pastel",         abbr: "PS" },
-  { name: "WOD Pro League", abbr: "WP" },
-  { name: "TAL Services",   abbr: "TAL" },
-  { name: "Pathana",        abbr: "PA" },
-  { name: "Loopedin",       abbr: "LI" },
+// This strip used to scroll eight product names (Dooz, Koor, Afriva, Pastel,
+// WOD Pro League, TAL Services, Pathana, Loopedin) under "Trusted by ambitious
+// companies worldwide". None of them is a DevoraX client: most are products
+// Sameem worked on as an employee of other companies, and for the rest no client
+// relationship is confirmed. Showing them as client logos claimed something that
+// is not true. What a buyer can verify is the Fiverr record, so that is what this
+// strip shows, with the link to check it.
+const FACTS = [
+  { value: "5.0", label: "Fiverr rating" },
+  { value: "50+", label: "Fiverr projects since 2022" },
+  { value: "US · UK · Canada · Hong Kong", label: "Where those clients are" },
 ];
 
-const LogoCard = ({ client }: { client: { name: string; abbr: string } }) => (
-  <div className="flex items-center gap-3 px-6 py-3 rounded-xl bg-white/[0.025] border border-white/[0.06] hover:border-teal-500/20 hover:bg-white/[0.04] transition-all duration-300 group cursor-default select-none whitespace-nowrap">
-    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500/20 to-emerald-500/20 border border-teal-500/20 flex items-center justify-center text-teal-400 font-bold text-xs font-mono group-hover:scale-110 transition-transform">
-      {client.abbr}
-    </div>
-    <span className="text-gray-500 font-semibold text-sm group-hover:text-gray-300 transition-colors">
-      {client.name}
-    </span>
-  </div>
-);
-
 export const TrustedBySection = () => {
-  const doubled = [...CLIENTS, ...CLIENTS];
-
   return (
-    <section className="py-16 bg-[#020202] border-t border-white/5 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-10 text-center">
+    <section className="py-16 bg-[#020202] border-t border-white/5">
+      <div className="max-w-5xl mx-auto px-6 text-center">
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-xs font-semibold text-gray-600 uppercase tracking-widest"
+          className="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-8"
         >
-          Trusted by ambitious companies worldwide
+          Our client record, on Fiverr
         </motion.p>
-      </div>
 
-      {/* Single scrolling row */}
-      <div className="relative overflow-hidden">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#020202] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#020202] to-transparent z-10 pointer-events-none" />
-
-        <div
-          className="flex gap-4 animate-marquee"
-          style={{ width: "max-content" }}
-        >
-          {doubled.map((c, i) => (
-            <LogoCard key={`${c.name}-${i}`} client={c} />
+        <div className="grid sm:grid-cols-3 gap-4">
+          {FACTS.map((f) => (
+            <div
+              key={f.label}
+              className="px-6 py-4 rounded-xl bg-white/[0.025] border border-white/[0.06]"
+            >
+              <div className="text-white font-semibold text-sm">{f.value}</div>
+              <div className="text-gray-500 text-xs mt-1">{f.label}</div>
+            </div>
           ))}
         </div>
+
+        <a
+          href={FIVERR_PROFILE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-6 text-xs text-teal-400 underline underline-offset-4 hover:text-teal-300"
+        >
+          Check the profile on Fiverr
+        </a>
       </div>
     </section>
   );

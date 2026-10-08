@@ -20,7 +20,7 @@ const CTASection = dynamic(() => import("@/components/sections/ctaSection").then
 const BookingModal = dynamic(() => import("@/components/models/bookingModel/bookingModel"));
 import { AnimatePresence, motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
-import { TESTIMONIALS, TESTIMONIAL_STATS, FIVERR_PROFILE_URL } from "@/data/testimonials";
+import { TESTIMONIALS, FIVERR_PROFILE_URL } from "@/data/testimonials";
 import { Star, Check, ArrowRight, Quote } from "lucide-react";
 
 export default function HomeClient({ initialProjects, initialServices, stats }: any) {
@@ -193,9 +193,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
                 </span>
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto">
-                Every review below is a real, public Fiverr review — {TESTIMONIAL_STATS.totalReviews}{" "}
-                five-star ratings from {TESTIMONIAL_STATS.uniqueClients} clients across{" "}
-                {TESTIMONIAL_STATS.countries} countries.{" "}
+                Every review below is a real, public Fiverr review, from clients in the US, the UK,
+                Canada and Hong Kong. 5.0 rating across 50+ projects since 2022.{" "}
                 <a
                   href={FIVERR_PROFILE_URL}
                   target="_blank"
