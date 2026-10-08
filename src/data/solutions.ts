@@ -69,7 +69,7 @@ export const SOLUTIONS: Solution[] = [
     "h1": "Multi-Vendor Marketplace Development: Buyer, Vendor and Admin on One Backend",
     "title": "Multi-Vendor Marketplace Development",
     "meta_description": "Multi-vendor marketplace development from a two-person studio whose founder worked on Afriva and Pastel. Buyer app, vendor portal, admin. Fixed price.",
-    "hero_answer": "DevoraX is a two-person software studio, founded in 2019, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. The marketplace work behind this page is its founder Sameem Amjad's, most of it done as an employee of other companies: Afriva as an engineer at Webrange Solutions, Pastel's iOS app as a software engineer at Pastel, and the shared NestJS backend of Dooz Inspected Cars. DevoraX now takes the same work directly, for operators who have decided a template will not fit.",
+    "hero_answer": "DevoraX is a two-person software studio, founded in 2019, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. The marketplace work behind this page is its founder Sameem Amjad's, most of it done as an employee of other companies: Afriva as an engineer at Webrange Solutions, Pastel's iOS app as a software engineer at Pastel, and the shared NestJS backend of Dooz Inspected Cars. DevoraX now takes the same work directly: custom builds for operators a template will not fit, and custom features plus the native iOS and Android app for marketplaces already running on Sharetribe, which ships no native app.",
     "sections": [
       {
         "heading": "What does a multi-vendor marketplace build include, and what is quoted separately?",
@@ -105,7 +105,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "If a Shopify multi-vendor app, Sharetribe's hosted product or a marketplace template covers your model, buy it. It is cheaper than anything here and it will be running next week. Pastel itself is built on Sharetribe rather than on custom payment code, and the case for that generalises: marketplace money movement is a state machine with commissions, held funds, refunds, disputes and cross-border payouts, and reimplementing it is a poor trade without a reason.\n\nDo not hire us if you need a committed launch date before anyone has seen the scope. We do not publish delivery timelines and will not invent one on a call.\n\nDo not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one. And if you have not yet decided what a vendor is allowed to do, that decision comes before a supplier does."
+        "body": "If a Shopify multi-vendor app, Sharetribe's hosted product or a marketplace template covers your model, buy it. It is cheaper than anything here and it will be running next week. Pastel itself is built on Sharetribe rather than on custom payment code, and the case for that generalises: marketplace money movement is a state machine with commissions, held funds, refunds, disputes and cross-border payouts, and reimplementing it is a poor trade without a reason.\n\nDo not hire us if you need a committed launch date before anyone has seen the scope. We do not publish delivery timelines and will not invent one on a call.\n\nDo not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no compliance audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one. And if you have not yet decided what a vendor is allowed to do, that decision comes before a supplier does."
       }
     ],
     "proof": [
@@ -171,7 +171,7 @@ export const SOLUTIONS: Solution[] = [
       "Ongoing support, maintenance and feature work after handover",
       "Vendor recruitment, catalogue data entry and content production"
     ],
-    "when_not_to_hire": "If a Shopify multi-vendor app, Sharetribe's hosted product or an off-the-shelf template covers your model, buy it. It is cheaper and faster than a custom build, and Pastel itself is built on Sharetribe rather than on custom payment code. Do not hire us if you need a committed launch date before anyone has seen the scope; we do not publish timelines. Do not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one.",
+    "when_not_to_hire": "If a Shopify multi-vendor app, Sharetribe's hosted product or an off-the-shelf template covers your model, buy it. It is cheaper and faster than a custom build, and Pastel itself is built on Sharetribe rather than on custom payment code. Do not hire us if you need a committed launch date before anyone has seen the scope; dates come after the audit, not before. Do not hire us if you need a certified compliance posture. DevoraX holds no certifications and has run no compliance audits, and a marketplace carrying regulated financial products should hire a firm that can evidence one.",
     "faqs": [
       {
         "q": "Should I use Sharetribe or a Shopify multi-vendor app instead of a custom build?",
@@ -206,7 +206,7 @@ export const SOLUTIONS: Solution[] = [
         "a": "A free 30-minute discovery call. Bring your role model, your commission model, and your view on whether the catalogue holds stock-keeping items or single units. The output is a written fixed-price proposal covering scope, exclusions and price. If the honest answer is that a template would serve you better, that is what the proposal will say."
       }
     ],
-    "word_count": 2898,
+    "word_count": 2922,
     "role": "hub",
     "related_slugs": [
       "antiques-marketplace-app-development",

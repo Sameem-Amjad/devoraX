@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/hero";
 import { TrustedBySection } from "@/components/sections/trustedBy";
 import { WaveDivider } from "@/components/ui/waveDivider";
+import { OfferSteps } from "@/components/sections/offerSteps";
 
 // Below-fold sections: lazy-loaded to reduce initial JS bundle and TBT
 const TechStackSection = dynamic(() => import("@/components/sections/techStack").then(m => ({ default: m.TechStackSection })));
@@ -98,9 +99,18 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
                 </span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                No hidden fees, no surprise invoices. Fixed-price proposals so you always know what you're getting.
+                No hidden fees, no surprise invoices. Have an app already? It starts with a
+                launch-readiness audit, then a fixed price for the fix, quoted after the audit.
               </p>
             </motion.div>
+
+            {/* Existing app: the offer ladder (prices come from the audit). */}
+            <OfferSteps />
+
+            {/* New build: the published MVP packages. */}
+            <h3 className="text-center text-xs font-semibold text-gray-500 uppercase tracking-widest mb-8">
+              Building from scratch? Fixed-price packages
+            </h3>
 
             <div className="grid md:grid-cols-3 gap-6">
               {CONSTANTS.PRICING_PLANS.map((plan, idx) => (

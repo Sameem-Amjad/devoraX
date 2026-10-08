@@ -9,7 +9,7 @@ const HIGHLIGHTS = [
   { icon: Globe,  label: "Clients in 4 Countries", sub: "US, UK, Canada, Hong Kong" },
   { icon: Award,  label: "5.0 on Fiverr",          sub: "50+ projects since 2022" },
   { icon: Users,  label: "Two-Person Studio",      sub: "You work with the founders" },
-  { icon: Zap,    label: "Fixed-Price Scopes",     sub: "Timeline estimated per project" },
+  { icon: Zap,    label: "Audit First",            sub: "Then a fixed price for the fix" },
 ];
 
 export const AboutSection = () => {
@@ -39,9 +39,9 @@ export const AboutSection = () => {
               transition={{ delay: 0.05 }}
               className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight"
             >
-              Behind the <br />
+              Who finishes <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-                Digital Evolution
+                your app
               </span>
             </motion.h2>
 
@@ -53,8 +53,10 @@ export const AboutSection = () => {
               className="space-y-5 text-gray-400 text-lg leading-relaxed"
             >
               <p>
-                {CONSTANTS.AGENCY_NAME} was founded in 2019 with a singular mission: to bridge
-                the gap between complex engineering and intuitive design. We are a{" "}
+                {CONSTANTS.AGENCY_NAME}, founded in 2019, finishes and ships apps that got
+                stuck: the AI-built prototype that never went live, the Sharetribe marketplace
+                that needs custom features and a real mobile app, the project a previous
+                developer left half-done. We are a{" "}
                 <span className="text-white font-medium">
                   two-person studio
                 </span>
@@ -65,14 +67,14 @@ export const AboutSection = () => {
                 Between us we have built marketplaces, real-time leaderboards, video
                 pipelines and travel and legal-tech backends, much of it as engineers at
                 other companies. Each project page says who the work was for. We care most
-                about the parts that break in production:{" "}
+                about the parts that stop a launch:{" "}
                 <span className="text-teal-400 font-medium">
-                  payments, real-time data and media
+                  payments, native mobile builds and store review
                 </span>
                 .
               </p>
               <p>
-                We don't just build apps. We build businesses.
+                Then we stay on for the fixes and releases that follow.
               </p>
             </motion.div>
 

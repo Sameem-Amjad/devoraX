@@ -3,16 +3,17 @@ import { createPublicClient } from '@/lib/public';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft, Code2, Cpu, Layout, Server, Smartphone, Zap } from 'lucide-react';
 import { ServicesHubContent, servicesHubFaqSchema } from '@/components/seo/services-hub-content';
+import { OfferLadder } from '@/components/seo/offer-ladder';
 
 const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  // Title 39 chars rendered ("… | DevoraX"); description 139 chars, no brand in
-  // the body (the title already carries it) and no restating of the title.
+  // Title 39 chars rendered ("… | DevoraX"); description under 155 chars, no
+  // brand in the body (the title already carries it). Leads with the offer.
   title: 'Software Development Services',
   description:
-    'React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and UI/UX design, from a two-person studio of senior engineers.',
+    'Finish and ship a stuck app: launch-readiness audit, fixed-price finish sprint, Stripe payments, iOS and Android launch, monthly care. Two-person studio.',
   keywords: [
     'mobile app development services',
     'AI web development agency',
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     siteName: 'DevoraX',
     title: 'Services | DevoraX',
     description:
-      'Mobile apps, AI platforms, cloud architecture, and more — explore the full DevoraX service catalogue.',
+      'We finish and ship stuck apps: payments that work, real iOS and Android apps, and App Store approval. Audit first, then a fixed price.',
     images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'DevoraX Services' }],
   },
   twitter: {
@@ -59,7 +60,7 @@ const itemListSchema = (services: { id: string | number; title: string }[]) => (
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'DevoraX Software Development Services',
-  description: 'Full-service software development offerings from DevoraX agency',
+  description: 'Software development services from DevoraX, a two-person studio',
   numberOfItems: services.length,
   itemListElement: services.map((s, i) => ({
     '@type': 'ListItem',
@@ -133,12 +134,16 @@ export default async function ServicesPage() {
               </span>
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
-              From native mobile apps to AI-powered web platforms and cloud infrastructure — DevoraX delivers
-              production-grade software across the full technology stack. Every engagement starts with a free
-              30-minute strategy call and a fixed-price proposal.
+              We finish and ship stuck apps: payments that work, real iOS and Android apps, and App
+              Store approval. Built with Lovable, Replit, Bolt or Cursor, running on Sharetribe, or left
+              half-built by a previous developer, it starts with a free 30-minute call and a fixed-price
+              audit. The mobile, web, AI and cloud practices below are the work behind it.
             </p>
           </div>
         </header>
+
+        {/* ── The offer: two doors, the ladder, and who it is for ── */}
+        <OfferLadder />
 
         {/* ── Services Grid ── */}
         <section aria-label="Service catalogue" className="py-24">

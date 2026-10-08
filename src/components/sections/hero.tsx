@@ -3,32 +3,18 @@ import { CircuitBackground } from "../ui/circuitBackground";
 import { FloatingBubbles } from "../ui/floatingBubbles";
 import { FluidBackground } from "../ui/fluidBackground";
 import { WaveDivider } from "../ui/waveDivider";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
+import { POSITIONING, DOORS } from "@/data/offer";
 import { Mail, ArrowRight, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
 
-const ROTATING_WORDS = ["Mobile Apps", "AI Platforms", "Cloud Systems", "Web Experiences", "SaaS Products"];
-
-const TECH_PILLS = [
-  { label: "Next.js", color: "bg-white/5 border-white/10 text-gray-300" },
-  { label: "React Native", color: "bg-teal-500/10 border-teal-500/20 text-teal-300" },
-  { label: "Python AI", color: "bg-cyan-500/10 border-cyan-500/20 text-cyan-300" },
-  { label: "AWS", color: "bg-orange-500/10 border-orange-500/20 text-orange-300" },
-  { label: "Flutter", color: "bg-blue-500/10 border-blue-500/20 text-blue-300" },
-  { label: "Docker", color: "bg-sky-500/10 border-sky-500/20 text-sky-300" },
-];
-
+// Positioning (Oct 2026): one promise, two doors. The copy lives in
+// src/data/offer.ts so the hero, /services and llms.txt say the same thing.
+// The headline used to rotate through "Mobile Apps / AI Platforms / ...", which
+// described a generic agency; it is now static, which also keeps the LCP text
+// stable on first paint.
 export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
-  const [wordIndex, setWordIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
-    }, 2200);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden min-h-screen flex flex-col justify-center">
       <CircuitBackground />
@@ -64,25 +50,12 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-5xl md:text-7xl lg:text-[5.5rem] font-bold text-white tracking-tight leading-[1.05] mb-6"
         >
-          We build exceptional
+          We finish and ship
           <br />
-          <span className="inline-flex items-center justify-center gap-3">
-            <span
-              className={`text-transparent bg-clip-text bg-gradient-to-r ${CONSTANTS.PRIMARY_GRADIENT} drop-shadow-[0_0_30px_rgba(45,212,191,0.35)]`}
-            >
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={wordIndex}
-                  initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-                  transition={{ duration: 0.4 }}
-                  className="inline-block"
-                >
-                  {ROTATING_WORDS[wordIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
+          <span
+            className={`text-transparent bg-clip-text bg-gradient-to-r ${CONSTANTS.PRIMARY_GRADIENT} drop-shadow-[0_0_30px_rgba(45,212,191,0.35)]`}
+          >
+            stuck apps
           </span>
         </motion.h1>
 
@@ -93,26 +66,31 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ duration: 0.45, delay: 0.2 }}
           className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-5 leading-relaxed"
         >
-          {CONSTANTS.AGENCY_NAME} is a two-person studio: two senior engineers who build mobile apps,
-          web platforms and{" "}
-          <span className="text-teal-400 font-medium">AI features</span>, and bring in specialists
-          when a scope needs them.
+          <span className="text-white font-medium">{POSITIONING.promise}</span>{" "}
+          {POSITIONING.audience}
         </motion.p>
 
-        {/* Tech pill row */}
+        {/* Two doors: AI-built apps and marketplaces. Real links into /services. */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.35 }}
-          className="flex flex-wrap items-center justify-center gap-2 mb-12"
+          className="grid sm:grid-cols-2 gap-3 max-w-3xl mx-auto mb-12 text-left"
         >
-          {TECH_PILLS.map((pill) => (
-            <span
-              key={pill.label}
-              className={`px-3 py-1 rounded-full border text-xs font-medium ${pill.color} backdrop-blur-sm`}
+          {DOORS.map((d) => (
+            <Link
+              key={d.id}
+              href={`/services#${d.id}`}
+              className="group block rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 backdrop-blur-sm hover:border-teal-500/40 hover:bg-teal-500/[0.05] transition-colors"
             >
-              {pill.label}
-            </span>
+              <span className="text-[0.65rem] font-semibold uppercase tracking-widest text-teal-400">
+                {d.label}
+              </span>
+              <span className="mt-1 flex items-center justify-between gap-3 text-sm font-semibold text-white">
+                {d.title}
+                <ArrowRight className="w-4 h-4 flex-shrink-0 text-gray-500 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
+              </span>
+            </Link>
           ))}
         </motion.div>
 
@@ -127,7 +105,7 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
             onClick={onOpenBooking}
             className="group w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black rounded-xl font-bold transition-all shadow-[0_0_30px_rgba(45,212,191,0.4)] hover:shadow-[0_0_55px_rgba(45,212,191,0.65)] hover:scale-[1.03] flex items-center justify-center gap-2"
           >
-            Book a Free Strategy Call
+            Book a Free 30-Minute Call
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
           <a

@@ -23,14 +23,25 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'sw
 
 const BASE_URL = 'https://thedevorax.tech';
 const SITE_NAME = 'DevoraX';
-const TAGLINE = 'AI-Powered Mobile & Web Development Agency';
+const TAGLINE = 'We Finish and Ship Stuck Apps';
 const DESCRIPTION =
-  'DevoraX is a two-person software studio building mobile apps, Next.js web platforms, cloud infrastructure and AI integrations. 5.0 on Fiverr across 50+ projects since 2022.';
+  'DevoraX is a two-person studio that finishes and ships stuck apps: payments that work, real iOS and Android apps, and App Store approval.';
 
 const OG_IMAGE = `${BASE_URL}/og-image.jpg`;
 
 // ── Comprehensive keyword strategy covering high-intent, long-tail, and brand terms ──
 const KEYWORDS = [
+  // Positioning: finishing and shipping apps that got stuck
+  'finish my app',
+  'Lovable app developer',
+  'Replit app developer',
+  'Bolt app developer',
+  'Cursor app developer',
+  'Sharetribe developer',
+  'Sharetribe mobile app',
+  'App Store submission help',
+  'Stripe Connect marketplace payments',
+  'launch readiness audit',
   // Core service keywords
   'AI-powered development agency',
   'React Native app development',

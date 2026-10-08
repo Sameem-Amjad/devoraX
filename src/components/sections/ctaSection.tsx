@@ -38,8 +38,8 @@ export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => 
 
           {/* Sub-copy */}
           <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-14 leading-relaxed">
-            Whether you have a fully-formed spec or just an idea on a napkin — our team
-            is ready to take it to production. No fluff, no delays, just results.
+            Whether your app is stuck before launch, stuck in App Store review or still an
+            idea, start with a free 30-minute call. We will tell you what it takes to ship.
           </p>
 
           {/* CTAs */}

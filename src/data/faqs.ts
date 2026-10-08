@@ -9,12 +9,20 @@ export type Faq = { q: string; a: string };
 
 export const FAQS: Faq[] = [
   {
+    q: "My app was built with Lovable, Replit, Bolt or Cursor and it's stuck. Can you finish it?",
+    a: "Yes, that is the main thing we do. Start with a free 30-minute call. If it makes sense, a launch-readiness audit reviews your code, database security, payments, hosting and store readiness, and you keep the written report. The fix is then a fixed-price finish sprint, usually 1–2 weeks, followed by payments and the iOS and Android launch if you need them.",
+  },
+  {
+    q: "My marketplace runs on Sharetribe. Can you build the mobile app?",
+    a: "Yes. Sharetribe does not ship a native mobile app, so we build the iOS and Android app on top of your marketplace, add the custom Sharetribe features you need, and set up Stripe Connect payouts to your sellers in your own Stripe account. The price is fixed after the audit.",
+  },
+  {
     q: "How long does it take to build a product with DevoraX?",
     a: "It depends on scope. As a rough estimate, a focused MVP scope often takes 4–6 weeks, a full-featured product 8–16 weeks, and a large platform 3–6 months. These are estimates, not averages from a delivery record. After a free discovery call, we give you a timeline for your scope alongside a fixed-price proposal.",
   },
   {
     q: "How much does a project cost?",
-    a: "Our MVP Starter package begins at $2,900, Growth projects from $7,500, and Enterprise work is custom-scoped. Every project gets a fixed-price proposal after the discovery call — no hourly billing, no surprise invoices. What we quote is what you pay.",
+    a: "For an app you already have, the price is fixed after the launch-readiness audit, and the audit fee is credited to the fix if you go ahead. For a new build, our MVP Starter package begins at $2,900, Growth projects from $7,500, and Enterprise work is custom-scoped. Either way there is no hourly billing and no surprise invoices. What we quote is what you pay.",
   },
   {
     q: "Do I own the code and IP when the project is done?",

@@ -2,6 +2,7 @@ import { SERVICE_CONTENT } from '@/data/serviceContent';
 import { CASE_STUDY_CONTENT } from '@/data/caseStudyContent';
 import { INSIGHTS } from '@/data/insights';
 import { FAQS } from '@/data/faqs';
+import { POSITIONING, DOORS, OFFER_LADDER, FIT } from '@/data/offer';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -37,11 +38,25 @@ export async function GET() {
   const lines: string[] = [
     '# DevoraX',
     '',
-    '> DevoraX is a two-person software studio (Sameem Amjad, founder; Usman, CTO)',
-    '> building cross-platform mobile apps, AI and full-stack web platforms and cloud',
-    '> infrastructure for founders and product teams, bringing in specialists when a',
-    '> scope needs them. Sameem has a 5.0 Fiverr rating across 50+ projects since',
-    '> January 2022, for clients in the US, UK, Canada and Hong Kong.',
+    `> ${POSITIONING.headline}: ${POSITIONING.promise.charAt(0).toLowerCase()}${POSITIONING.promise.slice(1)}`,
+    `> ${POSITIONING.audience}`,
+    '> DevoraX is a two-person studio (Sameem Amjad, founder; Usman, CTO): two senior',
+    '> engineers who bring in specialists when a scope needs them. Sameem has a 5.0',
+    '> Fiverr rating across 50+ projects since January 2022, for clients in the US,',
+    '> UK, Canada and Hong Kong.',
+    '',
+    '## Two ways in',
+    '',
+    ...DOORS.map((d) => `- ${d.label} (${d.title}): ${d.body} ${BASE_URL}/services#${d.id}`),
+    '',
+    '## How it works',
+    '',
+    ...OFFER_LADDER.map((o, i) => `${i + 1}. ${o.title}: ${o.body} Price: ${o.price}.`),
+    '',
+    'New builds from scratch use the fixed-price MVP packages (from $2,900 and from $7,500).',
+    '',
+    `Good fit: ${FIT.good.map((f) => f.charAt(0).toLowerCase() + f.slice(1)).join('; ')}.`,
+    `Not a fit: ${FIT.notFit.join('; ')}.`,
     '',
     'The case studies below describe products the founders built or worked on. Many',
     'were built while Sameem was an engineer at other companies (Zencloud, Webrange',

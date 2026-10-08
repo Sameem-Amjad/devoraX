@@ -15,7 +15,7 @@ const DIFFERENTIATORS = [
     icon: ShieldCheck,
     title: "Security-First by Default",
     description:
-      "Security isn't a checkbox at the end. We build against the OWASP Top 10, give every role the least access it needs, and review our own code before it ships. DevoraX holds no security certifications and does not sell penetration tests or audits.",
+      "Security isn't a checkbox at the end. We build against the OWASP Top 10, give every role the least access it needs, and review our own code before it ships. DevoraX holds no security certifications and does not sell penetration tests or compliance audits.",
     gradient: "from-emerald-500 to-teal-500",
     glow: "rgba(16,185,129,0.2)",
   },
@@ -72,14 +72,16 @@ export const WhyUsSection = () => {
             Why DevoraX
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            We're not like other{" "}
+            Why founders bring us{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-              agencies.
+              a stuck app
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            We are a two-person studio, and much of our experience comes from building
-            production software as engineers at other companies. Here's how we work.
+            Most apps stall at the same few points: payments, the mobile build, store
+            review, or a database nobody secured. We are a two-person studio, and much of
+            our experience comes from shipping production software as engineers at other
+            companies. Here&apos;s how we work.
           </p>
         </motion.div>
 

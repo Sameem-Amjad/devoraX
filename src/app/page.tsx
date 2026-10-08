@@ -9,11 +9,11 @@ const BASE_URL = "https://thedevorax.tech";
 export const metadata: Metadata = {
   // `absolute` bypasses the root layout's "%s | DevoraX" template — without it
   // this rendered as "DevoraX | … | DevoraX" with the brand duplicated.
-  // Keyword first, brand last, 52 chars.
-  title: { absolute: "AI-Powered Mobile & Web Development Agency | DevoraX" },
-  // 151 chars — Google truncates around 155-160.
+  // The positioning line first, brand last, 39 chars.
+  title: { absolute: "We Finish and Ship Stuck Apps | DevoraX" },
+  // 156 chars — Google truncates around 155-160.
   description:
-    "A two-person studio building mobile apps, Next.js platforms and AI integrations for founders. 5.0 on Fiverr across 50+ projects. Fixed-price proposals.",
+    "Built with Lovable, Replit, Bolt or Cursor, on Sharetribe, or half-built? We finish and ship it: working payments, iOS and Android apps, App Store approval.",
   alternates: {
     canonical: BASE_URL,
   },
