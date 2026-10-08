@@ -15,15 +15,15 @@ const DIFFERENTIATORS = [
     icon: ShieldCheck,
     title: "Security-First by Default",
     description:
-      "Security isn't a checkbox at the end. Every line of code we write follows OWASP standards, zero-trust principles, and is reviewed for vulnerabilities before it ever reaches production.",
+      "Security isn't a checkbox at the end. We build against the OWASP Top 10, give every role the least access it needs, and review our own code before it ships. DevoraX holds no security certifications and does not sell penetration tests or audits.",
     gradient: "from-emerald-500 to-teal-500",
     glow: "rgba(16,185,129,0.2)",
   },
   {
     icon: Users,
-    title: "Dedicated Senior Teams",
+    title: "You Work With the Founders",
     description:
-      "You won't be handed off to juniors after the sale. Your project gets a dedicated pod of senior engineers, a product manager, and a designer — all accountable to you.",
+      "DevoraX is two senior engineers, Sameem and Usman, and the people you talk to are the people writing the code. When a scope needs a designer or another specialist, we bring one in and tell you who.",
     gradient: "from-cyan-500 to-blue-500",
     glow: "rgba(6,182,212,0.2)",
   },
@@ -31,7 +31,7 @@ const DIFFERENTIATORS = [
     icon: BarChart3,
     title: "Data-Driven Decisions",
     description:
-      "We instrument every product we build with analytics from day one. Our team reads the data, runs experiments, and optimizes continuously so your product gets better after launch.",
+      "We can set up product analytics from the first release, so decisions after launch rest on how people actually use the product rather than on guesses.",
     gradient: "from-violet-500 to-purple-500",
     glow: "rgba(139,92,246,0.2)",
   },
@@ -47,7 +47,7 @@ const DIFFERENTIATORS = [
     icon: HeartHandshake,
     title: "Long-Term Partnership",
     description:
-      "Clients come back — several have hired us for more than one project. We don't disappear after launch; we become your embedded tech team, scaling with you as your business grows.",
+      "Clients come back: several Fiverr clients have hired us for more than one project. We don't disappear after launch; we stay on for fixes and new features when you need them.",
     gradient: "from-teal-500 to-emerald-500",
     glow: "rgba(20,184,166,0.2)",
   },
@@ -69,7 +69,7 @@ export const WhyUsSection = () => {
           className="text-center mb-20"
         >
           <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-4 px-4 py-1.5 rounded-full bg-teal-500/5 border border-teal-500/20">
-            Why DevoraXX
+            Why DevoraX
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
             We're not like other{" "}
@@ -78,8 +78,8 @@ export const WhyUsSection = () => {
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            We've shipped 25 products and learned exactly what separates great agencies
-            from forgettable ones. Here's how we're different.
+            We are a two-person studio, and much of our experience comes from building
+            production software as engineers at other companies. Here's how we work.
           </p>
         </motion.div>
 

@@ -35,9 +35,9 @@ export function SiteFooter() {
           <div>
             <Logo />
             <p className="text-gray-500 mt-5 max-w-sm leading-relaxed text-sm">
-              DevoraX is a software development agency building mobile apps, AI and
+              DevoraX is a two-person software studio building mobile apps, AI and
               full-stack web platforms, and cloud infrastructure for founders and
-              product teams worldwide.
+              product teams.
             </p>
             <div className="flex gap-3 mt-6">
               {SOCIAL.map(({ Icon, href, label }) => (

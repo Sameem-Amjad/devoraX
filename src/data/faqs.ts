@@ -10,7 +10,7 @@ export type Faq = { q: string; a: string };
 export const FAQS: Faq[] = [
   {
     q: "How long does it take to build a product with DevoraX?",
-    a: "It depends on scope, but our typical timeline is 4–6 weeks for an MVP, 8–16 weeks for a full-featured product, and 3–6 months for enterprise-grade platforms. After a free discovery call, we provide a detailed project timeline alongside a fixed-price proposal.",
+    a: "It depends on scope. As a rough estimate, a focused MVP scope often takes 4–6 weeks, a full-featured product 8–16 weeks, and a large platform 3–6 months. These are estimates, not averages from a delivery record. After a free discovery call, we give you a timeline for your scope alongside a fixed-price proposal.",
   },
   {
     q: "How much does a project cost?",
@@ -22,7 +22,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "Can you work with our existing codebase or team?",
-    a: "Absolutely. We regularly embed within existing engineering teams as an extension squad — performing code reviews, adding new features, refactoring legacy systems, or taking over full ownership. We adapt to your workflow, not the other way around.",
+    a: "Yes. We can work inside your existing codebase and alongside your engineers: code reviews, new features, refactoring legacy code, or taking over ownership. We adapt to your workflow, not the other way around.",
   },
   {
     q: "What happens after launch?",
@@ -30,7 +30,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "How do you handle project communication?",
-    a: "You get direct Slack access to your team, weekly video demos of progress, a shared project board (Jira or Linear), and a dedicated project manager as your single point of contact. You'll never wonder what's happening — we over-communicate by design.",
+    a: "You talk directly to the engineers doing the work, Sameem or Usman, over Slack or your preferred channel, with weekly video demos of progress and a shared project board (Jira or Linear). DevoraX is a two-person studio, so there is no account manager in between. You'll never wonder what's happening — we over-communicate by design.",
   },
   {
     q: "Do you sign NDAs?",

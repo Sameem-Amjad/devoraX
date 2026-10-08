@@ -11,11 +11,14 @@ import Logo from "@/components/global/logo";
 
 // ── Founder data ──────────────────────────────────────────────────────────────
 
+// Checkable against the public Fiverr profile. "5+ Years" overstated it: Sameem
+// has sold on Fiverr since January 2022. The review count is not shown because
+// the figures in circulation (20, 21, 30+, 56) disagree with each other.
 const STATS = [
-  { value: "5+",   label: "Years Exp."     },
-  { value: "25",   label: "Projects"       },
-  { value: "5.0",  label: "Fiverr Rating"  },
-  { value: "56",   label: "Reviews"        },
+  { value: "4+",   label: "Years Exp."        },
+  { value: "50+",  label: "Fiverr Projects"   },
+  { value: "5.0",  label: "Fiverr Rating"     },
+  { value: "4",    label: "Client Countries"  },
 ];
 
 const SKILLS = [
@@ -25,13 +28,15 @@ const SKILLS = [
   { group: "Cloud",     items: ["AWS EC2/S3", "Docker", "Kubernetes", "CI/CD", "GitHub Actions"] },
 ];
 
+// All six are employer work, so each card says where Sameem built it. None is a
+// DevoraX client project.
 const PROJECTS = [
-  { icon: Zap,       name: "Wodpro",     desc: "Global fitness league — live leaderboards",          stack: "Socket.io · Redis · Stripe",          accent: "from-teal-500 to-emerald-500",   glow: "rgba(20,184,166,0.15)" },
-  { icon: Server,    name: "JUJU",       desc: "Media streaming & upload processing pipeline",        stack: "Node.js · FFmpeg · BullMQ · AWS S3",  accent: "from-cyan-500 to-blue-500",      glow: "rgba(6,182,212,0.15)"  },
-  { icon: Globe,     name: "Barfly",     desc: "Real-time flight disruption risk prediction",         stack: "Duffel API · Node.js · AWS",          accent: "from-violet-500 to-purple-500",  glow: "rgba(139,92,246,0.15)" },
-  { icon: Code2,     name: "Afriva",     desc: "Multi-vendor eCommerce with RBAC & SSR",             stack: "Next.js 15 · Supabase · Stripe",      accent: "from-emerald-500 to-teal-500",   glow: "rgba(16,185,129,0.15)" },
-  { icon: Smartphone,name: "Bondly",     desc: "Pet-care subscription with realtime notifications",   stack: "Node.js · Firebase · Stripe",         accent: "from-pink-500 to-rose-500",      glow: "rgba(236,72,153,0.15)" },
-  { icon: Briefcase, name: "e-fuldmagt", desc: "GDPR-compliant digital authorization platform",       stack: "Nest.js · MongoDB · AWS",             accent: "from-orange-500 to-amber-500",   glow: "rgba(249,115,22,0.15)" },
+  { icon: Zap,       name: "WOD Pro League", desc: "Functional-fitness competitions with live leaderboards", stack: "Socket.io · Redis · Stripe",          where: "As an engineer at Zencloud",            accent: "from-teal-500 to-emerald-500",   glow: "rgba(20,184,166,0.15)" },
+  { icon: Server,    name: "JUJU",           desc: "Media streaming & upload processing pipeline",          stack: "Node.js · FFmpeg · BullMQ · AWS S3",  where: "At a previous employer",                accent: "from-cyan-500 to-blue-500",      glow: "rgba(6,182,212,0.15)"  },
+  { icon: Globe,     name: "Barfly",         desc: "Flight-transfer risk check inside got2.travel",         stack: "Duffel API · Node.js · AWS",          where: "As an engineer at Zencloud",            accent: "from-violet-500 to-purple-500",  glow: "rgba(139,92,246,0.15)" },
+  { icon: Code2,     name: "Afriva",         desc: "Four-role marketplace with RBAC & SSR",                 stack: "Next.js 15 · Supabase · Redux",       where: "As an engineer at Webrange Solutions",  accent: "from-emerald-500 to-teal-500",   glow: "rgba(16,185,129,0.15)" },
+  { icon: Smartphone,name: "Bondly",         desc: "Pet-care subscriptions with push notifications",        stack: "Node.js · Firebase · Stripe",         where: "As an engineer at Webrange Solutions",  accent: "from-pink-500 to-rose-500",      glow: "rgba(236,72,153,0.15)" },
+  { icon: Briefcase, name: "e-fuldmagt",     desc: "Danish digital power of attorney, built to GDPR requirements", stack: "MitID via Criipto · PDF-Lib · i18next", where: "As an engineer at Zencloud",       accent: "from-orange-500 to-amber-500",   glow: "rgba(249,115,22,0.15)" },
 ];
 
 const SOCIALS = [
@@ -69,7 +74,7 @@ const TEAM: Member[] = [
     initials: "U",
     name: "Usman",
     role: "Chief Technical Officer",
-    bio: "Full-Stack AI Architect with 5+ years building scalable Generative-AI systems, custom web apps and SaaS platforms. Leads architecture and DevOps across React Native, Flutter and high-concurrency web on Kubernetes & AWS — engineering for 99.9% uptime.",
+    bio: "Full-Stack AI Architect with 5+ years building scalable Generative-AI systems, custom web apps and SaaS platforms. Leads architecture and DevOps across React Native, Flutter and high-concurrency web on Kubernetes & AWS.",
     skills: ["Generative AI", "React Native", "Flutter", "Kubernetes", "AWS", "SaaS"],
     gradient: "from-teal-500 to-emerald-500",
     location: "Pakistan · Remote",
@@ -185,7 +190,7 @@ export default function TeamClient() {
 
                 <div className="flex items-center gap-1.5 mt-3 text-gray-500 text-xs">
                   <MapPin className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
-                  <span>Pakistan · Remote-first · Global Clients</span>
+                  <span>Pakistan · Remote · Clients in the US, UK, Canada, Hong Kong</span>
                 </div>
 
                 <div className="flex items-center gap-2.5 mt-4 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/20 transition-colors">
@@ -195,7 +200,7 @@ export default function TeamClient() {
                     ))}
                   </div>
                   <span className="text-white font-bold text-sm font-mono">5.0</span>
-                  <span className="text-gray-500 text-xs">· 56 reviews · Fiverr</span>
+                  <span className="text-gray-500 text-xs">· Fiverr rating</span>
                 </div>
 
                 <div className="flex flex-wrap gap-2 mt-4">
@@ -248,11 +253,12 @@ export default function TeamClient() {
                     data-driven systems that solve complex business problems.
                   </p>
                   <p className="text-gray-400 text-base leading-relaxed">
-                    As the <span className="text-teal-400 font-medium">Founder & CEO of DevoraX</span>, I lead a
-                    multidisciplinary team delivering production-grade web and mobile solutions to global clients.
-                    With <span className="text-white font-medium">25 projects delivered</span> — from real-time fitness
-                    platforms to GDPR-compliant enterprise systems — I bring depth across the MERN stack, Next.js,
-                    cloud infrastructure, and high-performance mobile apps.
+                    As the <span className="text-teal-400 font-medium">Founder & CEO of DevoraX</span>, I run a
+                    two-person studio with Usman, our CTO, and we bring in specialists when a scope needs them.
+                    I have taken <span className="text-white font-medium">50+ projects on Fiverr since 2022</span>, and
+                    as an engineer at Zencloud and Webrange Solutions I worked on real-time fitness leaderboards,
+                    marketplaces and a Danish power-of-attorney service built to GDPR requirements, across the
+                    MERN stack, Next.js, cloud infrastructure and mobile apps.
                   </p>
                   <p className="text-gray-500 text-sm leading-relaxed">
                     My approach combines <span className="text-gray-300">clean, maintainable code</span> with
@@ -283,7 +289,7 @@ export default function TeamClient() {
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
                   <span className="text-xs font-semibold text-teal-400 uppercase tracking-widest">Notable Projects</span>
                   <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-3 mt-4">
-                    {PROJECTS.map(({ icon: Icon, name, desc, stack, accent, glow }, i) => (
+                    {PROJECTS.map(({ icon: Icon, name, desc, stack, where, accent, glow }, i) => (
                       <motion.div key={name}
                         initial={{ opacity: 0, y: 16 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -303,6 +309,7 @@ export default function TeamClient() {
                           <div className="font-bold text-white text-sm mb-1">{name}</div>
                           <div className="text-gray-500 text-xs leading-relaxed mb-2.5">{desc}</div>
                           <div className="text-[0.6rem] font-mono text-teal-500/60 tracking-wide">{stack}</div>
+                          <div className="text-[0.6rem] text-gray-600 mt-1.5">{where}</div>
                         </div>
                       </motion.div>
                     ))}

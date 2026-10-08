@@ -25,7 +25,7 @@ const BASE_URL = 'https://thedevorax.tech';
 const SITE_NAME = 'DevoraX';
 const TAGLINE = 'AI-Powered Mobile & Web Development Agency';
 const DESCRIPTION =
-  'DevoraX is an AI-powered software development agency building high-performance mobile apps, Next.js web platforms, cloud infrastructure, and AI integrations. Trusted by founders and CTOs worldwide.';
+  'DevoraX is a two-person software studio building mobile apps, Next.js web platforms, cloud infrastructure and AI integrations. 5.0 on Fiverr across 50+ projects since 2022.';
 
 const OG_IMAGE = `${BASE_URL}/og-image.jpg`;
 
@@ -73,7 +73,6 @@ const KEYWORDS = [
   'agile software development',
   'startup technology partner',
   'CTO as a service',
-  'dedicated development team',
 ];
 
 export const metadata: Metadata = {

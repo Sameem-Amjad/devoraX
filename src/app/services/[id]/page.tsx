@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     return {
       title: "Software Development Services",
       description:
-        "React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and DevOps automation — six specialist practices, one delivery team.",
+        "React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and DevOps automation, from a two-person studio of senior engineers.",
       alternates: { canonical: `${BASE_URL}/services/${id}` },
     };
   }

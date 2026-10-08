@@ -4,9 +4,9 @@ import TeamClient from "./TeamClient";
 const BASE_URL = "https://thedevorax.tech";
 
 export const metadata: Metadata = {
-  title: "Our Team — Engineers & AI Architects",
+  title: "Our Team — Sameem Amjad and Usman",
   description:
-    "Meet the engineers, architects and DevOps specialists who design, build and ship every product — led by our founder and chief technical officer.",
+    "DevoraX is two people: Sameem Amjad, founder, and Usman, CTO. Two senior engineers who build every project and bring in specialists when a scope needs them.",
   keywords: [
     "DevoraX team",
     "software development team",
@@ -29,14 +29,14 @@ export const metadata: Metadata = {
     siteName: "DevoraX",
     title: "Our Team | DevoraX",
     description:
-      "Meet the people behind DevoraX — a multidisciplinary team of engineers, designers, and DevOps specialists building the world's next digital products.",
+      "DevoraX is a two-person studio: Sameem Amjad, founder, and Usman, CTO. The people you talk to are the people writing the code.",
     images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: "DevoraX Team" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Our Team | DevoraX",
     description:
-      "Meet the people behind DevoraX — engineers, designers, and DevOps specialists.",
+      "DevoraX is a two-person studio: Sameem Amjad, founder, and Usman, CTO.",
     images: [{ url: `${BASE_URL}/og-image.jpg`, alt: "DevoraX Team" }],
   },
   alternates: {

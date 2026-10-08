@@ -3,11 +3,13 @@ import { motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
 import { Award, Globe, Users, Zap } from "lucide-react";
 
+// Each highlight is checkable. "Top Rated / Industry recognized" named no award,
+// and "4–6 week avg. to launch" had no delivery record behind it.
 const HIGHLIGHTS = [
-  { icon: Globe,  label: "Global Reach",   sub: "Clients across 4 countries" },
-  { icon: Award,  label: "Top Rated",      sub: "Industry recognized" },
-  { icon: Users,  label: "Senior Team",    sub: "Founder-led delivery" },
-  { icon: Zap,    label: "Fast Delivery",  sub: "4–6 week avg. to launch" },
+  { icon: Globe,  label: "Clients in 4 Countries", sub: "US, UK, Canada, Hong Kong" },
+  { icon: Award,  label: "5.0 on Fiverr",          sub: "50+ projects since 2022" },
+  { icon: Users,  label: "Two-Person Studio",      sub: "You work with the founders" },
+  { icon: Zap,    label: "Fixed-Price Scopes",     sub: "Timeline estimated per project" },
 ];
 
 export const AboutSection = () => {
@@ -52,20 +54,22 @@ export const AboutSection = () => {
             >
               <p>
                 {CONSTANTS.AGENCY_NAME} was founded in 2019 with a singular mission: to bridge
-                the gap between complex engineering and intuitive design. We're not a freelancer collective
-                — we're a{" "}
+                the gap between complex engineering and intuitive design. We are a{" "}
                 <span className="text-white font-medium">
-                  full-service product agency
-                </span>{" "}
-                with dedicated teams for every discipline.
+                  two-person studio
+                </span>
+                : Sameem Amjad (founder) and Usman (CTO), two senior engineers who bring in
+                specialists when a scope needs them.
               </p>
               <p>
-                With 25 shipped products across fintech, e-commerce, health-tech,
-                and SaaS, we specialize in high-stakes environments where{" "}
+                Between us we have built marketplaces, real-time leaderboards, video
+                pipelines and travel and legal-tech backends, much of it as engineers at
+                other companies. Each project page says who the work was for. We care most
+                about the parts that break in production:{" "}
                 <span className="text-teal-400 font-medium">
-                  uptime, scalability, and performance
-                </span>{" "}
-                aren't just goals — they're requirements.
+                  payments, real-time data and media
+                </span>
+                .
               </p>
               <p>
                 We don't just build apps. We build businesses.
@@ -124,8 +128,10 @@ export const AboutSection = () => {
                   transition={{ delay: 0.4 }}
                   className="absolute top-6 right-6 bg-black/80 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3"
                 >
-                  <div className="text-2xl font-bold text-white font-mono">25</div>
-                  <div className="text-[0.6rem] text-gray-500 uppercase tracking-widest">Projects Shipped</div>
+                  {/* Was "25 Projects Shipped", which counted employer work and
+                      builds with no public link as DevoraX deliveries. */}
+                  <div className="text-2xl font-bold text-white font-mono">5.0</div>
+                  <div className="text-[0.6rem] text-gray-500 uppercase tracking-widest">Fiverr Rating</div>
                 </motion.div>
 
                 <motion.div

@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 
 const STATS = [
-  { value: "5+",   label: "Years Exp."      },
-  { value: "25",   label: "Projects"        },
-  { value: "5.0",  label: "Fiverr Rating"   },
-  { value: "56",   label: "Client Reviews"  },
+  { value: "4+",   label: "Years Exp."        },
+  { value: "50+",  label: "Fiverr Projects"   },
+  { value: "5.0",  label: "Fiverr Rating"     },
+  { value: "4",    label: "Client Countries"  },
 ];
 
 const SKILLS = [
@@ -31,7 +31,7 @@ const PROJECTS = [
   {
     icon: Zap,
     name: "Wodpro",
-    desc: "Global fitness league — live leaderboards with millisecond latency",
+    desc: "Functional-fitness competitions with live leaderboards (at Zencloud)",
     stack: "Socket.io · Redis · Stripe",
     accent: "from-teal-500 to-emerald-500",
     glow: "rgba(20,184,166,0.15)",
@@ -195,7 +195,7 @@ export const FounderSection = () => {
             {/* Location */}
             <div className="flex items-center gap-1.5 mt-3 text-gray-500 text-xs">
               <MapPin className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
-              <span>Pakistan · Remote-first · Global Clients</span>
+              <span>Pakistan · Remote · Clients in the US, UK, Canada, Hong Kong</span>
             </div>
 
             {/* Fiverr badge */}
@@ -206,7 +206,7 @@ export const FounderSection = () => {
                 ))}
               </div>
               <span className="text-white font-bold text-sm font-mono">5.0</span>
-              <span className="text-gray-500 text-xs">· 56 reviews · Fiverr</span>
+              <span className="text-gray-500 text-xs">· Fiverr rating</span>
             </div>
 
             {/* Social links */}
@@ -287,11 +287,11 @@ export const FounderSection = () => {
               <p className="text-gray-400 text-base leading-relaxed">
                 As the{" "}
                 <span className="text-teal-400 font-medium">Founder & CEO of DevoraX</span>,
-                I lead a multidisciplinary team of developers, designers, and DevOps
-                engineers delivering production-grade solutions to global clients. From
-                real-time fitness platforms and media streaming backends to
-                GDPR-compliant enterprise systems — I bring deep expertise across the
-                MERN stack, Next.js, cloud infrastructure, and mobile apps.
+                I run a two-person studio with Usman, our CTO, and we bring in
+                specialists when a scope needs them. As an engineer at Zencloud and
+                Webrange Solutions I worked on real-time fitness leaderboards, media
+                backends and a Danish power-of-attorney service built to GDPR
+                requirements, across the MERN stack, Next.js, cloud and mobile.
               </p>
               <p className="text-gray-500 text-sm leading-relaxed">
                 My approach combines{" "}

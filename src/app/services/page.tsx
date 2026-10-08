@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   // the body (the title already carries it) and no restating of the title.
   title: 'Software Development Services',
   description:
-    'React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and UI/UX design — four specialist practices, one delivery team.',
+    'React Native and Flutter apps, AI-powered Next.js platforms, cloud architecture and UI/UX design, from a two-person studio of senior engineers.',
   keywords: [
     'mobile app development services',
     'AI web development agency',
@@ -199,25 +199,28 @@ export default async function ServicesPage() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                One Agency, Full Stack
+                Two Engineers, Full Stack
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                DevoraX is a vertically integrated technology partner. Whether you need a React Native
-                app shipped in six weeks, an AI pipeline integrated into your existing platform, or a
-                full cloud infrastructure migration — our senior engineers handle every layer.
-                No hand-offs, no subcontractors, no surprises.
+                DevoraX is a two-person studio: Sameem Amjad and Usman, two senior engineers who work
+                across mobile, web, AI and cloud. Whether you need a React Native app, an AI pipeline
+                integrated into your existing platform, or a cloud migration, the people you talk to
+                are the people writing the code. When a scope needs a designer or another specialist,
+                we bring one in and tell you who.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 {[
                   // "5+ Years Operating" was removed when it appeared to
                   // contradict the schema's foundingDate — but the schema was the
                   // wrong one. With 2019 confirmed, tenure is restored as an exact
-                  // year rather than a count that drifts every January. Every
-                  // figure here is checkable on this site or on the public Fiverr
-                  // profile.
-                  { val: '25', label: 'Projects Shipped' },
+                  // year rather than a count that drifts every January.
+                  // "25 Projects Shipped" counted employer work and builds with no
+                  // public link as DevoraX deliveries, and the review count
+                  // disagreed with other pages; both are replaced with figures on
+                  // the public Fiverr profile.
+                  { val: '5.0', label: 'Fiverr Rating' },
                   { val: '2019', label: 'Operating Since' },
-                  { val: '20', label: 'Five-Star Reviews' },
+                  { val: '50+', label: 'Fiverr Projects' },
                   { val: '100%', label: 'IP Ownership' },
                 ].map((s) => (
                   <div key={s.label} className="text-center p-5 rounded-xl bg-[#0a0a0a] border border-white/5">
