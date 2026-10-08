@@ -8,8 +8,10 @@
  * pricing section and llms.txt all read from here so the wording cannot drift.
  *
  * Honesty rules still apply (claims ledger, Oct 2026):
- *  - No new prices. Everything past the free call is "fixed price, quoted after
- *    the audit". The published $2,900 / $7,500 packages are for new builds only.
+ *  - Prices Sameem set on 2026-10-09: audit $400 (credited to the fix), finish
+ *    sprint $1,200 per week, monthly care $1,500 a month. Payments and store
+ *    launch are still quoted after the audit. The $2,900 / $7,500 packages are
+ *    for new builds only.
  *  - No delivery guarantee beyond "usually 1–2 weeks" for a finish sprint.
  *  - No claim about past rescues or results; this describes the offer.
  *  - DevoraX is a two-person studio.
@@ -68,12 +70,12 @@ export const OFFER_LADDER: OfferStep[] = [
     title: 'Launch-readiness audit',
     body:
       'A review of your code, database security, payments, hosting and store readiness. You keep the written report whatever you decide. An investor-ready version covers what technical due diligence will ask. It is an engineering review, not a security certification.',
-    price: 'Fixed fee, credited to the fix if you go ahead',
+    price: '$400, credited to the fix if you go ahead',
   },
   {
     title: 'Finish sprint',
-    body: 'We fix what the audit found and get the app to launch.',
-    price: 'Fixed price from the audit · usually 1–2 weeks',
+    body: 'We fix what the audit found and get the app to launch. The audit says how many weeks it needs, so you know the total before work starts.',
+    price: '$1,200 per week · usually 1–2 weeks',
   },
   {
     title: 'Payments',
@@ -90,7 +92,7 @@ export const OFFER_LADDER: OfferStep[] = [
   {
     title: 'Monthly care',
     body: 'Fixes, updates and new releases after launch.',
-    price: 'Fixed monthly price, quoted after the audit',
+    price: '$1,500 per month',
   },
 ];
 

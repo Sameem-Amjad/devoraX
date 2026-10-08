@@ -22,7 +22,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "How much does a project cost?",
-    a: "For an app you already have, the price is fixed after the launch-readiness audit, and the audit fee is credited to the fix if you go ahead. For a new build, our MVP Starter package begins at $2,900, Growth projects from $7,500, and Enterprise work is custom-scoped. Either way there is no hourly billing and no surprise invoices. What we quote is what you pay.",
+    a: "For an app you already have, it starts with a $400 launch-readiness audit, credited to the fix if you go ahead; the fix is $1,200 per week, usually one or two weeks, and monthly care after launch is $1,500 a month. For a new build, our MVP Starter package begins at $2,900, Growth projects from $7,500, and Enterprise work is custom-scoped. Either way there is no hourly billing and no surprise invoices. What we quote is what you pay.",
   },
   {
     q: "Do I own the code and IP when the project is done?",

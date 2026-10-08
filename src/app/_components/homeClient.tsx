@@ -100,7 +100,7 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-lg">
                 No hidden fees, no surprise invoices. Have an app already? It starts with a
-                launch-readiness audit, then a fixed price for the fix, quoted after the audit.
+                $400 launch-readiness audit, credited to the fix, then $1,200 per week of work.
               </p>
             </motion.div>
 

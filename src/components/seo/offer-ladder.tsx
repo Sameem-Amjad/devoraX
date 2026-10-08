@@ -47,8 +47,9 @@ export function OfferLadder() {
             How we finish and ship your app
           </h2>
           <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
-            Every step after the call is a fixed price, quoted after the audit. Start
-            at the top and stop wherever you like.
+            The audit is $400 and credited to the fix. The fix is $1,200 per week, and the
+            audit tells you how many weeks before you commit. Start at the top and stop
+            wherever you like.
           </p>
           <ol className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 list-none">
             {OFFER_LADDER.map((s, i) => (
