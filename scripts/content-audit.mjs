@@ -63,6 +63,29 @@ function* strings(node, path = '') {
 
 const RULES = [
   {
+    id: 'client-reported',
+    level: 'error',
+    /**
+     * "The client reports 2.4M users." Public data contradicted several of these
+     * figures and nothing backed the rest, and several "clients" were employers.
+     * Since the Oct 2026 claims ledger a figure is published only if a reader can
+     * check it today (a store listing, a live site, the Fiverr record), so the
+     * client's word is not a source and the phrasing itself is the regression.
+     */
+    re: /\bclient[- ]reported\b|\b(?:the )?client reports\b|\breported (?:to us )?by the client\b|\bas reported by\b|\boutcomes reported\b/gi,
+    why: "presents a figure on the client's word; publish only figures a reader can check",
+  },
+  {
+    id: 'agency-attribution',
+    level: 'error',
+    /**
+     * Most portfolio products were built while Sameem was an employee elsewhere,
+     * or have no confirmed client. "DevoraX built X" claims them for the agency.
+     */
+    re: /\bbuilt by DevoraX\b|\bDevoraX built\b|\bour client\b/gi,
+    why: 'claims employer or unconfirmed work as DevoraX client work',
+  },
+  {
     id: 'db-column-name',
     level: 'error',
     /**
@@ -103,8 +126,10 @@ const RULES = [
 
 /** A figure is fine if its own sentence, or the one before it, names the source. */
 const FIGURE = /\b\d+(?:\.\d+)?%|\$[\d,]+|\b\d[\d,.]*\s?(?:k|K|M|m|B|million|billion)\+?\b/;
+// "The client reports" used to count as attribution. It no longer does (see
+// the client-reported rule): the source has to be something a reader can open.
 const ATTRIBUTED =
-  /client[- ]report|the client|reported by|client['’]s own|client['’]s systems|as reported|we (?:have not|did not|have no|publish no)|published (?:starting|tiers)|indicative|our own|not independently|not audited|is recorded|are recorded|the project records|not identified/i;
+  /Google Play|App Store|store listing|listing shows|organisers['’]|Fiverr|we (?:have not|did not|have no|publish no)|published (?:starting|tiers)|indicative|our own|not independently|not audited|is recorded|are recorded|the project records|not identified/i;
 /**
  * Figures that are not client outcome claims and need no attribution: properties
  * of the build itself, standards, and OUR OWN published pricing — "$2,900 MVP
@@ -157,10 +182,10 @@ for (const [file, name] of SOURCES) {
     // Two whole-field exemptions rather than per-sentence ones:
     //  - INSIGHTS computes its own percentages over our 25-project book of work.
     //    Self-derived, not client-reported, and each article states its dataset.
-    //  - `results[]` entries are bare label:value pairs ('Occupancy Rate: 87%')
-    //    rendered inside a panel headed "Outcomes reported by the client" with a
-    //    provenance note beneath it. The attribution lives in the component, not
-    //    the string, so requiring it inline would force redundant prose.
+    //  - `results[]` entries are short checkable facts ('Google Play: 100K+
+    //    downloads') rendered inside a panel headed "What you can check", with a
+    //    note beneath it that each item points to something public. The source
+    //    lives in the item and the component, so inline prose would be redundant.
     const selfDerived =
       (name === 'INSIGHTS' && /\b(?:25|our|we)\b/i.test(text)) ||
       /(?:^|\.)results\[/.test(path) ||
