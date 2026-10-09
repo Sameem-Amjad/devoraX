@@ -9,9 +9,10 @@
  *
  * Every count is computed by a script from the structured fields of the
  * `projects` table (tags, tech stack, category label, web/android/ios links),
- * never from free-text descriptions. Who each project was for (employer, no
- * named client, no client) follows the claims ledger. Never hand-add a number
- * here that is not derivable from those fields or from a public, checkable source.
+ * never from free-text descriptions. Who each project was for (employer, direct
+ * client work, no named client, no client) follows Sameem's answers of 9 Oct
+ * 2026. Never hand-add a number here that is not derivable from those fields or
+ * from a public, checkable source.
  */
 export type InsightTable = {
   caption: string;
@@ -46,12 +47,12 @@ export const INSIGHTS: Insight[] = [
     "slug": "what-we-measured-across-25-production-builds",
     "title": "What the 25 DevoraX Portfolio Entries Show About Stacks and Links",
     "meta_description": "The 25 entries in the DevoraX portfolio, counted field by field: whose work each was, which links a reader can open, and which stacks recur.",
-    "summary_answer": "The DevoraX portfolio holds 25 entries: products and builds that DevoraX's founder, Sameem Amjad, built or worked on, 11 of them while employed as an engineer at other companies. Fifteen of the 25 store at least one public link, eight of them a live app store listing, and ten store none. The clearest stack pattern is backend concentration: 13 of 25 name a Node-family backend, and Node.js and AWS tie at nine entries each.",
-    "dataset_note": "This is n=25: every entry in the DevoraX portfolio, counted from its structured fields (tag list, declared tech stack, category label, and web, Google Play and App Store links) with a script rather than by hand. It is not a record of DevoraX client work. Eleven entries are products Sameem Amjad worked on as an engineer at other companies (Zencloud, Webrange Solutions, Pastel and previous employers), nine have no named client, and five have no client and no public link. It is not a market survey, a random sample or a controlled study, and it holds no cost, effort, timeline or outcome data. Links are counted as stored, and three of the web links are demo builds rather than production sites. Read every figure as \"in these 25 portfolio entries\", never as an industry rate.",
+    "summary_answer": "The DevoraX portfolio holds 25 entries: products and builds that DevoraX's founder, Sameem Amjad, built or worked on, 12 of them as an engineer at other companies and 3 as direct client work. Fifteen of the 25 store at least one public link, eight of them a live app store listing, and ten store none. The clearest stack pattern is backend concentration: 13 of 25 name a Node-family backend, and Node.js and AWS tie at nine entries each.",
+    "dataset_note": "This is n=25: every entry in the DevoraX portfolio, counted from its structured fields (tag list, declared tech stack, category label, and web, Google Play and App Store links) with a script rather than by hand. It is not a record of DevoraX client work. Twelve entries are products Sameem Amjad worked on as an engineer at other companies (Zencloud, Webrange Solutions, Pastel, Fleact Tech and ivector), three are his direct client work for Three28, Dooz and JUJU, five have no named client, and five have no client and no public link. It is not a market survey, a random sample or a controlled study, and it holds no cost, effort, timeline or outcome data. Links are counted as stored, and three of the web links are builds on vercel.app rather than production sites. Read every figure as \"in these 25 portfolio entries\", never as an industry rate.",
     "sections": [
       {
         "heading": "What exactly is in this dataset?",
-        "body": "The dataset is the DevoraX portfolio: 25 entries, each stored with a title, a category label, a tag list, a declared tech stack and three link fields for web, Android and iOS. It is a portfolio of products that DevoraX's founder, Sameem Amjad, has built or worked on. Eleven entries are products Sameem worked on as an engineer at other companies: five at Zencloud, three at Webrange Solutions, one at Pastel, his current employer, and two at previous employers. Nine more have no named client, and the last five have no client and no public link.\n\nEvery figure below comes from counting the entries' structured fields directly. Nothing is estimated, extrapolated or benchmarked, because no benchmark was run. Free-text descriptions are not counted, because their wording varies from entry to entry and a count built on prose would measure the writing rather than the product.",
+        "body": "The dataset is the DevoraX portfolio: 25 entries, each stored with a title, a category label, a tag list, a declared tech stack and three link fields for web, Android and iOS. It is a portfolio of products that DevoraX's founder, Sameem Amjad, has built or worked on. Twelve entries are products Sameem worked on as an engineer at other companies: five at Zencloud, four at Webrange Solutions, one at Pastel, his current employer, one at Fleact Tech and one at ivector. Three are his direct client work: Three28, Dooz and JUJU hired him directly. Five more have no named client, and the last five have no client and no public link.\n\nEvery figure below comes from counting the entries' structured fields directly. Nothing is estimated, extrapolated or benchmarked, because no benchmark was run. Free-text descriptions are not counted, because their wording varies from entry to entry and a count built on prose would measure the writing rather than the product.",
         "table": {
           "caption": "The 25 entries by the context in which the work was done, with the links each group stores.",
           "headers": [
@@ -62,16 +63,22 @@ export const INSIGHTS: Insight[] = [
           ],
           "rows": [
             [
-              "Engineer at another company (Zencloud 5, Webrange Solutions 3, Pastel 1, previous employers 2)",
-              "11",
-              "8",
+              "Engineer at another company (Zencloud 5, Webrange Solutions 4, Pastel 1, Fleact Tech 1, ivector 1)",
+              "12",
+              "10",
               "4"
             ],
             [
+              "Direct client work (the client hired Sameem directly)",
+              "3",
+              "2",
+              "2"
+            ],
+            [
               "No named client",
-              "9",
-              "7",
-              "4"
+              "5",
+              "3",
+              "2"
             ],
             [
               "No client and no public link",
@@ -90,7 +97,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "How many of the 25 entries store a link a reader can open?",
-        "body": "Verifiability is worth counting first, because a portfolio entry nobody can open is not evidence. Fifteen of the 25 entries store at least one URL, 60% of the portfolio. Counting by the link's domain, 12 store a web address, seven a Google Play listing and six an Apple App Store listing. Those overlap, since one product can publish to all three surfaces, so they deliberately sum to more than 25.\n\nNot every link is a production product. Three of the 12 web addresses are demo builds on vercel.app: Coffee Shop, Waitmate and Afriva. Eight entries link to a live app store listing: Food Magnet, Koor, CEDMAT, Three28, Pastel, Dooz, LoopedIn and TAL. Ten entries, 40%, store no link at all. Five of those are the builds with no client; the other five are Outstride, Augment Fit, JUJU, WOD Pro League and ConstrActive, which have no working public address today.",
+        "body": "Verifiability is worth counting first, because a portfolio entry nobody can open is not evidence. Fifteen of the 25 entries store at least one URL, 60% of the portfolio. Counting by the link's domain, 12 store a web address, seven a Google Play listing and six an Apple App Store listing. Those overlap, since one product can publish to all three surfaces, so they deliberately sum to more than 25.\n\nNot every link is a production product. Three of the 12 web addresses are builds on vercel.app rather than production sites: Coffee Shop, Waitmate and Afriva. Eight entries link to a live app store listing: Food Magnet, Koor, CEDMAT, Three28, Pastel, Dooz, LoopedIn and TAL. Ten entries, 40%, store no link at all. Five of those are the builds with no client; the other five are Outstride, Augment Fit, JUJU, WOD Pro League and ConstrActive, which have no working public address today.",
         "table": {
           "caption": "Stored public links across the 25 entries, counted by the link's domain rather than by which field holds it. The web, Google Play and App Store rows overlap and do not sum to 25.",
           "headers": [
@@ -105,7 +112,7 @@ export const INSIGHTS: Insight[] = [
               "48%"
             ],
             [
-              "Web URL that is a demo build on vercel.app",
+              "Web URL on vercel.app rather than a production site",
               "3",
               "12%"
             ],
@@ -139,7 +146,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Which surfaces do the entries link to?",
-        "body": "Grouping the same 25 entries by the surfaces they link to, rather than by link type, gives mutually exclusive buckets that sum cleanly to 25. No link at all is the largest group, at ten entries, 40%. Web-only is next at seven, 28%, and three of those seven are demo builds. Five entries, 20%, link to web, Google Play and the App Store together: Food Magnet, Pastel, Dooz, LoopedIn and TAL. Three reach a mobile store with no web surface: Koor and CEDMAT on Google Play only, Three28 on the App Store only.\n\nFull three-surface presence is the exception in this portfolio, and a single web surface is the most common linked shape. That says what these 25 products publish today, not what the market builds, and a different 25 projects would redistribute every bucket.",
+        "body": "Grouping the same 25 entries by the surfaces they link to, rather than by link type, gives mutually exclusive buckets that sum cleanly to 25. No link at all is the largest group, at ten entries, 40%. Web-only is next at seven, 28%, and three of those seven are builds on vercel.app. Five entries, 20%, link to web, Google Play and the App Store together: Food Magnet, Pastel, Dooz, LoopedIn and TAL. Three reach a mobile store with no web surface: Koor and CEDMAT on Google Play only, Three28 on the App Store only.\n\nFull three-surface presence is the exception in this portfolio, and a single web surface is the most common linked shape. That says what these 25 products publish today, not what the market builds, and a different 25 projects would redistribute every bucket.",
         "table": {
           "caption": "The 25 entries by linked surface, counted by link domain. Buckets are mutually exclusive and sum to 25.",
           "headers": [
@@ -183,7 +190,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Which technologies appear most often across the 25 entries?",
-        "body": "Technology frequency is counted with one explicit rule: an entry counts once for a technology if that name appears in its tag list or among its declared tech stack items. Free-text descriptions are excluded. Under that rule Node.js and AWS tie at nine entries each, Firebase follows at eight and React.js at seven. One detail of the rule is worth stating: Food Magnet's declared stack items read \"AWS Lambda Functions (Backend)\" and \"React.js (Admin Dashboard)\", and a name counts wherever it appears inside an item, so Food Magnet counts for AWS. A count that accepted only the bare string \"AWS\" would give AWS eight.\n\nThese are the stacks of the products, not a record of DevoraX's own technology decisions. Eleven of the 25 were built inside other companies, where the stack was set within that company rather than chosen by DevoraX.",
+        "body": "Technology frequency is counted with one explicit rule: an entry counts once for a technology if that name appears in its tag list or among its declared tech stack items. Free-text descriptions are excluded. Under that rule Node.js and AWS tie at nine entries each, Firebase follows at eight and React.js at seven. One detail of the rule is worth stating: Food Magnet's declared stack items read \"AWS Lambda Functions (Backend)\" and \"React.js (Admin Dashboard)\", and a name counts wherever it appears inside an item, so Food Magnet counts for AWS. A count that accepted only the bare string \"AWS\" would give AWS eight.\n\nThese are the stacks of the products, not a record of DevoraX's own technology decisions. Twelve of the 25 were built inside other companies, where the stack was set within that company rather than chosen by DevoraX.",
         "table": {
           "caption": "Technology frequency across the 25 entries, counted once per entry where the name appears in the tag list or the declared tech stack. Entries use several technologies, so rows do not sum to 25.",
           "headers": [
@@ -261,7 +268,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Does the portfolio favour React Native or Flutter?",
-        "body": "Eleven of the 25 entries name a cross-platform mobile framework in their tags or declared stack: six React Native and five Flutter. The two sets do not overlap, and no entry names a native-only toolchain such as Swift, SwiftUI, Kotlin or Jetpack Compose. Of the six React Native entries, four link to a store listing; of the five Flutter entries, two do.\n\nThe split follows context more closely than preference. All five Flutter entries are products Sameem worked on as an employee, at Zencloud or a previous employer, while none of the six React Native entries is: two have no client and four have no named client. Within a sample this size the gap between six and five carries no statistical weight, and the portfolio cannot test whether framework choice relates to anything else. What it does support is narrower: across these eleven mobile builds the default was cross-platform."
+        "body": "Eleven of the 25 entries name a cross-platform mobile framework in their tags or declared stack: six React Native and five Flutter. The two sets do not overlap, and no entry names a native-only toolchain such as Swift, SwiftUI, Kotlin or Jetpack Compose. Of the six React Native entries, four link to a store listing; of the five Flutter entries, two do.\n\nThe split follows context more closely than preference. Four of the five Flutter entries are products Sameem worked on as an employee, at Zencloud or Webrange Solutions, and JUJU was direct client work. None of the six React Native entries was employer work: two were direct client work, two have no named client and two have no client. Within a sample this size the gap between six and five carries no statistical weight, and the portfolio cannot test whether framework choice relates to anything else. What it does support is narrower: across these eleven mobile builds the default was cross-platform."
       },
       {
         "heading": "What does the portfolio show about stack concentration?",
@@ -269,31 +276,31 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What would make this portfolio more citable next time?",
-        "body": "The most useful output of counting a portfolio is the list of things it should have captured. Four gaps are visible. No entry records the context of the work, whether it was done as an employee, for a direct client or as a self-initiated build, so this article has had to add it by hand. No entry records when the work was done: the only date is the timestamp from when the entry was created, which dates the portfolio entry rather than the build. The tech stack list caps most entries at two items, which is why the technology counts are a floor. And links are not re-checked automatically, so a domain that lapses or changes hands keeps pointing somewhere else until someone notices. None of these is hard to fix at capture time, and all are hard to fix afterwards."
+        "body": "The most useful output of counting a portfolio is the list of things it should have captured. Four gaps are visible. No entry has a dedicated field for the context of the work, whether it was done as an employee, for a direct client or as a self-initiated build, so this article has had to add it by hand. No entry records when the work was done: the only date is the timestamp from when the entry was created, which dates the portfolio entry rather than the build. The tech stack list caps most entries at two items, which is why the technology counts are a floor. And links are not re-checked automatically, so a domain that lapses or changes hands keeps pointing somewhere else until someone notices. None of these is hard to fix at capture time, and all are hard to fix afterwards."
       }
     ],
     "key_findings": [
-      "15 of the 25 portfolio entries (60%) store at least one public URL and 10 store none; by link domain, 12 are web addresses (3 of them demo builds on vercel.app), 7 Google Play and 6 Apple App Store.",
-      "11 of the 25 entries are products Sameem Amjad worked on as an engineer at other companies, 9 have no named client, and 5 have no client and no public link.",
+      "15 of the 25 portfolio entries (60%) store at least one public URL and 10 store none; by link domain, 12 are web addresses (3 of them builds on vercel.app), 7 Google Play and 6 Apple App Store.",
+      "12 of the 25 entries are products Sameem Amjad worked on as an engineer at other companies, 3 are his direct client work, 5 have no named client, and 5 have no client and no public link.",
       "8 entries link to a live app store listing: Food Magnet, Koor, CEDMAT, Three28, Pastel, Dooz, LoopedIn and TAL.",
       "13 of 25 entries (52%) name a Node-family backend: 9 name Node.js and 4 name NestJS, with no overlap between the two sets.",
       "Node.js and AWS tie as the most frequent technologies at 9 of 25 entries each, under the rule 'named in the tag list or the declared tech stack'.",
-      "Mobile work splits 6 React Native to 5 Flutter across 11 entries, no entry names a native iOS or Android toolchain, and all 5 Flutter entries were employer projects.",
+      "Mobile work splits 6 React Native to 5 Flutter across 11 entries, no entry names a native iOS or Android toolchain, and 4 of the 5 Flutter entries were employer projects, against none of the React Native entries.",
       "Only 5 of 25 entries link to web, Google Play and the App Store together; 7 link to the web only and 3 reach a single mobile store with no web surface."
     ],
     "limitations": [
       "n=25 from one small studio's portfolio. These are the products one engineer has worked on across several employers and projects, not a random or representative sample of software projects.",
-      "Context is not a field in the data. Whether each entry was employer work, has no named client or has no client was added by hand for this article.",
+      "Context has no dedicated field in the data. Whether each entry was employer work or direct client work, has no named client or has no client, was added by hand for this article.",
       "The technology counts are a floor, not a census. 19 of the 25 entries cap their declared tech stack at two items, and the project descriptions name MongoDB, Redis, Socket.io, PostgreSQL and S3 on individual builds while those five score zero across all 25 tag and tech stack lists.",
       "Counts use structured fields only. Free-text descriptions were not counted, so a technology mentioned only in prose does not appear in any table.",
-      "Links were counted as stored. A stored URL means a page is linked, not that it is a production system: 3 of the 12 web links are demo builds.",
+      "Links were counted as stored. A stored URL means a page is linked, not that it is a production system: 3 of the 12 web links are builds on vercel.app.",
       "The portfolio contains finished or showcased work only. There is no entry for cancelled, abandoned or failed work, so every pattern here is survivorship-limited.",
       "The only timestamp on any entry is its creation date, which dates the portfolio entry (8 in 2025, 17 in 2026) rather than the build.",
       "22 of the 25 entries are flagged as featured, so this is a curated showcase rather than a complete list of everything Sameem has worked on."
     ],
     "cannot_answer": [
       "Is React Native faster, cheaper or more maintainable than Flutter? The portfolio holds no benchmarks, build times, bundle sizes, crash rates or defect counts for either.",
-      "Does framework choice relate to whether an app reaches a public store? With 6 React Native and 5 Flutter entries, and the Flutter group made up entirely of employer projects, the portfolio cannot support a correlation claim in either direction.",
+      "Does framework choice relate to whether an app reaches a public store? With 6 React Native and 5 Flutter entries, and 4 of the 5 Flutter entries employer projects against none of the React Native ones, the portfolio cannot support a correlation claim in either direction.",
       "Did any stack choice cause any business outcome? The portfolio holds no outcome data, no control group and no counterfactual.",
       "What did these builds cost, or how many developer hours did they take? No cost, effort or team-size data is stored in any entry.",
       "How long did each project run from kickoff to launch? The only date on an entry is its creation date, which dates the portfolio entry rather than the build.",
@@ -301,13 +308,13 @@ export const INSIGHTS: Insight[] = [
       "Which technology choices failed, and why? Only finished or showcased work is in the portfolio, so there is no failure data to analyse.",
       "Who chose each stack? On the employer projects the decision sat inside another company, and no entry records who made it."
     ],
-    "word_count": 2291
+    "word_count": 2383
   },
   {
     "slug": "react-native-vs-flutter-production-experience",
     "title": "React Native vs Flutter: What 11 Cross-Platform Builds in One Portfolio Show",
     "meta_description": "Eleven cross-platform builds from the DevoraX portfolio, compared by store presence, backend and context, and what the data cannot settle.",
-    "summary_answer": "Across the eleven cross-platform mobile builds in the DevoraX portfolio, two of five Flutter builds link to both Google Play and the App Store, against one of six React Native builds, while four of the six React Native builds link to at least one store against two of the five Flutter builds. Context differs more than framework: all five Flutter builds are products Sameem Amjad worked on as an employee of other companies, and none of the React Native builds is. This is a portfolio count, not a performance benchmark.",
+    "summary_answer": "Across the eleven cross-platform mobile builds in the DevoraX portfolio, two of five Flutter builds link to both Google Play and the App Store, against one of six React Native builds, while four of the six React Native builds link to at least one store against two of the five Flutter builds. Context differs more than framework: four of the five Flutter builds were Sameem Amjad's work as an employee of other companies, and none of the six React Native builds was. This is a portfolio count, not a performance benchmark.",
     "dataset_note": "The dataset is the 25 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many of them as an engineer at other companies. Eleven name a cross-platform mobile framework in their tags or declared tech stack: 6 React Native, 5 Flutter. Every count uses the structured fields only, meaning the category label, the tag list, the declared tech stack and the web, Google Play and App Store links, and was produced by a script rather than by hand. Free-text descriptions are not counted. There is no control group, no randomisation, no paired build of the same app in both frameworks and no performance testing of any kind, and the portfolio holds no outcome data. It is a portfolio, not an experiment.",
     "sections": [
       {
@@ -361,7 +368,7 @@ export const INSIGHTS: Insight[] = [
               "React Native",
               "Creator video monetisation",
               "NestJS",
-              "No client named",
+              "Direct client work",
               "App Store"
             ],
             [
@@ -369,7 +376,7 @@ export const INSIGHTS: Insight[] = [
               "React Native",
               "Used-car marketplace, Jordan",
               "NestJS",
-              "No client named",
+              "Direct client work",
               "Google Play + App Store"
             ],
             [
@@ -393,7 +400,7 @@ export const INSIGHTS: Insight[] = [
               "Flutter",
               "Welfare app for mobile workers, UK",
               "Node.js",
-              "Engineer at a previous employer",
+              "Engineer at Webrange Solutions",
               "Google Play + App Store"
             ],
             [
@@ -401,7 +408,7 @@ export const INSIGHTS: Insight[] = [
               "Flutter",
               "Media streaming",
               "Node.js",
-              "Engineer at a previous employer",
+              "Direct client work",
               "None"
             ],
             [
@@ -618,11 +625,11 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Is the NestJS split really a runtime difference?",
-        "body": "No, and reading it as one would be the easiest mistake to make with this table. NestJS is a framework that runs on Node.js, so the four React Native builds behind it are Node.js services too. The entries say so directly: Koor, Three28 and Dooz carry the category React Native & Node.js while their tech stack names NestJS. The two descriptions sit at different levels rather than in conflict. Counted that way, five of six React Native builds name a Node-family backend, NestJS four times and plain Node.js once, and four of five Flutter builds name Node.js outright. AgroBridge names only Firebase; Food Magnet names AWS Lambda functions without naming a runtime.\n\nWhat differs is the shape above the runtime: the React Native builds used the opinionated NestJS structure, the Flutter builds used Express, plain Node services and, on Food Magnet, AWS Lambda. Because every Flutter build was employer work and no React Native build was, that split describes different teams and contexts, not the frameworks."
+        "body": "No, and reading it as one would be the easiest mistake to make with this table. NestJS is a framework that runs on Node.js, so the four React Native builds behind it are Node.js services too. The entries say so directly: Koor, Three28 and Dooz carry the category React Native & Node.js while their tech stack names NestJS. The two descriptions sit at different levels rather than in conflict. Counted that way, five of six React Native builds name a Node-family backend, NestJS four times and plain Node.js once, and four of five Flutter builds name Node.js outright. AgroBridge names only Firebase; Food Magnet names AWS Lambda functions without naming a runtime.\n\nWhat differs is the shape above the runtime: the React Native builds used the opinionated NestJS structure, the Flutter builds used Express, plain Node services and, on Food Magnet, AWS Lambda. Because four of the five Flutter builds were employer work and no React Native build was, that split describes different teams and contexts, not the frameworks."
       },
       {
         "heading": "Did the two frameworks land in the same verticals?",
-        "body": "No, and this is the most important limit on the comparison, alongside context. No vertical in the portfolio was built twice, once in each framework. React Native carried a banking app, an agricultural marketplace, food delivery, a roller-shutter installer app, creator monetisation and a used-car marketplace. Flutter carried food-truck discovery, media streaming, digital power of attorney, workforce welfare and fitness competition. Two React Native entries carry a FinTech tag, the FinTech Mobile App and Dooz; no Flutter entry does. Three of the five Flutter products centre on live location or live competition data: Food Magnet tracks food-truck locations, TAL helps mobile workers find nearby facilities and WOD Pro League runs real-time leaderboards.\n\nBecause the workloads never overlap, and because the Flutter builds all came from Sameem's employers while the React Native builds did not, any difference in store presence between the two groups is confounded with what the apps were asked to do, who commissioned them and what the work covered. There is no like-for-like pair anywhere in these eleven builds."
+        "body": "No, and this is the most important limit on the comparison, alongside context. No vertical in the portfolio was built twice, once in each framework. React Native carried a banking app, an agricultural marketplace, food delivery, a roller-shutter installer app, creator monetisation and a used-car marketplace. Flutter carried food-truck discovery, media streaming, digital power of attorney, workforce welfare and fitness competition. Two React Native entries carry a FinTech tag, the FinTech Mobile App and Dooz; no Flutter entry does. Three of the five Flutter products centre on live location or live competition data: Food Magnet tracks food-truck locations, TAL helps mobile workers find nearby facilities and WOD Pro League runs real-time leaderboards.\n\nBecause the workloads never overlap, and because most of the Flutter builds came from Sameem's employers while none of the React Native builds did, any difference in store presence between the two groups is confounded with what the apps were asked to do, who commissioned them and what the work covered. There is no like-for-like pair anywhere in these eleven builds."
       },
       {
         "heading": "Does either framework arrive with a companion web surface more often?",
@@ -636,14 +643,14 @@ export const INSIGHTS: Insight[] = [
     "key_findings": [
       "2 of 5 Flutter builds link to both Google Play and the Apple App Store, against 1 of 6 React Native builds.",
       "React Native is the more store-present group overall: 4 of 6 React Native builds link at least one store listing, against 2 of 5 Flutter builds.",
-      "All 5 Flutter builds are products Sameem Amjad worked on as an employee, at Zencloud or a previous employer; none of the 6 React Native builds is, so framework is confounded with context.",
+      "4 of 5 Flutter builds are products Sameem Amjad worked on as an employee, at Zencloud or Webrange Solutions, and JUJU was direct client work; none of the 6 React Native builds was employer work, so framework is confounded with context.",
       "NestJS is named behind 4 of 6 React Native builds and 0 of 5 Flutter builds; Node.js itself is named in 4 of 6 and 4 of 5, so the runtime is not a point of difference.",
       "3 of 5 Flutter builds name a React.js web surface in their tags or tech stack, against 1 of 6 React Native builds (Dooz, with Angular).",
       "No vertical in the portfolio was built in both frameworks, so there is no like-for-like pair anywhere in these 11 builds."
     ],
     "limitations": [
       "n=11 mobile builds from one portfolio of 25 entries. This is far too small and too self-selected to support any industry-wide claim.",
-      "The portfolio is not a record of DevoraX client work. The 5 Flutter builds were employer projects at Zencloud or previous employers; 4 React Native builds have no named client and 2 have no client at all.",
+      "The portfolio is not a record of DevoraX client work. 4 of the 5 Flutter builds were employer projects at Zencloud or Webrange Solutions, and JUJU was direct client work; of the 6 React Native builds, 2 were direct client work, 2 have no named client and 2 have no client at all.",
       "No controlled comparison was run. No paired build, no benchmark harness, no instrumentation, no control group.",
       "The two framework groups cover completely different verticals, so store presence is confounded with brief, employer, budget and year.",
       "Framework attribution depends on hand-maintained tags and tech stack lists. Only 8 of the 11 builds name their framework in both; 3 name it in one only, and the category label is too inconsistent to use for attribution.",
@@ -663,14 +670,14 @@ export const INSIGHTS: Insight[] = [
       "Whether builds with no store link were cancelled, released privately, or released and later delisted.",
       "Which framework the Pastel and LoopedIn apps use. Their entries name no mobile framework."
     ],
-    "word_count": 2441
+    "word_count": 2468
   },
   {
     "slug": "supabase-vs-firebase-marketplace-backends",
     "title": "Supabase vs Firebase for Marketplace Backends: What 10 Portfolio Builds Show",
     "meta_description": "Ten builds from the DevoraX portfolio, eight naming Firebase and two Supabase with no overlap: what they show about product shape, and what they cannot.",
     "summary_answer": "Of the 25 entries in the DevoraX portfolio, ten name Supabase or Firebase in their tags or tech stack and none uses both: eight Firebase, two Supabase. Firebase sits alongside mobile frameworks, AWS services and, on Pastel, Sharetribe, while both Supabase builds are React-family web dashboards: Afriva, a demo build, and Augment Fit, which has no public link. With only two Supabase builds, that split describes product shape in one portfolio, not measured backend performance.",
-    "dataset_note": "The dataset is the 25 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, four were employer projects (Food Magnet at Zencloud, Bondly and Afriva at Webrange Solutions, and Pastel, where Sameem works now), five have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
+    "dataset_note": "The dataset is the 25 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, six were employer projects (Food Magnet at Zencloud, Bondly and Afriva at Webrange Solutions, Coffee Shop at Fleact Tech, Pathana at ivector, and Pastel, where Sameem works now), three have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
     "sections": [
       {
         "heading": "How many builds in the portfolio use Supabase, and how many use Firebase?",
@@ -723,8 +730,8 @@ export const INSIGHTS: Insight[] = [
               "Firebase",
               "Tags + tech stack",
               "Next.js & Firebase",
-              "No client named",
-              "Demo build on vercel.app"
+              "Engineer at Fleact Tech",
+              "Build on vercel.app"
             ],
             [
               "Waitmate Platform",
@@ -747,7 +754,7 @@ export const INSIGHTS: Insight[] = [
               "Firebase",
               "Tags only",
               "Next.js & Serverless APIs",
-              "No client named",
+              "Engineer at ivector",
               "Web"
             ],
             [
@@ -852,7 +859,7 @@ export const INSIGHTS: Insight[] = [
               "Dooz Inspected Cars",
               "Neither (NestJS)",
               "Used-car marketplace in Jordan",
-              "No client named; Sameem worked on its NestJS backend",
+              "Direct client work; Dooz hired Sameem directly for its NestJS backend",
               "dooz.com; Google Play (100K+ downloads); App Store"
             ]
           ]
@@ -868,7 +875,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Which platforms does each backend's group link to?",
-        "body": "Of the 25 entries, 15 link to at least one public surface: 12 web, seven Google Play, six App Store. Inside the two backend groups the pattern diverges. Neither Supabase build has a production link: Afriva is a demo build on vercel.app, and Augment Fit has no public link. Neither has an app store listing.\n\nThe Firebase group is more mixed: six of eight link a web address, two of them the Coffee Shop and Waitmate demo builds, and three of eight link a store listing, with Food Magnet and Pastel on both Google Play and the App Store and Koor on Google Play. AgroBridge has no public link. The likeliest explanation for the split is what these particular products were built to be, not anything about the backends.",
+        "body": "Of the 25 entries, 15 link to at least one public surface: 12 web, seven Google Play, six App Store. Inside the two backend groups the pattern diverges. Neither Supabase build has a production link: Afriva is a demo build on vercel.app, and Augment Fit has no public link. Neither has an app store listing.\n\nThe Firebase group is more mixed: six of eight link a web address, two of them the Coffee Shop and Waitmate builds on vercel.app, and three of eight link a store listing, with Food Magnet and Pastel on both Google Play and the App Store and Koor on Google Play. AgroBridge has no public link. The likeliest explanation for the split is what these particular products were built to be, not anything about the backends.",
         "table": {
           "caption": "Counts for the 10 tag-or-tech-stack entries, derived from the tags, tech stack, category label and web, Google Play and App Store links. Each row names what it is counted from.",
           "headers": [
@@ -883,7 +890,7 @@ export const INSIGHTS: Insight[] = [
               "6 of 8"
             ],
             [
-              "Web link that is not a demo build",
+              "Web link to a production site (not vercel.app)",
               "0 of 2",
               "4 of 8"
             ],
@@ -930,14 +937,14 @@ export const INSIGHTS: Insight[] = [
             [
               "Employer project",
               "1 of 2",
-              "3 of 8"
+              "5 of 8"
             ]
           ]
         }
       },
       {
         "heading": "What frontend stacks and hosting did each backend pair with?",
-        "body": "Across the whole portfolio, counted from tags and tech stack, Next.js appears in five entries, React Native in six, Flutter in five, Node.js in nine and NestJS in four. Inside the backend groups the pairings are distinct. Both Supabase builds pair with the React family on the web: React.js on Augment Fit, and Next.js on Afriva, which runs Next.js 15 with the App Router. Neither names React Native or Flutter.\n\nThe eight Firebase builds spread wider: Next.js on Coffee Shop, Waitmate and Pathana; React Native on AgroBridge and Koor; Flutter with a React.js admin dashboard on Food Magnet; a Node.js service on Bondly; and on Pastel, Sharetribe with an iOS app. Hosting, as far as the links show, does not separate the groups: the one Supabase web link is a vercel.app demo build, as are two of the six Firebase web links, and no entry names Vercel in its tags or tech stack."
+        "body": "Across the whole portfolio, counted from tags and tech stack, Next.js appears in five entries, React Native in six, Flutter in five, Node.js in nine and NestJS in four. Inside the backend groups the pairings are distinct. Both Supabase builds pair with the React family on the web: React.js on Augment Fit, and Next.js on Afriva, which runs Next.js 15 with the App Router. Neither names React Native or Flutter.\n\nThe eight Firebase builds spread wider: Next.js on Coffee Shop, Waitmate and Pathana; React Native on AgroBridge and Koor; Flutter with a React.js admin dashboard on Food Magnet; a Node.js service on Bondly; and on Pastel, Sharetribe with an iOS app. Hosting, as far as the links show, does not separate the groups: the one Supabase web link is a build on vercel.app, as are two of the six Firebase web links, and no entry names Vercel in its tags or tech stack."
       },
       {
         "heading": "What does the way the entries are filed tell you?",
@@ -978,14 +985,14 @@ export const INSIGHTS: Insight[] = [
       "How either compares to alternatives not used here, such as raw Postgres, PlanetScale, AWS Amplify or Appwrite.",
       "Bundle size, cold-start behaviour or offline sync quality on mobile. These were never captured in any entry."
     ],
-    "word_count": 2689
+    "word_count": 2700
   },
   {
     "slug": "sharetribe-vs-custom-marketplace-build",
     "title": "Sharetribe vs Custom Marketplace Development: Where the Line Actually Falls",
     "meta_description": "Where Sharetribe is the right answer, where a custom marketplace build is, and how that line falls in three real marketplaces from the DevoraX portfolio.",
     "summary_answer": "Use Sharetribe when your marketplace is a standard listing-and-commission transaction and you have not yet proved supply. For a large share of marketplaces that is the permanent answer, not a stage. Build custom when the domain data model, the role surfaces or native apps are the product. The line can also run through one project: Pastel, the antiques marketplace where DevoraX's founder Sameem Amjad works as an engineer, runs its marketplace on Sharetribe and adds iOS and Android apps, which Sharetribe does not produce by default. Nobody built the fully custom alternative, so read that as description, not verdict.",
-    "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. Two are employer projects: Sameem Amjad, DevoraX's founder, builds Pastel's iOS app as a software engineer at Pastel (since April 2026; the iOS app launched in November 2025, before he joined), and he worked on Afriva, whose public link is a demo build, as an engineer at Webrange Solutions. He worked on the NestJS backend of the third, Dooz, whose client is not named here. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
+    "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. Two are employer projects: Sameem Amjad, DevoraX's founder, builds Pastel's iOS app as a software engineer at Pastel (since April 2026; the iOS app launched in November 2025, before he joined), and he worked on Afriva, whose public link is a demo build, as an engineer at Webrange Solutions. The third, Dooz, is his direct client work: Dooz hired him directly, and he worked on its shared NestJS backend. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
     "sections": [
       {
         "heading": "What is actually being compared here?",
@@ -1032,7 +1039,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "When is Sharetribe clearly the right answer?",
-        "body": "There are four situations in which DevoraX would tell you not to hire it, and they are common. First, you have not proved supply. A marketplace with no sellers has nothing to transact, and no framework choice changes that; the portfolio holds no failure data, so treat that as mechanics rather than a finding. Until sellers list and buyers pay, every engineering hour funds a hypothesis.\n\nSecond, your transaction is standard: list, buy or book, pay, fulfil, release, commission. Third, your differentiation is not software, because curation, community and category expertise are not code. Fourth, your budget is below the build, and DevoraX's published starting price is $2,900.\n\nOne thing worth being plain about, because vendor pages are not: for many marketplaces the hosted product is the permanent answer rather than a stage before a custom build. A configured marketplace taking real money is a finished business, not a prototype. That you will inevitably outgrow it is a sales line, and there is no evidence for it here."
+        "body": "There are four situations in which DevoraX would tell you not to hire it for a custom build, and they are common. First, you have not proved supply. A marketplace with no sellers has nothing to transact, and no framework choice changes that; the portfolio holds no failure data, so treat that as mechanics rather than a finding. Until sellers list and buyers pay, every engineering hour funds a hypothesis.\n\nSecond, your transaction is standard: list, buy or book, pay, fulfil, release, commission. Third, your differentiation is not software, because curation, community and category expertise are not code. Fourth, your budget is below the build, and DevoraX's published starting price for a new build is $2,900.\n\nOne thing worth being plain about, because vendor pages are not: for many marketplaces the hosted product is the permanent answer rather than a stage before a custom build. A configured marketplace taking real money is a finished business, not a prototype. That you will inevitably outgrow it is a sales line, and there is no evidence for it here."
       },
       {
         "heading": "When is Shopify with a multi-vendor app the better choice?",
@@ -1069,7 +1076,7 @@ export const INSIGHTS: Insight[] = [
               "Dooz Inspected Cars (Angular, React Native, NestJS)",
               "Not named in the portfolio; one NestJS backend serves the web, iOS and Android apps",
               "An inspection report and grade on every car, financing and insurance alongside the listings",
-              "Sameem worked on the shared NestJS backend",
+              "Direct client work: Dooz hired Sameem directly for the shared NestJS backend",
               "dooz.com; Google Play (100K+ downloads); App Store"
             ]
           ]
@@ -1077,9 +1084,9 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "How do the cost shapes actually differ?",
-        "body": "The headline price is the least interesting number in this decision, and it is also the one this article is least able to give you. A hosted product is operating expenditure: a subscription plus payment processing, with no capital outlay. A custom build is capital expenditure plus a change budget, and it is the change budget that kills projects rather than the build price.\n\nDevoraX's own model is a fixed-price proposal rather than hourly billing, with indicative starting points of $2,900 for an MVP Starter and $7,500 for Growth, and Enterprise quoted per project. Those are starting points, not quotes. Nothing shaped like Dooz, with web, iOS and Android apps over one shared backend, an inspection report on every listing and financing and insurance alongside, fits the smaller band.\n\nThis article will not tell you what the alternatives cost. Two things are worth pricing yourself: the configuration, design and data-migration labour a hosted setup still takes, and what a custom build does at ten times the volume, where re-architecture is an engineering ticket like any other.",
+        "body": "The headline price is the least interesting number in this decision, and it is also the one this article is least able to give you. A hosted product is operating expenditure: a subscription plus payment processing, with no capital outlay. A custom build is capital expenditure plus a change budget, and it is the change budget that kills projects rather than the build price.\n\nDevoraX's own model for a new build is a fixed-price proposal rather than hourly billing, with indicative starting points of $2,900 for an MVP Starter and $7,500 for Growth, and Enterprise quoted per project. Those are starting points, not quotes. Nothing shaped like Dooz, with web, iOS and Android apps over one shared backend, an inspection report on every listing and financing and insurance alongside, fits the smaller band.\n\nThis article will not tell you what the alternatives cost. Two things are worth pricing yourself: the configuration, design and data-migration labour a hosted setup still takes, and what a custom build does at ten times the volume, where re-architecture is an engineering ticket like any other.",
         "table": {
-          "caption": "Where each cost number has to come from. The only figures stated here are DevoraX's own indicative starting points; no third-party pricing is quoted anywhere, because DevoraX holds no invoices and ran no cost model.",
+          "caption": "Where each cost number has to come from. The only figures stated here are DevoraX's own published prices; no third-party pricing is quoted anywhere, because DevoraX holds no invoices and ran no cost model.",
           "headers": [
             "Cost line",
             "What DevoraX can state about its own pricing",
@@ -1088,17 +1095,17 @@ export const INSIGHTS: Insight[] = [
           "rows": [
             [
               "Build or setup",
-              "Fixed-price proposals starting at $2,900 (MVP Starter) and $7,500 (Growth), Enterprise quoted per project. Indicative starting points, not quotes.",
+              "For a new build, fixed-price proposals starting at $2,900 (MVP Starter) and $7,500 (Growth), Enterprise quoted per project. Indicative starting points, not quotes.",
               "Any setup cost on a hosted product, including configuration, design and data-migration labour, has to come from whoever does that work."
             ],
             [
               "Subscription",
-              "None. DevoraX charges no recurring fee and does not resell hosting; you pay your own infrastructure providers directly.",
+              "No platform subscription, and DevoraX does not resell hosting: you pay your own infrastructure providers directly. Every build includes 35 days of free maintenance after launch for bugs in what was built; after that, ongoing fixes, updates and releases are covered by the $1,500-a-month care plan.",
               "The vendor's current pricing page. Hosted marketplace products and commerce platforms are sold as tiered subscriptions; multi-vendor apps are priced by their own publishers, on models that vary."
             ],
             [
               "Payment processing",
-              "Nothing. DevoraX integrates processors; it does not set their rates and holds no invoices.",
+              "DevoraX sets up Stripe payments from $1,200, and Stripe Connect payouts to sellers from $2,400. It does not set processing rates and holds no invoices.",
               "Your payment processor's current rates, plus any platform fee a marketplace product takes on top of them. Both have to be read from current terms."
             ],
             [
@@ -1120,7 +1127,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What does this portfolio prove about the choice, and what does it not?",
-        "body": "Less than the confidence of these headings suggests, so here are the bounds. DevoraX is a two-person studio that has been building since 2019. Its founder, Sameem Amjad, holds a 5.0 rating on Fiverr across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Two of the three marketplaces here are employer projects. A portfolio is by construction a record of what went well enough to show, so nothing cancelled or abandoned would appear in it.\n\nNobody has built the same marketplace twice, once hosted and once custom. There is no paired test, no migration in either direction and no instrumentation of either approach.\n\nDevoraX is also an interested party. It sells custom builds, and the four situations listed earlier are precisely the ones where it loses the sale. They are here because for a large share of readers the honest answer is a product DevoraX did not build."
+        "body": "Less than the confidence of these headings suggests, so here are the bounds. DevoraX is a two-person studio that has been building since 2022. Its founder, Sameem Amjad, holds a 5.0 rating on Fiverr across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Two of the three marketplaces here are employer projects, and Dooz hired Sameem directly. A portfolio is by construction a record of what went well enough to show, so nothing cancelled or abandoned would appear in it.\n\nNobody has built the same marketplace twice, once hosted and once custom. There is no paired test, no migration in either direction and no instrumentation of either approach.\n\nDevoraX is also an interested party. It sells custom builds, and the four situations listed earlier are precisely the ones where it loses the custom-build sale. They are here because for a large share of readers the honest answer is a product DevoraX did not build."
       },
       {
         "heading": "How should you decide, in order?",
@@ -1133,15 +1140,15 @@ export const INSIGHTS: Insight[] = [
       "Pastel and Dooz both have native iOS and Android apps, which a hosted web marketplace product does not produce by default.",
       "For a marketplace with a standard transaction, an ordinary catalogue and unproven supply, a hosted product is the permanent answer rather than a stage before a custom build. Nothing in the portfolio shows anyone outgrowing one, because it contains no such case either way.",
       "DevoraX's published custom starting points are $2,900 (MVP Starter) and $7,500 (Growth), and nothing shaped like Dooz fits the smaller band, so for some specifications the honest answer is to cut scope or stay hosted.",
-      "Two of the three are employer projects: Pastel, where Sameem works now, and Afriva, at Webrange Solutions. On the third, Dooz, Sameem worked on the shared NestJS backend."
+      "Two of the three are employer projects: Pastel, where Sameem works now, and Afriva, at Webrange Solutions. The third, Dooz, hired Sameem directly to work on its shared NestJS backend."
     ],
     "limitations": [
       "Three marketplaces inside a 25-entry portfolio from a two-person studio. A portfolio is selection-biased by construction: no cancelled, abandoned or failed marketplace could appear in it, and the portfolio was not audited for every product that might be called marketplace-shaped.",
-      "Two of the three are employer projects, and no entry records a DevoraX scope or price for any of them, so none of them shows how DevoraX itself scopes or prices a marketplace.",
+      "Two of the three are employer projects and the third was Sameem's direct client work. No entry records a DevoraX scope or price for any of them, so none shows how DevoraX itself scopes or prices a marketplace.",
       "Nobody built the same marketplace twice, once on a hosted product and once custom. There is no paired test, no A/B and no migration in either direction, so every comparison here is engineering reasoning rather than measurement.",
       "DevoraX has not run Sharetribe or a Shopify multi-vendor app as an entire platform. The direct experience of Sharetribe behind this article is Pastel, where Sameem works on the iOS app, which is why the structural table has no Shopify column.",
       "The portfolio holds no outcome data for these marketplaces, and even if it did, too much else differs between the three businesses for it to show whether build-versus-buy was the right call.",
-      "DevoraX sells custom builds, so it has a commercial interest in this answer. The only prices in this article are its own indicative starting points, which are not quotes; no third-party pricing is stated anywhere, including in the cost table."
+      "DevoraX sells custom builds, so it has a commercial interest in this answer. The only prices in this article are its own published prices, and the build tiers among them are starting points, not quotes; no third-party pricing is stated anywhere, including in the cost table."
     ],
     "cannot_answer": [
       "What Sharetribe, Shopify or any multi-vendor app will cost you at your transaction volume. DevoraX holds no invoices and quotes no third-party prices, so those figures have to come from the vendors' current terms.",
@@ -1149,26 +1156,26 @@ export const INSIGHTS: Insight[] = [
       "Whether the build-versus-buy decision made any of these businesses more or less successful. There is no outcome data, no control group and no baseline.",
       "How hard it is to migrate from a hosted marketplace to custom code, or back. No product in the portfolio has made that move."
     ],
-    "word_count": 2932
+    "word_count": 3014
   },
   {
     "slug": "what-a-3000-mvp-budget-gets-you",
     "title": "What a $3,000 MVP Budget Actually Gets You (And What It Does Not)",
     "meta_description": "What a $3,000 MVP budget buys and what it does not, checked against the published $2,900 DevoraX starting tier and five web builds from its portfolio.",
     "summary_answer": "Roughly $3,000 buys one working surface for one primary audience, a narrow set of features, and a managed stack you do not have to operate. It does not buy role-separated dashboards, an app-store release, verified multi-tenancy or a security assessment. What it depends on is roles: each additional kind of user adds a surface, a permission boundary and a full test pass. If your difference from an off-the-shelf product is a preference rather than a rule, rent instead.",
-    "dataset_note": "This draws on the 25 entries in the DevoraX portfolio, products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies, and examines five web builds closely: Coffee Shop, Augment Fit, Waitmate, Pathana and Afriva. None of the five is a DevoraX engagement with a recorded price: Afriva was employer work at Webrange Solutions, and the other four have no named client. No entry stores a price, timeline, team size or developer-hour count, so nothing here evidences what any build cost. The five are used for their scope shapes only.",
+    "dataset_note": "This draws on the 25 entries in the DevoraX portfolio, products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies, and examines five web builds closely: Coffee Shop, Augment Fit, Waitmate, Pathana and Afriva. None of the five is a DevoraX engagement with a recorded price: three were employer work (Coffee Shop at Fleact Tech, Pathana at ivector and Afriva at Webrange Solutions), and Augment Fit and Waitmate have no named client. No entry stores a price, timeline, team size or developer-hour count, so nothing here evidences what any build cost. The five are used for their scope shapes only.",
     "sections": [
       {
         "heading": "What does a $3,000 MVP budget actually buy?",
-        "body": "A budget in that range buys one working surface, for one primary audience, doing a small number of things well, on a managed platform somebody else operates. DevoraX's published starting points are an MVP Starter from $2,900, Growth from $7,500 and Enterprise scoped individually. Those are starting points rather than quotes: every engagement is priced as a fixed sum in a proposal written after a free 30-minute discovery call, and DevoraX does not bill hourly. None of the 25 portfolio entries behind this article stores a price, so the builds below show scope, not cost.\n\nWhat the portfolio does support is a description of scope shapes, and the smallest shape among the five examined here is the Coffee Shop Web App, a cafe website demo build hosted on Vercel at coffee-shop-original.vercel.app. One public web surface. One audience, the customer. Four named features: a menu with prices, a gallery, store locations and an order button. A stack of Next.js with server-side rendering and Firebase for menu content, which means no server to run and no database to operate. No second operational surface, no separate admin product, no real-time requirement, no mobile release. That is the shape a starting-tier budget can hold: a single front door, a single kind of user behind it, and content a non-developer can keep current. Read it as a scope illustration and not as a recommendation, because a later section explains why a reader arriving with exactly that brief should rent instead."
+        "body": "A budget in that range buys one working surface, for one primary audience, doing a small number of things well, on a managed platform somebody else operates. DevoraX's published starting points are an MVP Starter from $2,900, Growth from $7,500 and Enterprise scoped individually. Those are starting points rather than quotes: every new build is priced as a fixed sum in a proposal written after a free 30-minute discovery call, and DevoraX does not bill hourly. None of the 25 portfolio entries behind this article stores a price, so the builds below show scope, not cost.\n\nWhat the portfolio does support is a description of scope shapes, and the smallest shape among the five examined here is the Coffee Shop Web App, a cafe website Sameem built as an engineer at Fleact Tech, hosted on Vercel at coffee-shop-original.vercel.app. One public web surface. One audience, the customer. Four named features: a menu with prices, a gallery, store locations and an order button. A stack of Next.js with server-side rendering and Firebase for menu content, which means no server to run and no database to operate. No second operational surface, no separate admin product, no real-time requirement, no mobile release. That is the shape a starting-tier budget can hold: a single front door, a single kind of user behind it, and content a non-developer can keep current. Read it as a scope illustration and not as a recommendation, because a later section explains why a reader arriving with exactly that brief should rent instead."
       },
       {
         "heading": "Why is $3,000 a scope number rather than a price?",
-        "body": "Because the fixed price is the output, not the input. A proposal prices a defined scope, so the only thing a smaller budget can move is what sits inside that scope. That is a more useful conversation than asking for a discount on a rate, and it is why the discovery call happens before the number. It helps to know the shape of the supplier too. DevoraX has been operating since 2019 and is two people, Sameem Amjad and Usman, who bring in specialists when a scope needs them. No portfolio entry holds any cost accounting, no price, no hours and no allocation, so this article will not explain the tier by describing an overhead structure nobody measured. What the DevoraX site does publish alongside the price is the working arrangement: direct Slack access, weekly demos and a shared project board.\n\nWhat actually moves the number is structural rather than cosmetic. How many distinct kinds of user need their own screens. Whether money changes hands inside the product. Whether anything has to stay correct under contention, such as a seat, a table or a unit of stock two people can claim at the same moment. Whether the product must exist in an app store as well as a browser. Whether the data is sensitive enough that isolation between tenants has to hold by construction rather than by careful coding. Each of those is a step change, not a percentage increase, because each adds a surface, a permission boundary and a set of failure cases somebody has to test. Colour schemes, copy and the number of marketing pages are small against any of them. Timelines follow the same logic: any duration in a proposal is an estimate for that scope, and no portfolio entry stores how long a build actually took."
+        "body": "Because the fixed price is the output, not the input. A proposal prices a defined scope, so the only thing a smaller budget can move is what sits inside that scope. That is a more useful conversation than asking for a discount on a rate, and it is why the discovery call happens before the number. It helps to know the shape of the supplier too. DevoraX has been operating since 2022 and is two people, Sameem Amjad and Usman, who bring in specialists when a scope needs them. No portfolio entry holds any cost accounting, no price, no hours and no allocation, so this article will not explain the tier by describing an overhead structure nobody measured. What the DevoraX site does publish alongside the price is the working arrangement: direct Slack access, weekly demos and a shared project board.\n\nWhat actually moves the number is structural rather than cosmetic. How many distinct kinds of user need their own screens. Whether money changes hands inside the product. Whether anything has to stay correct under contention, such as a seat, a table or a unit of stock two people can claim at the same moment. Whether the product must exist in an app store as well as a browser. Whether the data is sensitive enough that isolation between tenants has to hold by construction rather than by careful coding. Each of those is a step change, not a percentage increase, because each adds a surface, a permission boundary and a set of failure cases somebody has to test. Colour schemes, copy and the number of marketing pages are small against any of them. Timelines follow the same logic: any duration in a proposal is an estimate for that scope, and no portfolio entry stores how long a build actually took."
       },
       {
         "heading": "What does scope actually look like across five web builds?",
-        "body": "Five of the 25 portfolio entries are useful calibration here, because they are web products described in enough detail to count surfaces and roles, and they sit at visibly different levels of scope. Be clear about what they are before reading the table. Pathana is live at pathana.net. Coffee Shop, Waitmate and Afriva are demo builds on vercel.app. Augment Fit has no public link. Sameem worked on Afriva as an engineer at Webrange Solutions. All five are web-only, and that is a property of which five were picked rather than of the budget or of the market: eight of the 25 entries link a live Google Play or App Store listing.\n\nRead the table by counting surfaces and roles rather than features. Coffee Shop has one of each. Augment Fit is one admin panel with dashboards for two named roles, trainers and clients. Waitmate is a hospitality admin demo for reservations, tables and staff. Pathana is the instructive one: one platform where three parties, students, counsellors and families, get shared views of the same plans, so the roles multiply while the surfaces do not. Afriva has four separate role dashboards. Named feature counts stay inside a narrow band of three to four across all five, which is the point, because features are cheap relative to the number of places and permission levels each one has to be correct in. No entry stores a price, so the table has no column placing any build against the DevoraX tiers.",
+        "body": "Five of the 25 portfolio entries are useful calibration here, because they are web products described in enough detail to count surfaces and roles, and they sit at visibly different levels of scope. Be clear about what they are before reading the table. Pathana is live at pathana.net. Coffee Shop is hosted at coffee-shop-original.vercel.app, and Waitmate and Afriva are demo builds on vercel.app. Augment Fit has no public link. Three of the five were employer work, as the Context column shows. All five are web-only, and that is a property of which five were picked rather than of the budget or of the market: eight of the 25 entries link a live Google Play or App Store listing.\n\nRead the table by counting surfaces and roles rather than features. Coffee Shop has one of each. Augment Fit is one admin panel with dashboards for two named roles, trainers and clients. Waitmate is a hospitality admin demo for reservations, tables and staff. Pathana is the instructive one: one platform where three parties, students, counsellors and families, get shared views of the same plans, so the roles multiply while the surfaces do not. Afriva has four separate role dashboards. Named feature counts stay inside a narrow band of three to four across all five, which is the point, because features are cheap relative to the number of places and permission levels each one has to be correct in. No entry stores a price, so the table has no column placing any build against the DevoraX tiers.",
         "table": {
           "caption": "Five web builds from the DevoraX portfolio by described scope. No column here is a price or a price proxy: no entry stores what any build was sold for, so this table cannot be read against the published tiers.",
           "headers": [
@@ -1183,8 +1190,8 @@ export const INSIGHTS: Insight[] = [
           "rows": [
             [
               "Coffee Shop Web App",
-              "Demo build (coffee-shop-original.vercel.app)",
-              "No client named",
+              "Web build (coffee-shop-original.vercel.app)",
+              "Engineer at Fleact Tech",
               "1 (public site)",
               "1 (the visiting customer)",
               "Menu with prices, gallery, store locations, order button",
@@ -1211,7 +1218,7 @@ export const INSIGHTS: Insight[] = [
             [
               "Pathana Platform",
               "pathana.net",
-              "No client named",
+              "Engineer at ivector",
               "1 (one platform; no separate surfaces described)",
               "3 (students, counsellors, families) with shared views",
               "Personalised roadmaps, milestone tracking, career exploration, shared views",
@@ -1231,11 +1238,11 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What does a $3,000 budget specifically not buy?",
-        "body": "It does not buy role separation. Four role dashboards like Afriva's are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and a change to seller tooling must not quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. The portfolio holds no test matrix, review step or release procedure for any entry, so nothing here should be read as a description of how DevoraX tests. It does not buy institutional multi-tenancy either. A product like Pathana, where counsellors and families see students' records, has to keep each student's data visible only to the right people by construction rather than by careful coding, and the portfolio documents no assessment of how any build does that.\n\nIt does not buy a native release. All five reference builds are web products, while eight of the 25 entries link a live store listing, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits. A starting-tier engagement carries one month of support, after which the system is yours to run and the code and IP are yours on final payment."
+        "body": "It does not buy role separation. Four role dashboards like Afriva's are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and a change to seller tooling must not quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. The portfolio holds no test matrix, review step or release procedure for any entry, so nothing here should be read as a description of how DevoraX tests. It does not buy institutional multi-tenancy either. A product like Pathana, where counsellors and families see students' records, has to keep each student's data visible only to the right people by construction rather than by careful coding, and the portfolio documents no assessment of how any build does that.\n\nIt does not buy a native release. All five reference builds are web products, while eight of the 25 entries link a live store listing, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits. A starting-tier build includes 35 days of free maintenance after launch, for bugs in what was built, with new features quoted separately; after that, ongoing support is the $1,500-a-month care plan, and the code and IP are yours on final payment."
       },
       {
         "heading": "When is the honest answer not to hire an agency like DevoraX at all?",
-        "body": "Frequently, and here is the version with no hedge on it. If you are a single-location cafe, restaurant, salon, gym or retailer who needs a branded site with a menu or catalogue and online ordering, rent. Hosted commerce platforms and site builders solve that exact shape as a subscription, and they arrive with payment handling, hosting, updates and a support contract that keeps renewing for as long as you pay. That is the Coffee Shop scope shape, and renting is the right answer for a reader arriving with that brief today. The same holds for appointment and session booking for a small team, and for an internal dashboard over data you already hold.\n\nThe table below is deliberately two-sided, because owning software has costs as surely as renting it does. Renting is a fee that never stops and a data model you configure rather than design. Owning is a hosting bill, a maintenance burden, support only for as long as it is contracted, one month at the DevoraX starting tier, and key-person risk with a two-person supplier. The test you can apply on your own is whether the thing your product does differently is a preference or a rule. If your difference is a preference, your own brand, your own layout, your own copy, rent. If it is a rule the hosted product cannot express, this capacity is contested, this payout splits four ways, this record is legally restricted, that is where custom starts earning the money. Afriva has four role dashboards; whether that could have been rented, nothing in the portfolio says.",
+        "body": "Frequently, and here is the version with no hedge on it. If you are a single-location cafe, restaurant, salon, gym or retailer who needs a branded site with a menu or catalogue and online ordering, rent. Hosted commerce platforms and site builders solve that exact shape as a subscription, and they arrive with payment handling, hosting, updates and a support contract that keeps renewing for as long as you pay. That is the Coffee Shop scope shape, and renting is the right answer for a reader arriving with that brief today. The same holds for appointment and session booking for a small team, and for an internal dashboard over data you already hold.\n\nThe table below is deliberately two-sided, because owning software has costs as surely as renting it does. Renting is a fee that never stops and a data model you configure rather than design. Owning is a hosting bill, a maintenance burden, support only for as long as it is contracted (35 days of free maintenance at the DevoraX starting tier, then the monthly care plan), and key-person risk with a two-person supplier. The test you can apply on your own is whether the thing your product does differently is a preference or a rule. If your difference is a preference, your own brand, your own layout, your own copy, rent. If it is a rule the hosted product cannot express, this capacity is contested, this payout splits four ways, this record is legally restricted, that is where custom starts earning the money. Afriva has four role dashboards; whether that could have been rented, nothing in the portfolio says.",
         "table": {
           "caption": "Where renting usually beats custom at this budget, and what renting costs in return. Third-party products are described by commercial model and positioning only. No current price is quoted for any of them, packaging in this space changes, and each vendor should be checked directly.",
           "headers": [
@@ -1250,7 +1257,7 @@ export const INSIGHTS: Insight[] = [
               "A brand site with a menu or catalogue and online ordering",
               "Hosted site builders and hosted commerce platforms, Shopify and Squarespace among them, sold as a subscription",
               "A recurring fee for as long as you use it, and a catalogue and checkout you configure rather than design",
-              "Your own hosting bill, your own upgrades, and support only for as long as it is contracted; the DevoraX starting tier includes one month",
+              "Your own hosting bill, your own upgrades, and support only for as long as it is contracted; the DevoraX starting tier includes 35 days of free maintenance after launch, then a $1,500-a-month care plan",
               "When the ordering, pricing or fulfilment logic genuinely will not fit the platform's model"
             ],
             [
@@ -1283,27 +1290,27 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Can a portfolio tell you what a budget buys?",
-        "body": "No, and it is worth being exact about why. A portfolio entry describes a product, not a price. None of the 25 entries stores what a build cost, how long it took or who paid for it, and the five examined here are not DevoraX price points in disguise. Reading any portfolio as a price signal, this one included, is the specific error this article exists to prevent.\n\nOne structural caution about the dataset itself: 25 entries is small, it is one engineer's body of work across several employers and projects, and this article chose which five to examine. No entry stores a delivery, launch or failure status of any kind, so the portfolio cannot tell you how many projects ran late, ran over or were abandoned. What it can tell you is that fifteen of the 25 entries link to something public, three of those links are demo builds, and ten link to nothing. A portfolio is not a base rate."
+        "body": "No, and it is worth being exact about why. A portfolio entry describes a product, not a price. None of the 25 entries stores what a build cost, how long it took or who paid for it, and the five examined here are not DevoraX price points in disguise. Reading any portfolio as a price signal, this one included, is the specific error this article exists to prevent.\n\nOne structural caution about the dataset itself: 25 entries is small, it is one engineer's body of work across several employers and projects, and this article chose which five to examine. No entry stores a delivery, launch or failure status of any kind, so the portfolio cannot tell you how many projects ran late, ran over or were abandoned. What it can tell you is that fifteen of the 25 entries link to something public, three of those links are builds on vercel.app rather than production sites, and ten link to nothing. A portfolio is not a base rate."
       },
       {
         "heading": "What should you actually do with roughly $3,000?",
-        "body": "Three answers, and only one of them involves hiring anybody. If your product is the default shape of a category with mature hosted products in it, rent one, spend nothing on engineering, and revisit in a year when you know which constraint actually hurts. That is the answer for anyone whose difference from the category default is a preference rather than a rule, and the Coffee Shop scope shape sits squarely inside it. If your product has one primary audience, a handful of features, and one rule the hosted products cannot express, a starting-tier custom build is a real option: one surface, one audience, a managed backend, a live link at the end. If your brief names three user roles, a store release, a compliance obligation or contention over finite capacity, this budget buys a half-built version of that, and the move is to cut to one role and ship it rather than to find a supplier who will agree to all of it at this price.\n\nTwo practical notes if you do spend it. Keep some of it back. A starting tier includes one month of support and then the system is yours to run, so a budget entirely consumed at launch leaves nothing for the first real bug and nothing for the hosting bill either. And insist the scope is written down as a fixed price against a specific list before anyone starts, which is how DevoraX works and is the only structure under which a small budget is safe for both sides. If a supplier cannot tell you what falls out of scope at your number, they have not scoped it, and the shortfall surfaces later as either an invoice or an argument. Ask the same supplier what they would tell you to rent instead, because the answer tells you what the proposal is really for."
+        "body": "Three answers, and only one of them involves hiring anybody. If your product is the default shape of a category with mature hosted products in it, rent one, spend nothing on engineering, and revisit in a year when you know which constraint actually hurts. That is the answer for anyone whose difference from the category default is a preference rather than a rule, and the Coffee Shop scope shape sits squarely inside it. If your product has one primary audience, a handful of features, and one rule the hosted products cannot express, a starting-tier custom build is a real option: one surface, one audience, a managed backend, a live link at the end. If your brief names three user roles, a store release, a compliance obligation or contention over finite capacity, this budget buys a half-built version of that, and the move is to cut to one role and ship it rather than to find a supplier who will agree to all of it at this price.\n\nTwo practical notes if you do spend it. Keep some of it back. A starting tier includes 35 days of free maintenance after launch, for bugs in what was built, and after that fixes and updates come from the monthly care plan or your own budget, so a budget entirely consumed at launch leaves nothing for them, nothing for new features and nothing for the hosting bill either. And insist the scope is written down as a fixed price against a specific list before anyone starts, which is how DevoraX works and is the only structure under which a small budget is safe for both sides. If a supplier cannot tell you what falls out of scope at your number, they have not scoped it, and the shortfall surfaces later as either an invoice or an argument. Ask the same supplier what they would tell you to rent instead, because the answer tells you what the proposal is really for."
       }
     ],
     "key_findings": [
       "All five reference builds are web products, a property of the selection rather than of the budget: 8 of the 25 portfolio entries link a live Google Play or App Store listing.",
       "Surfaces and roles, not features, separate the five: Coffee Shop has one surface and one audience, Augment Fit one admin panel serving two named roles, Waitmate one admin dashboard, Pathana one platform with three parties sharing views, and Afriva four role dashboards, while named feature counts stay within a band of three to four throughout.",
       "No portfolio entry stores a price, a timeline or a team size, so none of the five named builds is evidence of what $2,900 buys.",
-      "DevoraX's published starting points are MVP Starter from $2,900, Growth from $7,500 and Enterprise custom-scoped, each priced as a fixed sum in a proposal after a free 30-minute discovery call. The MVP Starter includes one month of support.",
+      "DevoraX's published starting points are MVP Starter from $2,900, Growth from $7,500 and Enterprise custom-scoped, each priced as a fixed sum in a proposal after a free 30-minute discovery call. The MVP Starter includes 35 days of free maintenance after launch, for bugs in what was built; ongoing support after that is the $1,500-a-month care plan.",
       "None of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits.",
-      "15 of the 25 entries link to something public, 3 of those links are demo builds, and 10 link to nothing. No entry stores a delivery, launch or failure status, so the portfolio cannot be read as a success rate in either direction."
+      "15 of the 25 entries link to something public, 3 of those links are builds on vercel.app rather than production sites, and 10 link to nothing. No entry stores a delivery, launch or failure status, so the portfolio cannot be read as a success rate in either direction."
     ],
     "limitations": [
       "n=25 portfolio entries, the body of work of a two-person studio's founder, and this article chose which five to examine. No entry stores a delivery, launch or failure status, so nothing here estimates the odds of a $3,000 build succeeding.",
       "The five examined builds illustrate scope shapes, not DevoraX pricing.",
       "No price, effort, duration or team-size data exists in any entry. Every statement about what a budget buys rests on scope shape and general engineering reasoning, not on cost accounting.",
       "The five builds were selected for being web products described in enough detail to count surfaces and roles, which is why all five are web-only. The 8 store-listed entries in the portfolio are not represented here, so this article says nothing about what a mobile build involves.",
-      "Only one of the five, Pathana, is a live production site; three are demo builds and one has no public link, so their scope is described from the portfolio rather than from a product you can inspect in full.",
+      "Only one of the five, Pathana, is a live production site; three are builds on vercel.app and one has no public link, so their scope is described from the portfolio rather than from a product you can inspect in full.",
       "Third-party products are described by commercial model and positioning only. No current price is quoted for any of them, packaging in this space changes, and the right build-versus-rent answer changes with it."
     ],
     "cannot_answer": [
@@ -1312,12 +1319,12 @@ export const INSIGHTS: Insight[] = [
       "What a build costs to run and maintain after handover. No hosting invoices, platform bills or post-launch support costs exist anywhere in the portfolio.",
       "Whether $2,900 is competitive against other suppliers. DevoraX holds no competitor quotes and did not price-check anybody for this article."
     ],
-    "word_count": 3296
+    "word_count": 3402
   }
 ];
 
 /** When these articles were last substantively revised (honest freshness signal). */
-export const INSIGHTS_UPDATED = '2026-10-08T00:00:00.000Z';
+export const INSIGHTS_UPDATED = '2026-10-09T00:00:00.000Z';
 
 export function getInsight(slug: string): Insight | undefined {
   return INSIGHTS.find((i) => i.slug === slug);

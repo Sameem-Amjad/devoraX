@@ -69,7 +69,7 @@ export const SOLUTIONS: Solution[] = [
     "h1": "Multi-Vendor Marketplace Development: Buyer, Vendor and Admin on One Backend",
     "title": "Multi-Vendor Marketplace Development",
     "meta_description": "Multi-vendor marketplace development from a two-person studio whose founder worked on Afriva and Pastel. Buyer app, vendor portal, admin. Fixed price.",
-    "hero_answer": "DevoraX is a two-person software studio, founded in 2019, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. The marketplace work behind this page is its founder Sameem Amjad's, most of it done as an employee of other companies: Afriva as an engineer at Webrange Solutions, Pastel's iOS app as a software engineer at Pastel, and the shared NestJS backend of Dooz Inspected Cars. DevoraX now takes the same work directly: custom builds for operators a template will not fit, and custom features plus the native iOS and Android app for marketplaces already running on Sharetribe, which ships no native app.",
+    "hero_answer": "DevoraX is a two-person software studio, founded in 2022, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. The marketplace work behind this page is its founder Sameem Amjad's, most of it done as an employee of other companies: Afriva as an engineer at Webrange Solutions, Pastel's iOS app as a software engineer at Pastel, and the shared NestJS backend of Dooz Inspected Cars, which hired him directly. DevoraX now takes the same work directly: custom builds for operators a template will not fit, and custom features plus the native iOS and Android app for marketplaces already running on Sharetribe, which ships no native app.",
     "sections": [
       {
         "heading": "What does a multi-vendor marketplace build include, and what is quoted separately?",
@@ -81,7 +81,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "Which marketplaces has DevoraX's founder worked on?",
-        "body": "Three: Afriva, built at Webrange Solutions; Pastel, the company's own antiques marketplace; and Dooz Inspected Cars, Dooz's own used-car marketplace in Jordan.\n\nAfriva is a four-role marketplace on Next.js 15 and Supabase: admin, manager, seller and buyer dashboards with real-time order tracking. Sameem worked on it as an engineer at Webrange Solutions, on the Next.js 15 front end, the seller dashboard for inventory, pricing and order status, and the Supabase data layer. Its public link is a demo build of the buyer storefront, at afriva-buyer.vercel.app.\n\nPastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live at mypastel.com and on the App Store. Sameem has been a software engineer at Pastel since April 2026, working on its iOS app, which first launched in November 2025, before he joined. Dooz Inspected Cars runs an Angular web client and iOS and Android apps over one backend, and Sameem worked on that shared NestJS backend. Dooz's Google Play listing shows 100K+ downloads.\n\nFood Magnet, also named on this page, is not a marketplace. It is a food truck discovery platform: a Flutter app and a React admin console on AWS Lambda, with live location tracking and Stripe. Sameem worked on it as an engineer at Zencloud, on a product that already existed. It is adjacent work, not a fourth marketplace."
+        "body": "Three: Afriva, built at Webrange Solutions; Pastel, the company's own antiques marketplace; and Dooz Inspected Cars, Dooz's own used-car marketplace in Jordan, which hired Sameem directly.\n\nAfriva is a four-role marketplace on Next.js 15 and Supabase: admin, manager, seller and buyer dashboards with real-time order tracking. Sameem worked on it as an engineer at Webrange Solutions, on the Next.js 15 front end, the seller dashboard for inventory, pricing and order status, and the Supabase data layer. Its public link is a demo build of the buyer storefront, at afriva-buyer.vercel.app.\n\nPastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live at mypastel.com and on the App Store. Sameem has been a software engineer at Pastel since April 2026, working on its iOS app, which first launched in November 2025, before he joined. Dooz Inspected Cars runs an Angular web client and iOS and Android apps over one backend, and Dooz hired Sameem directly to work on that shared NestJS backend. Dooz's Google Play listing shows 100K+ downloads.\n\nFood Magnet, also named on this page, is not a marketplace. It is a food truck discovery platform: a Flutter app and a React admin console on AWS Lambda, with live location tracking and Stripe. Sameem worked on it as an engineer at Zencloud, on a product that already existed. It is adjacent work, not a fourth marketplace."
       },
       {
         "heading": "How do you keep one vendor from reading another vendor's data?",
@@ -131,7 +131,7 @@ export const SOLUTIONS: Solution[] = [
       {
         "project_id": 25,
         "name": "Dooz Inspected Cars",
-        "one_line": "A used-car marketplace in Jordan: an Angular web client and iOS and Android apps over one NestJS and PostgreSQL backend. Sameem worked on that shared backend.",
+        "one_line": "A used-car marketplace in Jordan: an Angular web client and iOS and Android apps over one NestJS and PostgreSQL backend. Dooz hired Sameem directly for that shared backend.",
         "what_it_proves": "A catalogue where every listing is a unique unit, inspection reports published as part of the listing, a financing calculator and insurance in the buying flow, and valuation and availability resolved behind one API so three clients cannot disagree on a price.",
         "figures": [
           "Live at dooz.com",
@@ -183,7 +183,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Can you build mobile apps as well as the web marketplace?",
-        "a": "Yes. Three of the four products named here are on the app stores, and Sameem's part in them touches mobile directly: he works on Pastel's iOS app as an engineer at Pastel, and he worked on the NestJS backend that Dooz's iOS and Android apps share with its Angular web client. Food Magnet is a Flutter app with a React admin console. Mobile clients are quoted separately from a web build, because they are separate work with their own release process."
+        "a": "Yes. Three of the four products named here are on the app stores, and Sameem's part in them touches mobile directly: he works on Pastel's iOS app as an engineer at Pastel, and Dooz hired him directly for the NestJS backend that its iOS and Android apps share with its Angular web client. Food Magnet is a Flutter app with a React admin console. Mobile clients are quoted separately from a web build, because they are separate work with their own release process."
       },
       {
         "q": "Do you handle marketplace payments and vendor payouts?",
@@ -195,18 +195,18 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Who actually writes the code?",
-        "a": "Two people: Sameem Amjad and Usman. DevoraX has been running since 2019. The marketplaces named on this page are Sameem's work, most of it done as an employee of other companies, and each write-up on this site says whose project it was. You will not be handed to an account manager, and you will not discover at kickoff that the people on the call are not the people building it."
+        "a": "Two people: Sameem Amjad and Usman. DevoraX has been running since 2022. The marketplaces named on this page are Sameem's work, most of it done as an employee of other companies, and each write-up on this site says whose project it was. You will not be handed to an account manager, and you will not discover at kickoff that the people on the call are not the people building it."
       },
       {
         "q": "Who were these marketplaces built for?",
-        "a": "Afriva was built at Webrange Solutions, where Sameem worked on it as an engineer. Pastel is the company's own antiques marketplace, and Sameem works on its iOS app as a software engineer at Pastel. Dooz is Dooz's own used-car marketplace in Jordan, and Sameem worked on its shared NestJS backend. DevoraX is the studio through which he and Usman now take this kind of work directly. Pastel and Dooz are live on the web and the app stores."
+        "a": "Afriva was built at Webrange Solutions, where Sameem worked on it as an engineer. Pastel is the company's own antiques marketplace, and Sameem works on its iOS app as a software engineer at Pastel. Dooz is Dooz's own used-car marketplace in Jordan, and Dooz hired Sameem directly for its shared NestJS backend. DevoraX is the studio through which he and Usman now take this kind of work directly. Pastel and Dooz are live on the web and the app stores."
       },
       {
         "q": "What is the first step?",
         "a": "A free 30-minute discovery call. Bring your role model, your commission model, and your view on whether the catalogue holds stock-keeping items or single units. The output is a written fixed-price proposal covering scope, exclusions and price. If the honest answer is that a template would serve you better, that is what the proposal will say."
       }
     ],
-    "word_count": 2922,
+    "word_count": 2940,
     "role": "hub",
     "related_slugs": [
       "antiques-marketplace-app-development",
@@ -349,7 +349,7 @@ export const SOLUTIONS: Solution[] = [
     "h1": "Used car marketplace app development, with inspection reports inside the listing",
     "title": "Used Car Marketplace App Development",
     "meta_description": "Used car marketplace development: inspection reports inside the listing, financing, insurance and dealer accounts. Fixed price, from a two-person studio.",
-    "hero_answer": "DevoraX builds used-car marketplaces where the inspection report is part of the listing rather than a PDF sent on request. The reference is Dooz Inspected Cars, a used-car marketplace in Jordan with an Angular web client, iOS and Android apps, inspection reports inside the listing, and financing and insurance in the buying flow. DevoraX's founder, Sameem Amjad, worked on the NestJS backend those three clients share. It is live on the web and both app stores, and its Google Play listing shows 100K+ downloads.",
+    "hero_answer": "DevoraX builds used-car marketplaces where the inspection report is part of the listing rather than a PDF sent on request. The reference is Dooz Inspected Cars, a used-car marketplace in Jordan with an Angular web client, iOS and Android apps, inspection reports inside the listing, and financing and insurance in the buying flow. Dooz hired DevoraX's founder, Sameem Amjad, directly to work on the NestJS backend those three clients share. It is live on the web and both app stores, and its Google Play listing shows 100K+ downloads.",
     "sections": [
       {
         "heading": "What do you actually get in a used car marketplace build?",
@@ -385,14 +385,14 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "When should you not hire DevoraX for this?",
-        "body": "If what you want is a classifieds board, where sellers post, buyers call and nobody verifies anything, do not commission a custom build. An off-the-shelf listings platform does that for a fraction of the cost, and the inspection engineering would be dead weight. If verification is not part of your product, nothing on this page applies to you.\n\nDo not hire us to run the inspection operation. We build the software that captures, versions and publishes a report. Recruiting inspectors and standing up the physical network is a different business, and not one we have done.\n\nAnd if procurement requires hourly billing, a named team of five, or a compliance certification on file, we are the wrong supplier. DevoraX is two people, Sameem Amjad and Usman, founded in 2019, and we work fixed-price. We will not clear those bars."
+        "body": "If what you want is a classifieds board, where sellers post, buyers call and nobody verifies anything, do not commission a custom build. An off-the-shelf listings platform does that for a fraction of the cost, and the inspection engineering would be dead weight. If verification is not part of your product, nothing on this page applies to you.\n\nDo not hire us to run the inspection operation. We build the software that captures, versions and publishes a report. Recruiting inspectors and standing up the physical network is a different business, and not one we have done.\n\nAnd if procurement requires hourly billing, a named team of five, or a compliance certification on file, we are the wrong supplier. DevoraX is two people, Sameem Amjad and Usman, founded in 2022, and we work fixed-price. We will not clear those bars."
       }
     ],
     "proof": [
       {
         "project_id": 25,
         "name": "Dooz Inspected Cars",
-        "one_line": "A used-car marketplace in Jordan for buying, financing and insuring inspected vehicles: an Angular web client and iOS and Android apps over one NestJS backend on PostgreSQL. Sameem worked on that shared backend.",
+        "one_line": "A used-car marketplace in Jordan for buying, financing and insuring inspected vehicles: an Angular web client and iOS and Android apps over one NestJS backend on PostgreSQL. Dooz hired Sameem directly for that shared backend.",
         "what_it_proves": "A used-car marketplace where the inspection report is published as part of the listing, with a financing calculator and insurance in the same flow, and valuation, financing terms and listing availability resolved server-side so the web client and both apps show the same answer. Live on the web, Google Play and the App Store.",
         "figures": [
           "Live at dooz.com",
@@ -446,7 +446,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Who was Dooz built for?",
-        "a": "For Dooz. It is the company's own used-car marketplace in Jordan, and Sameem worked on the shared NestJS backend behind its web client and its iOS and Android apps. It is live at dooz.com, on the App Store as Dooz Cars, and on Google Play, where the listing shows 100K+ downloads."
+        "a": "For Dooz, which hired Sameem directly. It is the company's own used-car marketplace in Jordan, and he worked on the shared NestJS backend behind its web client and its iOS and Android apps. It is live at dooz.com, on the App Store as Dooz Cars, and on Google Play, where the listing shows 100K+ downloads."
       },
       {
         "q": "What will it cost?",
@@ -465,7 +465,7 @@ export const SOLUTIONS: Solution[] = [
         "a": "The vendor mechanics overlap: seller accounts, role-separated dashboards, ownership rules in the schema, order state that has to stay fresh on every surface. What differs is uniqueness, since every car is one unit rather than a stock item with a quantity, plus the inspection layer itself. For general goods, start from our multi-vendor marketplace development page."
       }
     ],
-    "word_count": 2591,
+    "word_count": 2601,
     "role": "spoke",
     "hub": "multi-vendor-marketplace-development",
     "related_slugs": [
@@ -503,7 +503,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "How does the build run, and what do you need from us?",
-        "body": "It starts with a free 30-minute discovery call. We come out of that with enough to write a fixed-price proposal: the screen set, the role model, the integrations, and what is explicitly excluded. You get it in writing before committing to anything. There is no hourly billing, so a scope change is a conversation about a revised fixed price rather than a surprise on an invoice.\n\nWhat we need from you is short but has to be real. A named person who can make decisions without convening a committee. Your menu and vendor data model, or enough examples that we can derive it. Your own Stripe account, because the money should land in your account and not pass through ours. Apple and Google developer accounts in your company's name, for the same reason.\n\nDevoraX has been running since 2019 and is two people: Sameem Amjad and Usman."
+        "body": "It starts with a free 30-minute discovery call. We come out of that with enough to write a fixed-price proposal: the screen set, the role model, the integrations, and what is explicitly excluded. You get it in writing before committing to anything. There is no hourly billing, so a scope change is a conversation about a revised fixed price rather than a surprise on an invoice.\n\nWhat we need from you is short but has to be real. A named person who can make decisions without convening a committee. Your menu and vendor data model, or enough examples that we can derive it. Your own Stripe account, because the money should land in your account and not pass through ours. Apple and Google developer accounts in your company's name, for the same reason.\n\nDevoraX has been running since 2022 and is two people: Sameem Amjad and Usman."
       },
       {
         "heading": "How is this priced?",
@@ -592,7 +592,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Why would I trust a two-person team with this?",
-        "a": "Check rather than trust. DevoraX has been running since 2019. Sameem's Fiverr profile shows a 5.0 rating across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Both food products on this page can be downloaded today, Food Magnet from both app stores and Koor from Google Play, and their write-ups say whose work each one was."
+        "a": "Check rather than trust. DevoraX has been running since 2022. Sameem's Fiverr profile shows a 5.0 rating across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Both food products on this page can be downloaded today, Food Magnet from both app stores and Koor from Google Play, and their write-ups say whose work each one was."
       }
     ],
     "word_count": 2619,
@@ -609,7 +609,7 @@ export const SOLUTIONS: Solution[] = [
     "h1": "CrossFit Competition and Leaderboard App Development",
     "title": "CrossFit Competition App Development",
     "meta_description": "Competition and leaderboard app development: server-side ranking and live standings, from an engineer who worked on WOD Pro League at Zencloud. Fixed price.",
-    "hero_answer": "DevoraX is a two-person studio that builds competition and leaderboard software for functional fitness. Its founder, Sameem Amjad, worked on one such platform as an engineer at Zencloud: WOD Pro League, a Flutter athlete app, a React organizer dashboard and a Node.js backend where scoring and ranking are computed server-side and pushed live over Socket.io and Redis. Sameem's part was the backend. The league's organizers are quoted on zencloudtechnologies.com saying more than 600 athletes joined in its first season. Founded 2019, fixed-price.",
+    "hero_answer": "DevoraX is a two-person studio that builds competition and leaderboard software for functional fitness. Its founder, Sameem Amjad, worked on one such platform as an engineer at Zencloud: WOD Pro League, a Flutter athlete app, a React organizer dashboard and a Node.js backend where scoring and ranking are computed server-side and pushed live over Socket.io and Redis. Sameem's part was the backend. The league's organizers are quoted on zencloudtechnologies.com saying more than 600 athletes joined in its first season. Founded 2022, fixed-price.",
     "sections": [
       {
         "heading": "What do you actually ship in a competition and leaderboard app?",
@@ -641,7 +641,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "What happens after launch, and who owns the code?",
-        "body": "You own all code and IP on final payment. That covers the Flutter app, the backend services, the admin dashboard and the infrastructure configuration. That transfer is the commitment we publish, and it is the one worth holding us to in writing.\n\nSupport after handover is scoped and quoted separately rather than assumed. Competition platforms have a particular operational shape: the risk is concentrated into a few hours around a deadline, so the useful question is not a generic uptime promise but who is reachable during your qualifier window and how you reach them. Settle that before your first event, not during it.\n\nDevoraX is two people, Sameem Amjad and Usman, working since 2019. Price that constraint in. It also means the people who wrote your ranking pipeline are the people who answer when it misbehaves."
+        "body": "You own all code and IP on final payment. That covers the Flutter app, the backend services, the admin dashboard and the infrastructure configuration. That transfer is the commitment we publish, and it is the one worth holding us to in writing.\n\nSupport after handover is scoped and quoted separately rather than assumed. Competition platforms have a particular operational shape: the risk is concentrated into a few hours around a deadline, so the useful question is not a generic uptime promise but who is reachable during your qualifier window and how you reach them. Settle that before your first event, not during it.\n\nDevoraX is two people, Sameem Amjad and Usman, working since 2022. Price that constraint in. It also means the people who wrote your ranking pipeline are the people who answer when it misbehaves."
       },
       {
         "heading": "When should you not hire DevoraX for this?",
@@ -727,7 +727,7 @@ export const SOLUTIONS: Solution[] = [
     "h1": "Duffel API integration development for travel booking platforms",
     "title": "Duffel API Integration for Travel Platforms",
     "meta_description": "Duffel API integration for travel booking platforms, from an engineer who worked on a Duffel-based risk module at Zencloud, live in got2.travel. Fixed price.",
-    "hero_answer": "DevoraX is a two-person software studio founded in 2019. Its founder, Sameem Amjad, has worked on one Duffel API integration for a live travel product, as an engineer at Zencloud: Barfly, a Node.js risk module that pairs Duffel flight data with heuristic rules to assess transfer risk on codeshare and non-codeshare itineraries. It runs inside got2.travel. DevoraX now takes Duffel integration work directly, at a fixed price.",
+    "hero_answer": "DevoraX is a two-person software studio founded in 2022. Its founder, Sameem Amjad, has worked on one Duffel API integration for a live travel product, as an engineer at Zencloud: Barfly, a Node.js risk module that pairs Duffel flight data with heuristic rules to assess transfer risk on codeshare and non-codeshare itineraries. It runs inside got2.travel. DevoraX now takes Duffel integration work directly, at a fixed price.",
     "sections": [
       {
         "heading": "What does a Duffel API integration from DevoraX include?",

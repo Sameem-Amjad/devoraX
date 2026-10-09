@@ -534,8 +534,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "19": {
     "project_id": 19,
     "title": "Three28 Creator Platform: React Native and NestJS for Creator-Priced Video",
-    "meta_description": "Three28 is a creator video app, on the App Store since July 2024. Sameem Amjad worked on it: React Native, NestJS and an AWS-hosted backend.",
-    "summary_answer": "Three28 is an app where creators upload videos, sell them directly to fans at prices they set, and sell merchandise alongside them. Sameem Amjad, DevoraX's founder, worked on Three28, which is built on React Native and NestJS with the backend hosted on AWS. The app has been live on the Apple App Store since July 2024 (apps.apple.com/us/app/three28/id6504447934).",
+    "meta_description": "Three28 is a creator video app, on the App Store since July 2024. Three28 hired Sameem Amjad directly: React Native, NestJS and an AWS-hosted backend.",
+    "summary_answer": "Three28 is an app where creators upload videos, sell them directly to fans at prices they set, and sell merchandise alongside them. Three28 hired Sameem Amjad, DevoraX's founder, directly, and he worked on the app, which is built on React Native and NestJS with the backend hosted on AWS. The app has been live on the Apple App Store since July 2024 (apps.apple.com/us/app/three28/id6504447934).",
     "sections": [
       {
         "heading": "What is Three28?",
@@ -547,7 +547,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What did Sameem work on?",
-        "body": "Sameem worked on Three28. The app is built in React Native, the backend in NestJS, and the backend is hosted on AWS.\n\nThat shape is the ordinary one for a product that takes money. A mobile app is code running on devices other people control, and its local state can be read and changed. The server is the only part of the system whose behaviour the person using it cannot edit. Any product where a price or a payment has to mean the same thing for everyone keeps those decisions on the server, not because apps misbehave often, but because trusting one cannot be verified.\n\nRelease speed is the second reason. Mobile code reaches users through App Store review; server code does not. Anything commercial that may need correcting quickly is better held where correcting it does not need a new build."
+        "body": "Three28 hired Sameem directly, and he worked on the build. The app is built in React Native, the backend in NestJS, and the backend is hosted on AWS.\n\nThat shape is the ordinary one for a product that takes money. A mobile app is code running on devices other people control, and its local state can be read and changed. The server is the only part of the system whose behaviour the person using it cannot edit. Any product where a price or a payment has to mean the same thing for everyone keeps those decisions on the server, not because apps misbehave often, but because trusting one cannot be verified.\n\nRelease speed is the second reason. Mobile code reaches users through App Store review; server code does not. Anything commercial that may need correcting quickly is better held where correcting it does not need a new build."
       },
       {
         "heading": "Why does React Native suit a video monetisation app?",
@@ -584,14 +584,14 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "NestJS: the backend framework behind Three28, and a TypeScript-first one, which matters where the shape of a price or payment record is better checked at compile time than discovered at runtime. Its modules, providers and dependency injection give a framework-level answer to keeping video, pricing, payments, merchandise and reporting apart, with boundaries the framework enforces rather than convention. Guards, pipes and interceptors cover what any paid product needs: role separation, validation of incoming payloads before they reach a stored record, and consistent errors.",
       "AWS: the host for the backend, and the right class of infrastructure for video. Video is the heaviest payload a product like this moves, and storage and bandwidth should scale independently of the compute running the API rather than sit on the same machines. Elastic capacity is the general argument: anything sized for a provisioned peak pays for that peak permanently."
     ],
-    "word_count": 1587,
+    "word_count": 1599,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "20": {
     "project_id": 20,
     "title": "Coffee Shop Web App: A Next.js and React Coffee-Shop Website Hosted on Vercel",
-    "meta_description": "Café website on Next.js, React and Firebase, with server rendering, a menu and ordering. Sameem Amjad worked on it. Live at coffee-shop-original.vercel.app.",
-    "summary_answer": "Coffee Shop Web App is a café website build on Next.js and React, with an interactive menu, ordering, a photo gallery, an about section and a store-locations page. Sameem Amjad worked on it. It uses Next.js server-side rendering, React for the interface and Firebase for data and content management, and it is hosted on Vercel at coffee-shop-original.vercel.app.",
+    "meta_description": "Café website on Next.js, React and Firebase, with server rendering, a menu and ordering, built by Sameem at Fleact Tech. On coffee-shop-original.vercel.app.",
+    "summary_answer": "Coffee Shop Web App is a café website build on Next.js and React, with an interactive menu, ordering, a photo gallery, an about section and a store-locations page. Sameem Amjad built it as an engineer at Fleact Tech. It uses Next.js server-side rendering, React for the interface and Firebase for data and content management, and it is hosted on Vercel at coffee-shop-original.vercel.app.",
     "sections": [
       {
         "heading": "What is the Coffee Shop Web App meant to do?",
@@ -632,7 +632,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "React - it powers the interface. The component model gives each interactive piece, such as the menu carousel, a boundary and its own state instead of scripts bolted onto markup, which is what keeps a front end changeable after launch. Paired with Next.js, the same component tree produces the server HTML and then takes over in the browser, so an element of the interface has one implementation rather than a server template and a client widget that drift apart.",
       "Firebase - it handles the backend data and the dynamic content. That is the right shape when content has to change without a rebuild and a redeploy, because content read at runtime from a hosted store stops every edit from becoming a developer ticket. A managed platform also removes the operational work, the patching, capacity planning, backups and on-call, which costs roughly the same whether an application is large or small."
     ],
-    "word_count": 1935,
+    "word_count": 1940,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "21": {
@@ -788,8 +788,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "24": {
     "project_id": 24,
     "title": "Pathana Platform: A College and Career Planning System on Next.js and Serverless APIs",
-    "meta_description": "Pathana helps schools guide students from high school to college and career. Sameem Amjad worked on it with Next.js, Node.js and Firebase. Live at pathana.net.",
-    "summary_answer": "Pathana is a web platform that helps schools guide high school students towards college and career, with personalised roadmaps, milestone tracking, and permission-based visibility for counsellors and families. Sameem Amjad, DevoraX's founder, worked on Pathana, which runs on Next.js and Node.js with serverless APIs and uses Firebase for authentication and data storage. Pathana is live at pathana.net, where schools can request a pilot.",
+    "meta_description": "Pathana helps schools guide students from high school to college and career. Sameem worked on it at ivector, on Next.js, Node.js and Firebase. At pathana.net.",
+    "summary_answer": "Pathana is a web platform that helps schools guide high school students towards college and career, with personalised roadmaps, milestone tracking, and permission-based visibility for counsellors and families. Sameem Amjad, DevoraX's founder, worked on Pathana as an engineer at ivector. It runs on Next.js and Node.js with serverless APIs and uses Firebase for authentication and data storage. Pathana is live at pathana.net, where schools can request a pilot.",
     "sections": [
       {
         "heading": "What is Pathana?",
@@ -801,7 +801,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What did Sameem work on?",
-        "body": "Sameem worked on Pathana. The platform is built with Next.js on the front end and Node.js behind it, served through serverless APIs rather than a permanently running application server, with Firebase handling authentication and data storage.\n\nThe sections below explain why that stack suits a school planning product and what each part has to get right."
+        "body": "Sameem worked on Pathana as an engineer at ivector. The platform is built with Next.js on the front end and Node.js behind it, served through serverless APIs rather than a permanently running application server, with Firebase handling authentication and data storage.\n\nThe sections below explain why that stack suits a school planning product and what each part has to get right."
       },
       {
         "heading": "Why serverless APIs for school software?",
@@ -829,7 +829,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "Where can you see Pathana?",
-        "body": "Pathana's site is live at pathana.net. Its product pages describe the student, counsellor, family and administrator views covered above, and its main call to action is \"Request a Pilot\", a form addressed to schools and programmes.\n\nPathana is a web platform for schools. Sameem worked on it with Next.js, Node.js, serverless APIs and Firebase."
+        "body": "Pathana's site is live at pathana.net. Its product pages describe the student, counsellor, family and administrator views covered above, and its main call to action is \"Request a Pilot\", a form addressed to schools and programmes.\n\nPathana is a web platform for schools. Sameem worked on it at ivector, with Next.js, Node.js, serverless APIs and Firebase."
       }
     ],
     "results": [
@@ -844,14 +844,14 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Firebase: it supplies authentication and data storage in one model. Its tokens give every student, counsellor and family member their own identity, so roadmap changes are attributable rather than hidden behind a shared login. Its rules layer lets school and role isolation be enforced at the storage boundary instead of re-implemented in each endpoint, and its real-time model removes the polling a shared, multi-viewer plan would otherwise need.",
       "Document-oriented storage (via Firebase): a student roadmap is part shared template and part individual divergence, which fits a document model better than a fixed relational schema that would force every plan into identical columns and need a migration every time a pathway is revised."
     ],
-    "word_count": 1716,
+    "word_count": 1728,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "25": {
     "project_id": 25,
     "title": "Dooz Inspected Cars: A Car Marketplace on Angular, React Native and a Shared NestJS Backend",
-    "meta_description": "Dooz is a Jordan car marketplace with inspections, financing and insurance. Sameem Amjad worked on its shared NestJS backend for web and mobile.",
-    "summary_answer": "Dooz is a car marketplace in Jordan where people buy and sell inspected cars and can arrange financing and insurance online. Sameem Amjad, DevoraX's founder, worked on Dooz's shared NestJS backend, which serves the Angular web app and the React Native apps for iOS and Android. All three are live: the website at dooz.com, Dooz Cars on the App Store (id1627030530), and Dooz Cars on Google Play (com.dooz.app), where the listing shows 100K+ downloads.",
+    "meta_description": "Dooz is a Jordan car marketplace with inspections, financing and insurance. Dooz hired Sameem Amjad directly for its shared NestJS backend.",
+    "summary_answer": "Dooz is a car marketplace in Jordan where people buy and sell inspected cars and can arrange financing and insurance online. Dooz hired Sameem Amjad, DevoraX's founder, directly to work on its shared NestJS backend, which serves the Angular web app and the React Native apps for iOS and Android. All three are live: the website at dooz.com, Dooz Cars on the App Store (id1627030530), and Dooz Cars on Google Play (com.dooz.app), where the listing shows 100K+ downloads.",
     "sections": [
       {
         "heading": "What is Dooz?",
@@ -863,7 +863,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What did Sameem work on?",
-        "body": "Sameem worked on Dooz's shared NestJS backend, which serves all three front ends: the Angular web app at dooz.com and the React Native apps for iOS and Android. The database is PostgreSQL.\n\nThe sections below explain the reasoning behind one backend serving three apps, and what an inspected-car marketplace asks of that backend."
+        "body": "Dooz hired Sameem directly. He worked on Dooz's shared NestJS backend, which serves all three front ends: the Angular web app at dooz.com and the React Native apps for iOS and Android. The database is PostgreSQL.\n\nThe sections below explain the reasoning behind one backend serving three apps, and what an inspected-car marketplace asks of that backend."
       },
       {
         "heading": "Why one backend for web, iOS and Android?",
@@ -902,7 +902,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "PostgreSQL (the backend's database): vehicles, inspection results, listings and transactions are genuinely relational, so a database with enforced constraints and indexed multi-column filtering fits faceted car search. ACID transactions are what keep reservations, status changes and financial records safe when two things happen at once.",
       "TypeScript across Angular, React Native and NestJS: one language and one way of describing types across all three tiers reduces the translation errors that creep in when a model such as an inspection result or a financing term is re-expressed separately on each surface."
     ],
-    "word_count": 1609,
+    "word_count": 1617,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "26": {
@@ -1023,8 +1023,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "28": {
     "project_id": 28,
     "title": "TAL Workforce Platform: A Location-Aware Welfare App for Mobile Workers on Flutter, Node.js and AWS",
-    "meta_description": "TAL helps UK mobile workers find nearby toilets, water and seating. Sameem Amjad worked on it at a previous employer, on its maps and React frontend.",
-    "summary_answer": "TAL is a UK welfare app that helps mobile and deskless workers, such as delivery drivers, surveyors and property maintenance staff, find nearby venues where they can use a toilet, refill water, heat food and sit down. Sameem Amjad, DevoraX's founder, worked on TAL as an engineer at a previous employer; his work included the Google Maps integration, with custom markers and clustering, and work on a React frontend using Radix UI and Zustand. TAL is live on the web at talservices.co.uk, on the App Store as TAL Services and on Google Play as TAL.",
+    "meta_description": "TAL helps UK mobile workers find nearby toilets, water and seating. Sameem Amjad worked on it at Webrange Solutions, on its maps and React frontend.",
+    "summary_answer": "TAL is a UK welfare app that helps mobile and deskless workers, such as delivery drivers, surveyors and property maintenance staff, find nearby venues where they can use a toilet, refill water, heat food and sit down. Sameem Amjad, DevoraX's founder, worked on TAL as an engineer at Webrange Solutions; his work included the Google Maps integration, with custom markers and clustering, and work on a React frontend using Radix UI and Zustand. TAL is live on the web at talservices.co.uk, on the App Store as TAL Services and on Google Play as TAL.",
     "sections": [
       {
         "heading": "What problem is TAL solving?",
@@ -1036,7 +1036,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What did Sameem work on?",
-        "body": "Sameem worked on TAL as an engineer at a previous employer. He integrated the Google Maps API with custom markers and clustering so workers can find toilets and water refills quickly, and worked on the React frontend with Radix UI and Zustand, aiming for smooth performance on the low-end phones field workers often use.\n\nThe wider platform is made up of Flutter for the worker apps on Android and iOS, React.js for the admin dashboard, and Node.js with Express on the backend, with MongoDB for data and AWS S3 for file storage. The sections below explain why that stack suits a location-led welfare app."
+        "body": "Sameem worked on TAL as an engineer at Webrange Solutions. He integrated the Google Maps API with custom markers and clustering so workers can find toilets and water refills quickly, and worked on the React frontend with Radix UI and Zustand, aiming for smooth performance on the low-end phones field workers often use.\n\nThe wider platform is made up of Flutter for the worker apps on Android and iOS, React.js for the admin dashboard, and Node.js with Express on the backend, with MongoDB for data and AWS S3 for file storage. The sections below explain why that stack suits a location-led welfare app."
       },
       {
         "heading": "Why custom markers and clustering on the map?",
@@ -1082,7 +1082,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "AWS S3 (object storage): files such as venue photos and other uploads are large, immutable objects that do not belong in the database or on application disks. Putting them in S3 keeps the API tier stateless and therefore easy to scale, and lets file delivery scale independently of API traffic.",
       "React.js (admin dashboard): the operations surface is data-dense, desk-based and interaction-heavy, the opposite profile to the worker app. React's component model suits the venue-management tables, forms and administration views needed to run a platform where workers, venues and employers each have a stake."
     ],
-    "word_count": 2060,
+    "word_count": 2058,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "29": {
@@ -1139,8 +1139,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "30": {
     "project_id": 30,
     "title": "JUJU Streaming Platform: Media Backend on Node.js, FFmpeg and AWS",
-    "meta_description": "JUJU's media backend: Fluent-FFmpeg and BullMQ processing, S3 signed URLs and role-based access, built by Sameem at a previous employer.",
-    "summary_answer": "JUJU is a subscription mobile app for spiritual content that serves video, audio and its own \"scent & science\" media. Sameem worked on JUJU as a backend engineer at a previous employer, from March to October 2025, and built its Node.js media backend: a Fluent-FFmpeg and BullMQ processing pipeline on AWS EC2 and S3, S3 signed URLs for playback, and role-based access control.",
+    "meta_description": "JUJU's media backend: Fluent-FFmpeg and BullMQ processing, S3 signed URLs and role-based access, built by Sameem as direct client work.",
+    "summary_answer": "JUJU is a subscription mobile app for spiritual content that serves video, audio and its own \"scent & science\" media. JUJU was Sameem's direct client work: from March to October 2025 he built its Node.js media backend: a Fluent-FFmpeg and BullMQ processing pipeline on AWS EC2 and S3, S3 signed URLs for playback, and role-based access control.",
     "sections": [
       {
         "heading": "What was JUJU's backend for?",
@@ -1172,7 +1172,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "Where can you see JUJU?",
-        "body": "There is no public link: JUJU has no store listing or website to point to.\n\nSameem built JUJU's backend as an engineer at a previous employer, and the sections above set out how it fits together: the processing pipeline, the job queue and the access model."
+        "body": "There is no public link: JUJU has no store listing or website to point to.\n\nSameem built JUJU's backend as direct client work, and the sections above set out how it fits together: the processing pipeline, the job queue and the access model."
       }
     ],
     "results": [],
@@ -1185,7 +1185,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Signed URLs: they turn a playback link from a permanent address into a short-lived, cryptographically checked permission, so authorisation is enforced on the server per request and a leaked link expires instead of becoming a public mirror of the paid catalogue.",
       "RBAC: with different kinds of account (members who watch, staff who publish and administer) touching the same media library, roles keep permissions in one coherent model rather than duplicated across endpoints, and every signed URL request is resolved against it."
     ],
-    "word_count": 1501,
+    "word_count": 1492,
     "updated": "2026-10-08T00:00:00.000Z"
   },
   "31": {

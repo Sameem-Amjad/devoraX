@@ -186,7 +186,7 @@ export const FounderSection = () => {
               Sameem Amjad
             </h2>
             <p className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 font-semibold text-sm mt-1.5 text-center lg:text-left">
-              Founder & CEO · DevoraX
+              Founder & Lead Architect Engineer · DevoraX
             </p>
             <p className="text-gray-500 text-xs mt-0.5 text-center lg:text-left">
               Full-Stack Architect · Cloud Engineer
@@ -286,7 +286,7 @@ export const FounderSection = () => {
               </p>
               <p className="text-gray-400 text-base leading-relaxed">
                 As the{" "}
-                <span className="text-teal-400 font-medium">Founder & CEO of DevoraX</span>,
+                <span className="text-teal-400 font-medium">Founder & Lead Architect Engineer of DevoraX</span>,
                 I run a two-person studio with Usman, our CTO, and we bring in
                 specialists when a scope needs them. As an engineer at Zencloud and
                 Webrange Solutions I worked on real-time fitness leaderboards, media

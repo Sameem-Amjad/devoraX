@@ -133,11 +133,12 @@ const ATTRIBUTED =
 /**
  * Figures that are not client outcome claims and need no attribution: properties
  * of the build itself, standards, and OUR OWN published pricing — "$2,900 MVP
- * Starter" is our number, not a client's, so demanding a client attribution on
- * it is noise rather than rigour.
+ * Starter", the $400 audit, the $1,200 sprint week, the $1,500 care plan and the
+ * $2,400 Connect / store-launch steps are our numbers, not a client's, so
+ * demanding a client attribution on them is noise rather than rigour.
  */
 const NOT_AN_OUTCOME =
-  /inspection point|codebase|version|ISO |27001|GDPR|SOC ?2|http|px\b|\bv\d|\$2,900|\$7,500|MVP Starter|Growth projects|custom-scoped/i;
+  /inspection point|codebase|version|ISO |27001|GDPR|SOC ?2|http|px\b|\bv\d|\$2,900|\$7,500|MVP Starter|Growth projects|custom-scoped|\$400|\$1,200|\$1,500|\$2,400|care plan|launch-readiness audit/i;
 
 /** Pages selling or showcasing work. No methodology excuse applies here. */
 const SALES_SURFACES = new Set(['CASE_STUDY_CONTENT', 'SERVICE_CONTENT', 'SOLUTIONS', 'FAQS']);
@@ -187,7 +188,7 @@ for (const [file, name] of SOURCES) {
     //    note beneath it that each item points to something public. The source
     //    lives in the item and the component, so inline prose would be redundant.
     const selfDerived =
-      (name === 'INSIGHTS' && /\b(?:25|our|we)\b/i.test(text)) ||
+      (name === 'INSIGHTS' && /\b(?:25|26|our|we)\b/i.test(text)) ||
       /(?:^|\.)results\[/.test(path) ||
       // Table cells are bare values ("60%", "$24,680"). Their provenance lives in
       // the table's own caption and in the article's dataset_note, both of which

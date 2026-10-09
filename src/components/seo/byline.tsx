@@ -54,7 +54,7 @@ export function Byline({
           href="/team"
           className="text-gray-300 underline underline-offset-4 hover:text-teal-400"
         >
-          Sameem Amjad, Founder
+          Sameem Amjad, Founder & Lead Architect Engineer
         </Link>
       </span>
       {date && (

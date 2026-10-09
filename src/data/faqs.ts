@@ -34,7 +34,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "What happens after launch?",
-    a: "All plans include post-launch support. Starter gets 1 month, Growth gets 3 months, and Enterprise is covered by a long-term SLA. After the included period, we offer ongoing retainer packages for continued development, monitoring, and optimization.",
+    a: "Every build includes 35 days of free maintenance after launch, for real problems: bugs in what we built. New features are quoted separately. After that, ongoing fixes, updates and releases are covered by the $1,500/month care plan.",
   },
   {
     q: "How do you handle project communication?",

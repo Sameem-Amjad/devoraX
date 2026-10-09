@@ -53,14 +53,14 @@ export const AboutSection = () => {
               className="space-y-5 text-gray-400 text-lg leading-relaxed"
             >
               <p>
-                {CONSTANTS.AGENCY_NAME}, founded in 2019, finishes and ships apps that got
+                {CONSTANTS.AGENCY_NAME}, founded in 2022, finishes and ships apps that got
                 stuck: the AI-built prototype that never went live, the Sharetribe marketplace
                 that needs custom features and a real mobile app, the project a previous
                 developer left half-done. We are a{" "}
                 <span className="text-white font-medium">
                   two-person studio
                 </span>
-                : Sameem Amjad (founder) and Usman (CTO), two senior engineers who bring in
+                : Sameem Amjad (Founder & Lead Architect Engineer) and Usman (CTO), two senior engineers who bring in
                 specialists when a scope needs them.
               </p>
               <p>
@@ -147,7 +147,7 @@ export const AboutSection = () => {
                       number that drifts every January. The founding year is
                       exact, never stales, and matches Organization.foundingDate
                       in the root layout. */}
-                  <div className="text-2xl font-bold text-teal-400 font-mono">2019</div>
+                  <div className="text-2xl font-bold text-teal-400 font-mono">2022</div>
                   <div className="text-[0.6rem] text-gray-500 uppercase tracking-widest">Founded</div>
                 </motion.div>
 

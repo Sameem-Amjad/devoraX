@@ -254,11 +254,10 @@ const organizationSchema = {
   },
   image: { '@id': `${BASE_URL}/#logo` },
   description: DESCRIPTION,
-  // Full ISO 8601 rather than a bare year. 2019 confirmed by the founder —
-  // the schema previously said 2023, which contradicted the hero copy and made
-  // "5+ Years Operating" on /services look like an inflated claim when it was
-  // the schema that was wrong.
-  foundingDate: '2019-01-01',
+  // Full ISO 8601 rather than a bare year. 2022 confirmed by the founder on
+  // 9 Oct 2026 (the site said 2019 before that). It matches "4+ years" and
+  // Fiverr since January 2022.
+  foundingDate: '2022-01-01',
   // Minimal stubs, not bare references: a consumer reading this page alone must
   // be able to resolve them. The full Person nodes live on /team under the same
   // @id, so the two merge into one entity rather than reading as duplicates.

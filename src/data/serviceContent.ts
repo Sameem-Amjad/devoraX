@@ -14,8 +14,8 @@
  *
  * Attribution rules for every project named here. Most of the portfolio is work
  * Sameem Amjad did as an employee (Zencloud: Food Magnet, LoopedIn, WOD Pro
- * League; Webrange Solutions: Afriva, Bondly), products he worked on whose client
- * is not named here (Dooz, Koor), or builds with no client and no public link
+ * League; Webrange Solutions: Afriva, Bondly, TAL), his direct client work (Dooz),
+ * products whose client is not named here (Koor), or builds with no client and no public link
  * (FinTech Mobile App, AgroBridge, AI E-Commerce Ecosystem, AI Art Stylization
  * Platform, Predictive Analytics Dashboard). Say which, every time. Never "we
  * built" or "the client reports". Add no figure a reader cannot check on a store
@@ -73,7 +73,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
       },
       {
         "heading": "Which mobile apps can you look at?",
-        "body": "Bondly is a pet-care marketplace connecting pet owners with care professionals, with a Flutter mobile app over a backend Sameem led as an engineer at Webrange Solutions: Node.js and Firebase, Stripe subscriptions with credit-based service unlocking, and OneSignal notifications. It is live at bondlypets.com.\n\nSeveral apps Sameem worked on are in the stores today. Food Magnet, which he worked on as an engineer at Zencloud, is on Google Play and the App Store. LoopedIn, a short-video and local-events app whose backend he built at Zencloud, launched on both stores in September 2026. Dooz Inspected Cars, whose shared NestJS backend he worked on, is on both stores, and its Google Play listing shows 100K+ downloads. Koor, a homemade-food marketplace he worked on, is on Google Play.\n\nThe FinTech Mobile App and AgroBridge, both React Native, are builds with no public link and no named client; their write-ups cover the problem, the stack and the architecture."
+        "body": "Bondly is a pet-care marketplace connecting pet owners with care professionals, with a Flutter mobile app over a backend Sameem led as an engineer at Webrange Solutions: Node.js and Firebase, Stripe subscriptions with credit-based service unlocking, and OneSignal notifications. It is live at bondlypets.com.\n\nSeveral apps Sameem worked on are in the stores today. Food Magnet, which he worked on as an engineer at Zencloud, is on Google Play and the App Store. LoopedIn, a short-video and local-events app whose backend he built at Zencloud, launched on both stores in September 2026. Dooz Inspected Cars, which hired Sameem directly for its shared NestJS backend, is on both stores, and its Google Play listing shows 100K+ downloads. Koor, a homemade-food marketplace he worked on, is on Google Play.\n\nThe FinTech Mobile App and AgroBridge, both React Native, are builds with no public link and no named client; their write-ups cover the problem, the stack and the architecture."
       }
     ],
     "deliverables": [
@@ -107,7 +107,7 @@ export const SERVICE_CONTENT: Record<number, ServiceContent> = {
         "a": "Yes. Bondly, a pet-care marketplace whose backend Sameem led as an engineer at Webrange Solutions, is live at bondlypets.com. Food Magnet and LoopedIn, both Zencloud projects he worked on as an engineer there, are on Google Play and the App Store."
       }
     ],
-    "word_count": 1555
+    "word_count": 1557
   },
   "2": {
     "service_id": 2,

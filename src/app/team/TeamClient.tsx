@@ -28,11 +28,10 @@ const SKILLS = [
   { group: "Cloud",     items: ["AWS EC2/S3", "Docker", "Kubernetes", "CI/CD", "GitHub Actions"] },
 ];
 
-// All six are employer work, so each card says where Sameem built it. None is a
-// DevoraX client project.
+// Each card says who the work was for: an employer, or Sameem's direct client.
 const PROJECTS = [
   { icon: Zap,       name: "WOD Pro League", desc: "Functional-fitness competitions with live leaderboards", stack: "Socket.io · Redis · Stripe",          where: "As an engineer at Zencloud",            accent: "from-teal-500 to-emerald-500",   glow: "rgba(20,184,166,0.15)" },
-  { icon: Server,    name: "JUJU",           desc: "Media streaming & upload processing pipeline",          stack: "Node.js · FFmpeg · BullMQ · AWS S3",  where: "At a previous employer",                accent: "from-cyan-500 to-blue-500",      glow: "rgba(6,182,212,0.15)"  },
+  { icon: Server,    name: "JUJU",           desc: "Media streaming & upload processing pipeline",          stack: "Node.js · FFmpeg · BullMQ · AWS S3",  where: "Direct client work",                    accent: "from-cyan-500 to-blue-500",      glow: "rgba(6,182,212,0.15)"  },
   { icon: Globe,     name: "Barfly",         desc: "Flight-transfer risk check inside got2.travel",         stack: "Duffel API · Node.js · AWS",          where: "As an engineer at Zencloud",            accent: "from-violet-500 to-purple-500",  glow: "rgba(139,92,246,0.15)" },
   { icon: Code2,     name: "Afriva",         desc: "Four-role marketplace with RBAC & SSR",                 stack: "Next.js 15 · Supabase · Redux",       where: "As an engineer at Webrange Solutions",  accent: "from-emerald-500 to-teal-500",   glow: "rgba(16,185,129,0.15)" },
   { icon: Smartphone,name: "Bondly",         desc: "Pet-care subscriptions with push notifications",        stack: "Node.js · Firebase · Stripe",         where: "As an engineer at Webrange Solutions",  accent: "from-pink-500 to-rose-500",      glow: "rgba(236,72,153,0.15)" },
@@ -64,7 +63,8 @@ type Member = {
   skills: string[];
   gradient: string;
   location: string;
-  since: string;
+  /** Year joined. Omitted rather than guessed. */
+  since?: string;
   image?: string;
   lead?: boolean;
 };
@@ -78,7 +78,6 @@ const TEAM: Member[] = [
     skills: ["Generative AI", "React Native", "Flutter", "Kubernetes", "AWS", "SaaS"],
     gradient: "from-teal-500 to-emerald-500",
     location: "Pakistan · Remote",
-    since: "2021",
     image: "/images/usman_cto.jpeg",
     lead: true,
   },
@@ -184,7 +183,7 @@ export default function TeamClient() {
 
                 <h1 className="text-3xl font-bold text-white text-center lg:text-left leading-tight">Sameem Amjad</h1>
                 <p className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400 font-semibold text-sm mt-1.5 text-center lg:text-left">
-                  Founder & CEO · DevoraX
+                  Founder & Lead Architect Engineer · DevoraX
                 </p>
                 <p className="text-gray-500 text-xs mt-0.5 text-center lg:text-left">Full-Stack Architect · Cloud Engineer</p>
 
@@ -253,7 +252,7 @@ export default function TeamClient() {
                     data-driven systems that solve complex business problems.
                   </p>
                   <p className="text-gray-400 text-base leading-relaxed">
-                    As the <span className="text-teal-400 font-medium">Founder & CEO of DevoraX</span>, I run a
+                    As DevoraX&apos;s <span className="text-teal-400 font-medium">Founder & Lead Architect Engineer</span>, I run a
                     two-person studio with Usman, our CTO, and we bring in specialists when a scope needs them.
                     I have taken <span className="text-white font-medium">50+ projects on Fiverr since 2022</span>, and
                     as an engineer at Zencloud and Webrange Solutions I worked on real-time fitness leaderboards,
@@ -411,7 +410,7 @@ export default function TeamClient() {
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-4 border-t border-white/5">
                     <span className="text-[0.6rem] text-gray-600 uppercase tracking-wider font-mono">
-                      With DevoraX since {member.since}
+                      {member.since ? `With DevoraX since ${member.since}` : "With DevoraX"}
                     </span>
                     <div className="flex gap-2">
                       {[Github, Linkedin, Twitter].map((Icon, idx) => (

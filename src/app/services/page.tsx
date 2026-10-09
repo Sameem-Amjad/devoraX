@@ -217,14 +217,14 @@ export default async function ServicesPage() {
                 {[
                   // "5+ Years Operating" was removed when it appeared to
                   // contradict the schema's foundingDate — but the schema was the
-                  // wrong one. With 2019 confirmed, tenure is restored as an exact
-                  // year rather than a count that drifts every January.
+                  // wrong one. Tenure is shown as an exact year rather than a count
+                  // that drifts every January: 2022, confirmed by Sameem on 9 Oct 2026.
                   // "25 Projects Shipped" counted employer work and builds with no
                   // public link as DevoraX deliveries, and the review count
                   // disagreed with other pages; both are replaced with figures on
                   // the public Fiverr profile.
                   { val: '5.0', label: 'Fiverr Rating' },
-                  { val: '2019', label: 'Operating Since' },
+                  { val: '2022', label: 'Operating Since' },
                   { val: '50+', label: 'Fiverr Projects' },
                   { val: '100%', label: 'IP Ownership' },
                 ].map((s) => (

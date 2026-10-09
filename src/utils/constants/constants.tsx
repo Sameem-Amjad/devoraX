@@ -165,7 +165,7 @@ const PRICING_PLANS = [
     price: "$2,900",
     period: "/ starting",
     description: "Rapid prototyping to validate your AI or Tech idea.",
-    features: ["Discovery Workshop", "Core Feature Development", "Modern UI Design", "1 Month Support"],
+    features: ["Discovery Workshop", "Core Feature Development", "Modern UI Design", "35 Days Free Maintenance"],
     cta: "Start Your MVP",
     highlight: false
   },
@@ -174,7 +174,7 @@ const PRICING_PLANS = [
     price: "$7,500",
     period: "/ starting",
     description: "Robust solutions for growing tech businesses.",
-    features: ["Advanced Architecture", "Cross-Platform Mobile App", "Scalable Backend (AWS)", "3 Months Support"],
+    features: ["Advanced Architecture", "Cross-Platform Mobile App", "Scalable Backend (AWS)", "35 Days Free Maintenance"],
     cta: "Scale Now",
     highlight: true
   },
@@ -183,7 +183,7 @@ const PRICING_PLANS = [
     price: "Custom",
     period: "",
     description: "Larger builds scoped in phases, with specialists brought in where the scope needs them.",
-    features: ["Both Founders on Your Project", "Microservices Architecture", "Automated Uptime Alerts", "Long-term SLA"],
+    features: ["Both Founders on Your Project", "Microservices Architecture", "Automated Uptime Alerts", "Ongoing Support via the $1,500/mo Care Plan"],
     cta: "Contact Sales",
     highlight: false
   }
