@@ -11,7 +11,9 @@
  */
 
 import { NextResponse } from "next/server";
+import { SITE_URL } from "@/data/brand";
 import { serviceClient } from "@/lib/booking/db";
+import { isHeardAbout } from "@/lib/booking/attribution";
 import { createCalendarEvent, calendarConfigured } from "@/lib/booking/googleCalendar";
 import {
   isBookableSlot,
@@ -24,6 +26,8 @@ export const dynamic = "force-dynamic";
 
 const MAX_NAME = 120;
 const MAX_NOTES = 2000;
+const MAX_PATH = 200;
+const MAX_HOST = 255;
 
 // Deliberately loose. Strict email regexes reject valid addresses far more
 // often than they catch bad ones, and the address is really verified by
@@ -32,6 +36,42 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 const bad = (message: string, status = 400) =>
   NextResponse.json({ error: message }, { status });
+
+/* Attribution: how the visitor heard about us, the page they booked on, and
+   the site that sent them (lib/booking/attribution.ts). All optional and all
+   from the browser, so anything malformed becomes null rather than an error.
+   None of it is worth failing a booking over. */
+
+// The path only. A query string or hash can carry tokens or personal details,
+// and nothing here needs them.
+const cleanPath = (value: unknown): string | null => {
+  if (typeof value !== "string" || !value.startsWith("/")) return null;
+  const path = value.split(/[?#]/, 1)[0];
+  return path.length <= MAX_PATH ? path : null;
+};
+
+// A full page load from one of our own pages makes us the referrer, which says
+// nothing about how the visitor found the site.
+const OWN_HOST = new URL(SITE_URL).hostname;
+const cleanHost = (value: unknown): string | null => {
+  if (typeof value !== "string") return null;
+  const host = value.toLowerCase();
+  if (host.length > MAX_HOST || !/^[a-z0-9.-]+$/.test(host)) return null;
+  return host === OWN_HOST || host === `www.${OWN_HOST}` ? null : host;
+};
+
+/* Insert errors caused by the attribution fields rather than the booking. The
+   columns come from a migration applied by hand, and this code may be live
+   before it: until then PostgREST refuses the unknown columns (PGRST204, or
+   Postgres's 42703 if PostgREST's schema cache is out of date). 23514, a
+   failed check, means attribution.ts and the migration's list of answers have
+   drifted apart. Each one rejects the whole insert, so retrying without the
+   fields cannot write the booking twice. */
+const ATTRIBUTION_ERRORS = new Set(["PGRST204", "42703", "23514"]);
+
+// Once per server instance: it flags a pending migration, which one line does
+// as well as one line per booking.
+let warnedNoAttribution = false;
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
@@ -45,6 +85,11 @@ export async function POST(request: Request) {
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const notes = typeof body.notes === "string" ? body.notes.trim().slice(0, MAX_NOTES) : null;
   const visitorTimezone = typeof body.timezone === "string" ? body.timezone.slice(0, 64) : null;
+  const attribution = {
+    heard_about: isHeardAbout(body.heardAbout) ? body.heardAbout : null,
+    booked_from: cleanPath(body.bookedFrom),
+    referrer_host: cleanHost(body.referrerHost),
+  };
 
   if (!name || name.length > MAX_NAME) return bad("Please give a name");
   if (!EMAIL_RE.test(email)) return bad("That email address doesn't look right");
@@ -76,23 +121,35 @@ export async function POST(request: Request) {
       return bad("You already have several calls booked — reply to the invite to add more.", 429);
     }
 
-    const { data, error } = await supabase
-      .from("bookings")
-      .insert({
-        name,
-        email,
-        starts_at: startsAt.toISOString(),
-        duration_minutes: SLOT_MINUTES,
-        visitor_timezone: visitorTimezone,
-        notes,
-        status: "pending",
-        // Legacy columns, still written so the admin dashboard keeps
-        // rendering until it reads starts_at. Remove with the columns.
-        booking_date: startsAt.toISOString().slice(0, 10),
-        booking_time: formatSlot(startsAt),
-      })
-      .select("id")
-      .single();
+    const booking = {
+      name,
+      email,
+      starts_at: startsAt.toISOString(),
+      duration_minutes: SLOT_MINUTES,
+      visitor_timezone: visitorTimezone,
+      notes,
+      status: "pending",
+      // Legacy columns, still written so the admin dashboard keeps
+      // rendering until it reads starts_at. Remove with the columns.
+      booking_date: startsAt.toISOString().slice(0, 10),
+      booking_time: formatSlot(startsAt),
+    };
+    const insertBooking = (row: Record<string, unknown>) =>
+      supabase.from("bookings").insert(row).select("id").single();
+
+    let result = await insertBooking({ ...booking, ...attribution });
+    if (result.error && ATTRIBUTION_ERRORS.has(result.error.code)) {
+      if (!warnedNoAttribution) {
+        warnedNoAttribution = true;
+        console.warn(
+          "[booking] saving bookings without attribution:",
+          result.error.code,
+          result.error.message
+        );
+      }
+      result = await insertBooking(booking);
+    }
+    const { data, error } = result;
 
     if (error) {
       // 23505 = unique violation: someone took this slot in between.

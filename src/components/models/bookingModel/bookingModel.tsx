@@ -15,7 +15,9 @@
 
 import { motion } from "framer-motion";
 import { X, Zap, Check, AlertCircle, Loader2 } from "lucide-react";
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useId } from "react";
+import { track } from "@/lib/analytics";
+import { HEARD_ABOUT, HEARD_ABOUT_KEYS } from "@/lib/booking/attribution";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -53,6 +55,22 @@ const timeLabel = (iso: string, tz: string) =>
     hour12: true,
   }).format(new Date(iso));
 
+/* The site the visitor arrived from, or null. document.referrer is set when
+   the document loads, and client-side navigation doesn't change it, so in this
+   single-page app it still names the external page they came in from however
+   many pages they've seen since. That is why nothing is stored: keeping
+   first-touch data in localStorage or a cookie would need consent. A full page
+   load from one of our own pages makes the referrer us; the server drops that. */
+const referrerHost = () => {
+  try {
+    return document.referrer ? new URL(document.referrer).hostname : null;
+  } catch {
+    return null;
+  }
+};
+
+const EMPTY_FORM = { name: "", email: "", notes: "", heardAbout: "" };
+
 const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<{ startsAt: string; invited: boolean } | null>(null);
@@ -64,9 +82,10 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
 
   const [selected, setSelected] = useState<string | null>(null);
   const [activeDay, setActiveDay] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", notes: "" });
+  const [form, setForm] = useState(EMPTY_FORM);
 
   const tz = useMemo(visitorZone, []);
+  const uid = useId();
 
   const loadSlots = useCallback(async () => {
     setLoadingSlots(true);
@@ -85,6 +104,13 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   useEffect(() => {
     if (isOpen) loadSlots();
   }, [isOpen, loadSlots]);
+
+  /* booking_open → booking_submit is the site's one lead funnel. In Clarity,
+     filter recordings to booking_open without booking_submit to watch where
+     people give up. */
+  useEffect(() => {
+    if (isOpen) track("booking_open", { page_path: window.location.pathname });
+  }, [isOpen]);
 
   /* Group slots into days as the visitor's own calendar shows them — a 9pm
      PKT slot can be the previous afternoon in New York, and grouping by the
@@ -109,7 +135,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
     setSuccess(null);
     setError(null);
     setSelected(null);
-    setForm({ name: "", email: "", notes: "" });
+    setForm(EMPTY_FORM);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -130,6 +156,9 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
           notes: form.notes || null,
           startsAt: selected,
           timezone: tz,
+          heardAbout: form.heardAbout || null,
+          bookedFrom: window.location.pathname,
+          referrerHost: referrerHost(),
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -145,6 +174,10 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
         return;
       }
       setSuccess({ startsAt: body.startsAt, invited: body.invited });
+      track("booking_submit", {
+        page_path: window.location.pathname,
+        heard_about: form.heardAbout || undefined,
+      });
     } catch {
       setError("Couldn't reach the server. Please check your connection.");
     } finally {
@@ -157,7 +190,13 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const showHostTime = hostTz && hostTz !== tz;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md scrollbar-hide">
+    // data-clarity-mask: Clarity's default masking already hides what is typed
+    // into inputs; this also masks the rest of the dialog, so a name, email or
+    // chosen time never appears in a session recording.
+    <div
+      data-clarity-mask="true"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md scrollbar-hide"
+    >
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -167,7 +206,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
         <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-teal-400" />
-            <h3 className="text-xl font-bold text-white">Book a Strategy Call</h3>
+            <h2 className="text-xl font-bold text-white">Book a Strategy Call</h2>
           </div>
           <button
             onClick={onClose}
@@ -184,7 +223,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
               <div className="w-16 h-16 bg-teal-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="w-8 h-8 text-teal-400" />
               </div>
-              <h4 className="text-xl font-bold text-white mb-2">Booking confirmed</h4>
+              <h3 className="text-xl font-bold text-white mb-2">Booking confirmed</h3>
               <p className="text-white mb-1 font-medium">
                 {new Intl.DateTimeFormat("en-GB", {
                   timeZone: tz,
@@ -249,16 +288,24 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
               {days.size > 0 && (
                 <>
                   <div className="space-y-2">
-                    <label className="text-xs font-semibold text-teal-500 uppercase">
+                    {/* Group labels rather than <label>s, which name a single
+                        control. A span renders exactly as the inline <label>
+                        did. */}
+                    <span id={`${uid}-date`} className="text-xs font-semibold text-teal-500 uppercase">
                       Select a date
-                    </label>
-                    <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    </span>
+                    <div
+                      role="group"
+                      aria-labelledby={`${uid}-date`}
+                      className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
+                    >
                       {[...days.keys()].map((d) => {
                         const [wd, dayNum, mon] = d.split(" ");
                         return (
                           <button
                             key={d}
                             type="button"
+                            aria-pressed={activeDay === d}
                             onClick={() => {
                               setActiveDay(d);
                               setSelected(null);
@@ -279,14 +326,19 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-semibold text-teal-500 uppercase">
+                    <span id={`${uid}-time`} className="text-xs font-semibold text-teal-500 uppercase">
                       Select a time
-                    </label>
-                    <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto scrollbar-hide">
+                    </span>
+                    <div
+                      role="group"
+                      aria-labelledby={`${uid}-time`}
+                      className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto scrollbar-hide"
+                    >
                       {daySlots.map((iso) => (
                         <button
                           key={iso}
                           type="button"
+                          aria-pressed={selected === iso}
                           onClick={() => setSelected(iso)}
                           className={`py-2 text-sm rounded-md border transition-colors ${
                             selected === iso
@@ -305,33 +357,80 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
                     )}
                   </div>
 
+                  {/* Each field has a real <label>. A placeholder is only a
+                      fallback name and is gone once someone types; screen
+                      readers, and AI agents filling the form in, look for the
+                      label. sr-only, as the placeholders show the same words. */}
                   <form onSubmit={handleSubmit} className="space-y-3 pt-4 border-t border-white/10">
+                    <label htmlFor={`${uid}-name`} className="sr-only">
+                      Your name
+                    </label>
                     <input
+                      id={`${uid}-name`}
                       required
                       type="text"
+                      autoComplete="name"
                       placeholder="Your Name"
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 transition-all placeholder:text-gray-600"
                     />
+                    <label htmlFor={`${uid}-email`} className="sr-only">
+                      Your email
+                    </label>
                     <input
+                      id={`${uid}-email`}
                       required
                       type="email"
+                      autoComplete="email"
                       placeholder="Your Email"
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 transition-all placeholder:text-gray-600"
                     />
+                    <label htmlFor={`${uid}-notes`} className="sr-only">
+                      What would you like to discuss? (optional)
+                    </label>
                     <textarea
+                      id={`${uid}-notes`}
                       rows={2}
                       placeholder="What would you like to discuss? (optional)"
                       value={form.notes}
                       onChange={(e) => setForm({ ...form, notes: e.target.value })}
                       className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 transition-all placeholder:text-gray-600 resize-none"
                     />
+                    {/* The empty first option stands in for a placeholder and
+                        is greyed like one until something is picked. Options
+                        set their own colours: Windows and Linux draw the open
+                        list in the select's, which would be that grey. */}
+                    <label htmlFor={`${uid}-heard`} className="sr-only">
+                      How did you hear about us? (optional)
+                    </label>
+                    <select
+                      id={`${uid}-heard`}
+                      value={form.heardAbout}
+                      onChange={(e) => setForm({ ...form, heardAbout: e.target.value })}
+                      className={`w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 focus:outline-none focus:border-teal-500 focus:ring-1 focus:ring-teal-500/50 transition-all ${
+                        form.heardAbout ? "text-white" : "text-gray-400"
+                      }`}
+                    >
+                      <option value="" className="bg-[#0a0a0a] text-gray-400">
+                        How did you hear about us? (optional)
+                      </option>
+                      {HEARD_ABOUT_KEYS.map((key) => (
+                        <option key={key} value={key} className="bg-[#0a0a0a] text-white">
+                          {HEARD_ABOUT[key]}
+                        </option>
+                      ))}
+                    </select>
 
+                    {/* role="alert" so the error is read out when it appears,
+                        not only found by someone who goes looking. */}
                     {error && (
-                      <div className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200">
+                      <div
+                        role="alert"
+                        className="flex items-start gap-2 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-200"
+                      >
                         <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
                         <span>{error}</span>
                       </div>

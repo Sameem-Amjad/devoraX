@@ -15,6 +15,7 @@ import {
   updateBookingStatusAction,
 } from "@/app/admin/dashboard/_components/adminActions";
 import { useRouter } from "next/navigation";
+import { heardAboutLabel } from "@/lib/booking/attribution";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -48,6 +49,30 @@ const STATUS_BOOKING: Record<string, string> = {
   pending:   "text-amber-400 bg-amber-500/10 border-amber-500/20",
   confirmed: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
   cancelled: "text-red-400 bg-red-500/10 border-red-500/20",
+};
+
+// How the visitor heard about us, and where they booked. Every part is
+// optional, and rows from before the attribution migration (or saved while it
+// was still unapplied) have none of it. An answer this build has no label for
+// is shown as stored rather than hidden.
+const BookingSource = ({ heardAbout, bookedFrom, referrerHost }: {
+  heardAbout?: string | null;
+  bookedFrom?: string | null;
+  referrerHost?: string | null;
+}) => {
+  const answer = heardAboutLabel(heardAbout) ?? heardAbout;
+  if (!answer && !bookedFrom && !referrerHost) return <span className="text-gray-600">—</span>;
+  return (
+    <div className="max-w-[14rem] space-y-0.5">
+      {answer && <div className="text-gray-300">{answer}</div>}
+      {bookedFrom && (
+        <div className="text-gray-500 truncate" title={bookedFrom}>Booked from {bookedFrom}</div>
+      )}
+      {referrerHost && (
+        <div className="text-gray-500 truncate" title={referrerHost}>Referred by {referrerHost}</div>
+      )}
+    </div>
+  );
 };
 
 // ─── Sidebar nav config ───────────────────────────────────────────────────────
@@ -258,8 +283,8 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
         <SidebarContent />
       </aside>
 
-      {/* Main Content */}
-      <div className="md:ml-64 p-4 md:p-8">
+      {/* Main Content: the target of the root layout's skip link */}
+      <main id="main-content" className="md:ml-64 p-4 md:p-8">
 
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
@@ -452,6 +477,7 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                         <th className="px-4 py-3 hidden md:table-cell">Date & Time</th>
                         <th className="px-4 py-3">Status</th>
                         <th className="px-4 py-3 hidden lg:table-cell">Received</th>
+                        <th className="px-4 py-3 hidden lg:table-cell">Source</th>
                         <th className="px-4 py-3 text-right">Actions</th>
                       </tr>
                     </thead>
@@ -479,6 +505,13 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                           </td>
                           <td className="px-4 py-3 hidden lg:table-cell text-gray-500 text-xs">
                             {formatDate(b.created_at)}
+                          </td>
+                          <td className="px-4 py-3 hidden lg:table-cell text-xs">
+                            <BookingSource
+                              heardAbout={b.heard_about}
+                              bookedFrom={b.booked_from}
+                              referrerHost={b.referrer_host}
+                            />
                           </td>
                           <td className="px-4 py-3 text-right">
                             <div className="flex justify-end gap-2">
@@ -585,7 +618,7 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
             </div>
           </div>
         )}
-      </div>
+      </main>
 
       {/* ── Inquiry Detail Modal ────────────────────────────────────────── */}
       {expandedInquiry && (
