@@ -91,15 +91,15 @@ npm run check:links                        # dead outbound links, including Supa
 | From | To | Type | Set in |
 |---|---|---|---|
 | `http://…` | `https://…` | 308 | Vercel (automatic) |
-| `https://www.thedevorax.tech/*` | `https://thedevorax.tech/*` | **307 today, should be 308** | Vercel → Domains (see actions) |
+| `https://www.thedevorax.tech/*` | `https://thedevorax.tech/*` | 308 | Vercel → Domains: `www.thedevorax.tech` added as its own entry, "Redirect to Another Domain" (14 Oct 2026). Without that entry Vercel falls back to a 307 |
 | any path with a trailing slash | the same path without it | 308 | Next.js default |
 
 ## Actions outside the code (owner)
 
 In priority order. None of these can be done from the repository.
 
-1. **Apply the Supabase migration** `supabase/migrations/20261014120000_bookings_attribution.sql`. The API keeps working before it is applied (it retries without the new columns), but answers are only stored once it is.
-2. **Vercel → Domains:** change the `www.thedevorax.tech` redirect from 307 (temporary) to 308 (permanent), so link signals consolidate on the apex domain (§2.6.2).
+1. ~~Apply the Supabase migration~~ Done 14 Oct 2026 (`supabase db push --linked`); PostgREST accepts the new columns.
+2. ~~Vercel www redirect 307 → 308~~ Done 14 Oct 2026, verified live (§2.6.2).
 3. **Vercel → Firewall:** make sure no bot-protection or "AI bots" rule challenges or blocks crawlers. These rules run before robots.txt. In the logs, Googlebot, Bingbot, OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User and PerplexityBot should all get 200 (§9.5).
 4. **Google Search Console:** use a Domain property; submit `https://thedevorax.tech/sitemap.xml` (the index shows indexing per section); under Settings, keep "Search generative AI" on *included*; link GA4; turn on the BigQuery bulk export (§12.1).
 5. **Bing Webmaster Tools:** import the site from Search Console, submit the sitemap, and review the **AI Performance** report (Copilot citations and grounding queries) monthly (§12.3).
@@ -109,8 +109,8 @@ In priority order. None of these can be done from the repository.
 8. **Profiles (§11.2):** the studio has no company profiles on the site now. When you create a LinkedIn company page (and a GitHub organization, if you want one), use the entity statement as the description, link it to https://thedevorax.tech, and add it to `ORG_PROFILES` in `src/data/brand.ts`: the footer, the `/about` page and the Organization's `sameAs` all pick it up from there. Put the same statement on Fiverr.
 9. **Directories and reviews (§8.4):** create Clutch and GoodFirms profiles using the facts in `src/data/brand.ts`, word for word, and ask finished clients for a review there as well as on Fiverr.
 10. **`devorax.vercel.app`:** an older deployment titled "DeVoraX", with no canonical, is live. If it is yours, delete it or point it at the domain so it can't compete for the brand name.
-11. **After the first deploy:** run `npm run indexnow` once (it submits all 56 URLs, then only changes), and check that GA4 and Clarity still load. The production CSP no longer allows `'unsafe-eval'`; neither tool needs it, but a CSP error in the browser console would show at once if one did.
-12. **Content only the owner can supply:** the `/team` banner image still says "2+ Years Experience" while the page says 4+; `/projects/34` (Hear With You) has no long-form case study yet (about 200 words, against 1,700+ elsewhere).
+11. **After the first deploy:** ~~run `npm run indexnow` once~~ (done 14 Oct 2026: 56 URLs, HTTP 200; later runs send only changes). Check that GA4 and Clarity load once their IDs are set in Vercel. The production CSP no longer allows `'unsafe-eval'`; neither tool needs it, but a CSP error in the browser console would show at once if one did.
+12. **Content only the owner can supply:** `/projects/34` (Hear With You) has no long-form case study yet (about 200 words, against 1,700+ elsewhere). The `/team` banner was corrected to "4+ Years" on 14 Oct 2026.
 
 ## Monthly and quarterly
 
