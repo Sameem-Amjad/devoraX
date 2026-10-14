@@ -15,7 +15,7 @@
 
 import { motion } from "framer-motion";
 import { X, Zap, Check, AlertCircle, Loader2 } from "lucide-react";
-import { useState, useEffect, useCallback, useMemo, useId } from "react";
+import { useState, useEffect, useCallback, useMemo, useId, useSyncExternalStore } from "react";
 import { track } from "@/lib/analytics";
 import { HEARD_ABOUT, HEARD_ABOUT_KEYS } from "@/lib/booking/attribution";
 
@@ -37,6 +37,9 @@ const visitorZone = () => {
     return "UTC";
   }
 };
+
+// The zone never changes during a visit, so there is nothing to subscribe to.
+const noSubscribe = () => () => {};
 
 /** "Tue 23 Sep" in a given zone — the key the day tabs group on. */
 const dayKey = (iso: string, tz: string) =>
@@ -84,7 +87,13 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const [activeDay, setActiveDay] = useState<string | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
 
-  const tz = useMemo(visitorZone, []);
+  /* The browser's zone, read only after hydration. Reading it during render
+     made the server (Vercel runs in UTC) and the browser print different
+     zones in "Times are shown in your timezone (…)", a hydration mismatch
+     (React #418) on every /book visit from outside UTC. The server snapshot
+     is null, so the first client render matches the server's HTML. */
+  const clientZone = useSyncExternalStore(noSubscribe, visitorZone, () => null);
+  const tz = clientZone ?? "UTC";
   const uid = useId();
 
   const loadSlots = useCallback(async () => {
@@ -257,7 +266,7 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
             <div className="p-6 space-y-4">
               <p className="text-gray-400 text-sm">
                 Schedule a {availability?.slotMinutes ?? 30}-minute consultation with Sameem
-                Amjad. Times are shown in your timezone ({tz}).
+                Amjad. Times are shown in your timezone{clientZone ? ` (${clientZone})` : ""}.
               </p>
 
               {loadingSlots && (
