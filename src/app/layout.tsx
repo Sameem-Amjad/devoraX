@@ -5,6 +5,11 @@ import { RippleEffect } from '@/components/ui/rippleEffect';
 import { CookieConsent } from '@/components/ui/cookieConsent';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SiteFooter } from '@/components/layout/site-footer';
+import { MotionProvider } from '@/components/ui/motionProvider';
+import { JsonLd } from '@/components/seo/structured-data';
+import { BRAND_FACTS, ENTITY_STATEMENT, ORG_PROFILES, SITE_URL } from '@/data/brand';
+import { POSITIONING } from '@/data/offer';
+import { CTO_ID, FOUNDER_ID, LOGO_ID, ORGANIZATION_ID, WEBSITE_ID } from '@/lib/seo';
 
 /**
  * One font, and it is actually applied.
@@ -21,11 +26,12 @@ import { SiteFooter } from '@/components/layout/site-footer';
  */
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 
-const BASE_URL = 'https://thedevorax.tech';
-const SITE_NAME = 'DevoraX';
+const BASE_URL = SITE_URL;
+const SITE_NAME = BRAND_FACTS.name;
 const TAGLINE = 'We Finish and Ship Stuck Apps';
-const DESCRIPTION =
-  'DevoraX is a two-person studio that finishes and ships stuck apps: payments that work, real iOS and Android apps, and App Store approval.';
+// The entity statement, verbatim (see data/brand.ts). It is the fallback meta
+// description and the description in the Organization and WebSite nodes.
+const DESCRIPTION = ENTITY_STATEMENT;
 
 const OG_IMAGE = `${BASE_URL}/og-image.jpg`;
 
@@ -148,14 +154,15 @@ export const metadata: Metadata = {
     ],
   },
 
-  // ── Canonical + Alternate ──
-  alternates: {
-    canonical: BASE_URL,
-    languages: {
-      'en-US': BASE_URL,
-      'en-GB': BASE_URL,
-    },
-  },
+  // ── Canonical: deliberately not set here ──
+  // A canonical in the root layout is inherited by every page that does not
+  // declare its own, so one forgotten page would have told Google it was a
+  // duplicate of the homepage. Each page declares its own canonical instead;
+  // scripts/seo-check.mjs fails the check for any page without one.
+  //
+  // No hreflang either. It used to declare en-US and en-GB "versions" that were
+  // both the homepage URL. The site is one English site with one offer, which
+  // is the case hreflang is not for.
 
   // ── Verification (add actual codes when available) ──
   verification: {
@@ -212,67 +219,66 @@ export const viewport: Viewport = {
 /**
  * One connected entity graph, not a pile of disconnected nodes.
  *
- * Previously `Organization` (#organization) and `ProfessionalService` (#service)
- * were two separate top-level nodes describing the same company, with nothing
- * linking them — so a consumer had no way to know they were one entity and could
- * reasonably read them as two. The founder was a blank node with no `@id` and no
- * `sameAs`, attached via the superseded `founders` property, which is a dead end:
- * it asserts a person exists but gives nothing to reconcile them against.
+ * `Organization` (#organization) and `ProfessionalService` (#service) were once
+ * two unlinked top-level nodes for one company, then one node typed as both.
+ * It is now a plain Organization. ProfessionalService is a LocalBusiness type,
+ * meant for a staffed office that clients visit, and it carried LocalBusiness
+ * properties (opening hours, price range, payment methods) that described a
+ * shopfront DevoraX does not have. DevoraX is two people working remotely from
+ * Pakistan, so the node now says that: a country address, two employees, and
+ * the discovery-call hours on the sales contact point, where they belong.
  *
- * Now: `ProfessionalService` is a sub-type of `Organization`, so this is a single
- * node carrying both sets of properties, and the founder is a real `Person` node
- * with a stable `@id` that the /team ProfilePage can point at.
+ * Emitted on every page, not only the homepage: every page's graph points at
+ * ORGANIZATION_ID, and a crawler or AI system reading one page on its own should
+ * be able to resolve who published it without fetching a second URL.
  */
-// Must stay identical to the ids in app/team/page.tsx, which carries the full
-// Person nodes. Referencing them by @id here keeps one description of each
-// person instead of two partial ones.
-const PERSON_ID = `${BASE_URL}/team#sameem-amjad`;
-const CTO_ID = `${BASE_URL}/team#usman`;
-
-export const ORGANIZATION_ID = `${BASE_URL}/#organization`;
-export const WEBSITE_ID = `${BASE_URL}/#website`;
-
-const organizationSchema = {
-  '@context': 'https://schema.org',
-  // Both types on one node: DevoraX is an Organization *and* the professional
-  // service being described. Two nodes for one entity was the bug.
-  '@type': ['Organization', 'ProfessionalService'],
+const organizationNode = {
+  '@type': 'Organization',
   '@id': ORGANIZATION_ID,
-  name: 'DevoraX',
-  legalName: 'DevoraX',
+  name: BRAND_FACTS.name,
+  legalName: BRAND_FACTS.name,
   // Kept as a schema-level variant rather than in the visible copy: people do
   // shorten it, and this is where that belongs.
-  alternateName: 'Devora',
+  alternateName: BRAND_FACTS.alternateName,
   url: BASE_URL,
+  slogan: POSITIONING.headline,
   logo: {
     '@type': 'ImageObject',
-    '@id': `${BASE_URL}/#logo`,
-    url: `${BASE_URL}/apple-icon`,
-    width: 180,
-    height: 180,
-    caption: 'DevoraX',
+    '@id': LOGO_ID,
+    url: `${BASE_URL}/logo.png`,
+    contentUrl: `${BASE_URL}/logo.png`,
+    width: 512,
+    height: 512,
+    caption: BRAND_FACTS.name,
   },
-  image: { '@id': `${BASE_URL}/#logo` },
+  image: { '@id': LOGO_ID },
   description: DESCRIPTION,
   // Full ISO 8601 rather than a bare year. 2022 confirmed by the founder on
   // 9 Oct 2026 (the site said 2019 before that). It matches "4+ years" and
   // Fiverr since January 2022.
   foundingDate: '2022-01-01',
+  address: { '@type': 'PostalAddress', addressCountry: 'PK' },
+  numberOfEmployees: { '@type': 'QuantitativeValue', value: 2 },
   // Minimal stubs, not bare references: a consumer reading this page alone must
   // be able to resolve them. The full Person nodes live on /team under the same
   // @id, so the two merge into one entity rather than reading as duplicates.
   founder: {
     '@type': 'Person',
-    '@id': PERSON_ID,
+    '@id': FOUNDER_ID,
     name: 'Sameem Amjad',
     url: `${BASE_URL}/team`,
   },
   employee: [
-    { '@type': 'Person', '@id': PERSON_ID, name: 'Sameem Amjad', url: `${BASE_URL}/team` },
+    { '@type': 'Person', '@id': FOUNDER_ID, name: 'Sameem Amjad', url: `${BASE_URL}/team` },
     { '@type': 'Person', '@id': CTO_ID, name: 'Usman', url: `${BASE_URL}/team` },
   ],
   areaServed: { '@type': 'Place', name: 'Worldwide' },
   knowsAbout: [
+    'Stripe',
+    'Stripe Connect',
+    'Sharetribe',
+    'App Store submission',
+    'Google Play submission',
     'React Native',
     'Next.js',
     'TypeScript',
@@ -286,32 +292,30 @@ const organizationSchema = {
     'PostgreSQL',
     'Supabase',
   ],
-  priceRange: '$$$',
-  currenciesAccepted: 'USD',
-  paymentAccepted: 'Credit Card, Bank Transfer, PayPal',
-  openingHoursSpecification: [
-    {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:00',
-      closes: '18:00',
-    },
-  ],
-  sameAs: ['https://linkedin.com/company/devorax', 'https://github.com/devorax'],
+  // Profiles the studio controls (data/brand.ts); the footer links to each.
+  // Omitted while there are none: an empty sameAs says nothing.
+  ...(ORG_PROFILES.length ? { sameAs: ORG_PROFILES.map((p) => p.url) } : {}),
   contactPoint: [
     {
       '@type': 'ContactPoint',
       contactType: 'sales',
-      email: 'business@thedevorax.tech',
-      areaServed: 'Global',
+      email: BRAND_FACTS.salesEmail,
+      areaServed: 'Worldwide',
       availableLanguage: 'English',
       url: `${BASE_URL}/contact`,
+      // The discovery-call hours the booking system offers, in PKT (UTC+5).
+      hoursAvailable: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        opens: '10:00:00+05:00',
+        closes: '18:00:00+05:00',
+      },
     },
     {
       '@type': 'ContactPoint',
       contactType: 'customer support',
-      email: 'support@thedevorax.tech',
-      areaServed: 'Global',
+      email: BRAND_FACTS.supportEmail,
+      areaServed: 'Worldwide',
       availableLanguage: 'English',
       url: `${BASE_URL}/contact`,
     },
@@ -332,12 +336,14 @@ const organizationSchema = {
   },
 };
 
-const websiteSchema = {
-  '@context': 'https://schema.org',
+const websiteNode = {
   '@type': 'WebSite',
   '@id': WEBSITE_ID,
   url: BASE_URL,
+  // Google reads `name` and `alternateName` here when it picks the site name it
+  // shows in results.
   name: SITE_NAME,
+  alternateName: BRAND_FACTS.alternateName,
   description: DESCRIPTION,
   publisher: { '@id': ORGANIZATION_ID },
   // NOTE: no `potentialAction`/SearchAction — the site has no /search route, so
@@ -358,25 +364,29 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${inter.variable} scroll-smooth`}>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <JsonLd graph={[websiteNode, organizationNode]} />
+        {/* No preconnect to fonts.googleapis.com: next/font serves Inter from
+            this origin, so that connection was opened on every page and never
+            used. */}
       </head>
       <body className="antialiased bg-[#020202] text-white">
+        {/* First focusable element on every page, so a keyboard user can jump
+            past the header. Every page's <main> carries id="main-content". */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-teal-400 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-black"
+        >
+          Skip to main content
+        </a>
         <RippleEffect />
-        {/* Header and footer live here so every route has them. They used to be
-            rendered inside the homepage client component, which left most of the
-            site with no navigation and no outbound links at all. */}
-        <SiteHeader />
-        {children}
-        <SiteFooter />
+        <MotionProvider>
+          {/* Header and footer live here so every route has them. They used to be
+              rendered inside the homepage client component, which left most of the
+              site with no navigation and no outbound links at all. */}
+          <SiteHeader />
+          {children}
+          <SiteFooter />
+        </MotionProvider>
         <CookieConsent />
         <script
           dangerouslySetInnerHTML={{

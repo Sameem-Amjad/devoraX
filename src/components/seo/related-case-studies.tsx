@@ -9,6 +9,10 @@ import { getCaseStudy } from '@/data/caseStudyContent';
  * word stubs, while the ten 1,200+ word studies received no internal links at
  * all — the strongest pages on the site were the least connected. Descriptive,
  * varied anchor text (the study's real title) rather than "read more".
+ *
+ * An <aside>, like RelatedReading on the project pages: it points elsewhere
+ * rather than describing this service, and text extractors drop asides along
+ * with the rest of the page chrome.
  */
 export function RelatedCaseStudies({ serviceId }: { serviceId: number | string }) {
   const ids = SERVICE_CASE_STUDIES[Number(serviceId)] ?? [];
@@ -17,8 +21,8 @@ export function RelatedCaseStudies({ serviceId }: { serviceId: number | string }
   if (!studies.length) return null;
 
   return (
-    <section className="mt-16 border-t border-white/5 pt-12">
-      <h2 className="text-2xl font-bold text-white md:text-3xl">
+    <aside aria-labelledby="related-case-studies" className="mt-16 border-t border-white/5 pt-12">
+      <h2 id="related-case-studies" className="text-2xl font-bold text-white md:text-3xl">
         Case studies behind this service
       </h2>
       <p className="mt-3 max-w-2xl leading-relaxed text-gray-400">
@@ -46,6 +50,6 @@ export function RelatedCaseStudies({ serviceId }: { serviceId: number | string }
           </Link>
         ))}
       </div>
-    </section>
+    </aside>
   );
 }

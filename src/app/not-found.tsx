@@ -3,14 +3,15 @@ import Link from 'next/link';
 import { Terminal, ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: '404 — Page Not Found | DevoraX',
+  // `absolute`: the root template would append a second " | DevoraX".
+  title: { absolute: '404: Page Not Found | DevoraX' },
   description: 'The page you are looking for could not be found.',
   robots: { index: false, follow: false },
 };
 
 export default function NotFound() {
     return (
-        <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
+        <main id="main-content" className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
             {/* Decorative Blur */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-teal-900/20 blur-[120px] rounded-full pointer-events-none" />
 
@@ -39,6 +40,6 @@ export default function NotFound() {
             <div className="absolute bottom-10 text-gray-600 font-mono text-xs">
                 ERR_NOT_FOUND // DEVORA_SYSTEMS
             </div>
-        </div>
+        </main>
     );
 }

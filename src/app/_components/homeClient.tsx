@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Hero } from "@/components/sections/hero";
 import { TrustedBySection } from "@/components/sections/trustedBy";
 import { WaveDivider } from "@/components/ui/waveDivider";
@@ -32,7 +33,7 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-teal-500/30 font-sans">
       {/* Header and footer are now rendered site-wide from the root layout. */}
-      <main>
+      <main id="main-content">
         {/* ── Hero ── */}
         <Hero onOpenBooking={() => setIsBookingOpen(true)} />
 
@@ -213,6 +214,13 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
                 >
                   Verify them on Fiverr
                 </a>
+                , or{" "}
+                <Link
+                  href="/reviews"
+                  className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                >
+                  read all {TESTIMONIALS.length} reviews
+                </Link>
                 .
               </p>
             </motion.div>

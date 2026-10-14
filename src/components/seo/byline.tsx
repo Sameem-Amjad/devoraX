@@ -19,10 +19,13 @@ import Link from 'next/link';
 function formatDate(iso: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
+  // UTC, because the dates are UTC midnights: formatted in a timezone west of
+  // UTC (a build server in the Americas) they would show the day before.
   return d.toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
+    timeZone: 'UTC',
   });
 }
 
@@ -37,7 +40,7 @@ export function Byline({
   const date = formatDate(updated);
 
   return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-white/5 pb-6 text-sm text-gray-500">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-white/5 pb-6 text-sm text-gray-400">
       <span>
         Written by{' '}
         <Link
@@ -66,7 +69,7 @@ export function Byline({
         </>
       )}
       <span aria-hidden="true">·</span>
-      <span className="text-gray-600">Based on project records and public sources ({kind})</span>
+      <span className="text-gray-400">Based on project records and public sources ({kind})</span>
     </div>
   );
 }

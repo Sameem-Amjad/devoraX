@@ -1,4 +1,5 @@
 "use client";
+import { Fragment } from "react";
 import {
   ArrowLeft, Code2, Cpu, Database, Server, Monitor, Smartphone,
   Cloud, Zap, CreditCard, MapPin, ShieldCheck, Activity, Layout,
@@ -35,9 +36,12 @@ const isDemoHost = (url: string): boolean => {
   try { return new URL(url).hostname.endsWith(".vercel.app"); } catch { return false; }
 };
 
+/** The crumbs after Home; the page builds its BreadcrumbList from the same list. */
+type Crumb = { name: string; path: string };
+
 // ─── Component ────────────────────────────────────────────────────────────────
 
-const ProjectDetailClient = ({ project }: { project: any }) => {
+const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] }) => {
   // Parse JSON fields (stored as text or JSONB)
   const tags      = safeParse<string[]>(project.tags, []);
   const techstack = safeParse<{ icon: string; name: string }[]>(project.techstack, []);
@@ -64,8 +68,28 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
           Back to Projects
         </Link>
 
+        {/* Inside the pt-24 area rather than above this component: the site
+            header is fixed and 96px tall, and would cover it there. */}
+        <nav aria-label="Breadcrumb" className="mb-6">
+          <ol className="flex items-center gap-2 text-xs text-gray-400">
+            <li><Link href="/" className="hover:text-teal-400 transition-colors">Home</Link></li>
+            {trail.map((c, i) => (
+              <Fragment key={c.path}>
+                <li aria-hidden="true">/</li>
+                {i < trail.length - 1 ? (
+                  <li><Link href={c.path} className="hover:text-teal-400 transition-colors">{c.name}</Link></li>
+                ) : (
+                  <li className="text-teal-400" aria-current="page">{c.name}</li>
+                )}
+              </Fragment>
+            ))}
+          </ol>
+        </nav>
+
         {/* ── Hero Header ── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
+        {/* Starts visible and only slides: a fade from opacity 0 kept the h1
+            invisible in the server HTML until hydration, delaying LCP. */}
+        <motion.div initial={{ y: 20 }} animate={{ y: 0 }} className="mb-10">
           <div className="flex flex-wrap items-center gap-2 mb-5">
             {project.featured && (
               <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
@@ -84,17 +108,23 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
 
         {/* ── Hero Image ── */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ scale: 0.98 }}
+          animate={{ scale: 1 }}
           className="w-full h-[380px] md:h-[560px] rounded-3xl overflow-hidden mb-14 border border-white/10 relative"
         >
           {hasImage ? (
+            // The LCP element, so never lazy. `preload` replaces `priority`,
+            // which Next 16 deprecates and which no longer sets fetchpriority.
+            // Without `sizes`, a fill image defaults to 100vw and wide screens
+            // fetch a bigger file than this 1280px-max box can show.
             <Image
               src={project.image}
               alt={project.title}
               fill
               className="object-cover"
-              priority
+              sizes="(max-width: 1280px) 100vw, 1280px"
+              preload
+              fetchPriority="high"
             />
           ) : (
             <div className={`absolute inset-0 bg-gradient-to-br ${project.accent || "from-teal-400 to-emerald-400"}`} />
@@ -140,8 +170,8 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
 
             {/* Problem / Solution / Result */}
             {hasPSR && (
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-6">Project Story</h2>
+              <section aria-labelledby="project-story">
+                <h2 id="project-story" className="text-2xl font-bold text-white mb-6">Project Story</h2>
                 <div className="space-y-4">
                   {project.problem && (
                     <div className="bg-[#0a0a0a] border-l-2 border-amber-500 pl-6 pr-4 py-5 rounded-r-2xl">
@@ -171,21 +201,21 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                     </div>
                   )}
                 </div>
-              </div>
+              </section>
             )}
 
             {/* Detailed content */}
             {project.content && (
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-4">Project Details</h2>
+              <section aria-labelledby="project-details">
+                <h2 id="project-details" className="text-2xl font-bold text-white mb-4">Project Details</h2>
                 <p className="text-gray-400 leading-relaxed text-lg">{project.content}</p>
-              </div>
+              </section>
             )}
 
             {/* Tech Stack */}
             {techstack.length > 0 && (
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-5">Tech Stack</h2>
+              <section aria-labelledby="project-tech-stack">
+                <h2 id="project-tech-stack" className="text-2xl font-bold text-white mb-5">Tech Stack</h2>
                 <div className="flex flex-wrap gap-3">
                   {techstack.map((stack, i) => {
                     const Icon = ICON_MAP[stack.icon] ?? Code2;
@@ -200,23 +230,24 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                     );
                   })}
                 </div>
-              </div>
+              </section>
             )}
           </div>
 
-          {/* Right — 1/3 */}
+          {/* Right — 1/3. These headings are h2, not h3: they head their own
+              blocks rather than sitting under "Tech Stack", the h2 before them. */}
           <div className="space-y-5">
 
             {/* Platform Links */}
-            <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Where to See It</h3>
+            <section aria-labelledby="project-links" className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl">
+              <h2 id="project-links" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Where to See It</h2>
               <div className="space-y-3">
                 {webUrl && (
                   <a
                     href={webUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 w-full py-3 px-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-xl transition-colors"
+                    className="flex items-center gap-3 w-full py-3 px-4 bg-teal-700 hover:bg-teal-600 text-white font-bold rounded-xl transition-colors"
                   >
                     <Globe className="w-4 h-4 flex-shrink-0" />
                     {/* A *.vercel.app link here is a demo deployment, not the
@@ -253,15 +284,15 @@ const ProjectDetailClient = ({ project }: { project: any }) => {
                   <p className="text-gray-600 text-sm text-center py-2">No public link for this project</p>
                 )}
               </div>
-            </div>
+            </section>
 
             {/* Category */}
-            <div className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl">
-              <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Category</h3>
+            <section aria-labelledby="project-category" className="bg-[#0a0a0a] border border-white/10 p-6 rounded-2xl">
+              <h2 id="project-category" className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Category</h2>
               <span className="inline-block bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg text-gray-300 text-sm font-mono">
                 {project.category}
               </span>
-            </div>
+            </section>
           </div>
         </div>
       </div>

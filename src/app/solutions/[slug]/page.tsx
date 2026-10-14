@@ -2,9 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getSolution, allSolutionSlugs, SOLUTIONS_UPDATED } from '@/data/solutions';
 import { SolutionPage } from '@/components/seo/solution-page';
-
-const BASE_URL = 'https://thedevorax.tech';
-const ORGANIZATION_ID = `${BASE_URL}/#organization`;
+import { JsonLd } from '@/components/seo/structured-data';
+import { ORG_REF, SITE_URL, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 
 /** Statically generated — the content is in code, so there is nothing to fetch. */
 export const revalidate = 3600;
@@ -28,7 +27,7 @@ export async function generateMetadata({
     };
   }
 
-  const url = `${BASE_URL}/solutions/${solution.slug}`;
+  const url = `${SITE_URL}/solutions/${solution.slug}`;
   return {
     title: solution.title,
     description: solution.meta_description,
@@ -46,13 +45,13 @@ export async function generateMetadata({
       siteName: 'DevoraX',
       title: `${solution.title} | DevoraX`,
       description: solution.meta_description,
-      images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: solution.h1 }],
+      images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: solution.h1 }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${solution.title} | DevoraX`,
       description: solution.meta_description,
-      images: [{ url: `${BASE_URL}/og-image.jpg`, alt: solution.h1 }],
+      images: [{ url: `${SITE_URL}/og-image.jpg`, alt: solution.h1 }],
     },
   };
 }
@@ -62,48 +61,35 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const solution = getSolution(slug);
   if (!solution) return notFound();
 
-  const url = `${BASE_URL}/solutions/${solution.slug}`;
+  const path = `/solutions/${solution.slug}`;
+  const url = absoluteUrl(path);
   const hub = solution.hub;
 
   // Page-level node, so the breadcrumb and Service hang off something real and the
   // whole graph resolves without a dangling reference — same pattern as the rest
-  // of the site.
-  const webPageLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    '@id': `${url}#webpage`,
-    url,
+  // of the site. The page shows a Byline ("Reviewed by Sameem Amjad"), so the
+  // node names the same reviewer and date.
+  const webPageLd = webPageNode({
+    path,
     name: solution.h1,
     description: solution.meta_description,
-    isPartOf: { '@id': `${BASE_URL}/#website` },
-    about: { '@id': `${url}#service` },
-    breadcrumb: { '@id': `${url}#breadcrumb` },
-    publisher: { '@id': ORGANIZATION_ID },
+    about: `${url}#service`,
     dateModified: SOLUTIONS_UPDATED,
-    inLanguage: 'en-US',
-  };
+    reviewedOn: SOLUTIONS_UPDATED,
+  });
 
-  const breadcrumbLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    '@id': `${url}#breadcrumb`,
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${BASE_URL}/services` },
-      ...(hub
-        ? [{ '@type': 'ListItem', position: 3, name: 'Marketplace Development', item: `${BASE_URL}/solutions/${hub}` }]
-        : []),
-      { '@type': 'ListItem', position: hub ? 4 : 3, name: solution.h1, item: url },
-    ],
-  };
+  const breadcrumbLd = breadcrumbNode(path, [
+    { name: 'Services', path: '/services' },
+    ...(hub ? [{ name: 'Marketplace Development', path: `/solutions/${hub}` }] : []),
+    { name: solution.h1, path },
+  ]);
 
   const serviceLd = {
-    '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${url}#service`,
     name: solution.h1,
     description: solution.hero_answer,
-    provider: { '@id': ORGANIZATION_ID },
+    provider: ORG_REF,
     areaServed: { '@type': 'Place', name: 'Worldwide' },
     url,
     mainEntityOfPage: { '@id': `${url}#webpage` },
@@ -116,9 +102,9 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   // FAQPage only where the Q&A is actually rendered on this page, which it is.
   const faqLd = solution.faqs.length
     ? {
-        '@context': 'https://schema.org',
         '@type': 'FAQPage',
         '@id': `${url}#faq`,
+        isPartOf: { '@id': `${url}#webpage` },
         mainEntity: solution.faqs.map((f) => ({
           '@type': 'Question',
           name: f.q,
@@ -129,12 +115,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceLd) }} />
-      {faqLd && (
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
-      )}
+      <JsonLd graph={[webPageLd, breadcrumbLd, serviceLd, faqLd]} />
       <SolutionPage solution={solution} />
     </>
   );

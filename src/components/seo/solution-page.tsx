@@ -32,10 +32,10 @@ export function SolutionPage({ solution }: { solution: Solution }) {
     .filter(Boolean) as Solution[];
 
   return (
-    <main className="min-h-screen bg-[#020202] text-white">
+    <main id="main-content" className="min-h-screen bg-[#020202] text-white">
       <div className="mx-auto max-w-4xl px-6 pb-24 pt-32">
         <nav aria-label="Breadcrumb" className="mb-6">
-          <ol className="flex flex-wrap items-center gap-2 text-xs text-gray-600">
+          <ol className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
             <li>
               <Link href="/" className="hover:text-teal-400">Home</Link>
             </li>

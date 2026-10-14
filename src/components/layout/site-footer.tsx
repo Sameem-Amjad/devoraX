@@ -1,14 +1,16 @@
 /**
  * Site-wide footer. A server component on purpose — it is pure links, so it costs
- * no client JS and every anchor is in the initial HTML for crawlers and for AI
+ * almost no client JS (only the "Privacy choices" button is a client island) and every anchor is in the initial HTML for crawlers and for AI
  * engines, which do not execute JavaScript.
  *
  * This replaces the footer that used to live inside the homepage client
  * component, where it was rendered on exactly one URL.
  */
 import Link from 'next/link';
-import { Linkedin, Github, Mail } from 'lucide-react';
+import { Linkedin, Github, Globe, Mail, type LucideIcon } from 'lucide-react';
 import Logo from '@/components/global/logo';
+import { PrivacyChoicesButton } from '@/components/ui/privacyChoicesButton';
+import { BRAND_FACTS, ENTITY_STATEMENT, ORG_PROFILES } from '@/data/brand';
 import {
   SERVICE_LINKS,
   SOLUTION_LINKS,
@@ -17,14 +19,24 @@ import {
   LEGAL_LINKS,
 } from '@/data/siteNav';
 
+const PROFILE_ICONS: Record<string, LucideIcon> = { LinkedIn: Linkedin, GitHub: Github };
+
+// The profile links come from ORG_PROFILES, the same list the Organization's
+// sameAs reads, so the footer and the schema always point at the same profiles.
+// The LinkedIn link here had already drifted to a different URL form.
 const SOCIAL = [
-  { Icon: Linkedin, href: 'https://linkedin.com/company/devorax', label: 'DevoraX on LinkedIn' },
-  { Icon: Github, href: 'https://github.com/devorax', label: 'DevoraX on GitHub' },
-  { Icon: Mail, href: 'mailto:business@thedevorax.tech', label: 'Email DevoraX' },
+  ...ORG_PROFILES.map((p) => ({
+    Icon: PROFILE_ICONS[p.label] ?? Globe,
+    href: p.url,
+    label: `DevoraX on ${p.label}`,
+  })),
+  { Icon: Mail, href: `mailto:${BRAND_FACTS.salesEmail}`, label: 'Email DevoraX' },
 ];
 
+// gray-400, not gray-500: gray-500 on this black measured 4.34:1 in Lighthouse,
+// under the 4.5:1 WCAG AA asks of small text.
 const linkClass =
-  'text-gray-500 hover:text-teal-400 transition-colors text-sm';
+  'text-gray-400 hover:text-teal-400 transition-colors text-sm';
 
 export function SiteFooter() {
   return (
@@ -34,10 +46,10 @@ export function SiteFooter() {
           {/* Brand */}
           <div>
             <Logo />
-            <p className="text-gray-500 mt-5 max-w-sm leading-relaxed text-sm">
-              DevoraX is a two-person software studio building mobile apps, AI and
-              full-stack web platforms, and cloud infrastructure for founders and
-              product teams.
+            {/* The entity statement, verbatim (data/brand.ts). This blurb was the
+                first copy to drift after the positioning changed. */}
+            <p className="text-gray-400 mt-5 max-w-sm leading-relaxed text-sm">
+              {ENTITY_STATEMENT}
             </p>
             <div className="flex gap-3 mt-6">
               {SOCIAL.map(({ Icon, href, label }) => (
@@ -139,7 +151,7 @@ export function SiteFooter() {
         </div>
 
         <div className="flex flex-col sm:flex-row justify-between items-center pt-8 mt-16 border-t border-white/5 gap-4">
-          <p className="text-xs text-gray-600 font-mono">
+          <p className="text-xs text-gray-400 font-mono">
             © {new Date().getFullYear()} DevoraX. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
@@ -147,21 +159,23 @@ export function SiteFooter() {
               <Link
                 key={l.href}
                 href={l.href}
-                className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
+                className="text-xs text-gray-400 hover:text-gray-200 transition-colors"
               >
                 {l.label}
               </Link>
             ))}
+            <PrivacyChoicesButton className="text-xs text-gray-400 hover:text-gray-200 transition-colors" />
             {/* Was a client-side button that flipped React state to reach the admin
                 login. A plain link works without JS and the middleware guards the
-                route regardless. */}
-            <Link
+                route regardless. A plain <a>, not <Link>: the full page load means
+                analytics never carries over into /admin, which it must not record. */}
+            <a
               href="/admin/login"
               rel="nofollow"
               className="text-xs text-gray-700 hover:text-teal-500 transition-colors font-mono"
             >
               SYSTEM ACCESS
-            </Link>
+            </a>
           </div>
         </div>
       </div>

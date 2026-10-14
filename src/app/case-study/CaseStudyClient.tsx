@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { Fragment, useState, useRef } from "react";
 import {
   ArrowUpRight,
   Code2,
@@ -19,7 +19,7 @@ import {
   AnimatePresence,
 } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Logo from "@/components/global/logo";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -123,12 +123,12 @@ function ProjectCard({
 
   return (
     <TiltCard className="h-full">
-      {/* Real <a> rather than router.push on a div: an onClick handler is invisible
-          to crawlers, so this hub previously emitted zero links and passed no link
-          equity to any case study. It is also the only keyboard-accessible option. */}
-      <motion.a
-        href={`/projects/${project.id}`}
-        aria-label={`Read the ${project.title} case study`}
+      {/* A "stretched link": the real <Link> wraps only the title, and its ::after
+          covers the whole card, so the card still clicks anywhere. The whole card
+          used to be one <a>. That kept it crawlable (an onClick on a div is not),
+          but text extractors treat everything inside a link as navigation, so
+          the excerpts never reached them: 67 of this page's ~2,000 words did. */}
+      <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95 }}
@@ -230,7 +230,9 @@ function ProjectCard({
           <div className="p-6 flex flex-col flex-grow">
             {/* Icon */}
             <div
-              className={`w-10 h-10 rounded-xl bg-gradient-to-br ${project.accent || "from-teal-500 to-emerald-600"} flex items-center justify-center mb-4 shadow-lg transition-all duration-300 group-hover:-translate-y-1`}
+              className={`w-10 h-10 rounded-xl bg-gradient-to-br ${project.accent || "from-teal-500 to-emerald-600"} flex items-center justify-center mb-4 shadow-lg transition-all duration-300 group-hover:-translate-y-1 pointer-events-none`}
+              // Lifted toward the viewer in 3D, so it can paint above the title
+              // link's overlay; click-through keeps the card clickable here too.
               style={{ transform: "translateZ(16px)" }}
             >
               <Code2 className="text-black w-4 h-4" />
@@ -239,14 +241,20 @@ function ProjectCard({
             {/* The study's own headline and opening passage, not the portfolio
                 title and blurb that /projects already renders. Two hubs listing
                 the same 25 entities is only a duplication problem while they say
-                the same thing about them. */}
-            <h3
+                the same thing about them. h2, not h3: nothing sits between
+                these and the page's h1. */}
+            <h2
               className={`font-bold text-white mb-2 leading-tight transition-all duration-300 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-teal-300 group-hover:to-emerald-300 ${
                 large ? "text-2xl" : "text-lg"
               }`}
             >
-              {project.studyTitle || project.title}
-            </h3>
+              <Link
+                href={`/projects/${project.id}`}
+                className="after:absolute after:inset-0 after:z-10 after:rounded-2xl after:content-[''] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-inset focus-visible:after:ring-teal-400"
+              >
+                {project.studyTitle || project.title}
+              </Link>
+            </h2>
             <p className={`text-gray-500 text-sm leading-relaxed mb-auto ${large ? "line-clamp-4" : "line-clamp-3"}`}>
               {project.studyExcerpt || project.description}
             </p>
@@ -274,7 +282,7 @@ function ProjectCard({
             </div>
           </div>
         </div>
-      </motion.a>
+      </motion.div>
     </TiltCard>
   );
 }
@@ -339,9 +347,11 @@ function BentoGrid({ projects }: { projects: any[] }) {
 
 // ── Main client page ──────────────────────────────────────────────────────────
 
-export default function CaseStudyClient({ projects }: { projects: any[] }) {
+/** The crumbs after Home; the page builds its BreadcrumbList from the same list. */
+type Crumb = { name: string; path: string };
+
+export default function CaseStudyClient({ projects, trail }: { projects: any[]; trail: Crumb[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
-  const router = useRouter();
 
   // Only offer a filter that actually returns something.
   const categories = [
@@ -363,7 +373,7 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
           site-wide <SiteHeader /> in the root layout covers every route now. */}
 
       {/* ── Hero ────────────────────────────────────────────────────────────── */}
-      <section className="relative pt-40 pb-24 overflow-hidden">
+      <header className="relative pt-40 pb-24 overflow-hidden">
         {/* Animated background */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Grid */}
@@ -393,26 +403,30 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative">
-          {/* Breadcrumb */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 text-xs font-mono text-gray-600 mb-8"
-          >
-            <span
-              className="hover:text-teal-400 cursor-pointer transition-colors"
-              onClick={() => router.push("/")}
-            >
-              HOME
-            </span>
-            <ChevronRight className="w-3 h-3" />
-            <span className="text-teal-400">CASE STUDIES</span>
-          </motion.div>
+          {/* Breadcrumb, matching /services and /projects. It was a <span> with
+              an onClick for "Home", which no crawler follows and no keyboard
+              reaches. */}
+          <nav aria-label="Breadcrumb" className="mb-6">
+            <ol className="flex items-center gap-2 text-xs text-gray-400">
+              <li><Link href="/" className="hover:text-teal-400 transition-colors">Home</Link></li>
+              {trail.map((c, i) => (
+                <Fragment key={c.path}>
+                  <li aria-hidden="true">/</li>
+                  {i < trail.length - 1 ? (
+                    <li><Link href={c.path} className="hover:text-teal-400 transition-colors">{c.name}</Link></li>
+                  ) : (
+                    <li className="text-teal-400" aria-current="page">{c.name}</li>
+                  )}
+                </Fragment>
+              ))}
+            </ol>
+          </nav>
 
-          {/* Headline */}
+          {/* Headline. Starts visible and only slides, so the h1 and intro
+              paint with the HTML instead of waiting for hydration (LCP). */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: 30 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="mb-8"
           >
@@ -426,8 +440,8 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
           </motion.div>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: 20 }}
+            animate={{ y: 0 }}
             transition={{ delay: 0.15, duration: 0.7 }}
             className="text-gray-400 text-lg max-w-2xl mb-12"
           >
@@ -463,7 +477,7 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
             ))}
           </motion.div>
         </div>
-      </section>
+      </header>
 
       {/* ── Filter bar ─────────────────────────────────────────────────────── */}
       <section className="sticky top-24 z-40 bg-[#040404]/80 backdrop-blur-lg border-b border-white/[0.04] py-4">
@@ -520,7 +534,7 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
       </section>
 
       {/* ── CTA Footer ─────────────────────────────────────────────────────── */}
-      <section className="py-28 relative overflow-hidden">
+      <section aria-labelledby="start-project-heading" className="py-28 relative overflow-hidden">
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -537,29 +551,32 @@ export default function CaseStudyClient({ projects }: { projects: any[] }) {
             <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full bg-teal-500/[0.07] border border-teal-500/20">
               Ready to Build?
             </span>
-            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
+            <h2 id="start-project-heading" className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
               Your project could be{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
                 next.
               </span>
             </h2>
             <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
-              Let's turn your vision into a world-class digital product. Start with a free 30-min discovery call.
+              Tell us where your app is stuck. Start with a free 30-minute call.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() => router.push("/")}
+              {/* Real links, not router.push() buttons: a crawler cannot follow
+                  an onClick. Start goes to the booking page the copy promises;
+                  more work goes to the full portfolio. */}
+              <Link
+                href="/book"
                 className="group flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-black font-bold text-sm transition-all hover:shadow-[0_0_40px_rgba(45,212,191,0.35)]"
               >
                 Start Your Project
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
-              <button
-                onClick={() => router.push("/#work")}
+              </Link>
+              <Link
+                href="/projects"
                 className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-white/10 text-white font-semibold text-sm hover:border-teal-500/30 hover:bg-teal-500/[0.04] transition-all"
               >
                 See More Work
-              </button>
+              </Link>
             </div>
           </motion.div>
         </div>

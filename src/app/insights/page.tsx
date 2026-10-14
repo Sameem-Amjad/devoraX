@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { INSIGHTS } from '@/data/insights';
+import { JsonLd } from '@/components/seo/structured-data';
+import { SITE_URL, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 
-const BASE_URL = 'https://thedevorax.tech';
+const DESCRIPTION =
+  'Research from the 26 entries in the DevoraX portfolio, including work done as employees elsewhere: stack choices and platform mix, with the limits stated.';
 
 export const metadata: Metadata = {
   title: 'Engineering Insights & Research',
-  description:
-    'Research from the 25 projects in the DevoraX portfolio, including work done as employees elsewhere: stack choices and platform mix, with the limits stated.',
+  description: DESCRIPTION,
   keywords: [
     'software engineering research',
     'React Native vs Flutter production',
@@ -19,47 +21,60 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
   },
-  alternates: { canonical: `${BASE_URL}/insights` },
+  alternates: { canonical: `${SITE_URL}/insights` },
   openGraph: {
     type: 'website',
-    url: `${BASE_URL}/insights`,
+    url: `${SITE_URL}/insights`,
     siteName: 'DevoraX',
     title: 'Engineering Insights & Research | DevoraX',
     description:
-      'Research from the 25 projects in the DevoraX portfolio, with the limits of the dataset stated openly.',
-    images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'DevoraX Insights' }],
+      'Research from the 26 entries in the DevoraX portfolio, with the limits of the dataset stated openly.',
+    images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'DevoraX Insights' }],
+  },
+  // Without its own block the page inherited the homepage's Twitter card.
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Engineering Insights & Research | DevoraX',
+    description:
+      'Research from the 26 entries in the DevoraX portfolio, with the limits of the dataset stated openly.',
+    images: [{ url: `${SITE_URL}/og-image.jpg`, alt: 'DevoraX Insights' }],
   },
 };
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Insights', item: `${BASE_URL}/insights` },
-  ],
-};
+const PATH = '/insights';
+const ITEM_LIST_ID = `${absoluteUrl(PATH)}#itemlist`;
 
-const itemListSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'DevoraX Engineering Research',
-  numberOfItems: INSIGHTS.length,
-  itemListElement: INSIGHTS.map((a, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: a.title,
-    url: `${BASE_URL}/insights/${a.slug}`,
-  })),
-};
+// A collection page whose main entity is the list of articles on it, so the
+// list is tied to this URL rather than floating beside it.
+const graph = [
+  webPageNode({
+    path: PATH,
+    type: 'CollectionPage',
+    name: 'Engineering Insights & Research',
+    description: DESCRIPTION,
+    mainEntity: ITEM_LIST_ID,
+  }),
+  breadcrumbNode(PATH, [{ name: 'Insights', path: PATH }]),
+  {
+    '@type': 'ItemList',
+    '@id': ITEM_LIST_ID,
+    name: 'DevoraX Engineering Research',
+    numberOfItems: INSIGHTS.length,
+    itemListElement: INSIGHTS.map((a, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: a.title,
+      url: absoluteUrl(`/insights/${a.slug}`),
+    })),
+  },
+];
 
 export default function InsightsPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+      <JsonLd graph={graph} />
 
-      <main className="min-h-screen bg-black pb-24 pt-32">
+      <main id="main-content" className="min-h-screen bg-black pb-24 pt-32">
         <div className="mx-auto max-w-5xl px-6">
           <h1 className="text-4xl font-bold text-white md:text-5xl">Engineering insights</h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-gray-400">
@@ -100,10 +115,10 @@ export default function InsightsPage() {
               Where does this research come from?
             </h2>
             <p className="mt-5 leading-relaxed text-gray-400">
-              Every article here is derived from the same source: the 25 project
-              records in this site&apos;s portfolio, their technology stacks, the
+              Every article here is derived from the same source: the 26 entries
+              in this site&apos;s portfolio, their technology stacks, the
               platforms each one runs on, and the public links behind them. Those
-              records are not all DevoraX client work. Many are products Sameem
+              entries are not all DevoraX client work. Many are products Sameem
               worked on as an engineer at other companies, some have no public link,
               and a few links are demo builds; each project page says which. Nothing
               is drawn from a survey we did not run, a benchmark we did not measure,
@@ -111,7 +126,7 @@ export default function InsightsPage() {
             </p>
             <p className="mt-4 leading-relaxed text-gray-400">
               That makes these articles unusual in one specific way, and it is
-              worth being direct about it. Twenty-five projects is a small sample.
+              worth being direct about it. Twenty-six entries is a small sample.
               It is large enough to show which technology choices recur and where
               they cluster, and far too small to support a general claim about the
               industry. Where an article reports a proportion, the denominator is

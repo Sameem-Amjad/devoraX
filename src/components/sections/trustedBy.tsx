@@ -37,7 +37,7 @@ export const TrustedBySection = () => {
               className="px-6 py-4 rounded-xl bg-white/[0.025] border border-white/[0.06]"
             >
               <div className="text-white font-semibold text-sm">{f.value}</div>
-              <div className="text-gray-500 text-xs mt-1">{f.label}</div>
+              <div className="text-gray-400 text-xs mt-1">{f.label}</div>
             </div>
           ))}
         </div>

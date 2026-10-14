@@ -80,10 +80,21 @@ export const SOLUTION_LINKS: NavLink[] = [...SOLUTIONS]
   .sort((a, b) => (a.role === 'hub' ? -1 : b.role === 'hub' ? 1 : 0))
   .map((s) => ({ href: `/solutions/${s.slug}`, label: s.h1 }));
 
+/**
+ * About, Pricing, Reviews and Press kit answer what a buyer checking a vendor
+ * searches for ("DevoraX pricing", "DevoraX reviews"); the Glossary defines the
+ * site's terms. The footer puts each one click from every page without
+ * crowding the header.
+ */
 export const COMPANY_LINKS: NavLink[] = [
+  { href: '/about', label: 'About' },
   { href: '/team', label: 'Team' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/reviews', label: 'Reviews' },
   { href: '/contact', label: 'Contact' },
   { href: '/insights', label: 'Engineering Insights' },
+  { href: '/glossary', label: 'Glossary' },
+  { href: '/press', label: 'Press kit' },
 ];
 
 export const LEGAL_LINKS: NavLink[] = [

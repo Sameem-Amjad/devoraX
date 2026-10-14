@@ -56,7 +56,7 @@ export const TESTIMONIALS: Testimonial[] = [
     "username": "irmairvin",
     "country": "United States",
     "rating": 5,
-    "text": "I had a great experience working with Sameem. He delivered exactly what I needed for my Doctor & Patient Appointment app landing page. The design is modern, clean, and very professional, and it works perfectly on mobile, tablet, and desktop. Sameem built the page using Next.",
+    "text": "I had a great experience working with Sameem. He delivered exactly what I needed for my Doctor & Patient Appointment app landing page. The design is modern, clean, and very professional, and it works perfectly on mobile, tablet, and desktop. Sameem built the page using Next.js with great performance…",
     "hasDeliveryProof": false
   },
   {
@@ -91,14 +91,14 @@ export const TESTIMONIALS: Testimonial[] = [
     "username": "cedric_coleman",
     "country": "United States",
     "rating": 5,
-    "text": "Sameem successfully completed the full OneSignal integration for both iOS and Android apps, including push notifications, in-app notifications, and email notifications using OneSignal APIs.",
+    "text": "Sameem successfully completed the full OneSignal integration for both iOS and Android apps, including push notifications, in-app notifications, and email notifications using OneSignal APIs. The implementation was done properly, worked as expected, and followed the required setup and configuration steps…",
     "hasDeliveryProof": false
   },
   {
     "username": "tidem06",
     "country": "United States",
     "rating": 5,
-    "text": "Well he was a professional in his work. he deliver more than my expectation. I highly recommend him and he deliver before the due date and he always give explanation more for the project.",
+    "text": "Well he was a professional in his work. he deliver more than my expectation. I highly recommend him and he deliver before the due date and he always give explanation more for the project. Well done for the great work",
     "hasDeliveryProof": false
   },
   {
@@ -119,7 +119,7 @@ export const TESTIMONIALS: Testimonial[] = [
     "username": "matthew4l2",
     "country": "United States",
     "rating": 5,
-    "text": "Working with Sameem was an amazing experience! He integrated Stripe payment API, and built a user dashboard in my Next.js 15 app - all delivered one day early!",
+    "text": "Working with Sameem was an amazing experience! He integrated Stripe payment API, and built a user dashboard in my Next.js 15 app - all delivered one day early! What impressed me most was his attention to detail and the bonus features he added without extra charge, including email notifications and an…",
     "hasDeliveryProof": true
   },
   {
@@ -170,13 +170,24 @@ export const TESTIMONIALS: Testimonial[] = [
     "rating": 5,
     "text": "Did exactly what i asked for",
     "hasDeliveryProof": false
+  },
+  {
+    "username": "fabeice",
+    "country": "United Kingdom",
+    "rating": 5,
+    "text": "very quick turn around",
+    "hasDeliveryProof": false
   }
 ];
 
+/** When the reviews above were last copied from the Fiverr profile. Feeds the
+ *  /reviews sitemap entry. */
+export const TESTIMONIALS_UPDATED = '2026-09-17T00:00:00.000Z';
+
 /** Verifiable aggregates, counted from the reviews above — no rounding up. */
 export const TESTIMONIAL_STATS = {
-  totalReviews: 20,
-  uniqueClients: 16,
+  totalReviews: 21,
+  uniqueClients: 17,
   repeatClients: 3,
   countries: 4,
   allFiveStar: true,

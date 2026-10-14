@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { AdminDashboard } from "@/app/admin/dashboard/_components/adminDashboard";
 
 export const metadata: Metadata = {
-  title: "Admin Dashboard | DevoraX",
+  title: "Admin Dashboard",
   robots: { index: false, follow: false },
 };
 

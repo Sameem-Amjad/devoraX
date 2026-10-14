@@ -1,15 +1,18 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Mail, MessageSquare, Twitter, Linkedin, Github, Clock } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Mail, MessageSquare, Linkedin, Clock } from 'lucide-react';
 import { ObfuscatedEmail } from '@/components/ui/obfuscatedEmail';
+import { JsonLd } from '@/components/seo/structured-data';
 import { FAQS } from '@/data/faqs';
+import { FOUNDER_PROFILES } from '@/data/brand';
+import { ORGANIZATION_ID, SITE_URL, breadcrumbNode, webPageNode } from '@/lib/seo';
 
-const BASE_URL = 'https://thedevorax.tech';
+const DESCRIPTION =
+  'Book a free 30-minute strategy call or send a project brief. We reply within one business day with scope, timeline and a fixed-price proposal.';
 
 export const metadata: Metadata = {
   title: 'Contact Us — Book a Free Strategy Call',
-  description:
-    'Book a free 30-minute strategy call or send a project brief. We reply within one business day with scope, timeline and a fixed-price proposal.',
+  description: DESCRIPTION,
   keywords: [
     'contact DevoraX',
     'hire software development agency',
@@ -20,51 +23,42 @@ export const metadata: Metadata = {
     'AI development agency contact',
     'custom software quote',
   ],
-  alternates: { canonical: `${BASE_URL}/contact` },
+  alternates: { canonical: `${SITE_URL}/contact` },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: `${BASE_URL}/contact`,
+    url: `${SITE_URL}/contact`,
     siteName: 'DevoraX',
     title: 'Contact | DevoraX',
     description: 'Book a free strategy call or send us a project brief. We respond within one business day.',
-    images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Contact DevoraX' }],
+    images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Contact DevoraX' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Contact | DevoraX',
     description: 'Book a free strategy call or send us a project brief.',
-    images: [{ url: `${BASE_URL}/og-image.jpg`, alt: 'Contact DevoraX' }],
+    images: [{ url: `${SITE_URL}/og-image.jpg`, alt: 'Contact DevoraX' }],
   },
 };
 
-const contactPageSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ContactPage',
-  name: 'Contact DevoraX',
-  url: `${BASE_URL}/contact`,
-  description: 'Contact page for DevoraX software development agency',
-  mainEntity: {
-    '@type': 'Organization',
-    '@id': `${BASE_URL}/#organization`,
-    name: 'DevoraX',
-    email: 'business@thedevorax.tech',
-    url: BASE_URL,
-    sameAs: [
-      'https://linkedin.com/company/devorax',
-      'https://github.com/devorax',
-    ],
-  },
-};
+const PATH = '/contact';
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Contact', item: `${BASE_URL}/contact` },
-  ],
-};
+// The page's main entity is the company itself. It points at the full
+// Organization in the root layout rather than re-declaring a partial copy here:
+// the old inline one carried its own name, email and sameAs list, and the
+// LinkedIn URL in it had already drifted from the one in the layout.
+const graph = [
+  webPageNode({
+    path: PATH,
+    type: 'ContactPage',
+    name: 'Contact DevoraX',
+    description: DESCRIPTION,
+    mainEntity: ORGANIZATION_ID,
+  }),
+  breadcrumbNode(PATH, [{ name: 'Contact', path: PATH }]),
+];
+
+const FOUNDER_LINKEDIN = FOUNDER_PROFILES.find((p) => p.label === 'LinkedIn')!.url;
 
 const CONTACT_CHANNELS = [
   {
@@ -79,20 +73,15 @@ const CONTACT_CHANNELS = [
   // Twitter/X channel removed: @devorax_agency returns 404 on both x.com and
   // twitter.com. Advertising a contact channel that does not exist is worse than
   // offering one fewer.
+  // The studio's LinkedIn and GitHub links went when the owner removed them
+  // from ORG_PROFILES (14 Oct 2026): neither is a profile DevoraX runs. The
+  // founder's own LinkedIn is, and he is who you would be talking to.
   {
     Icon: Linkedin,
     label: 'LinkedIn',
-    value: 'DevoraX Agency',
-    href: 'https://linkedin.com/company/devorax',
-    description: 'Professional network and announcements',
-    external: true,
-  },
-  {
-    Icon: Github,
-    label: 'GitHub',
-    value: 'github.com/devorax',
-    href: 'https://github.com/devorax',
-    description: 'Open-source work and contributions',
+    value: 'Sameem Amjad',
+    href: FOUNDER_LINKEDIN,
+    description: 'Message the founder directly',
     external: true,
   },
 ];
@@ -100,16 +89,9 @@ const CONTACT_CHANNELS = [
 export default function ContactPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactPageSchema) }}
-      />
+      <JsonLd graph={graph} />
 
-      <main className="min-h-screen bg-[#020202] text-white">
+      <main id="main-content" className="min-h-screen bg-[#020202] text-white">
         {/* ── Header ── */}
         <header className="relative pt-36 pb-20 border-b border-white/5 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(20,184,166,0.07)_0%,_transparent_60%)] pointer-events-none" />
@@ -123,7 +105,7 @@ export default function ContactPage() {
             </Link>
 
             <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex items-center gap-2 text-xs text-gray-600">
+              <ol className="flex items-center gap-2 text-xs text-gray-400">
                 <li><Link href="/" className="hover:text-teal-400 transition-colors">Home</Link></li>
                 <li aria-hidden="true">/</li>
                 <li className="text-teal-400">Contact</li>
@@ -189,7 +171,7 @@ export default function ContactPage() {
                     <p className="text-sm font-semibold text-white mb-1">Typical response time</p>
                     <p className="text-sm text-gray-500">
                       We respond to all project enquiries within <strong className="text-teal-400">1 business day</strong>.
-                      Discovery calls are available Monday–Friday, 9 am–6 pm PKT (UTC+5).
+                      Discovery calls are available Monday–Friday, 10 am–6 pm PKT (UTC+5).
                     </p>
                   </div>
                 </div>

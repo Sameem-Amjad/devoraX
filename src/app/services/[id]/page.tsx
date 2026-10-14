@@ -125,21 +125,43 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   if (!serviceRes.data) return notFound();
 
+  const service = serviceRes.data;
+  const content = getServiceContent(id);
+  // One list of crumbs for the visible breadcrumb and the BreadcrumbList, so
+  // the two can't disagree.
+  const trail = [
+    { name: "Services", path: "/services" },
+    { name: service.title, path: `/services/${service.id}` },
+  ];
+
   return (
     <>
-      <ServiceJsonLd service={serviceRes.data} />
-      <ServiceDetailClient
-        service={serviceRes.data}
-        initialProjects={projectsRes.data || []}
-      />
-      {/* Server-rendered long-form copy: these pages carried ~25 words before,
-          far under the coverage floor needed to rank for commercial queries. */}
-      <div className="mx-auto max-w-7xl px-6 pb-20">
-        <ServiceLongform content={getServiceContent(id)} />
-        {/* The service_id column links these pages only to 10-65 word stubs, so
-            the long-form studies are wired in here instead. */}
-        <RelatedCaseStudies serviceId={id} />
-      </div>
+      <ServiceJsonLd service={service} content={content} trail={trail} />
+      <main id="main-content">
+        {/* One <article> from the h1 through the long-form FAQ. Extractors
+            such as trafilatura take the first <article> on a page as its body,
+            so wrapping only the long-form would have cost them the h1 and the
+            hero. The related case studies stay outside it. */}
+        <article>
+          <ServiceDetailClient
+            service={service}
+            initialProjects={projectsRes.data || []}
+            trail={trail}
+          />
+          {/* Server-rendered long-form copy: these pages carried ~25 words before,
+              far under the coverage floor needed to rank for commercial queries. */}
+          {content && (
+            <div className="mx-auto max-w-7xl px-6">
+              <ServiceLongform content={content} />
+            </div>
+          )}
+        </article>
+        <div className="mx-auto max-w-7xl px-6 pb-20">
+          {/* The service_id column links these pages only to 10-65 word stubs, so
+              the long-form studies are wired in here instead. */}
+          <RelatedCaseStudies serviceId={id} />
+        </div>
+      </main>
     </>
   );
 }

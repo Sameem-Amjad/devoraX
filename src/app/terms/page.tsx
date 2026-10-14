@@ -1,36 +1,50 @@
 import type { Metadata } from 'next';
+import { TERMS_UPDATED } from '@/data/legal';
+import { JsonLd } from '@/components/seo/structured-data';
+import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
 
-const BASE_URL = 'https://thedevorax.tech';
 const CONTACT_EMAIL = 'business@thedevorax.tech';
 
+const PATH = '/terms';
+const TITLE = 'Terms of Service — Site and Project Work';
+const DESCRIPTION =
+  'The terms covering use of this site, what our portfolio figures and indicative pricing mean, and how project work is agreed in a separate written proposal.';
+// One date (data/legal.ts) for the visible "Last updated" line, the WebPage
+// node's dateModified and the sitemap, so the three can't disagree.
+const LAST_UPDATED = TERMS_UPDATED;
+const lastUpdatedLabel = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'long',
+  timeZone: 'UTC',
+}).format(new Date(LAST_UPDATED));
+
+// pageMetadata adds this page's own Open Graph and Twitter card. Without them
+// the page inherited the homepage's, so a shared link carried the homepage's
+// og:url and title instead of this page's.
 export const metadata: Metadata = {
-  title: 'Terms of Service — Site and Project Work',
-  description:
-    'The terms covering use of this site, what our portfolio figures and indicative pricing mean, and how project work is agreed in a separate written proposal.',
-  alternates: { canonical: `${BASE_URL}/terms` },
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH }),
   robots: { index: true, follow: true },
 };
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Terms of Service', item: `${BASE_URL}/terms` },
-  ],
-};
+const graph = [
+  webPageNode({
+    path: PATH,
+    name: 'Terms of Service',
+    description: DESCRIPTION,
+    dateModified: LAST_UPDATED,
+  }),
+  breadcrumbNode(PATH, [{ name: 'Terms of Service', path: PATH }]),
+];
 
 export default function TermsPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <main className="min-h-screen bg-black pb-24 pt-32">
+      <JsonLd graph={graph} />
+      <main id="main-content" className="min-h-screen bg-black pb-24 pt-32">
         <div className="mx-auto max-w-3xl px-6">
           <h1 className="text-4xl font-bold text-white md:text-5xl">Terms of Service</h1>
-          <p className="mt-4 text-sm text-gray-500">Last updated 17 September 2026</p>
+          <p className="mt-4 text-sm text-gray-500">
+            Last updated <time dateTime={LAST_UPDATED}>{lastUpdatedLabel}</time>
+          </p>
 
           <div className="mt-10 space-y-10 text-gray-400">
             <section>

@@ -37,7 +37,7 @@ export function SiteHeader() {
       }`}
     >
       <nav aria-label="Primary" className="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
-        <Link href="/" aria-label="DevoraX — home">
+        <Link href="/">
           <Logo />
         </Link>
 

@@ -51,18 +51,29 @@ function shortName(title: string) {
   return head.length > 3 ? head : title;
 }
 
-export function ServicesHubContent() {
-  const services = SERVICE_ORDER.map((id) => SERVICE_CONTENT[id]).filter(Boolean);
+function hubServices() {
+  return SERVICE_ORDER.map((id) => SERVICE_CONTENT[id]).filter(Boolean);
+}
 
-  // Pick a spread of FAQs across the four services rather than all from one.
-  const faqs = services.flatMap((s) => (s.faq || []).slice(0, 2)).slice(0, 8);
+/**
+ * The questions the hub shows: a spread across the four services rather than
+ * all from one. The FAQ section and the FAQPage node both read this, so the
+ * markup can only describe questions that are on the page.
+ */
+function hubFaqs() {
+  return hubServices().flatMap((s) => (s.faq || []).slice(0, 2)).slice(0, 8);
+}
+
+export function ServicesHubContent() {
+  const services = hubServices();
+  const faqs = hubFaqs();
 
   return (
     <>
       {/* ── Comparison table ── */}
-      <section className="py-20 border-t border-white/5">
+      <section aria-labelledby="compare-heading" className="py-20 border-t border-white/5">
         <div className="mx-auto max-w-4xl px-6">
-          <h2 className="text-3xl font-bold text-white md:text-4xl">
+          <h2 id="compare-heading" className="text-3xl font-bold text-white md:text-4xl">
             Which service does your project need?
           </h2>
           <p className="mt-5 leading-relaxed text-gray-400">
@@ -115,9 +126,9 @@ export function ServicesHubContent() {
       </section>
 
       {/* ── Per-service detail, each heading a question ── */}
-      <section className="py-20 border-t border-white/5 bg-[#030303]">
+      <section aria-labelledby="coverage-heading" className="py-20 border-t border-white/5 bg-[#030303]">
         <div className="mx-auto max-w-4xl px-6">
-          <h2 className="text-3xl font-bold text-white md:text-4xl">
+          <h2 id="coverage-heading" className="text-3xl font-bold text-white md:text-4xl">
             What does each service cover?
           </h2>
 
@@ -125,9 +136,12 @@ export function ServicesHubContent() {
             {services.map((s) => {
               const g = AT_A_GLANCE[s.service_id];
               const studyIds = SERVICE_CASE_STUDIES[s.service_id] || [];
+              const headingId = `service-${s.service_id}-heading`;
+              // A <section>, not an <article>: extractors such as trafilatura
+              // take the first <article> on a page as the whole page body.
               return (
-                <article key={s.service_id}>
-                  <h3 className="text-xl font-bold text-white">
+                <section key={s.service_id} aria-labelledby={headingId}>
+                  <h3 id={headingId} className="text-xl font-bold text-white">
                     What is included in {g.anchor.toLowerCase()}?
                   </h3>
                   <p className="mt-4 leading-relaxed text-gray-400">{s.hero_answer}</p>
@@ -166,7 +180,7 @@ export function ServicesHubContent() {
                       );
                     })}
                   </div>
-                </article>
+                </section>
               );
             })}
           </div>
@@ -175,9 +189,9 @@ export function ServicesHubContent() {
 
       {/* ── FAQ, rendered with <details> so every answer is in the HTML ── */}
       {faqs.length > 0 && (
-        <section className="py-20 border-t border-white/5">
+        <section aria-labelledby="faq-heading" className="py-20 border-t border-white/5">
           <div className="mx-auto max-w-4xl px-6">
-            <h2 className="text-3xl font-bold text-white md:text-4xl">
+            <h2 id="faq-heading" className="text-3xl font-bold text-white md:text-4xl">
               Common questions about working with us
             </h2>
             <div className="mt-10 space-y-3">
@@ -200,15 +214,18 @@ export function ServicesHubContent() {
   );
 }
 
-/** FAQPage schema for the hub, built from the same array the page renders. */
-export function servicesHubFaqSchema(baseUrl: string) {
-  const services = SERVICE_ORDER.map((id) => SERVICE_CONTENT[id]).filter(Boolean);
-  const faqs = services.flatMap((s) => (s.faq || []).slice(0, 2)).slice(0, 8);
+/**
+ * FAQPage node for the hub's graph (`url` is the /services URL), built from the
+ * list the FAQ section renders. The answers sit in <details>: collapsed, but in
+ * the HTML and one click from view.
+ */
+export function servicesHubFaqNode(url: string) {
+  const faqs = hubFaqs();
   if (!faqs.length) return null;
   return {
-    '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    '@id': `${baseUrl}/services#faq`,
+    '@id': `${url}#faq`,
+    isPartOf: { '@id': `${url}#webpage` },
     mainEntity: faqs.map((f) => ({
       '@type': 'Question',
       name: f.q,

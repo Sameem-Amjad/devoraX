@@ -20,6 +20,10 @@
  * Plain data only, so it can be imported from server and client components.
  */
 
+/** When these prices and steps last changed (the payments and launch prices
+ *  Sameem set on 9 Oct 2026). Feeds the /pricing sitemap entry. */
+export const OFFER_UPDATED = '2026-10-09T00:00:00.000Z';
+
 export const POSITIONING = {
   /** The headline. "Finish and ship", never "rescue". */
   headline: 'We finish and ship stuck apps',

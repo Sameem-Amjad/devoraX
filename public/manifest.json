@@ -1,7 +1,7 @@
 {
   "name": "DevoraX — We Finish and Ship Stuck Apps",
   "short_name": "DevoraX",
-  "description": "DevoraX is a two-person studio that finishes and ships stuck apps: payments that work, real iOS and Android apps, and App Store approval.",
+  "description": "DevoraX is a two-person software studio, founded in 2022 and based in Pakistan, that finishes and ships stuck apps for founders: payments that work, real iOS and Android apps, and App Store approval.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#020202",

@@ -1,11 +1,44 @@
 "use client";
+import { Fragment } from "react";
 import { ArrowLeft, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import getIcon from "@/utils/utils";
 import Link from "next/link";
 import Image from "next/image";
 
-const ServiceDetailClient = ({ service, initialProjects }: { service: any, initialProjects: any[] }) => {
+type Service = {
+  title: string;
+  icon: string;
+  desc_text?: string | null;
+  desc_long?: string | null;
+  features?: string[] | null;
+};
+
+type RelatedProject = {
+  id: number | string;
+  title: string;
+  image?: string | null;
+  category?: string | null;
+};
+
+/** The crumbs after Home; the page builds its BreadcrumbList from the same list. */
+type Crumb = { name: string; path: string };
+
+/** Some rows hold "" or a literal `""`, which next/image turns into a broken image request. */
+const imageUrl = (val?: string | null) => {
+  const s = String(val ?? "").trim();
+  return s.startsWith("http") ? s : null;
+};
+
+const ServiceDetailClient = ({
+  service,
+  initialProjects,
+  trail,
+}: {
+  service: Service;
+  initialProjects: RelatedProject[];
+  trail: Crumb[];
+}) => {
   if (!service) return null;
 
   return (
@@ -15,8 +48,28 @@ const ServiceDetailClient = ({ service, initialProjects }: { service: any, initi
           <ArrowLeft className="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" /> Back to Services
         </Link>
 
+        {/* Inside the pt-24 area rather than above this component: the site
+            header is fixed and 96px tall, and would cover it there. */}
+        <nav aria-label="Breadcrumb" className="mb-6">
+          <ol className="flex items-center gap-2 text-xs text-gray-400">
+            <li><Link href="/" className="hover:text-teal-400 transition-colors">Home</Link></li>
+            {trail.map((c, i) => (
+              <Fragment key={c.path}>
+                <li aria-hidden="true">/</li>
+                {i < trail.length - 1 ? (
+                  <li><Link href={c.path} className="hover:text-teal-400 transition-colors">{c.name}</Link></li>
+                ) : (
+                  <li className="text-teal-400" aria-current="page">{c.name}</li>
+                )}
+              </Fragment>
+            ))}
+          </ol>
+        </nav>
+
         <div className="grid md:grid-cols-2 gap-12 mb-20 items-center">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
+          {/* Starts visible and only slides, so the h1 paints with the HTML
+              rather than after hydration (LCP). */}
+          <motion.div initial={{ x: -20 }} animate={{ x: 0 }}>
             <div className="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 mb-6 border border-teal-500/20">
               {getIcon(service?.icon)}
             </div>
@@ -53,35 +106,41 @@ const ServiceDetailClient = ({ service, initialProjects }: { service: any, initi
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-white mb-8">Related Projects</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {initialProjects.length > 0 ? initialProjects.map(p => (
-            <Link key={p.id} href={`/projects/${p.id}`} className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-teal-500/40 transition-all">
-              <div className="h-48 relative overflow-hidden bg-gray-800">
-                {p.image ? (
-                  <Image
-                    src={p.image}
-                    alt={p.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-[#111]" />
-                )}
-              </div>
+        {/* An <aside>: these point at other pages rather than describe the service. */}
+        <aside aria-labelledby="related-projects">
+          <h2 id="related-projects" className="text-3xl font-bold text-white mb-8">Related Projects</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {initialProjects.length > 0 ? initialProjects.map(p => {
+              const image = imageUrl(p.image);
+              return (
+                <Link key={p.id} href={`/projects/${p.id}`} className="group bg-[#0a0a0a] border border-white/10 rounded-2xl overflow-hidden hover:border-teal-500/40 transition-all">
+                  <div className="h-48 relative overflow-hidden bg-gray-800">
+                    {image ? (
+                      <Image
+                        src={image}
+                        alt={p.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-[#111]" />
+                    )}
+                  </div>
 
-              <div className="p-6">
-                <div className="text-xs font-bold text-teal-500 mb-2 uppercase">{p.category}</div>
-                <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">{p.title}</h3>
+                  <div className="p-6">
+                    <div className="text-xs font-bold text-teal-500 mb-2 uppercase">{p.category}</div>
+                    <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors">{p.title}</h3>
+                  </div>
+                </Link>
+              );
+            }) : (
+              <div className="col-span-3 text-center py-12 border border-dashed border-white/10 rounded-2xl text-gray-500">
+                No specific case studies linked to this service yet.
               </div>
-            </Link>
-          )) : (
-            <div className="col-span-3 text-center py-12 border border-dashed border-white/10 rounded-2xl text-gray-500">
-              No specific case studies linked to this service yet.
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        </aside>
       </div>
     </div>
   );

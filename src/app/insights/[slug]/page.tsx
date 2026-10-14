@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { INSIGHTS, getInsight, INSIGHTS_UPDATED } from '@/data/insights';
 import { InsightArticle } from '@/components/seo/insight-article';
-
-const BASE_URL = 'https://thedevorax.tech';
+import { JsonLd } from '@/components/seo/structured-data';
+import { OG_IMAGE, ORG_REF, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 
 /** Fully static — these articles are files, not database rows. */
 export function generateStaticParams() {
@@ -28,9 +28,12 @@ export async function generateMetadata({
     };
   }
 
-  const url = `${BASE_URL}/insights/${article.slug}`;
+  const url = absoluteUrl(`/insights/${article.slug}`);
+  // The full titles run past the ~60 characters a results page shows, so the
+  // <title> and the social cards use the short one. The H1 keeps the full title.
+  const title = article.seo_title ?? article.title;
   return {
-    title: article.title,
+    title,
     description: article.meta_description,
     alternates: { canonical: url },
     robots: {
@@ -42,17 +45,17 @@ export async function generateMetadata({
       type: 'article',
       url,
       siteName: 'DevoraX',
-      title: article.title,
+      title,
       description: article.meta_description,
-      publishedTime: INSIGHTS_UPDATED,
+      publishedTime: article.published ?? INSIGHTS_UPDATED,
       modifiedTime: INSIGHTS_UPDATED,
-      images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: article.title }],
+      images: [{ ...OG_IMAGE, alt: article.title }],
     },
     twitter: {
       card: 'summary_large_image',
-      title: article.title,
+      title,
       description: article.meta_description,
-      images: [{ url: `${BASE_URL}/og-image.jpg`, alt: article.title }],
+      images: [{ url: OG_IMAGE.url, alt: article.title }],
     },
   };
 }
@@ -62,45 +65,56 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
   const article = getInsight(slug);
   if (!article) return notFound();
 
-  const url = `${BASE_URL}/insights/${article.slug}`;
+  const path = `/insights/${article.slug}`;
+  const url = absoluteUrl(path);
+  const articleId = `${url}#article`;
+  // First publication, per article. INSIGHTS_UPDATED is the last substantive
+  // revision of them all, the date the Byline shows as "Last updated".
+  const published = article.published ?? INSIGHTS_UPDATED;
 
-  const breadcrumbSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-      { '@type': 'ListItem', position: 2, name: 'Insights', item: `${BASE_URL}/insights` },
-      { '@type': 'ListItem', position: 3, name: article.title, item: url },
-    ],
-  };
-
-  const articleSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: article.title.slice(0, 110),
-    description: article.meta_description,
-    url,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    datePublished: INSIGHTS_UPDATED,
-    dateModified: INSIGHTS_UPDATED,
-    author: { '@type': 'Organization', name: 'DevoraX', url: BASE_URL },
-    publisher: {
-      '@type': 'Organization',
-      '@id': `${BASE_URL}/#organization`,
-      name: 'DevoraX',
-      url: BASE_URL,
-      logo: { '@type': 'ImageObject', url: `${BASE_URL}/apple-icon`, width: 180, height: 180 },
+  const graph = [
+    // The Byline says "Reviewed by Sameem Amjad", so the page node names the
+    // same reviewer and the same date.
+    webPageNode({
+      path,
+      name: article.title,
+      description: article.meta_description,
+      mainEntity: articleId,
+      datePublished: published,
+      dateModified: INSIGHTS_UPDATED,
+      reviewedOn: INSIGHTS_UPDATED,
+    }),
+    breadcrumbNode(path, [
+      { name: 'Insights', path: '/insights' },
+      { name: article.title, path },
+    ]),
+    {
+      '@type': 'Article',
+      '@id': articleId,
+      // The visible H1, in full. The slice only guards a future title past the
+      // 110 characters some consumers cut headlines at.
+      headline: article.title.slice(0, 110),
+      description: article.meta_description,
+      image: [OG_IMAGE.url],
+      url,
+      datePublished: published,
+      dateModified: INSIGHTS_UPDATED,
+      // The Byline reads "Written by DevoraX", so the author is the company.
+      // Sameem is named as the reviewer, on the page node, not as the author.
+      author: ORG_REF,
+      publisher: ORG_REF,
+      mainEntityOfPage: { '@id': `${url}#webpage` },
+      isAccessibleForFree: true,
+      inLanguage: 'en-US',
+      wordCount: article.word_count,
     },
-    inLanguage: 'en-US',
-    isAccessibleForFree: true,
-  };
+  ];
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <JsonLd graph={graph} />
 
-      <main className="min-h-screen bg-black pb-24 pt-28">
+      <main id="main-content" className="min-h-screen bg-black pb-24 pt-28">
         <div className="mx-auto max-w-5xl px-6">
           <Link
             href="/insights"

@@ -2,18 +2,24 @@ import { Metadata } from 'next';
 import { createPublicClient } from '@/lib/public';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft, Code2, Cpu, Layout, Server, Smartphone, Zap } from 'lucide-react';
-import { ServicesHubContent, servicesHubFaqSchema } from '@/components/seo/services-hub-content';
+import { ServicesHubContent, servicesHubFaqNode } from '@/components/seo/services-hub-content';
 import { OfferLadder } from '@/components/seo/offer-ladder';
+import { JsonLd } from '@/components/seo/structured-data';
+import { absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 
 const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
 
+// Title 39 chars rendered ("… | DevoraX"); description under 155 chars, no
+// brand in the body (the title already carries it). Leads with the offer.
+// Also the name and description of the CollectionPage node below.
+const TITLE = 'Software Development Services';
+const DESCRIPTION =
+  'Finish and ship a stuck app: launch-readiness audit, fixed-price finish sprint, Stripe payments, iOS and Android launch, monthly care. Two-person studio.';
+
 export const metadata: Metadata = {
-  // Title 39 chars rendered ("… | DevoraX"); description under 155 chars, no
-  // brand in the body (the title already carries it). Leads with the offer.
-  title: 'Software Development Services',
-  description:
-    'Finish and ship a stuck app: launch-readiness audit, fixed-price finish sprint, Stripe payments, iOS and Android launch, monthly care. Two-person studio.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     'mobile app development services',
     'AI web development agency',
@@ -56,9 +62,12 @@ function ServiceIcon({ name }: { name: string }) {
   return <Icon className="w-6 h-6" />;
 }
 
-const itemListSchema = (services: { id: string | number; title: string }[]) => ({
-  '@context': 'https://schema.org',
+const PATH = '/services';
+const PAGE_URL = absoluteUrl(PATH);
+
+const itemListNode = (services: { id: string | number; title: string }[]) => ({
   '@type': 'ItemList',
+  '@id': `${PAGE_URL}#services`,
   name: 'DevoraX Software Development Services',
   description: 'Software development services from DevoraX, a two-person studio',
   numberOfItems: services.length,
@@ -70,39 +79,30 @@ const itemListSchema = (services: { id: string | number; title: string }[]) => (
   })),
 });
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Services', item: `${BASE_URL}/services` },
-  ],
-};
-
 export default async function ServicesPage() {
   const supabase = createPublicClient();
   const { data: services } = await supabase.from('services').select('*').order('created_at', { ascending: true });
   const list = services || [];
-  const faqSchema = servicesHubFaqSchema(BASE_URL);
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      {/* No Offer or price markup here: the /pricing page carries it. */}
+      <JsonLd
+        graph={[
+          webPageNode({
+            path: PATH,
+            name: TITLE,
+            description: DESCRIPTION,
+            type: 'CollectionPage',
+            mainEntity: `${PAGE_URL}#services`,
+          }),
+          breadcrumbNode(PATH, [{ name: 'Services', path: PATH }]),
+          itemListNode(list),
+          servicesHubFaqNode(PAGE_URL),
+        ]}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema(list)) }}
-      />
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
 
-      <main className="min-h-screen bg-[#020202] text-white">
+      <main id="main-content" className="min-h-screen bg-[#020202] text-white">
         {/* ── Page Header ── */}
         <header className="relative pt-36 pb-20 bg-[#020202] border-b border-white/5 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(20,184,166,0.07)_0%,_transparent_60%)] pointer-events-none" />
@@ -116,10 +116,10 @@ export default async function ServicesPage() {
             </Link>
 
             <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex items-center gap-2 text-xs text-gray-600">
+              <ol className="flex items-center gap-2 text-xs text-gray-400">
                 <li><Link href="/" className="hover:text-teal-400 transition-colors">Home</Link></li>
                 <li aria-hidden="true">/</li>
-                <li className="text-teal-400">Services</li>
+                <li className="text-teal-400" aria-current="page">Services</li>
               </ol>
             </nav>
 
@@ -200,10 +200,10 @@ export default async function ServicesPage() {
         <ServicesHubContent />
 
         {/* ── Why Choose DevoraX ── */}
-        <section aria-label="Why choose DevoraX" className="py-20 border-t border-white/5 bg-[#030303]">
+        <section aria-labelledby="why-devorax-heading" className="py-20 border-t border-white/5 bg-[#030303]">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <h2 id="why-devorax-heading" className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Two Engineers, Full Stack
               </h2>
               <p className="text-gray-400 text-lg leading-relaxed mb-10">

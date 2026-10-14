@@ -28,7 +28,19 @@ export type InsightSection = {
 
 export type Insight = {
   slug: string;
+  /** The visible H1 and the Article headline. */
   title: string;
+  /**
+   * The <title> and social title, when `title` is too long for a results page:
+   * at most 50 characters, so "{seo_title} | DevoraX" stays within 60. Primary
+   * term first, and it must say what the article says, nothing more.
+   */
+  seo_title?: string;
+  /**
+   * First publication (ISO), taken from the commit that added the article.
+   * Feeds datePublished; INSIGHTS_UPDATED stays the dateModified.
+   */
+  published?: string;
   meta_description: string;
   /** Answer-first opener — the passage most likely to be quoted. */
   summary_answer: string;
@@ -46,6 +58,8 @@ export const INSIGHTS: Insight[] = [
   {
     "slug": "what-we-measured-across-25-production-builds",
     "title": "What the 26 DevoraX Portfolio Entries Show About Stacks and Links",
+    "seo_title": "Tech Stacks and Links in 26 Portfolio Entries",
+    "published": "2026-09-16T00:00:00.000Z",
     "meta_description": "The 26 entries in the DevoraX portfolio, counted field by field: whose work each was, which links a reader can open, and which stacks recur.",
     "summary_answer": "The DevoraX portfolio holds 26 entries: products and builds that DevoraX's founder, Sameem Amjad, built or worked on, 12 of them as an engineer at other companies and 4 as direct client work. Sixteen of the 26 store at least one public link, nine of them a live app store listing, and ten store none. The clearest stack pattern is backend concentration: 14 of 26 name a Node-family backend, and Node.js and AWS tie at nine entries each.",
     "dataset_note": "This is n=26: every entry in the DevoraX portfolio, counted from its structured fields (tag list, declared tech stack, category label, and web, Google Play and App Store links) with a script rather than by hand. It is not a record of DevoraX client work. Twelve entries are products Sameem Amjad worked on as an engineer at other companies (Zencloud, Webrange Solutions, Pastel, Fleact Tech and ivector), four are his direct client work for Three28, Dooz, JUJU and Hear With You, five have no named client, and five have no client and no public link. It is not a market survey, a random sample or a controlled study, and it holds no cost, effort, timeline or outcome data. Links are counted as stored, and three of the web links are builds on vercel.app rather than production sites. Read every figure as \"in these 26 portfolio entries\", never as an industry rate.",
@@ -313,6 +327,8 @@ export const INSIGHTS: Insight[] = [
   {
     "slug": "react-native-vs-flutter-production-experience",
     "title": "React Native vs Flutter: What 12 Cross-Platform Builds in One Portfolio Show",
+    "seo_title": "React Native vs Flutter: What 12 Builds Show",
+    "published": "2026-09-16T00:00:00.000Z",
     "meta_description": "Twelve cross-platform builds from the DevoraX portfolio, compared by store presence, backend and context, and what the data cannot settle.",
     "summary_answer": "Across the twelve cross-platform mobile builds in the DevoraX portfolio, two of six Flutter builds link to both Google Play and the App Store, against one of six React Native builds, while four of the six React Native builds link to at least one store against three of the six Flutter builds. Context differs more than framework: four of the six Flutter builds were Sameem Amjad's work as an employee of other companies, and none of the six React Native builds was. This is a portfolio count, not a performance benchmark.",
     "dataset_note": "The dataset is the 26 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many of them as an engineer at other companies. Twelve name a cross-platform mobile framework in their tags or declared tech stack: 6 React Native, 6 Flutter. Every count uses the structured fields only, meaning the category label, the tag list, the declared tech stack and the web, Google Play and App Store links, and was produced by a script rather than by hand. Free-text descriptions are not counted. There is no control group, no randomisation, no paired build of the same app in both frameworks and no performance testing of any kind, and the portfolio holds no outcome data. It is a portfolio, not an experiment.",
@@ -690,6 +706,8 @@ export const INSIGHTS: Insight[] = [
   {
     "slug": "supabase-vs-firebase-marketplace-backends",
     "title": "Supabase vs Firebase for Marketplace Backends: What 10 Portfolio Builds Show",
+    "seo_title": "Supabase vs Firebase for Marketplace Backends",
+    "published": "2026-09-16T00:00:00.000Z",
     "meta_description": "Ten builds from the DevoraX portfolio, eight naming Firebase and two Supabase with no overlap: what they show about product shape, and what they cannot.",
     "summary_answer": "Of the 26 entries in the DevoraX portfolio, ten name Supabase or Firebase in their tags or tech stack and none uses both: eight Firebase, two Supabase. Firebase sits alongside mobile frameworks, AWS services and, on Pastel, Sharetribe, while both Supabase builds are React-family web dashboards: Afriva, a demo build, and Augment Fit, which has no public link. With only two Supabase builds, that split describes product shape in one portfolio, not measured backend performance.",
     "dataset_note": "The dataset is the 26 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, six were employer projects (Food Magnet at Zencloud, Bondly and Afriva at Webrange Solutions, Coffee Shop at Fleact Tech, Pathana at ivector, and Pastel, where Sameem works now), three have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
@@ -1005,6 +1023,8 @@ export const INSIGHTS: Insight[] = [
   {
     "slug": "sharetribe-vs-custom-marketplace-build",
     "title": "Sharetribe vs Custom Marketplace Development: Where the Line Actually Falls",
+    "seo_title": "Sharetribe vs Custom Marketplace Development",
+    "published": "2026-09-17T00:00:00.000Z",
     "meta_description": "Where Sharetribe is the right answer, where a custom marketplace build is, and how that line falls in three real marketplaces from the DevoraX portfolio.",
     "summary_answer": "Use Sharetribe when your marketplace is a standard listing-and-commission transaction and you have not yet proved supply. For a large share of marketplaces that is the permanent answer, not a stage. Build custom when the domain data model, the role surfaces or native apps are the product. The line can also run through one project: Pastel, the antiques marketplace where DevoraX's founder Sameem Amjad works as an engineer, runs its marketplace on Sharetribe and adds iOS and Android apps, which Sharetribe does not produce by default. Nobody built the fully custom alternative, so read that as description, not verdict.",
     "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. Two are employer projects: Sameem Amjad, DevoraX's founder, builds Pastel's iOS app as a software engineer at Pastel (since April 2026; the iOS app launched in November 2025, before he joined), and he worked on Afriva, whose public link is a demo build, as an engineer at Webrange Solutions. The third, Dooz, is his direct client work: Dooz hired him directly, and he worked on its shared NestJS backend. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
@@ -1176,6 +1196,8 @@ export const INSIGHTS: Insight[] = [
   {
     "slug": "what-a-3000-mvp-budget-gets-you",
     "title": "What a $3,000 MVP Budget Actually Gets You (And What It Does Not)",
+    "seo_title": "$3,000 MVP Budget: What It Buys, What It Doesn't",
+    "published": "2026-09-17T00:00:00.000Z",
     "meta_description": "What a $3,000 MVP budget buys and what it does not, checked against the published $2,900 DevoraX starting tier and five web builds from its portfolio.",
     "summary_answer": "Roughly $3,000 buys one working surface for one primary audience, a narrow set of features, and a managed stack you do not have to operate. It does not buy role-separated dashboards, an app-store release, verified multi-tenancy or a security assessment. What it depends on is roles: each additional kind of user adds a surface, a permission boundary and a full test pass. If your difference from an off-the-shelf product is a preference rather than a rule, rent instead.",
     "dataset_note": "This draws on the 26 entries in the DevoraX portfolio, products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies, and examines five web builds closely: Coffee Shop, Augment Fit, Waitmate, Pathana and Afriva. None of the five is a DevoraX engagement with a recorded price: three were employer work (Coffee Shop at Fleact Tech, Pathana at ivector and Afriva at Webrange Solutions), and Augment Fit and Waitmate have no named client. No entry stores a price, timeline, team size or developer-hour count, so nothing here evidences what any build cost. The five are used for their scope shapes only.",

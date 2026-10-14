@@ -1,5 +1,6 @@
+import Link from 'next/link';
 import type { Insight, InsightTable } from '@/data/insights';
-import { INSIGHTS_UPDATED } from '@/data/insights';
+import { INSIGHTS, INSIGHTS_UPDATED } from '@/data/insights';
 import { Byline } from './byline';
 
 /**
@@ -117,6 +118,26 @@ export function InsightArticle({ insight }: { insight: Insight }) {
           </ul>
         </section>
       )}
+
+      {/* Without this an article was a dead end: linked from the /insights index
+          and nowhere else, with no onward path to the rest of the research. */}
+      <nav aria-labelledby="more-research" className="mt-16 border-t border-white/5 pt-10">
+        <h2 id="more-research" className="text-xl font-bold text-white">
+          More research from DevoraX
+        </h2>
+        <ul className="mt-6 space-y-4">
+          {INSIGHTS.filter((a) => a.slug !== insight.slug).map((a) => (
+            <li key={a.slug}>
+              <Link
+                href={`/insights/${a.slug}`}
+                className="font-medium text-teal-400 underline underline-offset-4 hover:text-teal-300"
+              >
+                {a.title}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </article>
   );
 }

@@ -2,17 +2,23 @@ import { createPublicClient } from "@/lib/public";
 import { getCaseStudy } from "@/data/caseStudyContent";
 import CaseStudyClient from "./CaseStudyClient";
 import { Metadata } from "next";
+import { JsonLd } from "@/components/seo/structured-data";
+import { absoluteUrl, breadcrumbNode, webPageNode } from "@/lib/seo";
 
 export const revalidate = 3600;
 
 const BASE_URL = "https://thedevorax.tech";
 
+// Differentiated from /projects, which is the full portfolio grid. This page
+// is the long-form engineering write-ups only. Also the name and description
+// of the CollectionPage node below.
+const TITLE = "Engineering Case Studies";
+const DESCRIPTION =
+  "Engineering write-ups of products DevoraX's founders built or worked on, including as employees elsewhere: the problem, the architecture and the stack.";
+
 export const metadata: Metadata = {
-  // Differentiated from /projects, which is the full portfolio grid. This page
-  // is the long-form engineering write-ups only.
-  title: "Engineering Case Studies",
-  description:
-    "Engineering write-ups of products DevoraX's founders built or worked on, including as employees elsewhere: the problem, the architecture and the stack.",
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     "DevoraX case studies",
     "software development portfolio",
@@ -50,19 +56,15 @@ export const metadata: Metadata = {
   },
 };
 
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-    { "@type": "ListItem", position: 2, name: "Case Studies", item: `${BASE_URL}/case-study` },
-  ],
-};
+const PATH = "/case-study";
+const PAGE_URL = absoluteUrl(PATH);
+/** The crumbs after Home, for the visible breadcrumb and the BreadcrumbList alike. */
+const TRAIL = [{ name: "Case Studies", path: PATH }];
 
 /** Hub/pillar pages should expose the collection they link to as an ItemList. */
-const itemListSchema = (projects: { id: number | string; title: string }[]) => ({
-  "@context": "https://schema.org",
+const itemListNode = (projects: { id: number | string; title: string }[]) => ({
   "@type": "ItemList",
+  "@id": `${PAGE_URL}#case-studies`,
   name: "DevoraX Case Studies",
   description:
     "Products DevoraX's founders built or worked on across web, mobile, AI and cloud, including work done as employees of other companies.",
@@ -114,15 +116,22 @@ export default async function CaseStudyPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      <JsonLd
+        graph={[
+          webPageNode({
+            path: PATH,
+            name: TITLE,
+            description: DESCRIPTION,
+            type: "CollectionPage",
+            mainEntity: `${PAGE_URL}#case-studies`,
+          }),
+          breadcrumbNode(PATH, TRAIL),
+          itemListNode(list),
+        ]}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema(list)) }}
-      />
-      <CaseStudyClient projects={list} />
+      <main id="main-content">
+        <CaseStudyClient projects={list} trail={TRAIL} />
+      </main>
     </>
   );
 }

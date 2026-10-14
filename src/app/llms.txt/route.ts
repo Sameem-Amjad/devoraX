@@ -2,9 +2,10 @@ import { SERVICE_CONTENT } from '@/data/serviceContent';
 import { CASE_STUDY_CONTENT } from '@/data/caseStudyContent';
 import { INSIGHTS } from '@/data/insights';
 import { FAQS } from '@/data/faqs';
-import { POSITIONING, DOORS, OFFER_LADDER, FIT } from '@/data/offer';
+import { DOORS, OFFER_LADDER, FIT } from '@/data/offer';
+import { BRAND_FACTS, ENTITY_STATEMENT, SITE_URL } from '@/data/brand';
 
-const BASE_URL = 'https://thedevorax.tech';
+const BASE_URL = SITE_URL;
 
 export const revalidate = 3600;
 
@@ -38,13 +39,13 @@ export async function GET() {
   const lines: string[] = [
     '# DevoraX',
     '',
-    `> ${POSITIONING.headline}: ${POSITIONING.promise.charAt(0).toLowerCase()}${POSITIONING.promise.slice(1)}`,
-    `> ${POSITIONING.audience}`,
-    '> DevoraX is a two-person studio founded in 2022 (Sameem Amjad, Founder & Lead Architect Engineer;',
-    '> Usman, CTO): two senior',
-    '> engineers who bring in specialists when a scope needs them. Sameem has a 5.0',
-    '> Fiverr rating across 50+ projects since January 2022, for clients in the US,',
-    '> UK, Canada and Hong Kong.',
+    // The entity statement verbatim, then the facts it leaves out, all read from
+    // data/brand.ts. These lines were hand-written copies of the same facts.
+    `> ${ENTITY_STATEMENT}`,
+    `> Who it is for: ${BRAND_FACTS.whoItIsFor}.`,
+    `> Team: ${BRAND_FACTS.team}.`,
+    `> Track record: ${BRAND_FACTS.trackRecord}.`,
+    `> Fiverr clients in: ${BRAND_FACTS.clientCountries}.`,
     '',
     '## Two ways in',
     '',
@@ -67,7 +68,7 @@ export async function GET() {
     'builds. DevoraX holds no security or compliance certifications.',
     '',
     `Site: ${BASE_URL}`,
-    'Contact: business@thedevorax.tech',
+    `Contact: ${BRAND_FACTS.salesEmail}`,
     '',
     '## Services',
     '',
@@ -93,6 +94,17 @@ export async function GET() {
   for (const f of FAQS) {
     lines.push(`- **${f.q}** ${f.a}`);
   }
+
+  lines.push(
+    '',
+    '## Company',
+    '',
+    `- [About DevoraX](${BASE_URL}/about): the fact sheet, the two people who run the studio, and how an engagement works`,
+    `- [Pricing](${BASE_URL}/pricing): what each step costs, from the free call to monthly care, and how the price is set`,
+    `- [Reviews](${BASE_URL}/reviews): every client review on Sameem Amjad's Fiverr profile, quoted as written`,
+    `- [Press kit](${BASE_URL}/press): the company description, fact sheet, logo files, and bios and photos`,
+    `- [Glossary](${BASE_URL}/glossary): definitions of the app launch, payments and marketplace terms the site uses`
+  );
 
   lines.push(
     '',

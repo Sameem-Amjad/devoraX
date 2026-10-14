@@ -3,24 +3,38 @@ import { createPublicClient } from "@/lib/public";
 import HomeClient from "@/app/_components/homeClient";
 import { faqPageSchema } from "@/data/faqs";
 import { getSiteStats } from "@/data/siteStats";
+import { JsonLd } from "@/components/seo/structured-data";
+import { ORGANIZATION_ID, SITE_URL, webPageNode } from "@/lib/seo";
 
-const BASE_URL = "https://thedevorax.tech";
+// The positioning line first, brand last, 39 chars.
+const TITLE = "We Finish and Ship Stuck Apps | DevoraX";
+// 156 chars — Google truncates around 155-160.
+const DESCRIPTION =
+  "Built with Lovable, Replit, Bolt or Cursor, on Sharetribe, or half-built? We finish and ship it: working payments, iOS and Android apps, App Store approval.";
 
 export const metadata: Metadata = {
   // `absolute` bypasses the root layout's "%s | DevoraX" template — without it
   // this rendered as "DevoraX | … | DevoraX" with the brand duplicated.
-  // The positioning line first, brand last, 39 chars.
-  title: { absolute: "We Finish and Ship Stuck Apps | DevoraX" },
-  // 156 chars — Google truncates around 155-160.
-  description:
-    "Built with Lovable, Replit, Bolt or Cursor, on Sharetribe, or half-built? We finish and ship it: working payments, iOS and Android apps, App Store approval.",
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
   alternates: {
-    canonical: BASE_URL,
+    canonical: SITE_URL,
   },
 };
 
 // ✅ Caching works here
 export const revalidate = 3600;
+
+// The homepage is about the company, so the page node points at the full
+// Organization the root layout emits. No breadcrumb: Home is the root of every
+// trail, not a step in one.
+const webPage = webPageNode({
+  path: "/",
+  name: TITLE,
+  description: DESCRIPTION,
+  about: ORGANIZATION_ID,
+  breadcrumb: false,
+});
 
 export default async function Home() {
   const supabase = createPublicClient();
@@ -35,11 +49,9 @@ export default async function Home() {
   return (
     <>
       {/* Server-rendered so crawlers (and AI crawlers, which don't run JS) see it.
-          Generated from the same FAQS array <FAQSection /> renders below. */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }}
-      />
+          The FAQPage is generated from the same FAQS array <FAQSection /> renders
+          below, and is tied to this page so it does not float free in the graph. */}
+      <JsonLd graph={[webPage, { ...faqPageSchema, isPartOf: { "@id": webPage["@id"] } }]} />
       <HomeClient
         initialProjects={projectsRes.data || []}
         initialServices={servicesRes.data || []}

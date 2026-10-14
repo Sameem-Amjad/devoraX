@@ -38,14 +38,39 @@ function techTokens(text: string): Set<string> {
   return new Set(known.filter((k) => lower.includes(k)));
 }
 
+/**
+ * The two research articles closest to this study, by the technologies and
+ * topics named in each article's title. Ties (including every study that
+ * matches nothing) rotate by project id, so the articles share the case
+ * studies' links between them. This used to be `INSIGHTS.slice(0, 2)`, which
+ * gave all 25 studies the same two articles and left the other three linked
+ * from the /insights index alone.
+ */
+function relatedInsights(studyText: string, id: number) {
+  const study = studyText.toLowerCase();
+  const studyTokens = techTokens(study);
+  return INSIGHTS.map((a, i) => {
+    const title = a.title.toLowerCase();
+    let score = 0;
+    for (const tok of techTokens(title)) if (studyTokens.has(tok)) score++;
+    for (const topic of ['marketplace', 'sharetribe', 'mvp']) {
+      if (title.includes(topic) && study.includes(topic)) score++;
+    }
+    return { a, score, turn: (i + id) % INSIGHTS.length };
+  })
+    .sort((x, y) => y.score - x.score || x.turn - y.turn)
+    .slice(0, 2)
+    .map((x) => x.a);
+}
+
 export function RelatedReading({ projectId }: { projectId: number | string }) {
   const id = Number(projectId);
   const current = CASE_STUDY_CONTENT[id];
   if (!current) return null;
 
-  const currentTokens = techTokens(
-    current.title + ' ' + current.summary_answer + ' ' + (current.stack_rationale || []).join(' ')
-  );
+  const currentText =
+    current.title + ' ' + current.summary_answer + ' ' + (current.stack_rationale || []).join(' ');
+  const currentTokens = techTokens(currentText);
 
   const siblings = Object.values(CASE_STUDY_CONTENT)
     .filter((c) => c.project_id !== id)
@@ -108,7 +133,7 @@ export function RelatedReading({ projectId }: { projectId: number | string }) {
             {SERVICE_LABEL[Number(serviceId)]} service
           </Link>
         )}
-        {INSIGHTS.slice(0, 2).map((a) => (
+        {relatedInsights(currentText, id).map((a) => (
           <Link
             key={a.slug}
             href={`/insights/${a.slug}`}

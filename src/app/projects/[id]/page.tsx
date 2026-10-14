@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { createPublicClient } from "@/lib/public";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/projects/[id]/_components/projectClient";
-import { ProjectJsonLd } from '@/components/seo/json-ld';
+import { ProjectJsonLd, projectImageUrl } from '@/components/seo/json-ld';
 import { CaseStudyLongform } from '@/components/seo/case-study-longform';
 import { RelatedReading } from '@/components/seo/related-reading';
 import { getCaseStudy } from '@/data/caseStudyContent';
@@ -58,7 +58,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   // Several projects have an empty/placeholder image. Emitting og:image with an
-  // empty url is invalid, so fall back to the site card.
+  // empty url is invalid, so fall back to the site card. projectImageUrl() is
+  // shared with the Article node, so both agree on which projects have one.
   //
   // width/height are only declared for the local card, whose dimensions we know.
   // The Supabase project images are source PNGs of arbitrary size (several are
@@ -66,11 +67,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   // shipped with a hardcoded 1200x630 — a dimension assertion that was simply
   // false. Omitting the numbers lets the consumer measure the real image instead
   // of laying out against a wrong one.
-  const rawImage = (project.image || '').trim().replace(/^"+|"+$/g, '');
-  const isRemote = rawImage.startsWith('http');
+  const remoteImage = projectImageUrl(project.image);
   const alt = `${project.title} — DevoraX case study`;
-  const ogImage = isRemote
-    ? { url: rawImage, alt }
+  const ogImage = remoteImage
+    ? { url: remoteImage, alt }
     : { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt };
 
   return {
@@ -145,16 +145,38 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   if (error || !project) return notFound();
 
+  const study = getCaseStudy(id);
+  // One list of crumbs for the visible breadcrumb and the BreadcrumbList, so
+  // the two can't disagree. Projects, not 'Case Studies' → /case-study: these
+  // pages live under /projects, and a breadcrumb has to describe the path that
+  // actually exists.
+  const trail = [
+    { name: 'Projects', path: '/projects' },
+    { name: project.title, path: `/projects/${project.id}` },
+  ];
+
   return <>
-    <ProjectJsonLd project={project} />
-    <ProjectDetailClient project={project} />
-    {/* Server-rendered long-form study: these pages carried ~70 words before,
-        far under the depth that makes a case study citable or rankable. */}
-    <div className="mx-auto max-w-7xl px-6 pb-20">
-      <CaseStudyLongform content={getCaseStudy(id)} />
-      <div className="max-w-3xl">
-        <RelatedReading projectId={id} />
+    <ProjectJsonLd project={project} trail={trail} />
+    <main id="main-content">
+      {/* One <article> from the h1 through the long-form study. Extractors such
+          as trafilatura take the first <article> on a page as its body, so
+          wrapping only the study would have cost them the h1, the project story
+          and the tech stack. RelatedReading stays outside it. */}
+      <article>
+        <ProjectDetailClient project={project} trail={trail} />
+        {/* Server-rendered long-form study: these pages carried ~70 words before,
+            far under the depth that makes a case study citable or rankable. */}
+        {study && (
+          <div className="mx-auto max-w-7xl px-6">
+            <CaseStudyLongform content={study} />
+          </div>
+        )}
+      </article>
+      <div className="mx-auto max-w-7xl px-6 pb-20">
+        <div className="max-w-3xl">
+          <RelatedReading projectId={id} />
+        </div>
       </div>
-    </div>
+    </main>
   </>;
 }

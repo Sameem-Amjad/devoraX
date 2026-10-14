@@ -54,10 +54,15 @@ const Logo = ({ size = "md", glow = true }: LogoProps) => {
             transition-all duration-300
           `}
         >
+          {/* The mark is the "X" of the name, so it carries it: a link wrapping
+              the logo is then named "Devora X" from what is on screen, which is
+              what WCAG 2.5.3 (label in name) asks for. */}
           <svg
             viewBox="0 0 64 64"
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-full"
+            role="img"
+            aria-label="X"
           >
             <defs>
               <linearGradient
@@ -108,8 +113,13 @@ const Logo = ({ size = "md", glow = true }: LogoProps) => {
         </div>
       </div>
 
-      {/* Tagline */}
-      <span className="mt-1 text-[0.6rem] font-medium tracking-[0.25em] text-gray-400">
+      {/* Tagline. Decorative, so hidden from assistive tech: the header's logo
+          link is named from the brand text and the X mark ("Devora X"), not
+          from the tagline. */}
+      <span
+        aria-hidden="true"
+        className="mt-1 text-[0.6rem] font-medium tracking-[0.25em] text-gray-400"
+      >
         WE MAKE IT HAPPEN
       </span>
     </div>

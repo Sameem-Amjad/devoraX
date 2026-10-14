@@ -3,14 +3,20 @@ import { createPublicClient } from '@/lib/public';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { JsonLd } from '@/components/seo/structured-data';
+import { absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 
 const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
 
+// Also the name and description of the CollectionPage node below.
+const TITLE = 'Software Project Portfolio';
+const DESCRIPTION =
+  'Marketplaces, real-time apps, media backends and AI builds that DevoraX\'s founders built or worked on, including as employees of other companies.';
+
 export const metadata: Metadata = {
-  title: 'Software Project Portfolio',
-  description:
-    'Marketplaces, real-time apps, media backends and AI builds that DevoraX\'s founders built or worked on, including as employees of other companies.',
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     'DevoraX portfolio',
     'software development projects',
@@ -41,9 +47,12 @@ export const metadata: Metadata = {
   },
 };
 
-const itemListSchema = (projects: { id: string | number; title: string }[]) => ({
-  '@context': 'https://schema.org',
+const PATH = '/projects';
+const PAGE_URL = absoluteUrl(PATH);
+
+const itemListNode = (projects: { id: string | number; title: string }[]) => ({
   '@type': 'ItemList',
+  '@id': `${PAGE_URL}#projects`,
   name: 'DevoraX Project Portfolio',
   description: 'Software products built or engineered by DevoraX\'s founders, including work done as employees elsewhere',
   numberOfItems: projects.length,
@@ -55,15 +64,6 @@ const itemListSchema = (projects: { id: string | number; title: string }[]) => (
   })),
 });
 
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_URL },
-    { '@type': 'ListItem', position: 2, name: 'Projects', item: `${BASE_URL}/projects` },
-  ],
-};
-
 export default async function ProjectsPage() {
   const supabase = createPublicClient();
   const { data: projects } = await supabase
@@ -74,16 +74,21 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema(list)) }}
+      <JsonLd
+        graph={[
+          webPageNode({
+            path: PATH,
+            name: TITLE,
+            description: DESCRIPTION,
+            type: 'CollectionPage',
+            mainEntity: `${PAGE_URL}#projects`,
+          }),
+          breadcrumbNode(PATH, [{ name: 'Projects', path: PATH }]),
+          itemListNode(list),
+        ]}
       />
 
-      <main className="min-h-screen bg-[#020202] text-white">
+      <main id="main-content" className="min-h-screen bg-[#020202] text-white">
         {/* ── Page Header ── */}
         <header className="relative pt-36 pb-20 bg-[#020202] border-b border-white/5 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(20,184,166,0.07)_0%,_transparent_60%)] pointer-events-none" />
@@ -97,10 +102,10 @@ export default async function ProjectsPage() {
             </Link>
 
             <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex items-center gap-2 text-xs text-gray-600">
+              <ol className="flex items-center gap-2 text-xs text-gray-400">
                 <li><Link href="/" className="hover:text-teal-400 transition-colors">Home</Link></li>
                 <li aria-hidden="true">/</li>
-                <li className="text-teal-400">Projects</li>
+                <li className="text-teal-400" aria-current="page">Projects</li>
               </ol>
             </nav>
 
@@ -194,9 +199,9 @@ export default async function ProjectsPage() {
         </section>
 
         {/* ── CTA ── */}
-        <section aria-label="Start a project" className="py-20 border-t border-white/5 bg-[#030303]">
+        <section aria-labelledby="start-project-heading" className="py-20 border-t border-white/5 bg-[#030303]">
           <div className="max-w-3xl mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 id="start-project-heading" className="text-3xl md:text-4xl font-bold text-white mb-4">
               Ready to build yours?
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">

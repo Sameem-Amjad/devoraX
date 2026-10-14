@@ -19,8 +19,13 @@ export function OfferLadder() {
             Two ways in
           </h2>
           <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {/* Plain <div>s, not <article>s. Extractors such as trafilatura take
+                the first <article> on a page as its body, so the first card was
+                read as the whole of /services and most of the page was lost.
+                The ids are anchors: the home hero and llms.txt link to
+                /services#<id>. */}
             {DOORS.map((d) => (
-              <article
+              <div
                 key={d.id}
                 id={d.id}
                 className="scroll-mt-32 rounded-2xl border border-white/10 bg-[#0a0a0a] p-8"
@@ -30,7 +35,7 @@ export function OfferLadder() {
                 </span>
                 <h3 className="mt-3 text-xl font-bold text-white">{d.title}</h3>
                 <p className="mt-4 leading-relaxed text-gray-400">{d.body}</p>
-              </article>
+              </div>
             ))}
           </div>
         </div>
@@ -69,11 +74,15 @@ export function OfferLadder() {
             ))}
           </ol>
           <p className="mt-8 text-sm text-gray-500">
-            Building something new from scratch? The fixed-price MVP packages on the{' '}
-            <Link href="/#pricing" className="text-teal-400 underline underline-offset-4 hover:text-teal-300">
-              home page
+            Building something new from scratch? The{' '}
+            <Link href="/pricing#new-builds" className="text-teal-400 underline underline-offset-4 hover:text-teal-300">
+              fixed-price MVP packages
             </Link>{' '}
-            cover new builds.
+            cover new builds, and the{' '}
+            <Link href="/pricing" className="text-teal-400 underline underline-offset-4 hover:text-teal-300">
+              pricing page
+            </Link>{' '}
+            explains how every price is set.
           </p>
         </div>
       </section>

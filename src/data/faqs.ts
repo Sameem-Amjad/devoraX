@@ -5,6 +5,8 @@
  * from this array. Structured data must describe content that is actually
  * visible on the page, so keeping one array prevents the two from drifting.
  */
+import { SITE_URL } from "@/data/brand";
+
 export type Faq = { q: string; a: string };
 
 export const FAQS: Faq[] = [
@@ -50,10 +52,14 @@ export const FAQS: Faq[] = [
   },
 ];
 
-/** FAQPage JSON-LD built from the exact Q&As rendered on the page. */
+/**
+ * FAQPage node for the homepage graph, built from the exact Q&As rendered on
+ * the page. No @context: it is one node in the page's @graph. The @id is the
+ * homepage URL plus the anchor of <FAQSection />, so it names a real location.
+ */
 export const faqPageSchema = {
-  "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": `${SITE_URL}/#faq`,
   mainEntity: FAQS.map(({ q, a }) => ({
     "@type": "Question",
     name: q,
