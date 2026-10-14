@@ -52,9 +52,11 @@ DevoraX-Portfolio.pdf
 # matched src/app/projects/, silently ignoring new files in that route.
 /projects
 
-# IndexNow shared secret. The matching public/<key>.txt IS committed (it must be
-# publicly fetchable for verification); this private copy is not.
+# IndexNow key for scripts/indexnow.mjs. Not a secret: public/<key>.txt serves
+# the same key (IndexNow verifies it there), so that copy is committed.
 .indexnow-key
+# What scripts/indexnow.mjs last submitted, so a run sends only what changed.
+.indexnow-state.json
 
 # Supabase CLI local state (machine-specific, not shared)
 supabase/.temp/

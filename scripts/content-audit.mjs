@@ -21,7 +21,11 @@ const VERBOSE = process.argv.includes('--verbose');
 /** Pull an exported object/array literal out of a .ts module without compiling it. */
 function extract(file, exportName) {
   const src = readFileSync(file, 'utf8');
-  const decl = src.indexOf(`export const ${exportName}`);
+  // The exact name, not a prefix: `export const BRAND_FACTS` is also the start
+  // of `export const BRAND_FACTS_UPDATED`, and a prefix match parsed whichever
+  // came first. Skips an optional type annotation up to the `=`.
+  const found = new RegExp(`export const ${exportName}\\b\\s*(?::[^=]*)?=`).exec(src);
+  const decl = found ? found.index : -1;
   if (decl === -1) throw new Error(`${exportName} not found in ${file}`);
   const open = src.search.call(src, /[[{]/) && (() => {
     const i = src.indexOf('=', decl) + 1;
@@ -150,6 +154,8 @@ const SOURCES = [
   ['src/data/solutions.ts', 'SOLUTIONS'],
   ['src/data/faqs.ts', 'FAQS'],
   ['src/data/testimonials.ts', 'TESTIMONIALS'],
+  ['src/data/brand.ts', 'BRAND_FACTS'],
+  ['src/data/glossary.ts', 'GLOSSARY'],
 ];
 
 let errors = 0, warnings = 0;
