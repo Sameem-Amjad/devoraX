@@ -1,13 +1,11 @@
 "use client";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import {
-  ArrowLeft, Star, MapPin, ExternalLink, Award,
+  Star, MapPin, ExternalLink, Award,
   Code2, Server, Smartphone, Zap, Globe, Briefcase,
-  GraduationCap, Twitter, Linkedin, Github,
+  GraduationCap,
 } from "lucide-react";
-import Logo from "@/components/global/logo";
 
 // ── Founder data ──────────────────────────────────────────────────────────────
 
@@ -91,26 +89,15 @@ const TEAM: Member[] = [
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function TeamClient() {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-teal-500/30 font-sans">
 
-      {/* ── Top bar ── */}
-      <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-xl border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="cursor-pointer" onClick={() => router.push('/')}><Logo /></div>
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-2 text-sm text-gray-400 hover:text-teal-400 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back
-          </button>
-        </div>
-      </header>
-
-      <main className="pt-24">
+      {/* This page used to draw its own fixed top bar (a logo and a Back
+          button) from before the site had a shared header. Both were fixed at
+          top-0 and z-50, so on /team the bar sat over the main navigation and
+          the "Book a Call" button, and the page had two banner landmarks. The
+          root layout's header now serves this page like every other. */}
+      <main id="main-content" className="pt-24">
 
         {/* ════════════════════════════════════════════════
             FOUNDER SECTION
@@ -412,13 +399,9 @@ export default function TeamClient() {
                     <span className="text-[0.6rem] text-gray-600 uppercase tracking-wider font-mono">
                       {member.since ? `With DevoraX since ${member.since}` : "With DevoraX"}
                     </span>
-                    <div className="flex gap-2">
-                      {[Github, Linkedin, Twitter].map((Icon, idx) => (
-                        <button key={idx} className="w-7 h-7 rounded-lg bg-white/[0.03] border border-white/5 flex items-center justify-center text-gray-600 hover:text-teal-400 hover:border-teal-500/30 transition-all duration-150 cursor-pointer">
-                          <Icon className="w-3 h-3" />
-                        </button>
-                      ))}
-                    </div>
+                    {/* No profile icons: they were three unlabelled buttons that
+                        went nowhere, because no profile is published for this
+                        card. Add real links here when there are some. */}
                   </div>
                 </motion.div>
               ))}
