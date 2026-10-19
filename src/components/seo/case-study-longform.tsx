@@ -32,7 +32,9 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
       <div className="max-w-3xl">
         <Byline updated={content.updated ?? CASE_STUDY_CONTENT_UPDATED} kind="case study" />
         {/* Answer-first summary — the passage most likely to be quoted. */}
-        <p className="mt-8 text-xl leading-relaxed text-gray-200">{content.summary_answer}</p>
+        {/* break-words throughout: a study can name a long bare domain, such as
+            the demo hub's, which would otherwise push a phone screen sideways. */}
+        <p className="mt-8 break-words text-xl leading-relaxed text-gray-200">{content.summary_answer}</p>
 
         {content.results?.length > 0 && (
           <section
@@ -55,7 +57,7 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
               {content.results.map((r) => (
                 <li key={r} className="flex gap-3 text-gray-200">
                   <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-400" />
-                  <span className="leading-relaxed">{r}</span>
+                  <span className="min-w-0 break-words leading-relaxed">{r}</span>
                 </li>
               ))}
             </ul>
@@ -79,7 +81,7 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
               {s.heading}
             </h2>
             {paragraphs(s.body).map((p, i) => (
-              <p key={i} className="mt-4 leading-relaxed text-gray-400">
+              <p key={i} className="mt-4 break-words leading-relaxed text-gray-400">
                 {p}
               </p>
             ))}
@@ -95,7 +97,7 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
               {content.stack_rationale.map((s) => (
                 <li key={s} className="flex gap-3 text-gray-400">
                   <span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-400/60" />
-                  <span className="leading-relaxed">{s}</span>
+                  <span className="min-w-0 break-words leading-relaxed">{s}</span>
                 </li>
               ))}
             </ul>

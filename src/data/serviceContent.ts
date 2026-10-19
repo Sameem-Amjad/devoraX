@@ -345,7 +345,11 @@ export const SERVICE_CASE_STUDIES: Record<number, number[]> = {
   // Pro League (Flutter), and Pastel, where Sameem works on the iOS app.
   1: [17, 25, 28, 31, 23],
   // AI & Full-Stack Web — Next.js / React web front ends on Supabase and serverless APIs.
-  2: [32, 24, 22],
+  // Client work first (the services hub shows the first three): ConstrAction,
+  // VoiceDesk and Pianissimo Online through Fiverr, and iDecorwala directly.
+  // Then employer work, then the demo builds: Waitmate, FirstPass, SiteWrite
+  // and the AR Lip Filler proof of concept.
+  2: [33, 40, 39, 38, 32, 24, 22, 37, 36, 35],
   // Cloud Architecture — Node/AWS backends: microservices and media pipelines.
   3: [26, 30],
   // Modern UI/UX — the two most interface-led products in the portfolio.

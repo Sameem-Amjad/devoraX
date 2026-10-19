@@ -84,10 +84,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       'web development portfolio',
       ...(Array.isArray(project.tags) ? project.tags : []),
     ],
+    // A page-level googleBot replaces the root layout's rather than merging
+    // with it, so every directive the layout sets has to be repeated here.
+    // max-video-preview had been lost that way, which mattered once these
+    // pages started carrying walkthrough videos.
     robots: {
       index: true,
       follow: true,
-      googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-snippet': -1,
+        'max-image-preview': 'large',
+        'max-video-preview': -1,
+      },
     },
     alternates: { canonical: canonicalUrl },
     openGraph: {

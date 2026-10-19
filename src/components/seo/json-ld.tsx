@@ -1,5 +1,12 @@
 import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
 import { OG_IMAGE, ORG_REF, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
+import {
+    absoluteMediaUrl,
+    projectGallery,
+    projectVideo,
+    uploadDateTime,
+    videoTitle,
+} from '@/lib/projectMedia';
 import { JsonLd } from './structured-data';
 
 type Project = {
@@ -10,6 +17,9 @@ type Project = {
     image?: string | null;
     tags?: string[] | null;
     created_at?: string | null;
+    /** jsonb columns, parsed by src/lib/projectMedia.ts. */
+    video?: unknown;
+    gallery?: unknown;
 };
 
 type Crumb = { name: string; path: string };
@@ -49,6 +59,9 @@ export function ProjectJsonLd({ project, trail }: { project: Project; trail: Cru
     const studyUpdated = study ? (study.updated ?? CASE_STUDY_CONTENT_UPDATED) : undefined;
     const modified = studyUpdated ?? published;
     const image = projectImageUrl(project.image);
+    const video = projectVideo(project.video);
+    const gallery = projectGallery(project.gallery).map((g) => g.src);
+    const videoRef = video ? { '@id': `${url}#video` } : undefined;
 
     // Page-level node. Every node on these pages previously floated unattached —
     // the breadcrumb described a trail to nothing and the Article's
@@ -74,7 +87,10 @@ export function ProjectJsonLd({ project, trail }: { project: Project; trail: Cru
         mainEntityOfPage: { '@id': `${url}#webpage` },
         // Google expects an image on an Article. Projects without one get the
         // site card, the same fallback generateMetadata uses for og:image.
-        image: [image ?? OG_IMAGE.url],
+        // Plus the gallery the page shows, deduplicated: a new project's card
+        // image is the gallery's first screenshot.
+        image: [...new Set([image ?? OG_IMAGE.url, ...gallery])],
+        ...(videoRef ? { video: videoRef } : {}),
         datePublished: published,
         dateModified: modified,
         // Both author and publisher now reference the single Organization node
@@ -87,5 +103,31 @@ export function ProjectJsonLd({ project, trail }: { project: Project; trail: Cru
         inLanguage: 'en-US',
     };
 
-    return <JsonLd graph={[webPage, breadcrumbNode(path, trail), article]} />;
+    // The walkthrough the page plays. Self-hosted, so contentUrl is the file
+    // itself; there is no player page to give as embedUrl.
+    const videoNode = video
+        ? {
+              '@type': 'VideoObject',
+              '@id': `${url}#video`,
+              name: videoTitle(project.title),
+              description: video.caption,
+              thumbnailUrl: [absoluteMediaUrl(video.poster)],
+              uploadDate: uploadDateTime(video.uploadDate),
+              duration: video.duration,
+              contentUrl: absoluteMediaUrl(video.src),
+              encodingFormat: 'video/mp4',
+              width: 1280,
+              height: 800,
+              isPartOf: { '@id': `${url}#webpage` },
+              publisher: ORG_REF,
+          }
+        : null;
+
+    const page = videoRef ? { ...webPage, video: videoRef } : webPage;
+
+    return (
+        <JsonLd
+            graph={[page, breadcrumbNode(path, trail), article, ...(videoNode ? [videoNode] : [])]}
+        />
+    );
 }

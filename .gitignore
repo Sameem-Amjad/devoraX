@@ -60,3 +60,7 @@ DevoraX-Portfolio.pdf
 
 # Supabase CLI local state (machine-specific, not shared)
 supabase/.temp/
+
+# Firebase Admin SDK service-account keys are credentials. Never commit one,
+# wherever it gets dropped in the tree.
+*-firebase-adminsdk-*.json

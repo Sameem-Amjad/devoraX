@@ -83,6 +83,14 @@ const nextConfig: NextConfig = {
         source: "/(.*)",
         headers: securityHeaders,
       },
+      {
+        // Project walkthroughs and their posters. The filenames are versioned
+        // (<slug>-v1.mp4): a re-recorded video ships as -v2 under a new URL,
+        // so a cached copy can never go stale and browsers can keep it for a
+        // year without revalidating.
+        source: "/videos/(.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
     ];
   },
   async redirects() {

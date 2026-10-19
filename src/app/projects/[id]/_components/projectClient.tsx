@@ -3,11 +3,13 @@ import { Fragment } from "react";
 import {
   ArrowLeft, Code2, Cpu, Database, Server, Monitor, Smartphone,
   Cloud, Zap, CreditCard, MapPin, ShieldCheck, Activity, Layout,
-  Navigation, Globe, Star, ExternalLink,
+  Navigation, Globe, Star, ExternalLink, PlayCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { projectDemoUrl, projectGallery, projectVideo } from "@/lib/projectMedia";
+import { ProjectGallery, ProjectVideoPlayer } from "./projectWalkthrough";
 
 // ─── Icon map (matches what's stored in DB) ───────────────────────────────────
 
@@ -54,6 +56,12 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
   const hasImage   = !!(project.image && project.image !== "null" && project.image !== '""' && String(project.image).startsWith("http"));
 
   const hasPSR = project.problem || project.solution || project.result;
+
+  // Optional media. Each parses to null/[] when absent or malformed, and the
+  // page then renders exactly as it did before these columns existed.
+  const video   = projectVideo(project.video);
+  const gallery = projectGallery(project.gallery);
+  const demoUrl = projectDemoUrl(project.demo_url);
 
   return (
     <div className="min-h-screen bg-black pt-24 pb-20">
@@ -168,6 +176,23 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
           {/* Left — 2/3 */}
           <div className="lg:col-span-2 space-y-12">
 
+            {/* Walkthrough first: it is the quickest way to see the product,
+                and on wide screens it sits beside the "Where to See It" box
+                that links to the live demo. */}
+            {video && (
+              <section aria-labelledby="project-walkthrough">
+                <h2 id="project-walkthrough" className="text-2xl font-bold text-white mb-6">Walkthrough</h2>
+                <ProjectVideoPlayer video={video} title={project.title} />
+              </section>
+            )}
+
+            {gallery.length > 0 && (
+              <section aria-labelledby="project-screens">
+                <h2 id="project-screens" className="text-2xl font-bold text-white mb-6">Screens</h2>
+                <ProjectGallery images={gallery} title={project.title} />
+              </section>
+            )}
+
             {/* Problem / Solution / Result */}
             {hasPSR && (
               <section aria-labelledby="project-story">
@@ -280,7 +305,27 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
                     <ExternalLink className="w-3.5 h-3.5 ml-auto opacity-40" />
                   </a>
                 )}
-                {!webUrl && !androidUrl && !iosUrl && (
+                {demoUrl && (
+                  // The project's page on the demo hub: the demo builds, their
+                  // logins and notes. Separate from webUrl, which is the real
+                  // product when there is one.
+                  <a
+                    href={demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 w-full py-3 px-4 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 text-teal-200 font-bold rounded-xl transition-colors"
+                  >
+                    <PlayCircle className="w-4 h-4 flex-shrink-0 text-teal-400" />
+                    <span>Try the live demo</span>
+                    <ExternalLink className="w-3.5 h-3.5 ml-auto opacity-60" />
+                  </a>
+                )}
+                {demoUrl && (
+                  <p className="text-xs leading-relaxed text-gray-400">
+                    Opens the project’s page on the demo hub in a new tab, with any logins the demo needs.
+                  </p>
+                )}
+                {!webUrl && !androidUrl && !iosUrl && !demoUrl && (
                   <p className="text-gray-600 text-sm text-center py-2">No public link for this project</p>
                 )}
               </div>

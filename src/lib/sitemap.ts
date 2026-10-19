@@ -24,12 +24,33 @@ import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyConten
 import { SERVICE_CONTENT, SERVICE_CONTENT_UPDATED } from '@/data/serviceContent';
 import { INSIGHTS, INSIGHTS_UPDATED } from '@/data/insights';
 import { SOLUTIONS, SOLUTIONS_UPDATED } from '@/data/solutions';
+import {
+  absoluteMediaUrl,
+  durationSeconds,
+  projectGallery,
+  projectVideo,
+  uploadDateTime,
+  videoTitle,
+} from '@/lib/projectMedia';
+
+export type SitemapVideo = {
+  thumbnailLoc: string;
+  title: string;
+  description: string;
+  contentLoc: string;
+  /** Whole seconds. */
+  duration: number;
+  /** ISO 8601 with a time zone. */
+  publicationDate: string;
+};
 
 export type SitemapEntry = {
   url: string;
   lastModified: Date;
   /** Absolute image URLs shown on the page. */
   images?: string[];
+  /** Videos the page plays. */
+  videos?: SitemapVideo[];
 };
 
 /** Each is served at /sitemaps/{name}.xml. */
@@ -59,7 +80,13 @@ function newest(dates: Date[], fallback: Date): Date {
 // ── Rows ──
 
 type Row = { id: number | string; created_at: string | null };
-type ProjectRow = Row & { image: string | null };
+type ProjectRow = Row & {
+  title: string;
+  image: string | null;
+  /** jsonb, parsed by src/lib/projectMedia.ts. */
+  video: unknown;
+  gallery: unknown;
+};
 
 /**
  * Both detail routes resolve by primary key (`.eq('id', id)`), and the site
@@ -81,7 +108,8 @@ async function selectRows<T>(table: 'projects' | 'services', columns: string): P
   return [];
 }
 
-export const fetchProjects = () => selectRows<ProjectRow>('projects', 'id, created_at, image');
+export const fetchProjects = () =>
+  selectRows<ProjectRow>('projects', 'id, created_at, title, image, video, gallery');
 export const fetchServices = () => selectRows<Row>('services', 'id, created_at');
 
 /**
@@ -103,6 +131,12 @@ function projectEntries(projects: ProjectRow[]): SitemapEntry[] {
   return projects.map((project) => {
     const study = getCaseStudy(project.id);
     const image = projectImage(project.image);
+    // The card image plus the gallery screenshots, once each: a new project's
+    // card image is also its first screenshot.
+    const images = [
+      ...new Set([image, ...projectGallery(project.gallery).map((g) => projectImage(g.src))]),
+    ].filter((src): src is string => Boolean(src));
+    const video = projectVideo(project.video);
     return {
       url: absoluteUrl(`/projects/${project.id}`),
       // A rewritten study carries its own revision date: the second batch was
@@ -111,7 +145,21 @@ function projectEntries(projects: ProjectRow[]): SitemapEntry[] {
       lastModified: study
         ? new Date(study.updated ?? CASE_STUDY_CONTENT_UPDATED)
         : toDate(project.created_at, STATIC_CONTENT_UPDATED),
-      ...(image ? { images: [image] } : {}),
+      ...(images.length ? { images } : {}),
+      ...(video
+        ? {
+            videos: [
+              {
+                thumbnailLoc: absoluteMediaUrl(video.poster),
+                title: videoTitle(project.title),
+                description: video.caption,
+                contentLoc: absoluteMediaUrl(video.src),
+                duration: durationSeconds(video.duration),
+                publicationDate: uploadDateTime(video.uploadDate),
+              },
+            ],
+          }
+        : {}),
     };
   });
 }
@@ -229,10 +277,26 @@ export function escapeXml(value: string): string {
 const XML_DECLARATION = '<?xml version="1.0" encoding="UTF-8"?>';
 const SITEMAP_NS = 'http://www.sitemaps.org/schemas/sitemap/0.9';
 const IMAGE_NS = 'http://www.google.com/schemas/sitemap-image/1.1';
+const VIDEO_NS = 'http://www.google.com/schemas/sitemap-video/1.1';
+
+/** A <video:video> block. Google requires thumbnail, title, description and a content or player location. */
+function videoXml(v: SitemapVideo): string {
+  return [
+    '    <video:video>',
+    `      <video:thumbnail_loc>${escapeXml(v.thumbnailLoc)}</video:thumbnail_loc>`,
+    `      <video:title>${escapeXml(v.title)}</video:title>`,
+    `      <video:description>${escapeXml(v.description)}</video:description>`,
+    `      <video:content_loc>${escapeXml(v.contentLoc)}</video:content_loc>`,
+    `      <video:duration>${v.duration}</video:duration>`,
+    `      <video:publication_date>${escapeXml(v.publicationDate)}</video:publication_date>`,
+    '    </video:video>',
+  ].join('\n');
+}
 
 export function urlsetXml(entries: SitemapEntry[]): string {
-  // Only a sitemap that lists an image declares the image namespace.
+  // Only a sitemap that lists an image (or a video) declares that namespace.
   const hasImages = entries.some((e) => e.images?.length);
+  const hasVideos = entries.some((e) => e.videos?.length);
   const urls = entries.map((e) =>
     [
       '  <url>',
@@ -243,12 +307,15 @@ export function urlsetXml(entries: SitemapEntry[]): string {
       ...(e.images ?? []).map(
         (src) => `    <image:image><image:loc>${escapeXml(src)}</image:loc></image:image>`
       ),
+      ...(e.videos ?? []).map(videoXml),
       '  </url>',
     ].join('\n')
   );
   return [
     XML_DECLARATION,
-    `<urlset xmlns="${SITEMAP_NS}"${hasImages ? ` xmlns:image="${IMAGE_NS}"` : ''}>`,
+    `<urlset xmlns="${SITEMAP_NS}"${hasImages ? ` xmlns:image="${IMAGE_NS}"` : ''}${
+      hasVideos ? ` xmlns:video="${VIDEO_NS}"` : ''
+    }>`,
     ...urls,
     '</urlset>',
     '',

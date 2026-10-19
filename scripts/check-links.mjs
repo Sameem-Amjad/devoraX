@@ -5,7 +5,7 @@
  * Two sources, because checking only one would miss most of them:
  *
  *   1. src/ — links hardcoded in components and content files.
- *   2. Supabase `projects` — the web / android / ios columns. These are the
+ *   2. Supabase `projects` — the web / android / ios / demo_url columns. These are the
  *      proof links on every case study, they are edited through the admin
  *      dashboard rather than in a commit, and a grep over the repo will never
  *      see them. This is where the five dead WOD Pro League and Outstride
@@ -103,7 +103,7 @@ const collectFromSupabase = async (found) => {
   }
 
   const res = await fetch(
-    `${url}/rest/v1/projects?select=id,title,web,android,ios&order=id.asc`,
+    `${url}/rest/v1/projects?select=id,title,web,android,ios,demo_url&order=id.asc`,
     { headers: { apikey: key, authorization: `Bearer ${key}` } }
   );
   if (!res.ok) {
@@ -113,7 +113,7 @@ const collectFromSupabase = async (found) => {
 
   let n = 0;
   for (const row of await res.json()) {
-    for (const field of ["web", "android", "ios"]) {
+    for (const field of ["web", "android", "ios", "demo_url"]) {
       if (!isRealUrl(row[field])) continue;
       n++;
       const where = `projects/${row.id} (${row.title}) · ${field}`;

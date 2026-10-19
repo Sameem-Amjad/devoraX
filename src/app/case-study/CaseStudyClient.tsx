@@ -21,6 +21,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/global/logo";
+import { VideoBadge } from "@/components/ui/videoBadge";
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -213,6 +214,7 @@ function ProjectCard({
                 {project.category}
               </span>
             </div>
+            <VideoBadge video={project.video} className="absolute top-4 right-4" />
 
             {/* Explore overlay on hover */}
             <div

@@ -4,6 +4,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { VideoBadge } from "@/components/ui/videoBadge";
 
 const ITEMS_PER_LOAD = 6;
 
@@ -141,6 +142,8 @@ function ProjectCard({ item, idx }: { item: any; idx: number }) {
                 {item.category}
               </span>
             </div>
+
+            <VideoBadge video={item.video} className="absolute bottom-4 left-4" />
 
             {/* Index */}
             <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-sm border border-white/[0.08]">

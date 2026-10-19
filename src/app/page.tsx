@@ -45,6 +45,14 @@ export default async function Home() {
     supabase.from("services").select("*")
   ]);
 
+  // Featured work first, newest first within each group (sort is stable).
+  // The grid shows six at a time, and the three demo builds added on 19 Oct
+  // 2026 are newer than every earlier project: by date alone they would take
+  // half the first screen and push client work off it.
+  const projects = [...(projectsRes.data || [])].sort(
+    (a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured))
+  );
+
   // Pass the data to the Client Component
   return (
     <>
@@ -53,7 +61,7 @@ export default async function Home() {
           below, and is tied to this page so it does not float free in the graph. */}
       <JsonLd graph={[webPage, { ...faqPageSchema, isPartOf: { "@id": webPage["@id"] } }]} />
       <HomeClient
-        initialProjects={projectsRes.data || []}
+        initialProjects={projects}
         initialServices={servicesRes.data || []}
         // Fiverr-record figures plus a store-listing count computed from the
         // projects table, so the counter cannot drift out of date.

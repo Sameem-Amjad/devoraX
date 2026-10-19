@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { JsonLd } from '@/components/seo/structured-data';
 import { absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
+import { VideoBadge } from '@/components/ui/videoBadge';
 
 const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
@@ -169,6 +170,7 @@ export default async function ProjectsPage() {
                               Featured
                             </span>
                           )}
+                          <VideoBadge video={project.video} className="absolute top-3 right-3" />
                         </div>
 
                         {/* Content */}
