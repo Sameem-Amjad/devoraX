@@ -35,6 +35,16 @@
  * numbers the demo itself shows. Demo logins never appear here: the demo hub
  * page holds them.
  *
+ * Revised 2 Nov 2026: studies added for Mint Choc Media (41), Royal Malt (42),
+ * GentleR (43), SolNotary (44), CAD Interior Studio (45), ExpertProfile.AI
+ * (46), SteamBlast Arena (47) and Bevy Irie (48), drafted the same way and
+ * checked against each demo's code. One more attribution form appears, as
+ * Sameem confirmed that day: "a client project: Sameem worked on it as a
+ * <role> for a client", naming no platform and no client company beyond the
+ * product's own brand; CAD Interior Studio is "a proof of concept built for a
+ * client". No production URL is given for any of them: each links only its
+ * demo, which runs a separate copy on sample data.
+ *
  * Rendered server-side so crawlers and AI engines (which do not execute
  * JavaScript) read it from the initial HTML.
  */
@@ -1710,6 +1720,473 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
     ],
     "word_count": 1896,
     "updated": "2026-10-19T00:00:00.000Z"
+  },
+  "41": {
+    "project_id": 41,
+    "title": "Mint Choc Media: A One-Page Studio Landing Site on React, Tailwind CSS and Motion",
+    "meta_description": "Mint Choc Media: a one-page landing site for a London social-first creative studio, in React, Tailwind and Motion. A client project by Sameem.",
+    "summary_answer": "Mint Choc Media is a one-page landing site for a London social-first creative studio that pairs creative work, the mint, with strategy, the choc. Mint Choc Media is a client project: Sameem worked on it as a front-end engineer for a client. The page is built to turn a scroll into a campaign brief. It opens on a bold hero with floating campaign cards and a scroll progress bar in the brand green, then serves four services as flavours, introduces the founder, rolls a reel of recent campaigns, counts up headline results and rotates client quotes before ending in a brief form. It has a phone menu and the brand's own Aileron and Dunbar typefaces, self-hosted. The site can be tried from demoprojectsforclients.sameemamjad.com/projects/mintchoc, and a 1¼-minute walkthrough recorded on the live demo is on this page.",
+    "sections": [
+      {
+        "heading": "What was the Mint Choc Media site built to do?",
+        "body": "Mint Choc Media is a London studio that pairs creative work (the mint) with strategy (the choc). It needed a site as bold as that brand: playful but credible, quick to read on a phone and set in its own typefaces, with every section leading a visitor towards sending a campaign brief.\n\nThe page reads as one argument from top to bottom: the hero, the four services, the founder, a reel of recent campaigns, headline results and client quotes, with the brief form last. A thin bar in the brand green grows across the top of the screen as the visitor scrolls.\n\nOne-page agency sites usually repeat the call to action instead of saving it for the end, because a visitor can be persuaded at any point. Here a Start a Campaign button sits in the header, in the hero and in the phone menu, and each one jumps to the brief form."
+      },
+      {
+        "heading": "How are the four services served as flavours?",
+        "body": "The studio's name gives the page its voice, so the services are presented as flavours. Four cards cover social media marketing, content creation, video production and digital advertising strategy. Each has an image, a short tag, a description and small chips listing what's included, so the offer can be scanned without reading every paragraph. One card is set in the brand's burgundy instead of white, which breaks up the grid.\n\nThe cards sit two across on wider screens and stack into one column on a phone.\n\nBelow them, the founder section explains why the studio exists and how it works with clients. The founder card shows the studio's brand mark instead of a photo, on a soft green glow, so the section keeps its layout and its colours."
+      },
+      {
+        "heading": "How does Motion animate the page without getting in the way?",
+        "body": "Motion, the React animation library, drives everything that moves. Most of it is one pattern: a section's heading and cards fade and rise into place the first time they scroll into view, then stay put. Cards in a group arrive a fraction of a second apart, on a shared easing curve that starts quickly and settles gently.\n\nThe progress bar reads the page's scroll position, smooths it with a spring and uses it to stretch the bar. The hero uses its own scroll value for a light parallax: the background moves more slowly than the page while the content rises and fades.\n\nAnimating transform and opacity is the usual way to keep motion cheap, since a browser can move and fade an element without recalculating the layout around it. In the hero, the floating cards, the drifting glows and the shimmer on the headline stop looping when a visitor's device asks for reduced motion."
+      },
+      {
+        "heading": "How does the campaign reel roll without a visible jump?",
+        "body": "The recent work section shows campaigns as a reel of tall cards that rolls sideways on its own. Each card carries a campaign type, a brand name and a headline result supplied by the studio. Those are the studio's own marketing content, and this study does not repeat them or present them as verified.\n\nAn endless strip is usually built by rendering the list twice, side by side, and sliding the track left by exactly half its width at a steady speed. When the animation restarts, the second copy sits where the first began, so the reset cannot be seen. The reel works this way, with a fading mask on both edges so cards drift in and out instead of being cut off.\n\nThe easing has to be linear, because any curve would make the strip slow down and speed up at every loop. The same technique runs a strip of social platforms in the results section."
+      },
+      {
+        "heading": "How do the results counters and rotating quotes work?",
+        "body": "The results section shows four headline numbers that count up from zero as they come into view. Like the reel's figures, they are the studio's own claims, and they are not repeated or vouched for here.\n\nOnce enough of the grid is on screen, each value springs from zero to its target without overshooting, and a formatting step turns it into text with the right decimal places and suffix. Motion writes that text straight to the page instead of re-rendering the card on every frame, so four counters running together stay light. The count runs only once.\n\nClient quotes rotate on a timer below. Each quote leaves before the next arrives, and the box keeps a minimum height so the page does not jump when a short quote replaces a long one. A row of dots lets a visitor pick a quote, and each dot has a label for screen readers."
+      },
+      {
+        "heading": "How does the campaign brief form behave?",
+        "body": "The brief form is where the page ends. It asks for a name, an email address, an optional company name and a message about the brand.\n\nValidation uses the browser's own rules: the required fields and the email format are checked before the form's handler runs, so an empty or malformed brief never reaches the confirmation. Built-in validation needs no library and its messages appear in the browser's language; the trade-off is that they look like the browser's messages, not the brand's.\n\nOn a valid send, the button turns into a confirmation, and a few seconds later the form clears itself. On this demo the form sends nothing, and a line under the button says so, marked as a status message for screen readers.\n\nIn live use, forms like this usually post to an email or CRM service, with a honeypot field or a rate limit to deter spam."
+      },
+      {
+        "heading": "Why self-host the brand's Aileron and Dunbar typefaces?",
+        "body": "A brand's typefaces carry as much of its identity as its colours. Mint Choc Media's are Aileron for body text and Dunbar for headings. Brand typefaces are often missing from public font services, so the site serves the files itself, taken from the studio's brand pack.\n\nAileron comes in four weights as OpenType files. Dunbar comes in a single extra-bold cut as WOFF2, declared for the whole weight range, so whatever weight a heading asks for, the browser uses the real extra-bold shapes instead of synthesising a heavier version.\n\nEach face uses font-display: swap, so text appears at once in a fallback font and switches when the brand font arrives; the cost is a brief visible change on a slow connection. The build copies the font files out under content-hashed names, so browsers can cache them for a long time.\n\nSelf-hosting a commercial typeface generally needs a licence that allows web embedding, which is worth confirming for any brand font."
+      },
+      {
+        "heading": "How does the site work on a phone?",
+        "body": "Below tablet width, the header's links fold into a menu button whose three lines animate into a cross. The menu grows open, lists the sections and repeats the Start a Campaign button.\n\nA tapped menu link waits for the menu to finish closing before it scrolls. Closing a menu changes the layout under the page, and a smooth scroll that starts at the same moment can be cut short, so a common approach is to scroll once the closing animation has ended.\n\nOn smaller screens the layouts collapse. The services and results grids drop to one or two columns, the hero's floating cards appear only on large screens, and headings scale with the screen width between a set minimum and maximum. Decorative glows sit partly off the edge of each section, a common cause of sideways scrolling on phones, so each section clips its own overflow."
+      },
+      {
+        "heading": "Where can you see Mint Choc Media?",
+        "body": "Mint Choc Media is a client project: Sameem worked on it as a front-end engineer for a client. The public demo is a separate copy of the site, opened from the demo hub at demoprojectsforclients.sameemamjad.com/projects/mintchoc. There is nothing to sign in to: it's a public landing page.\n\nA visitor can scroll the whole page, open the phone menu at a narrow width, pick quotes with the dots and fill in a campaign brief. On this demo the brief form confirms on the page but doesn't send anything, and it says so. The founder card shows the studio's brand mark instead of a photo.\n\nThis page also carries a 1¼-minute walkthrough recorded on the live demo. It shows the hero, the four services, the founder, the campaign reel, results, client quotes and a campaign brief."
+      }
+    ],
+    "results": [
+      "Demo hub page: demoprojectsforclients.sameemamjad.com/projects/mintchoc, with a link that opens the full one-page site (nothing to sign in to)",
+      "A 1¼-minute walkthrough video on this page, recorded on the live demo",
+      "On the demo, the brief form confirms on the page, clears itself and says that nothing was sent"
+    ],
+    "stack_rationale": [
+      "React 18: the page is a set of section components, from the hero to the brief form, and most keep their content in a small data array that the markup maps over, so a new service or quote is an edit to data, not to layout. State such as the open menu, the current quote and the form's fields lives in the component that uses it.",
+      "Vite 6: the development server and build tool. It compiles the TypeScript and JSX, bundles the styles and copies files such as the typefaces out under content-hashed names, so they cache well. The output is plain static files that any static host can serve.",
+      "Tailwind CSS v4: utility classes handle layout, spacing and breakpoints in the markup, which suits a one-page site where most sections are one-off layouts. Version 4 is configured in CSS and plugs straight into Vite, and the brand's colours are written as exact values in the classes.",
+      "Motion: the animation library behind the reveals, the parallax, the counters, the reel and the quote transitions. Its scroll and in-view hooks turn scroll position into animation values directly, and AnimatePresence lets the phone menu and the quotes animate out before they leave the page.",
+      "TypeScript: the shapes of a results metric and of the brief form's fields are spelled out as types, and a field's name can only be one of the four the form state holds, so an editor flags a typo before it reaches the page.",
+      "Self-hosted brand typefaces: Aileron and Dunbar are served from the site's own files instead of a font service. That keeps the brand's exact cuts and removes a request to a third-party host, and the font files are cached along with the rest of the build."
+    ],
+    "word_count": 1885,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "42": {
+    "project_id": 42,
+    "title": "Royal Malt: A Prerendered Brand Launch Site on TanStack Start, React 19 and Tailwind CSS v4",
+    "meta_description": "Royal Malt: a one-page launch site for an alcohol-free malt drink, prerendered with TanStack Start to run on shared hosting. A client project.",
+    "summary_answer": "Royal Malt is a one-page launch site for Royal Malt Vanilla, an alcohol-free vanilla malt drink, for consumers and for trade buyers who might distribute it. Royal Malt is a client project: Sameem worked on it as a front-end engineer for a client. The page opens on a product film and a launch hero, then covers the brand story, ten reasons to choose the drink, six ingredients, trade specifications, a packaging gallery, a partnership enquiry form and an FAQ. It is built with TanStack Start and React 19 but prerendered to plain HTML, with a sitemap, a social preview image and cache rules, because the client's cPanel shared hosting has no Node.js. A demo copy can be tried at demoprojectsforclients.sameemamjad.com/projects/royalmalt, and a 1½-minute walkthrough recorded on the live demo is on this page.",
+    "sections": [
+      {
+        "heading": "What did the Royal Malt launch site need to do?",
+        "body": "Royal Malt Vanilla is a new alcohol-free malt drink, and the site presents it as launching across Africa, Europe and the Middle East. Its launch site has two jobs: make the product appealing to people who will drink it, and give an importer or retail buyer enough to start a conversation about stocking it.\n\nThe brief added two constraints. The site had to feel as premium as the packaging, with large product photography, film and a palette of navy, cream and gold. It also had to run on the client's existing cPanel shared hosting, which has no Node.js.\n\nThat second constraint shaped most of the engineering. A modern React framework expects a server process to render its pages, which this kind of hosting will not run, so the site keeps the framework for development and is prerendered to static files at build time."
+      },
+      {
+        "heading": "How does one page serve both drinkers and distributors?",
+        "body": "The page is ordered so each audience reaches its own material without a second page. It opens on a full-width product film, then the launch hero, which offers two paths: discover the drink, or become a distributor. A Partner With Us button stays in the fixed header throughout.\n\nConsumer material comes first: the brand story, the can from front, side and back, ten reasons to choose it, six ingredients, the occasions it is meant for and a short brand film. Launch pages are usually skimmed, so these are quick-scan cards.\n\nTrade material follows. A specifications table lists the format, a 500 ml aluminium can, and the case, 24 cans per carton. A gallery shows the can, the shrink pack and the retail carton. Then comes the partnership enquiry, the page's main call to action, followed by the FAQ and a newsletter signup.\n\nOn phones the navigation collapses into a menu, and nothing scrolls sideways."
+      },
+      {
+        "heading": "Why use TanStack Start if the host can't run Node.js?",
+        "body": "TanStack Start is a full-stack React framework whose normal build produces a server bundle that renders each page on request, which a host without Node.js cannot run. But rendering can move from request time to build time. Prerendering runs the same React components once during the build and writes the HTML each route produces to disk. The host serves a finished index.html with every heading and FAQ answer already in the markup, and React then hydrates it in the browser to attach the interactive parts, such as the phone menu and the forms.\n\nThe usual alternative is a single-page app that ships an almost empty HTML file and builds the page in the browser. That also runs on a static host, but crawlers and link previews that do not execute JavaScript see very little of it. Prerendering gives the host a complete page while development keeps the framework's components and dev server.\n\nThe FAQ follows the same thinking. It uses the browser's native disclosure element, so answers open before any JavaScript has loaded."
+      },
+      {
+        "heading": "How is the site packaged for cPanel hosting?",
+        "body": "The static export is opt-in. A build flag switches on TanStack Start's prerenderer with link crawling, so it starts at the home page and follows internal links to every route.\n\nThe result is a self-contained folder of prerendered HTML, content-hashed JavaScript and CSS, and the page's own images and films, so the site relies on no other service for its media.\n\nA post-build script fills the gaps. The project's sitemap is a server route, and a server route cannot exist without a server, so the script writes sitemap.xml as a real file, along with robots.txt and the Apache configuration that carries the cache rules.\n\nDeploying is then a file copy: zip the folder, upload it through cPanel's File Manager and extract it into the document root. Because the output is plain files, any basic static file server can check it first."
+      },
+      {
+        "heading": "What do the cache rules on shared hosting do?",
+        "body": "cPanel hosts commonly serve sites through Apache, where a .htaccess file in the document root sets headers and rewrites without access to the main server configuration, and the post-build script writes one.\n\nCaching matters most on a media-heavy page. JavaScript and CSS files carry a hash of their contents in their names, so a changed file always gets a new name. That makes it safe to tell browsers to keep them, with the images and films, for a year as immutable. The HTML gets no-cache, so browsers check for a new version on each visit and a fresh upload shows straight away.\n\nThe file also turns on compression for text, stops directory listings, and sends any path that is not a real file back to index.html, so a refresh or a stray link gets the page instead of the host's error page.\n\nThe module-specific rules sit inside IfModule checks. Shared hosts enable different Apache modules, and a directive for a missing one can cause a server error for the whole site. Wrapped, the directive is skipped."
+      },
+      {
+        "heading": "How do the sitemap and social preview image work?",
+        "body": "A sitemap is only useful with absolute URLs, so the build takes the site's address as a setting and writes it into sitemap.xml. The robots.txt file carries a Sitemap line pointing to it.\n\nLink previews have a similar catch. When a link is shared, the platform's crawler reads the page's Open Graph and Twitter Card tags and shows the image they name, and those crawlers generally expect an absolute URL. The post-build script rewrites the social image tags to absolute URLs and adds a canonical link and og:url, so every share points to one address.\n\nThe social image is the campaign poster from the hero, so a shared link looks like the launch it leads to.\n\nThe demo copy is built with one extra flag that adds a noindex tag and a robots.txt that disallows crawling, so it is hidden from search engines and never competes with the brand's own domain."
+      },
+      {
+        "heading": "How does the page handle film and photography?",
+        "body": "Video carries much of the page's feel and much of its weight. The intro film autoplays muted, loops and plays inline: most browsers only autoplay muted video, and inline playback stops iPhones from opening it full screen. The campaign poster is its poster frame, so an image fills the screen before any video arrives. The brand film further down has controls and its preload set to metadata, so the browser fetches only the file's basic details and the film costs little until someone presses play.\n\nSections fade up as they come into view. A small hook uses the browser's IntersectionObserver to reveal each block once part of it is visible, then stops watching, so scrolling stays cheap and nothing replays on the way back up."
+      },
+      {
+        "heading": "How do the enquiry and newsletter forms work?",
+        "body": "The partnership enquiry asks for a name, company, email address and country, all required, plus a business type and an optional message. The newsletter signup asks for an email address.\n\nBoth forms use the browser's own validation, so an incomplete or malformed entry is blocked and the field that needs attention is pointed out. On a valid submission the page confirms in place, addressing the enquirer by first name, and clears the form. The confirmation is a status region, so screen readers announce it.\n\nIn the demo nothing is sent, and both confirmations say so.\n\nA static site still needs somewhere to send enquiries: sites like this usually post to a small PHP script on the host or to a hosted form service."
+      },
+      {
+        "heading": "Where can you see Royal Malt?",
+        "body": "Royal Malt is a client project: Sameem worked on it as a front-end engineer for a client. The public demo is a separate copy, reached from demoprojectsforclients.sameemamjad.com/projects/royalmalt, with nothing to sign in to.\n\nA visitor can watch the film intro, scroll the story, reasons, ingredients and occasions, play the brand film, read the trade specifications and browse the packaging gallery. FAQ answers open in place, and the phone menu appears on a narrow screen. Both forms check their fields and confirm on the page but send nothing, and say so.\n\nThis page also carries a 1½-minute walkthrough recorded on the live demo, covering the film intro and launch hero, the product story and ingredients, the trade specs and gallery, a partnership enquiry and the FAQ."
+      }
+    ],
+    "results": [
+      "Live demo: demoprojectsforclients.sameemamjad.com/projects/royalmalt, which opens the one-page brand site with nothing to sign in to",
+      "A 1½-minute walkthrough video on this page, recorded on the live demo",
+      "The demo's trade specifications list a 500 ml aluminium can and 24 cans per carton"
+    ],
+    "stack_rationale": [
+      "TanStack Start: the React framework the site is built on. It normally renders pages on a server, but its prerenderer can run the same routes at build time and write finished HTML, which is what a host with no Node.js needs. Head tags are declared per route, keeping the title, description and social image beside the page they describe.",
+      "React 19: the page is a long run of sections built from small shared pieces, so components keep the look consistent from hero to footer. In the browser, React hydrates the prerendered HTML and attaches the phone menu and form handling to markup already on screen.",
+      "Tailwind CSS v4: version 4 moves configuration into CSS, so the navy, cream, ivory and gold palette is defined once as custom properties and exposed as utility classes. Utilities keep responsive rules beside the markup they affect, which helps when every section must hold together from a phone to a wide screen.",
+      "TypeScript: shared components such as buttons and form fields have typed props, imported media descriptors carry their URLs as typed data, and the router checks routes. A renamed asset or a missing prop becomes a build error instead of a broken image on the page.",
+      "Vite: the build tool and dev server under TanStack Start. Its content-hashed file names are what make the year-long immutable cache rule safe: a changed file gets a new name, and the no-cache HTML points to it.",
+      "Prerendered static export: chosen because the client's cPanel hosting serves files but cannot run Node.js. Prerendering keeps the full page in the HTML for crawlers and link previews, and a post-build script adds the sitemap, robots.txt, absolute social image URLs and an Apache .htaccess with cache, compression and fallback rules."
+    ],
+    "word_count": 1852,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "43": {
+    "project_id": 43,
+    "title": "GentleR: A Private, Autosaving Journal and Open Lessons on Next.js 16, Supabase and Row-Level Security",
+    "meta_description": "GentleR: a calm web app with three open lessons and a private journal that saves as you type. A client project on Next.js and Supabase, shown on sample data.",
+    "summary_answer": "GentleR is a calm web app for adults: three short lessons that anyone can read without signing up, and one private journal for people with an account. GentleR is a client project: Sameem worked on it as a full-stack engineer for a client. The journal is a \"What's on your mind?\" box that saves as you type and shows Saved only once the server has confirmed it. Every save carries a revision number, so an entry changed in another tab is flagged instead of overwritten. Row-level security in Postgres means each entry can only be read by the person who wrote it; the whole journal exports as one .txt file, and owners can delete their account with every entry. There are no timers, streaks, reminders or tracking. A demo on sample data is at demoprojectsforclients.sameemamjad.com/projects/gentler, and a 2-minute walkthrough is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was GentleR built to solve?",
+        "body": "Most wellbeing apps push streaks, reminders and progress bars, and many quietly track what people write. Someone who only wants a quiet place to read a little and write privately ends up with another app that nags them and doesn't feel private.\n\nGentleR is a client project: Sameem worked on it as a full-stack engineer for a client. It is a small web app for adults. Anyone can read three short lessons, and people who sign up keep one private journal. Most of the engineering sits in the journal, and most of that is about trust. The app should never claim a save it hasn't made or overwrite newer writing, and one person's entries should be unreadable to every other account. There is no admin console: every journal is private to its owner.\n\nGentleR is a reading and journaling app. It is not a medical or therapy product and makes no health claims."
+      },
+      {
+        "heading": "How do the lessons work without an account?",
+        "body": "The three lessons are open to everyone. Each has a teaching, one small optional action, its sources and reflection prompts. Nothing is collected on a lesson page. A \"Write in my journal\" button opens a new entry for readers who have an account, and one of the sample journals includes an entry written after a lesson.\n\nEach lesson is a content file checked against a schema when the app is built, so a malformed lesson stops the build instead of reaching readers. The pages are prerendered and served as static files, which suits text that changes rarely. For a handful of lessons edited by a developer, files kept with the code are simpler than a content management system, which can still be added later behind the same lesson shape.\n\nKeeping the lessons outside the account wall lets a reader judge the tone before handing over an email address."
+      },
+      {
+        "heading": "How does the journal save as you type without losing writing?",
+        "body": "Autosave is easy to get almost right. A common shortcut is to show \"Saved\" as soon as the request leaves the browser. GentleR's journal says Saved only once the server has confirmed the save. Until then the indicator says what is true: not saved yet, unsaved changes, saving, or a calm error with a Retry button and a way to copy the text.\n\nThe editor's logic is a small, pure state machine with no timers or network calls inside it, so the awkward cases can be unit tested on their own: typing while a save is in flight, a failed save, an automatic retry, a conflict. A thin hook connects it to the page. It saves after a pause in typing and again when the tab is hidden or closed, and the browser warns before someone leaves unsaved work.\n\nIf saving keeps failing, the editor keeps a safety copy in the browser's own storage, offers it back the next time the entry is opened, and removes it once a save succeeds. That copy never leaves the device."
+      },
+      {
+        "heading": "What happens when the same entry is open in two tabs?",
+        "body": "If an entry is open in two tabs, or on a laptop and a phone, each copy saves on its own schedule. In simple apps whichever saves last wins, and the other writing disappears without a message.\n\nGentleR uses a revision number, a technique usually called optimistic concurrency. A database trigger increases each entry's revision on every update. The editor sends the revision it last loaded with each save, and the update applies only if the entry is still at that revision. If another tab saved in between, nothing is overwritten. The server returns the newer version, and the editor shows \"This entry was changed somewhere else\" with the time and three buttons: \"Keep mine\", \"Use that version\" and \"Copy my text\". The person's own text stays on screen until they decide.\n\nCollaborative editors merge changes in real time, which is heavy machinery for one author writing in one journal. A revision check is cheap and easy to test, and it tells the person what happened. The cost is that editing on two devices at once means seeing the banner and choosing. The same trigger keeps each entry's owner and creation date fixed, so an edit cannot move an entry to another account or change when it was written."
+      },
+      {
+        "heading": "How does row-level security keep each journal private?",
+        "body": "Many apps enforce privacy in application code: every query has to remember to filter by the signed-in user, and one forgotten filter exposes someone else's data. Postgres row-level security moves that rule into the database. Each row records its owner, and a policy checks it against the signed-in user on every read, insert, update and delete, whichever part of the app sent the query.\n\nGentleR's journal table has four owner-only policies, one per operation, and signed-out visitors have no access to the table at all. The app's queries also filter by user, as a second layer. The web app holds only Supabase's publishable key, which is public by design, and no key that bypasses these rules exists in the app or its environment.\n\nThe entry list loads titles and dates only, never bodies. Server logs record error codes, never titles or text. With no admin console, there is no screen in the app where anyone can browse other people's writing. DevoraX holds no security or compliance certifications."
+      },
+      {
+        "heading": "How do people take their writing with them, or leave?",
+        "body": "From the account page, one button downloads every entry as a single plain-text file, newest first, each with its title, its creation date and, if it was changed later, the date it was edited. Exporting changes nothing. Plain text suits personal writing because it opens on any device without a particular app.\n\nThe same page lets the owner delete their account and every entry with it. The dialog asks them to type a word to confirm and offers the export once more. It never shows success itself: the app moves to its account-deleted page only after the database has confirmed.\n\nOn a hosted authentication service, removing a user record normally needs a privileged server key, which GentleR does not hold. Instead, a narrow database function runs with higher privileges, deletes only the signed-in user's own account and refuses if nobody is signed in. Entries go with the account through a cascading foreign key, so nothing of theirs stays in the live database."
+      },
+      {
+        "heading": "Why are there no streaks, reminders or tracking?",
+        "body": "Engagement features are common in consumer apps because they move the numbers a product team watches. In a wellbeing app they can work against the reason someone opened it: a streak turns a quiet habit into a score to protect. GentleR has no timers, streaks, reminders or tracking, and no analytics or advertising scripts on any page.\n\nA calm interface still takes design work. The display settings offer larger text, an evening theme and a choice of motion. Auto follows the device's reduced-motion setting, Reduced keeps gentle fades with no movement, and Off removes animation altogether. The settings are stored in the browser, so they work without an account and are never sent to a server. A small script applies them before the page draws, so the evening theme never flashes daylight first. System fonts mean no font files are requested from third parties."
+      },
+      {
+        "heading": "Where can you see GentleR?",
+        "body": "GentleR's demo is a separate copy running on sample data at demoprojectsforclients.sameemamjad.com/projects/gentler, and the hub page lists the demo logins. The lessons are free to read; the journal needs an account. Three sample accounts show a journal at different stages: a well-used one with 12 entries over seven weeks (some untitled, one written after a lesson, one edited), one with three recent entries, and an empty one showing the first-time experience. The shared demo accounts can't be deleted or have their password changed, so to try account deletion, sign up with any email address. No confirmation email is needed.\n\nThis page also carries a 2-minute walkthrough showing a lesson, writing with autosave, the journal, the display settings and the account page."
+      }
+    ],
+    "results": [
+      "Live demo on sample data: demoprojectsforclients.sameemamjad.com/projects/gentler (three open lessons and a private journal, with three sample accounts)",
+      "A 2-minute walkthrough video on this page: a lesson, writing with autosave, the journal, display settings and the account page",
+      "The demo's well-used sample journal holds 12 entries written over seven weeks"
+    ],
+    "stack_rationale": [
+      "Next.js 16: one codebase serves both halves of the product. The lessons are prerendered as static pages, while the journal and account pages render per request for the signed-in person. Saves and sign-in go through Server Actions, so validation and the user check sit on the server in one place per action, and the export is a single route handler that returns a file.",
+      "React 19: the editor is the most stateful part of the app, with typing, saving, retries and conflicts able to overlap. React keeps the screen a function of that state, and a hook connects it to the pure autosave state machine. React 19's form actions suit the account flows, where a dialog waits for the server's answer before showing an outcome.",
+      "TypeScript: a save crosses the browser, a Server Action and the database, and the entry's shape, revision included, has to agree at every step. Typed database rows and schema validation of each action's input turn a mismatch into a compile or validation error rather than a lost save.",
+      "Supabase Auth + Postgres: accounts, sessions and a relational database in one managed service, with sessions held in cookies so server pages, actions and the browser all see the same signed-in user. Postgres carries the key rules: a trigger increments each entry's revision and fixes its creation date, a cascading foreign key removes entries with their account, and a narrow function handles self-service deletion.",
+      "Row-level security: each entry's ownership is enforced by the database on every query, rather than by each screen remembering to filter. Owner-only policies cover reading, writing, editing and deleting, and signed-out visitors have no access. Because the app holds only the public key, privacy does not depend on every query in the app being written correctly.",
+      "Tailwind CSS: the styling layer for a deliberately quiet interface. Its theme tokens sit on CSS variables, so the evening theme, the text sizes and the motion levels are switched by attributes on the page rather than by separate stylesheets."
+    ],
+    "word_count": 1874,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "44": {
+    "project_id": 44,
+    "title": "SolNotary: Commit-Reveal Notarization on Solana with Next.js, Supabase and Wallet Sign-In",
+    "meta_description": "SolNotary seals a text's SHA-256 hash on Solana and publishes the text for an exact crypto payment. A client project; try the devnet demo with test SOL.",
+    "summary_answer": "SolNotary is a web app for proving what someone knew, and when, without revealing it early. SolNotary is a client project: Sameem worked on it as a full-stack engineer for a client. A user signs in with a Solana wallet signature and submits a short text, such as a prediction or a sealed bid. The server adds a BTC, ETH and SOL price snapshot and a secret salt, hashes them with SHA-256 and writes only the hash to Solana as a memo transaction, confirmed in seconds. Paying an exact amount in SOL, USDC or USDT with a reference memo later publishes the text on a public page, where the visitor's own browser recomputes the hash and compares it with the chain. A devnet demo using test SOL is at demoprojectsforclients.sameemamjad.com/projects/solnotary, and a 2-minute walkthrough is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was SolNotary built to solve?",
+        "body": "Predictions, sealed bids and ideas only count if their author can prove later that they came first, yet stating them early gives them away. Screenshots and emails can be faked, and posting the text publicly to fix its date reveals it.\n\nThe client wanted a commitment that a public blockchain can vouch for, fast and cheap to make, with publishing as the paid step. SolNotary is a client project: Sameem worked on it as a full-stack engineer for a client.\n\nIn SolNotary a signed-in wallet seals a short text, Solana records its fingerprint within seconds, and an exact payment later reveals the text on a public page anyone can check.\n\nOne plain caveat: a hash on a blockchain proves that a text existed at a certain time. It is not a legal notarization, and nothing here claims legal validity."
+      },
+      {
+        "heading": "How does a commit-reveal scheme prove a text came first?",
+        "body": "Commit-reveal is an established pattern in cryptography. To commit, you publish a hash of your message: a short fingerprint produced by a function such as SHA-256. The hash reveals nothing, yet it is bound to the message, because finding another message with the same hash is computationally infeasible. Revealing the message later lets anyone hash it again and see that it matches.\n\nA hash on its own carries no date. The date comes from where it is published. A transaction on a public blockchain sits in a timestamped block, so the transaction proves the text existed no later than that moment, and nobody, the app's operator included, can backdate or edit it afterwards.\n\nIf the text is short and predictable, say a yes-or-no call on a price, an observer could hash every likely candidate and compare, so commit-reveal schemes mix in a secret random value, a salt, and reveal it with the message. SolNotary generates a fresh salt for every record."
+      },
+      {
+        "heading": "What exactly does SolNotary hash, and why add market prices?",
+        "body": "Each record's hash covers a scheme version, the user's text, a snapshot of market prices and the salt. The prices are BTC, ETH and SOL, fetched when the text is submitted. The snapshot puts the market context inside the sealed entry: a published price call can be read against the prices that stood when it was sealed, and those numbers cannot be swapped later without changing the hash.\n\nTo recompute a hash, both sides must feed the function exactly the same bytes, and JSON does not guarantee that, since two programs can order keys or format numbers differently. SolNotary serialises the bundle deterministically, with sorted keys, prices kept as text rather than floating-point numbers, and ambiguous values rejected.\n\nThe scheme's name is stored with every record and shown on its public page, the usual way to keep older records checkable if a format ever changes."
+      },
+      {
+        "heading": "Why does only a hash go on Solana, and why as a memo?",
+        "body": "Solana's Memo program attaches a short text note to a transaction. The note is stored in the ledger, public and permanent, and block explorers display it, so a commitment needs no custom on-chain program.\n\nSolNotary's memo is a short, recognisable prefix followed by the hash. The text itself never goes on-chain.\n\nThe app's own notary wallet signs and pays for the memo transaction, so the user needs no SOL to seal a record. That makes the notary wallet's balance worth protecting, and the server caps how many records one wallet can seal per hour.\n\nOrdering matters when a database and a blockchain must agree. The server saves the sealed record before sending the transaction and stores the signature before waiting for confirmation, so a request cut short leaves a record that can be reconciled rather than lost."
+      },
+      {
+        "heading": "How does signing in with a wallet replace passwords?",
+        "body": "SolNotary has no passwords and collects no email. A Solana wallet address is an ed25519 public key, so a wallet proves who it is by signing a message with the matching private key.\n\nFollowing the sign-in-with-Solana pattern, the server issues a single-use nonce that expires within minutes, inside a readable message naming the site and the wallet. The wallet signs it, and the server rebuilds the message itself and checks the signature against the wallet's public key.\n\nConsuming the nonce on first use stops a captured signature from being replayed, and because the server rebuilds the message with its own domain, a signature collected by a look-alike site fails. A verified signature earns a signed session in an httpOnly cookie, which scripts on the page cannot read. Admin rights come from a list of wallets held on the server."
+      },
+      {
+        "heading": "How does an exact payment publish the text?",
+        "body": "The owner of a sealed record picks SOL, USDC or USDT, and the server returns an exact amount, a deposit address and a reference to include as a memo in the payment.\n\nThis is a common way to accept crypto without a payment processor: the reference ties the transfer to one record, and an exact amount leaves no judgement about whether a payment was close enough. SolNotary does this arithmetic in whole numbers of each asset's smallest unit, lamports for SOL, because floating-point numbers can make an exact amount approximate.\n\nA webhook authenticated with a shared secret can report incoming transfers, each recorded only once, keyed by its signature. Alternatively, the app checks a given transaction on-chain: it must carry the reference memo and credit the deposit address by exactly the expected amount, and a failed transaction never counts. A match publishes the record."
+      },
+      {
+        "heading": "How can a visitor check a record without trusting the server?",
+        "body": "A published record has a public page showing the text, the salt, the market snapshot, the hash and a link to the memo transaction in Solana Explorer. The server recomputes the hash and reads the memo back from the chain, and the page shows whether each matches.\n\nA server-side check still asks the visitor to trust the server, so the page also offers a button that recomputes the hash in the visitor's own browser. The same hashing code runs on the server at sealing time and in the browser here, through the browser's built-in Web Crypto API, and the page can display the exact input that was hashed. Comparing the result with the memo in the explorer needs nothing from SolNotary.\n\nEach public page also has a share card, an image rendered on the server with the text, the hash and the prices, used as the link preview when the page is shared."
+      },
+      {
+        "heading": "How are sealed records kept private?",
+        "body": "Until a record is published, its text and salt are the secret. Data lives in Supabase Postgres with row-level security on every table and no access by default. The only public path is a policy letting the public key read published records, plus a column-level grant limiting even those to public fields, so internal fields such as the payment reference stay on the server.\n\nEvery other read and write goes through the Next.js server, which checks the wallet session before using a privileged key that never reaches the browser. Because the rule lives in the database, a mistake in one page or API route cannot expose a sealed record through the public key.\n\nThe admin overview lists records and payments with their statuses and hashes but never selects the text or the salt, so a sealed record stays sealed even from the people running the app. DevoraX holds no security or compliance certifications."
+      },
+      {
+        "heading": "Where can you see SolNotary?",
+        "body": "The demo runs on Solana devnet, a public test network, from the demo hub at demoprojectsforclients.sameemamjad.com/projects/solnotary. Every transaction is real and opens in Solana Explorer, but it uses test SOL that has no value. Devnet has no USDC or USDT, so the demo takes SOL only.\n\nA visitor needs no wallet. “Use a demo wallet” creates one in the browser that signs in like Phantom and is kept there. After sealing a text, the visitor can pay to publish it: the demo tops the wallet up with exactly the test SOL needed, so the payment is a real devnet transaction. Phantom also works, switched to devnet. “Sign in as the demo admin” opens the read-only overview of every record and payment, which never shows sealed text. The hub page also links to a verified record.\n\nThis page also carries a 2-minute walkthrough showing a verified record, a new notarization paid with test SOL, and the admin overview."
+      }
+    ],
+    "results": [
+      "Live demo on Solana devnet: demoprojectsforclients.sameemamjad.com/projects/solnotary (a demo wallet, a verified record and the read-only admin overview)",
+      "A 2-minute walkthrough video on this page: a verified record, a new notarization paid with test SOL, and the admin overview",
+      "Every demo transaction is real on devnet and opens in Solana Explorer; the test SOL has no value"
+    ],
+    "stack_rationale": [
+      "Next.js 16 + React 19: one codebase holds the public pages, the signed-in app and the API routes. Route handlers run on the server, where the notary wallet's key must stay, and modules marked server-only fail the build if browser code imports them. Public record pages render on the server with their share-card metadata, while React client components handle the wallet steps and the in-browser recompute.",
+      "TypeScript: the commitment format is a contract between the server that seals a record and every browser that checks it later, so one typed module builds the hashed input on both sides. Request bodies are also validated at runtime with zod, so malformed input stops at the edge of each API route.",
+      "Solana web3.js (memo transactions): the standard JavaScript client for Solana, used to send memo transactions from the notary wallet, confirm them within a deadline, and read transactions back to check memos and balance changes. Solana suits the product because transactions confirm in seconds at low cost.",
+      "Supabase Postgres + RLS: users, sign-in nonces, records and payments are relational and need constraints such as a unique payment reference and a unique transaction signature. Row-level security lets the database itself decide that only published records are readable with the public key, the property the whole product depends on.",
+      "Wallet-signature sign-in: people who use apps of this kind usually hold a Solana wallet already, so the wallet doubles as the account. An ed25519 signature over a single-use challenge leaves no passwords to store or reset.",
+      "satori + resvg cards: satori turns a React-style layout into SVG and resvg renders that SVG to PNG, on the server and without a headless browser. That keeps card rendering light, and bundled fonts make every card look the same."
+    ],
+    "word_count": 1890,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "45": {
+    "project_id": 45,
+    "title": "CAD Interior Studio: A Proof of Concept for Furnishing IFC Buildings in 3D with Next.js, React Three Fiber and web-ifc",
+    "meta_description": "CAD Interior Studio, a proof of concept built for a client: IFC and GLB building files become 3D rooms in the browser, furnished from a catalogue.",
+    "summary_answer": "CAD Interior Studio is a browser app that turns an architect's CAD/BIM export, an IFC or GLB file, into a 3D building that customers walk through and furnish room by room. CAD Interior Studio is a proof of concept built for a client: Sameem worked on it as a full-stack engineer. It was made for an interior-design and quotation platform, and has no database, no logins and no live product. The building file is converted on the visitor's device and never uploaded. Customers orbit or walk through the building, place catalogue furniture with collision checks, change finishes, undo and redo, and compare the room before and after. AI style concepts are kept apart from the buildable design, and auto-style uses catalogue products only. The demo is at demoprojectsforclients.sameemamjad.com/projects/studio, and a 1½-minute walkthrough video is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was CAD Interior Studio built to solve?",
+        "body": "A floor plan shows walls and dimensions, but most people struggle to see from it how a sofa will sit or whether a room will feel crowded once furnished. Design firms meet the other end of the problem: turning a customer's ideas into a quote takes time, because ideas arrive as pictures rather than as items that can be priced.\n\nCAD Interior Studio is a proof of concept for an interior-design and quotation platform, built for a client; Sameem worked on it as a full-stack engineer. It shows the building files architects and engineers already produce as a 3D building in the browser, and lets customers design the interiors themselves. Every item they place is a catalogue product, something a quotation can be built from. AI is there for inspiration and never passes a picture off as something a customer can buy.\n\nThere are no prices anywhere in it, on purpose: the proof of concept ends where the quotation engine would begin."
+      },
+      {
+        "heading": "How does an IFC file become a 3D building in the browser?",
+        "body": "The common exchange format between the BIM tools architects and engineers use is IFC, an open standard maintained by buildingSMART. An IFC file describes a building as typed elements such as walls, slabs and spaces, whose 3D shapes must be generated before anything is drawn.\n\nCAD Interior Studio does that in the browser with web-ifc, an open-source IFC library compiled to WebAssembly. GLB files are read with three.js. Either way the file is converted on the visitor's device and never uploaded, which matters when architects' drawings can be commercially sensitive.\n\nReal IFC files bring practical traps. They are often placed far from the origin to match real-world coordinates, which costs graphics precision, so the model is moved to the origin on load. Site and zone volumes carry geometry that would hide the building as a solid block, so they are not drawn. The rest is merged by colour and position, which keeps rendering light without losing track of where each piece sits."
+      },
+      {
+        "heading": "How does the app work out where the rooms are?",
+        "body": "Nearly everything in the studio happens per room, from furnishing to auto-style. IFC has an element for rooms, IfcSpace, which describes a room's volume. Where a file includes spaces, CAD Interior Studio uses them as the rooms, largest first.\n\nMany files leave spaces out, and the proof of concept does not guess them. It makes one room per storey instead, named “Whole floor” or by level. A guessed room labelled “Kitchen” that turns out to be a hallway would mislead a customer; an honest whole floor only asks them to do a little more. GLB files carry no room information, so rooms come from a small companion file listing each room's bounds where one exists, and otherwise the whole model is one room.\n\nThe demo's sample apartment is generated in code rather than read from a file."
+      },
+      {
+        "heading": "How do customers move around the building?",
+        "body": "The orbit view circles the building from above, like a dollhouse. Orbiting a real floor plan usually means staring at the outside of a box, so the app hides the wall pieces between the camera and the selected room, a cutaway that keeps the room readable from any angle.\n\nThe second view, the walkthrough, puts the camera at eye height inside the room, moved with the keyboard and turned with the mouse. There is no physics engine. Before each step the app casts a short ray in the direction of travel and stops at a wall, testing the two floor directions separately, so walking into a wall at an angle slides along it instead of stopping dead. Architectural walkthroughs commonly work this way, since the aim is the feel of a room."
+      },
+      {
+        "heading": "How does furniture placement stay believable?",
+        "body": "Choosing an item in the catalogue arms it. A translucent copy follows the pointer across the room's floor with a ring beneath it, blue when the spot is clear and red when it would overlap something already placed. A click or a tap places it. Placed items can be dragged, rotated and removed, and each room's floor finish and wall paint are chosen from swatches.\n\nThe collision check is deliberately simple: the app compares each item's footprint rectangle after rotation, and ignores rugs, which furniture is meant to stand on. Items stay inside the room, and moves and turns snap to steps the settings give as 5 cm and 15°. An overlap shows as a warning but is still allowed, since a hard refusal tends to frustrate more than it protects.\n\nUndo and redo cover the design only, and a drag is recorded once, on release, so one gesture is one undo step."
+      },
+      {
+        "heading": "Why are AI style concepts kept apart from the buildable design?",
+        "body": "What an image model draws is not a list of products, and a quotation cannot be built from a picture. So the concepts sit in their own panel, apart from the design, labelled as inspiration: the panel states that items shown are not products.\n\nWith an image key, the flow works image to image: the app captures the current view and asks for a restyled version that keeps the room's architecture, camera angle, windows and proportions, changing only furniture, materials and lighting mood. The styles are Modern, Japandi, Scandinavian and Luxury, and a customer can add a short direction.\n\nThe demo runs without AI keys and says so. In place of model output it shows four style-graded views of the customer's own render, each marked as a demo render rather than AI."
+      },
+      {
+        "heading": "How does auto-style furnish a room from the catalogue alone?",
+        "body": "Auto-style is where AI acts on the real design. It refurnishes the selected room in the chosen style under one rule: everything must come from the catalogue. The server drops any item or finish it does not recognise, and the browser checks again before applying anything, so an invented product cannot reach the design. As is usual when a language model acts on real data, the model proposes and ordinary code decides what is allowed.\n\nThe new room lands as a single change, so one undo restores the old one. With keys, Claude proposes the plan. Without them, as in the demo, a built-in planner picks catalogue items whose style tags match and lays them out with the editor's own placement maths: sofas and storage against a wall facing into the room, other pieces spread out from the centre, avoiding overlaps where the room allows. A message says which of the two ran."
+      },
+      {
+        "heading": "What does the before-and-after view show, and where are designs kept?",
+        "body": "In the result view, the before is a copy of the room taken when the customer entered it, and both versions are rendered from the same camera either side of a draggable divider, so the change is judged from one angle. Beside them sit a summary of the room and a 2× export that saves the view as a high-resolution image.\n\nThere is no database and no account. Designs are saved in the browser, matched to the building, and return when that building is opened again; the save button also downloads the design as a file that can be reopened. The design is a small document of rooms, each holding its finishes and its items, every item a catalogue reference with a position, which is what a quotation would need. Browser storage can be cleared, so products of this kind usually keep designs on a server."
+      },
+      {
+        "heading": "Where can you see CAD Interior Studio?",
+        "body": "There is no live product: CAD Interior Studio is a proof of concept, with no database and no logins. The demo is at demoprojectsforclients.sameemamjad.com/projects/studio and needs no sign-in. A visitor can open the sample building or drop their own IFC or GLB file, converted on their device, then furnish rooms from the demo catalogue, try finishes, generate concepts, run auto-style, walk through, and compare before and after. It works best on a computer or tablet, and has a phone layout. Because the demo has no AI keys, concept images are marked as demo renders and auto-style uses the built-in planner.\n\nThis page also carries a 1½-minute walkthrough video. It shows the sample apartment, furnishing from the catalogue, AI concepts, auto-style, a walkthrough and a real IFC file."
+      }
+    ],
+    "results": [
+      "Live proof-of-concept demo, no sign-in: demoprojectsforclients.sameemamjad.com/projects/studio (open the sample building or drop an IFC or GLB file)",
+      "A 1½-minute walkthrough video on this page: the sample apartment, catalogue furnishing, AI concepts, auto-style, a walkthrough and a real IFC file",
+      "The demo's result view compares the room before and after with a draggable divider and has a 2× image export; its catalogue has no prices by design"
+    ],
+    "stack_rationale": [
+      "Next.js 15 + React 19: the proof of concept is one app with no separate backend. The studio runs in the browser, and two small server routes exist only to keep AI keys out of the browser and call the models, so it deploys as a single unit.",
+      "React Three Fiber + three.js: three.js is the established WebGL library for 3D on the web. React Three Fiber writes the 3D scene as React components that render from the same store as the panels, so a placed item appears everywhere from one change. Per-frame work such as walkthrough movement stays outside React's render cycle.",
+      "web-ifc (WASM): generating geometry from IFC is heavy work over a large schema. Compiled to WebAssembly, web-ifc runs at close to native speed in the browser, which is what lets a building file stay on the visitor's device. The cost is a WebAssembly download before the first file opens, and very large models depend on the visitor's machine.",
+      "Zustand + zundo: Zustand holds the design and the editor state in one small store. zundo adds undo and redo as a history of that store and can track only the design document, which keeps camera moves out of the history and lets auto-style land as one undo step.",
+      "TypeScript: the design document is shared across the editor, auto-style and saving, and an auto-style plan crosses from server to browser. Types, with runtime validation of anything read from storage or the network, stop a renamed field or an unknown catalogue id from reaching the scene.",
+      "Tailwind CSS v4: the interface is a dense editor with sidebars, sheets and a phone layout. Utility classes keep spacing and colour consistent, and responsive variants handle the switch to a bottom bar on small screens. Version 4 is configured in CSS, so the design tokens live in one stylesheet."
+    ],
+    "word_count": 1896,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "46": {
+    "project_id": 46,
+    "title": "ExpertProfile.AI: An Expert-Recognition Site and No-Code CMS on Next.js 16, React 19 and Supabase",
+    "meta_description": "ExpertProfile.AI: an editorial expert-recognition site with a no-code CMS on Next.js and Supabase. A client project, shown on sample data.",
+    "summary_answer": "ExpertProfile.AI is an editorial website that publishes lists of verified experts in fintech, crypto, technology and AI visibility, run from a no-code CMS. ExpertProfile.AI is a client project: Sameem worked on it as a full-stack engineer for a client. Each recognition article names 8–15 people, with their role, organisation, reason for inclusion, public links and the date the information was checked. Readers browse an Expert Hub with category tabs and search, and can send AI Profile Audit requests, nominations and corrections to the editors' inbox. Editors run articles, experts, categories, events, pages, newsletter subscribers and team roles without a developer, and published content appears on the site within seconds. The site and the CMS can be tried at demoprojectsforclients.sameemamjad.com/projects/expertprofile, and a 2½-minute walkthrough is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was ExpertProfile.AI built to solve?",
+        "body": "When people ask an AI assistant or a search engine who the experts are on a topic, the answer depends on what public sources say, and those sources are often thin, outdated or wrong. Experts and companies usually have no trustworthy, well-structured page that vouches for them.\n\nExpertProfile.AI sets out to be that page: an independent editorial site that lists experts, says why each person was included and dates the details, in a form people and machines can both read. It makes no promise about how any search engine or assistant will use it.\n\nThe other half of the problem belongs to the editorial team. A publication like this is only as good as its upkeep, because people change roles and lists go stale, so the team needs to publish and correct it without a developer. Hence the two parts: a public website and the no-code CMS behind it."
+      },
+      {
+        "heading": "What goes into a recognition article?",
+        "body": "Every recognition article follows one template: a topic, a date, a geography, an introduction, 8–15 expert cards and the methodology. A fixed template keeps the publication consistent between editors.\n\nEach expert card shows the person's role, organisation, reason for inclusion, public links and the date the information was checked. The reason for inclusion is the editorial core of the card: it says why the person belongs on the list. The date checked tells the reader how fresh the details are, and the article carries its own \"Information checked\" date near the title.\n\nThe page also has a contents list that jumps to each expert, share links and a corrections and nominations section at the end, so a reader who spots an error knows where to say so. Publications of this kind usually print their methodology so readers can judge the selection."
+      },
+      {
+        "heading": "How does the Expert Hub help readers find people?",
+        "body": "The Expert Hub is the site's index. Each category tab shows a count of published articles, so a reader can see how much the hub holds in fintech, crypto, technology or AI visibility before choosing. Article cards show featured people from each list, and a search box looks across the titles and summaries of published articles. The homepage shows recently recognised experts and upcoming events.\n\nSearch results are kept out of search engines on purpose: the robots file asks crawlers to skip the search page, a common practice because every query produces another near-duplicate page."
+      },
+      {
+        "heading": "How does the no-code CMS let editors run the site without a developer?",
+        "body": "The CMS sits behind a sign-in at /admin and covers what an editor would otherwise ask a developer to change: articles and their experts, categories, events, pages, the inbox, newsletter subscribers and team roles.\n\nThe article editor holds the whole template in one form. Experts are added as repeating cards, each with a photo upload, public links and the date checked. Longer text is written in Markdown with a formatting toolbar and a preview, and images upload straight to storage from the form.\n\nAn article can be saved as a draft, published or archived. Before anything goes live, the CMS checks the essentials: a valid URL slug, a short summary for the article cards, at least one expert and links that start with http or https. Checks like these let the form catch mistakes a developer would otherwise catch in review.\n\nEvents and pages such as About, Privacy and Terms are edited in the same way."
+      },
+      {
+        "heading": "How does a published article appear on the site within seconds?",
+        "body": "The public pages are generated ahead of time. Next.js renders the homepage, the hub, each category and each article from the database and serves ready-made HTML, so a visit does not wait on a database query. That is the usual approach for editorial sites, which are read far more often than they change.\n\nThe catch is freshness: a page built earlier knows nothing of an article published a minute ago. Next.js answers this with on-demand revalidation. When an editor saves or publishes, the server action that writes to the database also tells Next.js to discard its cached pages, and the next request rebuilds them from current data. Because the site is small, a save refreshes the whole public site instead of tracking which page shows which article, so the homepage, hub, category pages and sitemap stay in step. A timed refresh sits behind it as a fallback.\n\nIn the demo, publishing the draft “8 Rising Voices in Open Banking” puts it in the Expert Hub within seconds."
+      },
+      {
+        "heading": "What do JSON-LD and the sitemap tell search engines and AI assistants?",
+        "body": "JSON-LD is structured data in the schema.org vocabulary, embedded in a page as a small block of JSON. Search engines read it to learn what a page is about without inferring it from the layout.\n\nEach ExpertProfile.AI article describes itself as an Article with its headline, dates, author, publisher and section. Its subject is an ordered list of people, each marked up with a name, a job title, an employer and public profile links as sameAs references. That mirrors the expert card: the facts a reader sees are restated in a form a machine can parse.\n\nThe sitemap lists the homepage, the hub, every category and every published article and page, with modification dates, and the robots file points crawlers to it while keeping the CMS out. Neither guarantees that any search engine or assistant will show or cite a page, and the site makes no such claim."
+      },
+      {
+        "heading": "How do readers' requests reach the editors?",
+        "body": "The site has forms for an AI Profile Audit request, a nomination, a correction and the newsletter. The first three land in the CMS inbox, where an editor can filter them by kind and mark each one new, reviewed or closed. Corrections and nominations sent from the end of an article record which article they concern, and newsletter sign-ups have a Subscribers tab of their own.\n\nAgainst spam, the forms carry a hidden field that people never see but simple bots tend to fill in, a common low-friction alternative to a CAPTCHA. The database adds its own rules: an anonymous visitor may only add a well-formed request of a known kind, and can never read the inbox back.\n\nIn the demo the forms really reach the demo inbox, so the hub page asks visitors to use made-up details."
+      },
+      {
+        "heading": "How are editors, viewers and the public kept apart?",
+        "body": "The CMS has three roles. Editors create, edit and publish content. Admins can also change roles on the Team page. Viewers can sign in but cannot edit, and the CMS tells them to ask an admin for access.\n\nThe roles are enforced in the database as well as the interface. Supabase is built on Postgres, and every table uses row-level security: policies decide, on each query, what the person asking may read or write. The public can read articles, events and pages only once they are published, and an article's experts likewise, so a draft and its expert list stay private until it is published, whichever route a request takes. Image uploads are limited to editors by the same check.\n\nThe CMS pages are marked so that search engines do not index them. DevoraX holds no security or compliance certifications."
+      },
+      {
+        "heading": "Where can you see ExpertProfile.AI?",
+        "body": "ExpertProfile.AI is a client project: Sameem worked on it as a full-stack engineer for a client. The public demo is a separate copy on sample data, reset regularly, so its experts and articles are illustrations. The website and the CMS can both be tried from demoprojectsforclients.sameemamjad.com/projects/expertprofile, and the hub page lists the demo logins for an admin, an editor and a viewer.\n\nOn the website a visitor can browse the Expert Hub by category, search it, read an article with its expert cards and methodology, and send a request through the forms. In the CMS, the suggested path is to publish the draft “8 Rising Voices in Open Banking” and then open the Expert Hub, where it appears within seconds. None of the demo accounts can delete data or change roles.\n\nThis page also carries a 2½-minute walkthrough of the website and the CMS, recorded on the demo data."
+      }
+    ],
+    "results": [
+      "Live demo on sample data: demoprojectsforclients.sameemamjad.com/projects/expertprofile (the public website and the CMS)",
+      "A 2½-minute walkthrough of the website and the CMS on this page, recorded on the demo data",
+      "Publishing the demo draft “8 Rising Voices in Open Banking” puts it in the Expert Hub within seconds"
+    ],
+    "stack_rationale": [
+      "Next.js 16 + React 19: Next.js renders the public site ahead of time and serves static HTML. On-demand revalidation lets a published article replace the cached pages within seconds, and server actions keep the CMS's saves on the server beside that call. The Next.js 16 request hook, the proxy, runs only on CMS routes to keep the editor's session current, so public pages never pass through it.",
+      "TypeScript: an article is a nested record, with a category, a list of experts and each expert's links, and the CMS form, the save action, the public page and the JSON-LD all share that shape. Typing it once turns a renamed or removed field into a compile error rather than a gap on a published page.",
+      "Supabase Postgres + Auth + Storage: a managed Postgres database with sign-in and file storage in one platform. The content is relational, with articles, their experts, categories, events and inbox items referring to one another, and Postgres expresses that with keys and constraints. Auth provides the CMS sign-in, and Storage holds the hero images and expert photos uploaded from the editor.",
+      "Row-level security: Postgres policies that decide on every query which rows a person may read or change. The public site and the CMS share one database, so putting the rules there keeps drafts private and limits anonymous forms to well-formed requests, whichever page sends the query.",
+      "Tailwind CSS: utility classes keep one editorial design consistent across the public site and the CMS without a stylesheet per component. Colour tokens such as ink, paper and the accent are defined once and reused, which suits a site whose articles all share one template.",
+      "JSON-LD + sitemap: the standard ways to describe a site's content to automated readers. JSON-LD states each article's subject as a list of people with job titles, employers and public profile links, and the sitemap lists every public address with modification dates. Both are generated from the database, so a newly published article is described and listed without manual work."
+    ],
+    "word_count": 1871,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "47": {
+    "project_id": 47,
+    "title": "SteamBlast Arena: A Multiplayer Maths and Literacy Game for Children on Phaser 3, Socket.IO and Node.js",
+    "meta_description": "SteamBlast Arena: a multiplayer maths and literacy game for ages 5–12, with bots, classes and parent limits. A client project, shown on sample data.",
+    "summary_answer": "SteamBlast Arena is a multiplayer web game for children aged 5 to 12: players spray water through a maze to turn each other into steam, and a steamed player answers a maths or literacy question in the Chamber to get back in. SteamBlast Arena is a client project: Sameem worked on it as a full-stack engineer for a client. Matches of 2–8 players run on the server ten times a second, bots fill a match when nobody else is online, and the question banks cover ages 5–7, 7–9 and 9–12. Teachers get classes with join codes and per-student accuracy; parents get recent games and a daily time limit the server enforces. A demo on sample data is at demoprojectsforclients.sameemamjad.com/projects/steamblast, and a 2½-minute walkthrough video is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was SteamBlast Arena built to solve?",
+        "body": "Revision drills feel like homework to most children, and most learning games are single-player quizzes with a game skin, where the learning and the play do not depend on each other.\n\nThe client wanted a multiplayer game that children want to play for its own sake, where answering a question is the way back into the action, with premium extras for families and class tools for schools in Hong Kong.\n\nIn SteamBlast Arena, players move through a maze and spray water to turn each other into steam. A steamed player is sent to the Chamber and answers a maths or literacy question at their level to get back in. Rounds are short, and the game runs in the browser on phones, tablets and computers."
+      },
+      {
+        "heading": "Why does the server run every match instead of the players' devices?",
+        "body": "Every match runs on the server over Socket.IO, ten times a second, so every screen sees the same game. A child's device sends only what the player wants to do, such as step left or spray. The server decides whether the step is allowed, where the water lands, who is steamed and whether an answer is right, and tells everyone.\n\nThis is the usual design when players affect each other in real time. If each device ran its own copy, two screens could disagree about whether a player was hit, and a modified client could report whatever it liked. Here the server limits how often each player may step according to their speed, and Chamber questions reach the device without the correct option marked.\n\nThe cost is latency, since every action makes a round trip before it counts. A grid game tolerates that well: a step moves one tile, and the client animates it briefly, so a short delay looks like ordinary movement."
+      },
+      {
+        "heading": "How does the Chamber turn questions into the way back into the game?",
+        "body": "Being steamed does not end a child's round. In the Chamber, the server picks a question for the match's mode at the child's level and starts a timer. A right answer brings the player back on an open tile with a shield, so they are not steamed the moment they reappear. A quick answer adds a speed bonus, and a run of right answers builds a streak worth extra points.\n\nA wrong answer shows the correct one, then a short wait and a new question. That wait is the whole penalty, so the quickest way back is to think the question through.\n\nQuestions arrive when the child wants something, a way back in, which gives them a reason to read carefully, and each one is short enough not to stall the round. The server avoids repeating a player's recent questions and accepts one answer per question, so a child cannot try every option in turn."
+      },
+      {
+        "heading": "How do bots keep a match going when nobody else is online?",
+        "body": "Multiplayer games have a cold-start problem: matchmaking works only when enough players are waiting at the same moment, and a child facing an empty waiting screen soon gives up. Games with few players online usually solve this with bots.\n\nIn SteamBlast Arena, if no one joins within a few seconds, bots take the empty places and the round starts. They move away from water about to burst, take a shot when an opponent is lined up within range, spray crates that may hide power-ups and head for power-ups they can reach. A steamed bot answers Chamber questions too, getting most of them right.\n\nThe bots are built to be beaten. They decide a few times a second, slower than a child can press keys, and do not always take a good shot, so a child who plans ahead can win."
+      },
+      {
+        "heading": "How are the question banks organised for ages 5 to 12?",
+        "body": "The question banks cover maths and literacy at three levels: ages 5–7, 7–9 and 9–12. Maths runs from addition through fractions and measurement to percentages and early algebra; literacy covers spelling, grammar, vocabulary, parts of speech, punctuation and rhyming. Each question is short, with a handful of answers to tap, which suits a timed answer on a phone. Before a match, a child picks maths, literacy or mixed, and a level.\n\nThe banks are managed in a separate admin panel, where an administrator can browse questions, filter them by subject and level, and add new ones. The server also counts how often each question is answered, and how often correctly.\n\nIn question banks of this kind, a question most children get wrong is often badly worded or set at the wrong level, and per-question accuracy is the usual way to find it without rereading the whole bank."
+      },
+      {
+        "heading": "How do teacher classes work?",
+        "body": "A teacher creates a class and gets a join code, and students enter the code in the game's settings to join. On the teacher dashboard, each class shows its accuracy and a row per student with games played, accuracy and average score, plus a note naming students whose accuracy is low and who may need extra practice.\n\nJoin codes are the usual pattern in classroom tools for young children: a short code written on the board is easier for a child than an invitation email.\n\nPer-student accuracy is what makes the game useful to a teacher. Who won a round says little about learning; how often a child answers correctly says much more, and points the teacher to the children who need help first. In the demo, the teacher account has two classes with join codes, three weeks of games and per-student accuracy."
+      },
+      {
+        "heading": "How does the parent time limit work, and why does the server enforce it?",
+        "body": "The parent portal shows a child's overall accuracy, the minutes played today and recent games, and lets a parent set a daily time limit in minutes. Once the limit is reached, new games cannot start until the next day; a round already under way can finish.\n\nWhere a limit is enforced matters more than how it is set. A limit kept on the device, as an app timer or a value in browser storage, lasts only until the browser data is cleared or the child picks up another device. SteamBlast Arena keeps the limit with the account on the server. When a signed-in child asks for a match, the server adds up today's finished rounds and, if the limit has been reached, replies with a friendly message instead of a match. The limit holds on every device the child signs in on.\n\nThere is also no free-text chat between players, and custom display names pass a word filter before they are saved."
+      },
+      {
+        "heading": "How does premium work alongside free play?",
+        "body": "Premium costs 20 HKD a month. It adds extra water, so more sprays can be out at once, a custom avatar and a weekly cosmetics shop. Shop items are paid for with coins earned in play: a signed-in player earns coins from their score at the end of each round.\n\nEarned coins keep money out of the moment of play. The family pays for the subscription, and the child's choices inside it cost effort. The checks sit on the server: a purchase goes through only if the account is premium and has enough coins, and the item is recorded against the account, so it follows the child to any device.\n\nSubscriptions of this kind usually run through a payment provider's hosted checkout, with the provider confirming each payment to the server directly, so the browser alone cannot mark an account as paid. In the demo, payments are switched off."
+      },
+      {
+        "heading": "Where can you see SteamBlast Arena?",
+        "body": "SteamBlast Arena is a client project: Sameem worked on it as a full-stack engineer for a client. The demo is a separate copy on sample data at demoprojectsforclients.sameemamjad.com/projects/steamblast, and the hub page lists the demo logins. Press Play to battle bots straight away with no account, or press Play in two windows within a few seconds to meet in the same match. Signed in, a visitor can try the premium student's shop, avatar creator and parent portal, the teacher dashboard, and the admin panel, where adding questions works and removing them is switched off.\n\nThe server sleeps when nobody is playing, so the first visit can take about a minute. Payments and email are switched off, and the demo data resets whenever the server restarts.\n\nThis page also carries a 2½-minute walkthrough: a round against bots, the Chamber, the shop, the parent portal, the teacher dashboard and the admin panel."
+      }
+    ],
+    "results": [
+      "Live demo on sample data: demoprojectsforclients.sameemamjad.com/projects/steamblast (the game and its admin panel)",
+      "A 2½-minute walkthrough video on this page: a round against bots, the Chamber, the shop, the parent portal, the teacher dashboard and the admin panel",
+      "In the demo, pressing Play starts a match against bots with no account needed"
+    ],
+    "stack_rationale": [
+      "Phaser 3: an HTML5 game framework with sprites, input and tweens built in, which draws the maze, players and water on a canvas. Each step becomes a short tween between tiles, turning the server's tile-by-tile moves into smooth motion, and the scene takes moves from the keyboard or the on-screen pad.",
+      "React 18 + Zustand: React builds the screens around the maze, from the Chamber question to the parent portal and teacher dashboard. Zustand is a small state store that React components and the Phaser scene can both subscribe to, so one stream of server events updates the canvas and the screens around it.",
+      "Socket.IO: a persistent two-way connection between each device and the server, with rooms that group a match's players so one message reaches all of them. It falls back to long polling where WebSockets are blocked and reconnects after brief drops, which suits children on home Wi-Fi and mobile data.",
+      "Node.js + Express: one Node process serves the REST API and runs the Socket.IO server and its game loops. Its event loop suits a server that mostly waits on sockets, and a small shared package of game constants keeps the client and server agreed on the rules.",
+      "Sequelize (Postgres / SQLite): an ORM that defines users, questions, game sessions, classes and shop items once, with migrations, and runs them on either database. Postgres suits the relational data, such as students in classes and players in sessions; SQLite needs no separate server.",
+      "Installable PWA: the game can be added to a phone or tablet's home screen and open in its own window in landscape, with no app-store listing. A service worker caches the game's files, while API and game traffic always go to the server."
+    ],
+    "word_count": 1887,
+    "updated": "2026-11-02T00:00:00.000Z"
+  },
+  "48": {
+    "project_id": 48,
+    "title": "Bevy Irie: A Trust-First Property Management Website with Private Visitor Analytics on Next.js 16 and Upstash Redis",
+    "meta_description": "Bevy Irie: a website for a Lagos property manager serving landlords abroad, with private visitor analytics. A client project built on Next.js and Upstash.",
+    "summary_answer": "Bevy Irie is a website for a Lagos property-management company whose clients are landlords living abroad, in London, Houston or Toronto, who hand a property and its tenants to a company they may never meet. Bevy Irie is a client project: Sameem worked on it as a full-stack engineer for a client. The site explains each service and what it includes, shows a five-step onboarding process, testimonials, compliance standards and an FAQ, and adds six guides for absentee landlords, with WhatsApp and phone on every page and a contact form checked in the browser and on the server. Behind a passcode, a private owner dashboard shows views, visitors, countries, pages, devices and sources, kept in Upstash Redis with no IP addresses stored. The demo is at demoprojectsforclients.sameemamjad.com/projects/bevyirie, and a 2-minute walkthrough of the website and the owner dashboard is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was the Bevy Irie website built to solve?",
+        "body": "A landlord who lives in London, Houston or Toronto and owns property in Lagos has to hand the property, the rent and the tenants to a company they may never meet. Most of what they learn about that company before getting in touch comes from its website, so the website has to do the work a visit to the office would normally do.\n\nThat shaped the first half of the brief: explain the services plainly, show how the company works, offer proof from other landlords and make it easy to reach a person. The second half came from the owner, who wanted to see where visitors come from without paying for an analytics subscription and without collecting personal data.\n\nBevy Irie is a client project: Sameem worked on it as a full-stack engineer for a client. The public website and the private owner dashboard are one Next.js app."
+      },
+      {
+        "heading": "How does a website earn the trust of landlords who live abroad?",
+        "body": "When a service is bought from a distance, buyers tend to look for signals that are hard to fake, such as a process they can follow and a real person at the other end.\n\nOn the Bevy Irie site each service lists what is included and has a direct way to enquire, so a landlord can match the offer to their own property. The home page sets out a five-step onboarding process, from booking a consultation through a property assessment, a management strategy and monthly reporting to maximising returns, so a reader can see what happens after the first call. Testimonials from landlords abroad, a compliance standards section and an FAQ follow; the testimonials are the company's own content. The FAQ opens with the question a landlord abroad asks first: how will I know what is happening with my property?\n\nWhatsApp and phone links sit on every page. For clients in other countries, a message app is often the easiest way to reach a business across time zones."
+      },
+      {
+        "heading": "How do the guides and structured data help landlords find Bevy Irie?",
+        "body": "The site carries six in-depth guides for absentee landlords, among them a guide to managing property in Lagos from abroad and a playbook for screening tenants remotely. Guides like these answer the questions a landlord researches before choosing a manager, and they show competence in a way a services page cannot.\n\nEach page also describes itself in JSON-LD, the structured data format search engines read. The business is marked up as a real estate agent, the services as an offer catalogue, the FAQ as questions with answers and each guide as a blog post with a breadcrumb trail. Structured data helps search engines and AI tools understand a page without guessing from its layout, though it guarantees no particular search result.\n\nA sitemap lists every page and guide, and Next.js generates branded social images, so a link shared in WhatsApp or on social media shows a proper preview card."
+      },
+      {
+        "heading": "How does the contact form check an enquiry?",
+        "body": "The contact form asks for a name, an email address, an optional phone number and property address, the service of interest and a message. It is built with React Hook Form and a Zod schema, and the same schema runs twice: in the browser, so mistakes show field by field as the visitor types, and again in a server action, because anything sent to a server can bypass the browser. Defining the rules once means the two sides cannot disagree about what a valid enquiry looks like.\n\nA hidden honeypot field catches simple bots. People never see it, while bots tend to fill in every field, so a submission with that field filled is accepted quietly and dropped.\n\nThe form is built to send the team a notification and the enquirer an automatic reply, so a landlord in another time zone knows the message arrived. In the demo every field is checked the same way, but nothing is sent."
+      },
+      {
+        "heading": "Why build private visitor analytics instead of using an analytics service?",
+        "body": "The owner wanted to know where visitors come from without an analytics subscription and without collecting personal data. Hosted analytics tools usually set their own cookies and collect far more than a small company reads, all of which then has to be explained to visitors.\n\nThis owner's questions are simpler: how many people visited, from which countries, which pages they read, on what devices and from which referring sites. Answering them needs only a small record per page view, written and read by the site's own code.\n\nThe trade-off is scope. A dashboard built for one owner answers fewer questions than a full analytics product, and it has to be maintained along with the site. Here that is acceptable, because collecting less is part of what the site offers its visitors. The records are kept in Upstash Redis, a hosted Redis database the app reaches over HTTP."
+      },
+      {
+        "heading": "How does the site record a visit without storing IP addresses?",
+        "body": "On each page change, a small script sends a beacon to the site's own API route with the path, the referring site, the browser language and the time zone. Browsers deliver beacons in the background, so the page never waits for analytics.\n\nThe server then trims what it receives. Query strings and fragments are removed from the path, so anything placed in a URL is not stored, and the referrer is cut down to its hostname. Device, browser and operating system come from the user agent, and the country from a header the hosting platform adds to each request. The admin area and the API are never tracked.\n\nTo count distinct visitors, the server makes a short one-way hash of the IP address, the browser string and the date. The same visitor counts once per day, the hash changes the next day, and the IP address itself is never written down. Each visit goes to the front of a list in Upstash Redis, trimmed to a fixed length so storage stays bounded. In the demo, visits are recorded by country only."
+      },
+      {
+        "heading": "What happens when a visitor declines cookies?",
+        "body": "A cookie banner offers a choice to accept or decline, and the choice is remembered in the visitor's browser. Before sending each page-view beacon, the tracking script checks it. If the visitor has declined, no beacon is sent, so the visit never reaches the server.\n\nThe tracker itself sets no cookie, since it relies on the daily hash described above. Honouring a decline anyway means the banner's promise covers the analytics too. A consent banner only means something if the tracking code reads it, and here the check sits in the same few lines that send the beacon, so the two cannot drift apart."
+      },
+      {
+        "heading": "What does the owner dashboard show, and how is it protected?",
+        "body": "The owner dashboard sits behind a passcode. It shows total views, unique visitors, views today and page views in the last 15 minutes, above a two-week chart of daily traffic. Ranked lists break visits down by page, country, device, browser and referring site, and a table shows the latest visits. The dashboard is read-only, so there is nothing to delete.\n\nThe passcode is checked on the server with a constant-time comparison after a short delay, which slows guessing and reveals nothing through timing. A correct passcode sets a signed, HTTP-only session cookie with an expiry, and the dashboard checks that session on the server before reading any data.\n\nA single shared passcode suits a dashboard with one owner; teams usually need individual accounts, so access can be withdrawn person by person. DevoraX holds no security or compliance certifications."
+      },
+      {
+        "heading": "Where can you see Bevy Irie?",
+        "body": "The demo is a separate copy running on sample data. From demoprojectsforclients.sameemamjad.com/projects/bevyirie a visitor can open the website and the owner dashboard, and the hub page lists the demo logins. On the website you can read the services, the onboarding process, the guides and the FAQ, and try the contact form, which checks every field but sends nothing.\n\nThe dashboard starts with two weeks of sample visits, and your own page views appear at the top within seconds, shown by country only. Declining cookies stops the page-view tracking entirely.\n\nThis page also carries a 2-minute walkthrough of the website and the owner dashboard, recorded on the demo."
+      }
+    ],
+    "results": [
+      "Live demo on sample data: demoprojectsforclients.sameemamjad.com/projects/bevyirie (the website and the owner dashboard)",
+      "A 2-minute walkthrough of the website and the owner dashboard on this page, recorded on the demo",
+      "The demo dashboard starts with two weeks of sample visits, and a visitor's own page views appear at the top within seconds, by country only"
+    ],
+    "stack_rationale": [
+      "Next.js 16 + React 19 + TypeScript: one app serves the public pages, the tracking API route, the contact form's server action and the private dashboard. Pages render on the server, so the text, metadata and structured data are in the first HTML that crawlers and link previews read. TypeScript gives the visit record one shared shape, used by the tracking route, the store and the dashboard.",
+      "Tailwind CSS v4 + Motion: Tailwind holds the brand's greens and golds as design tokens, so every page draws on the same palette. Motion handles the reveals and the cookie banner, and it is set to follow the visitor's reduced-motion preference, so slides and scale-ins are skipped for people who ask for less movement while gentle fades remain.",
+      "React Hook Form + Zod: React Hook Form keeps the contact form responsive and shows errors field by field. Zod defines the rules once as a schema; the browser uses it through a resolver, and the server action parses the same schema before anything is sent, so the two can never disagree.",
+      "Upstash Redis: a hosted Redis database reached over HTTP, which suits serverless functions that cannot hold a database connection open between requests. A Redis list with push and trim fits an append-only visit log, and the data lives outside the app, so it survives redeploys.",
+      "JSON-LD + sitemap: Next.js generates the sitemap, robots rules and social images from the same data as the pages, so a new guide appears in the sitemap without extra work. JSON-LD describes the business, its services, the FAQ and each guide in schema.org terms that search engines and AI tools read directly."
+    ],
+    "word_count": 1859,
+    "updated": "2026-11-02T00:00:00.000Z"
   }
 };
 
@@ -1725,4 +2202,4 @@ export function getCaseStudy(id: number | string): CaseStudyContent | undefined 
  * changed — and stale freshness signals measurably reduce how often a page is
  * cited by AI answer engines. Bump this only on a real content revision.
  */
-export const CASE_STUDY_CONTENT_UPDATED = '2026-10-19T00:00:00.000Z';
+export const CASE_STUDY_CONTENT_UPDATED = '2026-11-02T00:00:00.000Z';

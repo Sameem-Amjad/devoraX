@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 import { createPublicClient } from '@/lib/public';
 import Link from 'next/link';
-import Image from 'next/image';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { JsonLd } from '@/components/seo/structured-data';
 import { absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
-import { VideoBadge } from '@/components/ui/videoBadge';
+import { projectIndustry } from '@/data/industries';
+import { ProjectsGrid } from './_components/projectsGrid';
 
 const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
@@ -124,7 +124,7 @@ export default async function ProjectsPage() {
               Products our founders built or worked on: marketplaces, real-time apps, media backends
               and AI builds. Many were built while Sameem was an engineer at other companies, some have
               no public link, and a few links are demo builds. Each project page says which, and links
-              only to what you can check.
+              only to what you can check. Pick your industry to see the work closest to yours.
             </p>
           </div>
         </header>
@@ -135,67 +135,18 @@ export default async function ProjectsPage() {
             {list.length === 0 ? (
               <p className="text-center text-gray-500 py-20">Projects are loading — check back shortly.</p>
             ) : (
-              <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
-                {list.map((project: any) => {
-                  const hasImage =
-                    project.image &&
-                    project.image !== 'null' &&
-                    String(project.image).startsWith('http');
-
-                  return (
-                    <li key={project.id}>
-                      <Link
-                        href={`/projects/${project.id}`}
-                        className="group block h-full rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-teal-500/30 transition-all duration-300 overflow-hidden"
-                      >
-                        {/* Thumbnail */}
-                        <div className="h-52 relative overflow-hidden bg-[#111]">
-                          {hasImage ? (
-                            <Image
-                              src={project.image}
-                              alt={project.title}
-                              fill
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-gradient-to-br from-teal-900/20 to-black flex items-center justify-center">
-                              <span className="text-4xl font-bold text-teal-500/20 font-mono">
-                                {project.title?.charAt(0)}
-                              </span>
-                            </div>
-                          )}
-                          {project.featured && (
-                            <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-amber-500/90 text-black text-[0.6rem] font-bold uppercase tracking-wide">
-                              Featured
-                            </span>
-                          )}
-                          <VideoBadge video={project.video} className="absolute top-3 right-3" />
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-6">
-                          {project.category && (
-                            <div className="text-xs font-bold text-teal-500 uppercase tracking-widest mb-2">
-                              {project.category}
-                            </div>
-                          )}
-                          <h2 className="text-lg font-bold text-white mb-2 group-hover:text-teal-300 transition-colors line-clamp-2">
-                            {project.title}
-                          </h2>
-                          <p className="text-sm text-gray-500 leading-relaxed mb-4 line-clamp-2">
-                            {project.description}
-                          </p>
-                          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-400 group-hover:gap-2.5 transition-all">
-                            View case study
-                            <ArrowRight className="w-3.5 h-3.5" />
-                          </span>
-                        </div>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+              <ProjectsGrid
+                projects={list.map((p) => ({
+                  id: p.id,
+                  title: p.title,
+                  image: p.image ?? null,
+                  featured: Boolean(p.featured),
+                  video: p.video ?? null,
+                  category: p.category ?? null,
+                  description: p.description ?? null,
+                  industry: projectIndustry(p)?.slug ?? null,
+                }))}
+              />
             )}
           </div>
         </section>

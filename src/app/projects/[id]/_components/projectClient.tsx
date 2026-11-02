@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { projectDemoUrl, projectGallery, projectVideo } from "@/lib/projectMedia";
+import { industryHref, projectIndustry } from "@/data/industries";
 import { ProjectGallery, ProjectVideoPlayer } from "./projectWalkthrough";
 
 // ─── Icon map (matches what's stored in DB) ───────────────────────────────────
@@ -62,6 +63,7 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
   const video   = projectVideo(project.video);
   const gallery = projectGallery(project.gallery);
   const demoUrl = projectDemoUrl(project.demo_url);
+  const industry = projectIndustry(project);
 
   return (
     <div className="min-h-screen bg-black pt-24 pb-20">
@@ -103,6 +105,14 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
               <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">
                 <Star className="w-3 h-3 fill-amber-400" /> Featured
               </span>
+            )}
+            {industry && (
+              <Link
+                href={industryHref(industry.slug)}
+                className="px-3 py-1 rounded-full border border-white/15 text-gray-300 text-xs font-semibold hover:border-teal-500/40 hover:text-teal-300 transition-colors"
+              >
+                {industry.label}
+              </Link>
             )}
             {tags.map((tag) => (
               <span key={tag} className="px-3 py-1 rounded-full border border-teal-500/20 bg-teal-500/10 text-teal-400 text-xs font-mono">
