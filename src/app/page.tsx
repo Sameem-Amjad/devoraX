@@ -3,7 +3,7 @@ import { createPublicClient } from "@/lib/public";
 import HomeClient from "@/app/_components/homeClient";
 import { faqPageSchema } from "@/data/faqs";
 import { getSiteStats } from "@/data/siteStats";
-import { INDEXABLE_PROJECTS } from "@/data/projectIndex";
+import { INDEXABLE_PROJECTS, isHiddenProject } from "@/data/projectIndex";
 import { DOOR_LINKS, MARKETPLACE_LINK, MARKET_LINKS } from "@/data/siteNav";
 import { JsonLd } from "@/components/seo/structured-data";
 import { ORGANIZATION_ID, SITE_URL, webPageNode } from "@/lib/seo";
@@ -60,7 +60,7 @@ export default async function Home() {
     const i = INDEXABLE_PROJECTS.indexOf(Number(id));
     return i === -1 ? INDEXABLE_PROJECTS.length : i;
   };
-  const projects = [...(projectsRes.data || [])].sort(
+  const projects = (projectsRes.data || []).filter((p) => !isHiddenProject(p.id)).sort(
     (a, b) =>
       rank(a.id) - rank(b.id) || Number(Boolean(b.featured)) - Number(Boolean(a.featured))
   );

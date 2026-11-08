@@ -43,6 +43,18 @@ export type Engagement =
 export const INDEXABLE_PROJECTS: readonly number[] = [34, 19, 25, 33, 37];
 
 /**
+ * Projects hidden from the site on the owner's instruction (8 Nov 2026): a
+ * project with no video demo stays off the site, and these two have no video,
+ * gallery or public link. Their database rows stay; the portfolio, the
+ * homepage and the page route skip them, and their URLs return 404.
+ */
+export const HIDDEN_PROJECTS: readonly number[] = [2, 3];
+
+export function isHiddenProject(id: number | string): boolean {
+  return HIDDEN_PROJECTS.includes(Number(id));
+}
+
+/**
  * What a project nobody has placed is taken to be: no engagement, never "Case
  * Study". It used to be 'sameem-direct', which quietly said the client hired
  * Sameem directly.

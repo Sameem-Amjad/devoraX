@@ -8,7 +8,7 @@ import { CaseStudyLongform } from '@/components/seo/case-study-longform';
 import { RelatedReading } from '@/components/seo/related-reading';
 import { getCaseStudy } from '@/data/caseStudyContent';
 import { doorsCiting } from '@/data/doorsCiting';
-import { isIndexable, projectPageName, projectPageTitle } from '@/data/projectIndex';
+import { isHiddenProject, isIndexable, projectPageName, projectPageTitle } from '@/data/projectIndex';
 
 const BASE_URL = 'https://thedevorax.tech';
 
@@ -42,6 +42,13 @@ function projectRobots(id: string): Metadata['robots'] {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const supabase = createPublicClient();
   const { id } = await params;
+  if (isHiddenProject(id)) {
+    return {
+      title: 'Project Not Found',
+      description: 'The requested project could not be found.',
+      robots: { index: false, follow: false },
+    };
+  }
   const { data: project, error } = await supabase
     .from('projects')
     .select('title, description, content, image, tags')
@@ -166,12 +173,14 @@ export async function generateStaticParams() {
     console.error('[projects/[id]] generateStaticParams failed:', error?.message);
     return [];
   }
-  return data.map((p) => ({ id: String(p.id) }));
+  return data.filter((p) => !isHiddenProject(p.id)).map((p) => ({ id: String(p.id) }));
 }
 
 // ✅ This ensures the page is fast and SEO friendly
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // Hidden projects (data/projectIndex.ts) are off the site: their URLs 404.
+  if (isHiddenProject(id)) return notFound();
   const supabase = createPublicClient();
 
   // Fetch project data strictly on the server

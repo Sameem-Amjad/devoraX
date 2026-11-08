@@ -12,6 +12,7 @@
 import Link from 'next/link';
 import { CASE_STUDY_CONTENT } from '@/data/caseStudyContent';
 import { INSIGHTS } from '@/data/insights';
+import { isHiddenProject } from '@/data/projectIndex';
 
 function shortName(title: string) {
   const head = title.split(':')[0].trim();
@@ -65,7 +66,8 @@ export function RelatedReading({ projectId }: { projectId: number | string }) {
   const currentTokens = techTokens(currentText);
 
   const siblings = Object.values(CASE_STUDY_CONTENT)
-    .filter((c) => c.project_id !== id)
+    // Hidden projects (data/projectIndex.ts) 404, so they are never suggested.
+    .filter((c) => c.project_id !== id && !isHiddenProject(c.project_id))
     .map((c) => {
       const t = techTokens(
         c.title + ' ' + c.summary_answer + ' ' + (c.stack_rationale || []).join(' ')
