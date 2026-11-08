@@ -93,6 +93,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Every retired URL gets a permanent redirect here and a row in the redirect
+  // map in docs/SEO.md. src/lib/indexnow.ts keeps the same paths out of the
+  // admin's IndexNow ping.
   async redirects() {
     return [
       {
@@ -100,6 +103,46 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         has: [{ type: "host", value: "www.thedevorax.tech" }],
         destination: "https://thedevorax.tech/:path*",
+        permanent: true,
+      },
+      {
+        // 7 Nov 2026: /case-study listed the same projects as /projects under a
+        // "Case Studies" heading, and most of them are not DevoraX client work.
+        // One portfolio page now.
+        source: "/case-study",
+        destination: "/projects",
+        permanent: true,
+      },
+      {
+        // 7 Nov 2026: the portfolio-count article was retired (data/insights.ts).
+        source: "/insights/what-we-measured-across-25-production-builds",
+        destination: "/insights",
+        permanent: true,
+      },
+      // 7 Nov 2026: the four service pages, one per row of the services table,
+      // retired in favour of the door pages. The rows stay in the database
+      // (projects.service_id points at them); the route that rendered them is
+      // gone. Mobile app development goes to the store-launch door, AI and
+      // full-stack web development to the audit-and-fix door, and the two with
+      // no door of their own (cloud, UI/UX) to the services hub.
+      {
+        source: "/services/1",
+        destination: "/solutions/lovable-app-to-app-store",
+        permanent: true,
+      },
+      {
+        source: "/services/2",
+        destination: "/solutions/fix-vibe-coded-app",
+        permanent: true,
+      },
+      {
+        source: "/services/3",
+        destination: "/services",
+        permanent: true,
+      },
+      {
+        source: "/services/4",
+        destination: "/services",
         permanent: true,
       },
     ];

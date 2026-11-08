@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { TERMS_UPDATED } from '@/data/legal';
 import { JsonLd } from '@/components/seo/structured-data';
 import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
@@ -6,9 +7,9 @@ import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
 const CONTACT_EMAIL = 'business@thedevorax.tech';
 
 const PATH = '/terms';
-const TITLE = 'Terms of Service — Site and Project Work';
+const TITLE = 'Terms of Service: Site and Project Work';
 const DESCRIPTION =
-  'The terms covering use of this site, what our portfolio figures and indicative pricing mean, and how project work is agreed in a separate written proposal.';
+  'The terms covering use of this site, what the portfolio figures mean, how our published prices and terms apply, and how project work is agreed in writing.';
 // One date (data/legal.ts) for the visible "Last updated" line, the WebPage
 // node's dateModified and the sitemap, so the three can't disagree.
 const LAST_UPDATED = TERMS_UPDATED;
@@ -68,17 +69,23 @@ export default function TermsPage() {
 
             <section>
               <h2 className="text-2xl font-bold text-white">
-                What the portfolio and case studies mean
+                What the portfolio and write-ups mean
               </h2>
               <p className="mt-4 leading-relaxed">
-                Case studies and project pages describe work DevoraX&apos;s founders
-                did, and each one says who it was for: a DevoraX client, a company
-                Sameem worked for as an employee, or a build with no public link and
-                no named client. Products built as an employee belong to that
-                employer or its client, not to DevoraX. We publish only figures a
-                reader can check: a public store listing, a live site, or
-                Sameem&apos;s public Fiverr record. We do not publish usage, revenue
-                or uptime figures we cannot point to.
+                Project pages and their write-ups describe work DevoraX&apos;s
+                founders did, and each one says who it was for, where that is
+                recorded: a client who contracted DevoraX, a client who hired
+                DevoraX through its Fiverr profile (which is in Sameem Amjad&apos;s
+                name), a client who hired Sameem directly, a company Sameem worked
+                for as an employee, or a demo, proof of concept or build with no
+                named client. Where it isn&apos;t recorded, the page says only that
+                Sameem worked on the build. We call a page a case study only when
+                a client contracted DevoraX for the work.
+                Products built as an employee belong to that employer or its
+                client, not to DevoraX. We publish only figures a reader can
+                check: a public store listing, a live site, or our public Fiverr
+                record. We do not publish usage, revenue or uptime figures we
+                cannot point to.
               </p>
               <p className="mt-4 leading-relaxed">
                 Research articles published here are drawn from the portfolio
@@ -95,10 +102,31 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-bold text-white">Pricing information</h2>
               <p className="mt-4 leading-relaxed">
-                Any prices or package tiers shown on this site are indicative
-                starting points to help you judge fit. They are not an offer and not
-                a quote. The price for your project is the one stated in the written
-                proposal we issue after a discovery call.
+                The step prices on our{' '}
+                <Link
+                  href="/pricing"
+                  className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                >
+                  pricing page
+                </Link>{' '}
+                and the{' '}
+                <Link
+                  href="/pricing#terms"
+                  className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                >
+                  terms published with them
+                </Link>{' '}
+                (when we can start, when the audit report arrives, who works on a
+                sprint, how we keep in touch, what happens if work takes longer
+                than the audit or the written quote estimated, store rejections,
+                defects after handover, payment, the audit credit, and who owns the
+                code and the accounts) are the defaults every proposal starts from.
+                A proposal adds only the terms specific to its scope.
+              </p>
+              <p className="mt-4 leading-relaxed">
+                The new-build package prices are starting points, not quotes: a new
+                build&apos;s price is the one in the written proposal we issue after a
+                discovery call.
               </p>
             </section>
 
@@ -122,9 +150,11 @@ export default function TermsPage() {
               <h2 className="text-2xl font-bold text-white">Intellectual property</h2>
               <p className="mt-4 leading-relaxed">
                 The content, design and written material on this site belong to
-                DevoraX. Client names, product names and logos referenced in case
-                studies remain the property of their respective owners and appear
-                here to describe work we performed.
+                DevoraX. Client, employer and product names and logos referenced
+                in project pages and write-ups remain the property of their
+                respective owners. They appear here only to describe the work each
+                page sets out, including work done as an employee of another
+                company, and do not mean that company was a DevoraX client.
               </p>
               <p className="mt-4 leading-relaxed">
                 Ownership of code and assets we build for you is set out in your
@@ -135,7 +165,8 @@ export default function TermsPage() {
             <section>
               <h2 className="text-2xl font-bold text-white">Third-party links</h2>
               <p className="mt-4 leading-relaxed">
-                This site links to products we built and to external profiles. We do
+                This site links to the products its pages describe and to external
+                profiles. We do
                 not control those destinations and are not responsible for their
                 content or availability.
               </p>

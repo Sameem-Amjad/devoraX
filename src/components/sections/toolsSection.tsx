@@ -144,12 +144,12 @@ export const ToolsSection = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
             Tools We{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-400 to-emerald-400">
-              Master
+              Use
             </span>
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Best-in-class technologies for every layer of your product — from
-            AI inference to pixel-perfect UI.
+            The tools we use at each layer of a product, from AI inference to
+            the interface.
           </p>
         </motion.div>
 
@@ -241,9 +241,9 @@ export const ToolsSection = () => {
           className="mt-16 text-center"
         >
           <p className="text-gray-600 text-sm">
-            Always adopting the best new tools —{" "}
+            We keep up with new tools,{" "}
             <span className="text-teal-500">
-              so you don't have to track the landscape.
+              so you don&apos;t have to track the landscape.
             </span>
           </p>
         </motion.div>

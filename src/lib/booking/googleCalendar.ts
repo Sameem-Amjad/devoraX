@@ -88,9 +88,12 @@ export const createCalendarEvent = async (
   const end = new Date(b.startsAt.getTime() + SLOT_MINUTES * 60_000);
 
   const event = {
-    summary: `Strategy call — ${b.name} × DevoraX`,
+    // Named as the site names it everywhere: a free call, as long as
+    // SLOT_MINUTES (30). It said "Strategy call", a name the booking pages no
+    // longer use.
+    summary: `Free ${SLOT_MINUTES}-minute call: ${b.name} × DevoraX`,
     description: [
-      `30-minute consultation booked from the DevoraX site.`,
+      `Free ${SLOT_MINUTES}-minute call booked from the DevoraX site.`,
       ``,
       `Name:  ${b.name}`,
       `Email: ${b.email}`,

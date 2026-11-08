@@ -492,9 +492,11 @@ export const AdminProjectsManager = ({ projects, onDelete, onAdd, onUpdate }: Ad
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Service ID</label>
+                  {/* Internal since 7 Nov 2026: the /services/{id} pages that
+                      read it redirect, so no public page shows it. */}
+                  <label className="text-xs text-gray-400 uppercase tracking-wider mb-1 block">Service ID (internal)</label>
                   <input
-                    placeholder="linked service ID (optional)"
+                    placeholder="not shown on the site (optional)"
                     className="w-full bg-black border border-white/10 px-3 py-2.5 rounded-lg text-white font-mono text-sm focus:outline-none focus:border-teal-500/50"
                     value={form.service_id}
                     onChange={(e) => setForm({ ...form, service_id: e.target.value })}

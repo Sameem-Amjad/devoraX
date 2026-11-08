@@ -1,5 +1,15 @@
 import CONSTANTS from "../../utils/constants/constants";
 
+// The brand is one word, "DevoraX" (data/brand.ts). The mark draws its final X,
+// so the visible letters stop at "Devora" and the X follows in the same run of
+// text, visually hidden. The HTML, a screen reader and a text extractor all
+// read "DevoraX". The header's text used to be "Devora", from a separate
+// HEADER_TITLE constant, with only the mark's aria-label supplying the X, and
+// a crawler reading the page's text saw a different name from the brand.
+const NAME = CONSTANTS.AGENCY_NAME;
+const WRITTEN = NAME.slice(0, -1);
+const DRAWN = NAME.slice(-1);
+
 interface LogoProps {
   size?: "sm" | "md" | "lg";
   glow?: boolean;
@@ -42,11 +52,13 @@ const Logo = ({ size = "md", glow = true }: LogoProps) => {
           `}
           style={{ fontFamily: "Orbitron, sans-serif" }}
         >
-          {CONSTANTS.HEADER_TITLE}
+          {WRITTEN}
+          <span className="sr-only">{DRAWN}</span>
         </span>
 
-        {/* X Mark */}
+        {/* X Mark: decoration, since the X is already in the text above */}
         <div
+          aria-hidden="true"
           className={`
             ${currentSize.icon}
             drop-shadow-[0_0_6px_rgba(45,212,191,0.35)]
@@ -54,15 +66,15 @@ const Logo = ({ size = "md", glow = true }: LogoProps) => {
             transition-all duration-300
           `}
         >
-          {/* The mark is the "X" of the name, so it carries it: a link wrapping
-              the logo is then named "Devora X" from what is on screen, which is
-              what WCAG 2.5.3 (label in name) asks for. */}
+          {/* Hidden from assistive tech: the text carries the X, so a link
+              wrapping the logo is named "DevoraX", which contains the visible
+              "Devora" (WCAG 2.5.3, label in name). */}
           <svg
             viewBox="0 0 64 64"
             xmlns="http://www.w3.org/2000/svg"
             className="w-full h-full"
-            role="img"
-            aria-label="X"
+            aria-hidden="true"
+            focusable="false"
           >
             <defs>
               <linearGradient
@@ -114,8 +126,8 @@ const Logo = ({ size = "md", glow = true }: LogoProps) => {
       </div>
 
       {/* Tagline. Decorative, so hidden from assistive tech: the header's logo
-          link is named from the brand text and the X mark ("Devora X"), not
-          from the tagline. */}
+          link is named from the brand text ("DevoraX"), not from the
+          tagline. */}
       <span
         aria-hidden="true"
         className="mt-1 text-[0.6rem] font-medium tracking-[0.25em] text-gray-400"

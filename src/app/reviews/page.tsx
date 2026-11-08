@@ -1,6 +1,7 @@
 import { BRAND_FACTS } from '@/data/brand';
 import {
   FIVERR_PROFILE_URL,
+  REVIEWS_PAGE_UPDATED,
   TESTIMONIALS,
   TESTIMONIALS_UPDATED,
   TESTIMONIAL_STATS,
@@ -19,19 +20,26 @@ import { DateText } from '@/components/seo/date-text';
  * business on its own site are self-serving under Google's rules, ineligible
  * for review rich results, and risk a manual action (see data/testimonials.ts).
  * The page links to the Fiverr profile instead, so the source does the vouching.
+ *
+ * Whose reviews they are: DevoraX's. The Fiverr profile is in Sameem Amjad's
+ * name, but it sells DevoraX's services and the team delivered the orders, so
+ * the reviews are the studio's (owner decision, 8 Nov 2026, which reversed the
+ * 7 Nov heading "DevoraX reviews from Sameem Amjad's Fiverr clients"). The
+ * intro still says whose name the profile is in, because that is the name a
+ * reader finds on Fiverr.
  */
 
 const PATH = '/reviews';
 const H1 = 'DevoraX client reviews';
 const STATS = TESTIMONIAL_STATS;
-const DESCRIPTION = `${STATS.totalReviews} client reviews quoted as written on Sameem Amjad's public Fiverr profile, from ${STATS.uniqueClients} clients in the US, UK, Canada and Hong Kong${STATS.allFiveStar ? ', all five-star' : ''}.`;
+const DESCRIPTION = `${STATS.totalReviews} client reviews, quoted as written from DevoraX's Fiverr profile in Sameem Amjad's name: ${STATS.uniqueClients} clients in the US, UK, Canada and Hong Kong${STATS.allFiveStar ? ', all five-star' : ''}.`;
 const TRAIL = [{ name: 'Reviews', path: PATH }];
 
 export const metadata = pageMetadata({
-  title: 'DevoraX Reviews: Client Feedback from Fiverr',
+  title: 'DevoraX Client Reviews',
   description: DESCRIPTION,
   path: PATH,
-  imageAlt: 'DevoraX client reviews',
+  imageAlt: H1,
 });
 
 const linkClass = 'text-teal-400 underline underline-offset-4 hover:text-teal-300';
@@ -53,7 +61,7 @@ export default function ReviewsPage() {
             name: H1,
             description: DESCRIPTION,
             about: ORGANIZATION_ID,
-            dateModified: TESTIMONIALS_UPDATED,
+            dateModified: REVIEWS_PAGE_UPDATED,
           }),
           breadcrumbNode(PATH, TRAIL),
         ]}
@@ -65,12 +73,12 @@ export default function ReviewsPage() {
 
           <div className="max-w-3xl">
             <p className="mt-6 text-xl leading-relaxed text-gray-200">
-              DevoraX&apos;s client reviews come from{' '}
+              These reviews are quoted as written from{' '}
               <a href={FIVERR_PROFILE_URL} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                Sameem Amjad&apos;s public Fiverr profile
+                DevoraX&apos;s public Fiverr profile
               </a>
-              , and every one on this page is quoted as written there, so anyone can check
-              it. Where Fiverr cuts a long review short, the quote ends with an ellipsis (…). The {STATS.totalReviews} reviews are from {STATS.uniqueClients} different
+              , which is in Sameem Amjad&apos;s name, so anyone can check them. Each was written
+              by a client who hired us there. Where Fiverr cuts a long review short, the quote ends with an ellipsis (…). The {STATS.totalReviews} reviews are from {STATS.uniqueClients} different
               clients, {STATS.repeatClients} of them repeat clients, in {STATS.countries}{' '}
               countries
               {STATS.allFiveStar ? `, and all ${STATS.totalReviews} are five-star` : ''}.

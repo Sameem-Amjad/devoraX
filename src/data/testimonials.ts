@@ -4,7 +4,10 @@
  * These replace three fabricated testimonials ("Alex Johnson, CTO, FinStart" and
  * similar) that carried invented outcome metrics such as "300% performance boost".
  *
- * Source: the public Fiverr profile at https://www.fiverr.com/sameemamjad.
+ * Source: DevoraX's public Fiverr profile at https://www.fiverr.com/sameemamjad.
+ * The profile is in Sameem Amjad's name, but it sells DevoraX's services and the
+ * team delivered the orders, so these are DevoraX client reviews (owner
+ * decision, 8 Nov 2026). Pages that show them say whose name the profile is in.
  * Usernames are the reviewers' real Fiverr handles, so every quote here can be
  * checked against the profile — which is the entire point. A checkable handle is
  * worth more than an impressive-sounding "CTO, TechCorp" that nobody can verify.
@@ -180,9 +183,17 @@ export const TESTIMONIALS: Testimonial[] = [
   }
 ];
 
-/** When the reviews above were last copied from the Fiverr profile. Feeds the
- *  /reviews sitemap entry. */
+/** When the reviews above were last copied from the Fiverr profile. Shown on
+ *  /reviews as "Last copied". */
 export const TESTIMONIALS_UPDATED = '2026-09-17T00:00:00.000Z';
+
+/** When /reviews last changed as a page: on 8 Nov 2026 its heading became
+ *  "DevoraX client reviews", and its intro says the reviews come from
+ *  DevoraX's Fiverr profile, which is in Sameem's name. The page's
+ *  dateModified and its sitemap entry are the newer of this and
+ *  TESTIMONIALS_UPDATED. */
+export const REVIEWS_PAGE_UPDATED =
+  TESTIMONIALS_UPDATED > '2026-11-08T00:00:00.000Z' ? TESTIMONIALS_UPDATED : '2026-11-08T00:00:00.000Z';
 
 /** Verifiable aggregates, counted from the reviews above — no rounding up. */
 export const TESTIMONIAL_STATS = {

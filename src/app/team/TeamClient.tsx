@@ -117,7 +117,7 @@ export default function TeamClient() {
           >
             <Image
               src="/images/banner.jpg"
-              alt="Sameem Amjad — DevoraX"
+              alt="Sameem Amjad, founder of DevoraX"
               fill
               className="object-cover object-top"
               priority
@@ -216,9 +216,9 @@ export default function TeamClient() {
 
                 <div className="mt-5 w-full space-y-2">
                   {[
-                    { icon: GraduationCap, text: "COMSATS University — B.Sc. CS, 2023" },
-                    { icon: Award,         text: "GDSC Islamabad — Web Dev, 2023" },
-                    { icon: Award,         text: "Fiverr — Freelancing Essentials, 2024" },
+                    { icon: GraduationCap, text: "COMSATS University: B.Sc. CS, 2023" },
+                    { icon: Award,         text: "GDSC Islamabad: Web Dev, 2023" },
+                    { icon: Award,         text: "Fiverr: Freelancing Essentials, 2024" },
                   ].map(({ icon: Icon, text }) => (
                     <div key={text} className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-white/[0.02] border border-white/5">
                       <Icon className="w-3.5 h-3.5 text-teal-400/70 flex-shrink-0" />
@@ -233,14 +233,15 @@ export default function TeamClient() {
 
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="space-y-4">
                   <p className="text-gray-200 text-lg leading-relaxed">
-                    I'm a{" "}
+                    I&apos;m a{" "}
                     <span className="text-white font-semibold">Software Engineer specializing in scalable backend architectures</span>{" "}
-                    and high-performance full-stack ecosystems. I don't just build applications — I engineer secure,
+                    and high-performance full-stack ecosystems. I don&apos;t just build applications: I engineer secure,
                     data-driven systems that solve complex business problems.
                   </p>
                   <p className="text-gray-400 text-base leading-relaxed">
                     As DevoraX&apos;s <span className="text-teal-400 font-medium">Founder & Lead Architect Engineer</span>, I run a
-                    two-person studio with Usman, our CTO, and we bring in specialists when a scope needs them.
+                    two-person studio with Usman, our CTO, and we work on every sprint together. Sometimes a
+                    designer or another specialist joins a project, and we name them to you before they start.
                     I have taken <span className="text-white font-medium">50+ projects on Fiverr since 2022</span>, and
                     as an engineer at Zencloud and Webrange Solutions I worked on real-time fitness leaderboards,
                     marketplaces and a Danish power-of-attorney service built to GDPR requirements, across the
@@ -248,7 +249,7 @@ export default function TeamClient() {
                   </p>
                   <p className="text-gray-500 text-sm leading-relaxed">
                     My approach combines <span className="text-gray-300">clean, maintainable code</span> with
-                    robust cloud infrastructure on AWS — ensuring every product is lightning-fast, scalable, and built to last.
+                    cloud infrastructure on AWS that can grow with the product.
                   </p>
                 </motion.div>
 
@@ -332,7 +333,7 @@ export default function TeamClient() {
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto text-base leading-relaxed">
                 A small, senior team. Every person listed here works directly on client
-                builds — we do not pad this page with profiles you will never meet.
+                builds; we do not pad this page with profiles you will never meet.
               </p>
             </motion.div>
 
@@ -417,7 +418,7 @@ export default function TeamClient() {
             >
               <h3 className="text-2xl font-bold text-white mb-3">Want to join the team?</h3>
               <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
-                We're always looking for exceptional engineers and designers who care about craft. Drop us a line.
+                We&apos;re always looking for exceptional engineers and designers who care about craft. Drop us a line.
               </p>
               <a
                 href="mailto:business@thedevorax.tech"

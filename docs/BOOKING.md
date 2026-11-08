@@ -99,15 +99,94 @@ The UI, the API and the calendar event all derive from it, so they can't disagre
 HOST_TIMEZONE      = "Asia/Karachi"   // hours below are in this zone
 SLOT_MINUTES       = 30               // call length and slot grid
 WORKING_DAYS       = [1,2,3,4,5]      // 0 = Sunday
-WORK_START_HOUR    = 10               // first slot 10:00
-WORK_END_HOUR      = 18               // last start 17:30 for a 30m call
+WORK_WINDOWS       = [                // a call must fit inside one window
+  { start: 10, end: 18 },             //   10:00 to 18:00, last start 17:30
+  { start: 19, end: 23 },             //   19:00 to 23:00, last start 22:30
+]
 MIN_NOTICE_MINUTES = 4 * 60           // no booking inside 4 hours
 MAX_DAYS_AHEAD     = 21               // how far the calendar opens
 ```
 
+The evening window is for founders in the Americas: 19:00 to 23:00 in Karachi
+is 9 am to 1 pm US Eastern (10 am to 2 pm while the US is on daylight saving
+time). Two places state the hours in words and must change with the windows:
+`BRAND_FACTS.callHours` in `src/data/brand.ts` (shown on /book, /contact,
+/about and /press) and the time-zone answer in `src/data/terms.ts`. The
+Organization schema's `hoursAvailable` in the root layout is generated from
+`WORK_WINDOWS`, so it follows on its own.
+
 Slots are stored as real instants (`timestamptz`), so a visitor in London and
 you in Karachi always mean the same moment. The modal shows each visitor their
 own timezone, plus yours underneath when they differ.
+
+### What the visitor sees
+
+- **Waking hours first.** A day lists its slots that start from 7 am up to
+  10 pm in the visitor's time first. The rest sit behind a "Show N more times,
+  before 7 am or from 10 pm your time" button: in US Eastern winter time the
+  10:00 to 18:00 window falls between midnight and 8 am. A day with no slot in
+  those hours shows every slot.
+- **The day it opens on** is the first day with a slot in those hours, not
+  simply the first day. In US winter time, from Friday morning to Sunday
+  evening, a US Central visitor's first day is Sunday with 11 pm only, so they
+  land on Monday; Sydney on a Friday evening lands on Monday rather than a
+  Saturday of small-hours slots. Los Angeles opens on Sunday, because its 9 pm
+  and 9:30 pm slots count. With no such day at all, it opens on the first day.
+- **No hidden selection.** Collapsing the list clears a time picked from it,
+  and changing the day clears the time and collapses the list, so the form
+  never confirms a time that is not on screen.
+- **Layout.** The dialog's body is as tall as the screen allows (up to 46rem;
+  the screen's height less 10rem), shows its scrollbar, and fades along its
+  bottom edge while there is more below. From 375px wide the times sit four to
+  a row. On a full day the name field shows without scrolling at 1440x900,
+  1366x768 and 390x844, and the whole dialog fits a 320x568 phone and a
+  landscape one.
+
+### Time format
+
+Every booking time is formatted with `hourCycle: "h12"`, never `hour12: true`.
+With `hour12` the runtime chooses the 12-hour cycle, and Node 20 chooses h11,
+which prints 12:30 pm as "0:30 pm". This covers the modal, `formatSlot()` (the
+legacy `booking_time` column) and the invite's "Their local time" line. A
+booking saved before this fix by a runtime that chooses h11 can show a noon
+slot as "0:00 pm" or "0:30 pm" in `booking_time`; its `starts_at` is right.
+
+The invite's title and first line ("Free 30-minute call") take the length from
+`SLOT_MINUTES`. The site's pages say "free 30-minute call" in their own copy,
+so change those with it.
+
+## What a booking records
+
+Besides the name, email, time and optional message, each booking stores where
+it came from and the visitor's optional brief. Everything here is optional,
+and anything malformed is saved as null rather than failing the booking.
+
+| Column | What it holds | Set by |
+|---|---|---|
+| `heard_about` | "How did you hear about us?" (keys in `src/lib/booking/attribution.ts`) | the form |
+| `booked_from` | The page the booking came from: a `/book?from=` value turned into its path, else the page on this site the visitor was on before `/book`, else the page the form is on | the browser |
+| `referrer_host` | The site that sent the visitor, hostname only | the browser |
+| `landing_path` | The first page of the visit, sent only if the visitor accepted analytics | the browser |
+| `lead_channel` | The profile a tagged link came from (`/book?from=linkedin`), or a channel you set by hand | the link, or you |
+| `app_link`, `built_with`, `deadline` | The optional brief, folded under "Add details about your app" | the form |
+| `qualified`, `qualified_note`, `first_step_paid` | Your assessment after the call, and the first paid step bought | you, in the Supabase table editor |
+| `new_channel`, `developer_account`, `sharetribe_plan`, `sharetribe_need` | Whether the lead came through a new channel (set at first contact); the kind of App Store and Google Play developer account the founder has (`none`, `personal` or `organisation`; an organisation needs a D-U-N-S Number); and, for a Sharetribe marketplace, its plan and what it needs built. The form doesn't ask for these, and the API never sends them | you, in the Supabase table editor |
+
+**Tagged links.** `/book?from=` accepts a page's own name (any solution or
+insight slug, `home`, `pricing`, `services`, or a project id such as `34`) and
+records that page as `booked_from`; or a profile (`sharetribe-experts`,
+`contra`, `clutch`, `linkedin`, `upwork`), recorded as `lead_channel`. Anything
+else is ignored. Put the profile links on the profiles themselves, for example
+`https://thedevorax.tech/book?from=linkedin`.
+
+**Before deploying,** apply `supabase/migrations/20261107120000_bookings_lead_tracking.sql`
+with `supabase db push --linked`. If the code goes out first, `/api/bookings`
+still saves every booking, in three tiers, and logs the tier it fell back to:
+everything; then the booking with `heard_about`, `booked_from` and
+`referrer_host` (`[booking] saving bookings without the lead tracking fields`);
+then the booking alone (`[booking] saving bookings without attribution`). After
+each deploy, book one test call per door page, delete it, and check the Vercel
+logs for either line.
 
 ## How it fits together
 

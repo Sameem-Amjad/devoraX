@@ -13,6 +13,7 @@
  * accessible by default, and lets this whole section ship zero client JS.
  */
 import { FAQS } from '@/data/faqs';
+import { InlineText } from '@/components/seo/rich-text';
 
 export const FAQSection = () => {
   return (
@@ -34,7 +35,7 @@ export const FAQSection = () => {
             </span>
           </h2>
           <p className="text-gray-400 max-w-xl mx-auto text-lg">
-            No fluff — straight answers to the things every client asks before
+            No fluff: straight answers to the things every client asks before
             kicking off a project.
           </p>
         </div>
@@ -70,8 +71,10 @@ export const FAQSection = () => {
                   </svg>
                 </span>
               </summary>
+              {/* An answer can carry a link ([anchor](/path), lib/richText.ts);
+                  the FAQPage JSON-LD gets the same words without the syntax. */}
               <p className="px-6 pb-6 text-sm text-gray-400 leading-relaxed">
-                {faq.a}
+                <InlineText text={faq.a} />
               </p>
             </details>
           ))}

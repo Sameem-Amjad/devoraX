@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { VideoBadge } from '@/components/ui/videoBadge';
 import { INDUSTRIES, getIndustry } from '@/data/industries';
+import { projectLabelText } from '@/data/projectIndex';
 
 export type ProjectCard = {
   id: number | string;
@@ -155,8 +156,10 @@ function Grid({
                       {industry.label}
                     </span>
                   )}
+                  {/* "View case study" was on every card, employer work
+                      included; the label now follows data/projectIndex.ts. */}
                   <span className="flex items-center gap-1.5 text-xs font-semibold text-teal-400 group-hover:gap-2.5 transition-all">
-                    View case study
+                    View {projectLabelText(project.id)}
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>

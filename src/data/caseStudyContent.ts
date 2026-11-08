@@ -45,6 +45,21 @@
  * client". No production URL is given for any of them: each links only its
  * demo, which runs a separate copy on sample data.
  *
+ * Revised 7 Nov 2026 (owner decision): Pastel (23) is named only as Sameem's
+ * own employment, "Senior Software Developer on Pastel's team, as Pastel's
+ * employee, since April 2026", with the line that DevoraX work is separate
+ * from his job at Pastel. Its iOS app launched in November 2025, before he
+ * joined, so nothing here says he built it.
+ *
+ * Revised 8 Nov 2026 (owner decisions): Koor (17) was DevoraX client work, for
+ * a client not named here, and its page is now a case study. The Fiverr
+ * profile is in Sameem's name but sells DevoraX's services, so ConstrAction
+ * (33), Pianissimo Online (39) and VoiceDesk (40) say "A client hired DevoraX
+ * through its Fiverr profile, which is in Sameem's name", as the door pages'
+ * proof does. CEDMAT (18), Augment Fit (21) and Waitmate (22) say only
+ * "Sameem Amjad worked on this build": which of them were client work and
+ * which demo builds is not recorded.
+ *
  * Rendered server-side so crawlers and AI engines (which do not execute
  * JavaScript) read it from the initial HTML.
  */
@@ -437,16 +452,16 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "17": {
     "project_id": 17,
     "title": "Koor Food Delivery: A React Native and NestJS Marketplace for Homemade Meals",
-    "meta_description": "Koor is a homemade-meal marketplace on Google Play. Sameem Amjad worked on it: React Native, NestJS, Firebase, Elasticsearch and AWS.",
-    "summary_answer": "Koor Homemade Food & Delivery is a marketplace app that connects customers with home chefs and bakers who sell meals from their own kitchens, with riders handling delivery. Sameem Amjad, DevoraX's founder, worked on Koor, a React Native app on a NestJS backend, with Firebase for real-time order updates, Elasticsearch for search and AWS (EC2, S3 and CloudFront) for hosting. The app is live on Google Play under the package com.koor_user and was first released there in October 2025.",
+    "meta_description": "Koor is a homemade-meal marketplace on Google Play that DevoraX worked on for a client: React Native, NestJS, Firebase, Elasticsearch and AWS.",
+    "summary_answer": "Koor Homemade Food & Delivery is a marketplace app that connects customers with home chefs and bakers who sell meals from their own kitchens, with riders handling delivery. Koor was DevoraX client work: DevoraX worked on it for a client, who is not named here, and Sameem Amjad, DevoraX's founder, worked on the build. Koor is a React Native app on a NestJS backend, with Firebase for real-time order updates, Elasticsearch for search and AWS (EC2, S3 and CloudFront) for hosting. The app is live on Google Play under the package com.koor_user and was first released there in October 2025.",
     "sections": [
       {
         "heading": "What is Koor?",
         "body": "Koor is a marketplace for home-cooked food. Its Google Play listing sets out three groups of users. Customers browse homemade dishes, from daily meals to sweets and cakes, place orders and track them live from preparation to delivery. Home chefs and bakers create a profile, upload their dishes, set prices, promotions and availability, and manage orders as they arrive. Riders accept deliveries, see pickup and drop-off locations, and keep track of their completed deliveries and earnings.\n\nThe proposition is narrow on purpose: homemade food only, not restaurant takeaway. That narrowness is what shapes the engineering, because supply that comes from home kitchens behaves very differently from supply that comes from restaurants."
       },
       {
-        "heading": "What did Sameem work on?",
-        "body": "Sameem worked on Koor, a product whose client is not named here. It is a React Native mobile app on a NestJS backend. Firebase carries real-time order and delivery updates, Elasticsearch powers search across chefs and dishes, and the system runs on AWS, using EC2 for the application servers, S3 for storage and CloudFront for content delivery.\n\nThe sections below explain why each part of that stack suits a home-chef marketplace and what each part has to get right."
+        "heading": "Whose work was Koor?",
+        "body": "Koor was DevoraX client work. DevoraX worked on it for a client, who is not named here, and Sameem worked on the build. Koor is a React Native mobile app on a NestJS backend. Firebase carries real-time order and delivery updates, Elasticsearch powers search across chefs and dishes, and the system runs on AWS, using EC2 for the application servers, S3 for storage and CloudFront for content delivery.\n\nThe sections below explain why each part of that stack suits a home-chef marketplace and what each part has to get right."
       },
       {
         "heading": "Why is discovery the hard problem in a home-chef marketplace?",
@@ -496,13 +511,13 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "AWS CloudFront: dish photos are the heaviest payload in the app, so serving them from edge caches keeps browsing quick on mobile networks instead of waiting on the origin servers."
     ],
     "word_count": 1894,
-    "updated": "2026-10-08T00:00:00.000Z"
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   "18": {
     "project_id": 18,
     "title": "CEDMAT Roller Shutter App: A React Native and NestJS Documentation App for Installers",
     "meta_description": "CEDMAT's roller shutter installer app, live on Google Play as Cedmapp. Sameem Amjad worked on it: React Native, NestJS, Firebase, AWS and Elasticsearch.",
-    "summary_answer": "CEDMAT Roller Shutter App is a mobile app that gives installers of CEDMAT roller shutters one place to find installation guides, motor adjustment tutorials, technical sheets, certification documents and maintenance instructions. Sameem Amjad worked on it. It is a React Native app with a NestJS and Firebase backend on AWS, using Elasticsearch for search, and it is live on Google Play as Cedmapp, package com.cedmat_app.",
+    "summary_answer": "CEDMAT Roller Shutter App is a mobile app that gives installers of CEDMAT roller shutters one place to find installation guides, motor adjustment tutorials, technical sheets, certification documents and maintenance instructions. Sameem Amjad worked on this build. It is a React Native app with a NestJS and Firebase backend on AWS, using Elasticsearch for search, and it is live on Google Play as Cedmapp, package com.cedmat_app.",
     "sections": [
       {
         "heading": "What problem is the CEDMAT app meant to solve?",
@@ -660,7 +675,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
     "project_id": 21,
     "title": "Augment Fit Platform: A React and TypeScript Admin Panel for a Fitness Platform",
     "meta_description": "Augment Fit is an admin panel for a fitness platform linking trainers and users. Sameem Amjad worked on it in React, TypeScript and Supabase.",
-    "summary_answer": "Augment Fit Platform is an admin panel for a fitness platform that connects trainers and users, covering session and performance tracking, user growth tracking, BMI classification and workout plan building. Sameem Amjad worked on it. It is built with React and TypeScript, uses Supabase for data and was deployed on Vercel.",
+    "summary_answer": "Augment Fit Platform is an admin panel for a fitness platform that connects trainers and users, covering session and performance tracking, user growth tracking, BMI classification and workout plan building. Sameem Amjad worked on this build. It is built with React and TypeScript, uses Supabase for data and was deployed on Vercel.",
     "sections": [
       {
         "heading": "What is the Augment Fit Platform for?",
@@ -709,7 +724,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
     "project_id": 22,
     "title": "Waitmate Platform: A Next.js and Firebase Hospitality Admin Dashboard on Vercel",
     "meta_description": "Hospitality admin dashboard for bookings, waiters, users and revenue, on Next.js and Firebase. Sameem Amjad worked on it. Demo at waitmate.vercel.app.",
-    "summary_answer": "Waitmate is a hospitality admin dashboard for restaurants and hotels, with sections for bookings, waiters, users and revenue. Sameem Amjad worked on it. It is designed around smart reservations, table management, real-time analytics and multi-location support, and the public build is a demo: a Next.js app with Firebase, hosted on Vercel at waitmate.vercel.app.",
+    "summary_answer": "Waitmate is a hospitality admin dashboard for restaurants and hotels, with sections for bookings, waiters, users and revenue. Sameem Amjad worked on this build. It is designed around smart reservations, table management, real-time analytics and multi-location support, and the public build is a demo: a Next.js app with Firebase, hosted on Vercel at waitmate.vercel.app.",
     "sections": [
       {
         "heading": "What problem is Waitmate designed around?",
@@ -749,10 +764,10 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Sections: Dashboard, Users, Waiters, Booking and Revenue Management"
     ],
     "stack_rationale": [
-      "Next.js (React) — an operations dashboard is state-heavy rather than content-heavy. Declarative rendering lets every view be a function of current state, and the reconciler works out the minimal DOM updates, so features can be added without accumulating hand-written update paths that let parts of the screen fall out of step with each other. Waitmate is a Next.js app, which is React with routing and rendering built around it.",
-      "React.js (component composition) — multi-location support is the requirement most likely to be solved badly by copy-paste. Parameterised reservation and table-management components can be instantiated per venue against different data, which keeps an extra property closer to a configuration change than to a new build.",
-      "Firebase — Authentication, Cloud Firestore and Cloud Storage. Firestore is a document database, so the guarantees a reservation needs (a valid guest, table, time window and venue) have to come from transactions, security rules and document design rather than foreign keys; in exchange its realtime listeners push changes to an open dashboard as they are written, which suits live booking and revenue views.",
-      "Vercel — it hosts the public build. As a platform it serves front-end builds from a global edge network with immutable, atomically promoted deployments and fast rollbacks, which suits a dashboard that must load quickly for staff and be safe to ship changes to during trading hours."
+      "Next.js (React): an operations dashboard is state-heavy rather than content-heavy. Declarative rendering lets every view be a function of current state, and the reconciler works out the minimal DOM updates, so features can be added without accumulating hand-written update paths that let parts of the screen fall out of step with each other. Waitmate is a Next.js app, which is React with routing and rendering built around it.",
+      "React.js (component composition): multi-location support is the requirement most likely to be solved badly by copy-paste. Parameterised reservation and table-management components can be instantiated per venue against different data, which keeps an extra property closer to a configuration change than to a new build.",
+      "Firebase: Authentication, Cloud Firestore and Cloud Storage. Firestore is a document database, so the guarantees a reservation needs (a valid guest, table, time window and venue) have to come from transactions, security rules and document design rather than foreign keys; in exchange its realtime listeners push changes to an open dashboard as they are written, which suits live booking and revenue views.",
+      "Vercel: it hosts the public build. As a platform it serves front-end builds from a global edge network with immutable, atomically promoted deployments and fast rollbacks, which suits a dashboard that must load quickly for staff and be safe to ship changes to during trading hours."
     ],
     "word_count": 1348,
     "updated": "2026-10-08T00:00:00.000Z"
@@ -760,8 +775,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "23": {
     "project_id": 23,
     "title": "Pastel Marketplace: iOS App for a Live-Shopping Antiques Marketplace on Sharetribe",
-    "meta_description": "Pastel is a live-shopping antiques marketplace on Sharetribe. Sameem works on its iOS app as a software engineer at Pastel, which he joined in April 2026.",
-    "summary_answer": "Pastel is a US-based marketplace for antiques, vintage decor and collectibles, running on Sharetribe, where independent sellers list one-of-one pieces and host live shopping shows. Sameem has been a software engineer at Pastel since April 2026 and works on its iOS marketplace app, which first launched on the App Store in November 2025, before he joined. Pastel can be used today on the web at mypastel.com, on the App Store as Pastel - Antique Marketplace, and on Google Play.",
+    "meta_description": "Pastel is a live-shopping antiques marketplace on Sharetribe. Sameem works on its iOS app as a Senior Software Developer on Pastel's team since April 2026.",
+    "summary_answer": "Pastel is a US-based marketplace for antiques, vintage decor and collectibles, running on Sharetribe, where independent sellers list one-of-one pieces and host live shopping shows. Since April 2026 Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, working on its iOS marketplace app, which first launched on the App Store in November 2025, before he joined. DevoraX work is separate from his job at Pastel. Pastel can be used today on the web at mypastel.com, on the App Store as Pastel - Antique Marketplace, and on Google Play.",
     "sections": [
       {
         "heading": "What is Pastel?",
@@ -769,7 +784,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       },
       {
         "heading": "What does Sameem work on at Pastel?",
-        "body": "Sameem joined Pastel as a software engineer in April 2026 and works on its iOS marketplace app: the app buyers use to browse, watch shows, message sellers and check out, and sellers use to manage listings, orders and shipping.\n\nThe iOS app was already live when he joined; it first appeared on the App Store in November 2025. His work is therefore on a published app with a release history, where every change has to ship without breaking the version already installed on people's phones, and where the website, the iOS app and the Android app all read the same marketplace.\n\nPastel's recent App Store release notes (September 2026) show the kind of change a live marketplace app goes through: signing in from Add to Cart or Buy brings the shopper straight back to the same item, the unread-notification badge on the app icon stays accurate while the app is closed, shared listing links carry the item's title, and sellers can save package weight and dimensions and create shipping labels on paid orders."
+        "body": "Since April 2026 Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee. He works on its iOS marketplace app: the app buyers use to browse, watch shows, message sellers and check out, and sellers use to manage listings, orders and shipping. Pastel is his employer, not a DevoraX client, and DevoraX work is separate from his job at Pastel.\n\nThe iOS app was already live when he joined; it first appeared on the App Store in November 2025. His work is therefore on a published app with a release history, where every change has to ship without breaking the version already installed on people's phones, and where the website, the iOS app and the Android app all read the same marketplace.\n\nPastel's recent App Store release notes (September 2026) show the kind of change a live marketplace app goes through: signing in from Add to Cart or Buy brings the shopper straight back to the same item, the unread-notification badge on the app icon stays accurate while the app is closed, shared listing links carry the item's title, and sellers can save package weight and dimensions and create shipping labels on paid orders."
       },
       {
         "heading": "Why does a one-of-one catalogue change how the app is built?",
@@ -798,13 +813,13 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Google Play: Pastel (com.anoptico.pastel)"
     ],
     "stack_rationale": [
-      "Sharetribe — marketplace money movement is a state machine, not a checkout: funds taken from a buyer, held while a piece ships and released to a seller, with commissions, refunds and disputes along the way. Sharetribe's transaction process enforces those rules on the platform, so the iOS app reads a transaction's current state instead of reimplementing the flow or taking custody of funds. The website, the iOS app and the Android app all read one marketplace, which is what keeps a sold piece sold everywhere.",
-      "iOS app on shared marketplace data — the app should hold no rules of its own about what is for sale. With one-of-one inventory, cached availability cannot be trusted at the moments that matter (adding to cart, buying, opening a shared link), so the app has to defer to the marketplace's current state there and spend its own effort on what a buyer actually judges a piece by: photographs, video and live shows that load quickly.",
-      "Firebase — sits alongside Sharetribe for what a marketplace engine does not provide out of the box; profile pictures on the live site are served from Firebase Storage. A managed backend means no file servers to keep running alongside the marketplace.",
-      "Shippo — every antique sale is a one-off shipment with its own packaging profile and best carrier, and sellers are not logistics professionals. One multi-carrier API gives rates, labels and tracking without integrating or maintaining each carrier separately, and lets the app ask a seller for only the package weight and dimensions it needs."
+      "Sharetribe: marketplace money movement is a state machine, not a checkout. Funds are taken from a buyer, held while a piece ships and released to a seller, with commissions, refunds and disputes along the way. Sharetribe's transaction process enforces those rules on the platform, so the iOS app reads a transaction's current state instead of reimplementing the flow or taking custody of funds. The website, the iOS app and the Android app all read one marketplace, which is what keeps a sold piece sold everywhere.",
+      "iOS app on shared marketplace data: the app should hold no rules of its own about what is for sale. With one-of-one inventory, cached availability cannot be trusted at the moments that matter (adding to cart, buying, opening a shared link), so the app has to defer to the marketplace's current state there and spend its own effort on what a buyer actually judges a piece by: photographs, video and live shows that load quickly.",
+      "Firebase: sits alongside Sharetribe for what a marketplace engine does not provide out of the box; profile pictures on the live site are served from Firebase Storage. A managed backend means no file servers to keep running alongside the marketplace.",
+      "Shippo: every antique sale is a one-off shipment with its own packaging profile and best carrier, and sellers are not logistics professionals. One multi-carrier API gives rates, labels and tracking without integrating or maintaining each carrier separately, and lets the app ask a seller for only the package weight and dimensions it needs."
     ],
-    "word_count": 1521,
-    "updated": "2026-10-08T00:00:00.000Z"
+    "word_count": 1558,
+    "updated": "2026-11-07T00:00:00.000Z"
   },
   "24": {
     "project_id": 24,
@@ -971,12 +986,12 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Website: loopedin.life"
     ],
     "stack_rationale": [
-      "TypeScript — the main language, and a good fit for a microservices-ready backend. Once a system is split into separately deployed services, the contracts between them stop being checked by one codebase's compiler and become the main source of runtime failure. Shared types turn those boundaries back into something the build checks, so a changed event payload or a missing authentication field shows up at build time instead of in production.",
-      "Node.js — the runtime for a workload that is mostly waiting rather than computing. Messaging fan-out, notification delivery, discovery reads and video job orchestration all wait on sockets, caches and remote services, which a non-blocking event loop handles efficiently: one process holds many concurrent connections without a thread per connection. It also keeps every service in one language, so types and validation logic are written once.",
-      "AWS MediaConvert — a managed, job-based transcoding service instead of self-hosted encoders. Transcoding is the most expensive and least predictable work in the app, and the serverless model means no capacity is provisioned for peak uploads and left idle between bursts. It makes transcoding asynchronous by construction, so the upload path returns straight away, and its HLS output gives mobile players adaptive-bitrate playback.",
-      "Socket.io — the real-time transport layer, chosen because raw WebSockets are only part of the problem. It handles transport negotiation and fallback where WebSockets are blocked, plus heartbeats and automatic reconnection, which on the mobile networks a local-discovery app runs on are the normal case rather than an edge case. That removes a large amount of connection-lifecycle code from the application itself.",
-      "Redis — the component that lets the real-time tier run on more than one process. As a pub/sub backbone it carries messages between Node.js instances, so a device connected to one process receives messages that originate on another; without it, messaging is capped at a single process. Its in-memory data structures also suit the state real-time features generate (presence, room membership, notification fan-out and reputation ranking), which is written constantly, read immediately and rarely needs durable storage.",
-      "Microservices-ready architecture — the organising decision the rest follows from. Bursty transcoding, connection-heavy messaging and latency-sensitive discovery have incompatible resource profiles, so separate boundaries let each scale on its own signal instead of on the greediest component's. It also isolates failure, keeping a transcoding backlog from degrading messaging, and decouples deployment so fast-moving parts are not gated on the ones that must stay available."
+      "TypeScript: the main language, and a good fit for a microservices-ready backend. Once a system is split into separately deployed services, the contracts between them stop being checked by one codebase's compiler and become the main source of runtime failure. Shared types turn those boundaries back into something the build checks, so a changed event payload or a missing authentication field shows up at build time instead of in production.",
+      "Node.js: the runtime for a workload that is mostly waiting rather than computing. Messaging fan-out, notification delivery, discovery reads and video job orchestration all wait on sockets, caches and remote services, which a non-blocking event loop handles efficiently: one process holds many concurrent connections without a thread per connection. It also keeps every service in one language, so types and validation logic are written once.",
+      "AWS MediaConvert: a managed, job-based transcoding service instead of self-hosted encoders. Transcoding is the most expensive and least predictable work in the app, and the serverless model means no capacity is provisioned for peak uploads and left idle between bursts. It makes transcoding asynchronous by construction, so the upload path returns straight away, and its HLS output gives mobile players adaptive-bitrate playback.",
+      "Socket.io: the real-time transport layer, chosen because raw WebSockets are only part of the problem. It handles transport negotiation and fallback where WebSockets are blocked, plus heartbeats and automatic reconnection, which on the mobile networks a local-discovery app runs on are the normal case rather than an edge case. That removes a large amount of connection-lifecycle code from the application itself.",
+      "Redis: the component that lets the real-time tier run on more than one process. As a pub/sub backbone it carries messages between Node.js instances, so a device connected to one process receives messages that originate on another; without it, messaging is capped at a single process. Its in-memory data structures also suit the state real-time features generate (presence, room membership, notification fan-out and reputation ranking), which is written constantly, read immediately and rarely needs durable storage.",
+      "Microservices-ready architecture: the organising decision the rest follows from. Bursty transcoding, connection-heavy messaging and latency-sensitive discovery have incompatible resource profiles, so separate boundaries let each scale on its own signal instead of on the greediest component's. It also isolates failure, keeping a transcoding backlog from degrading messaging, and decouples deployment so fast-moving parts are not gated on the ones that must stay available."
     ],
     "word_count": 1715,
     "updated": "2026-10-08T00:00:00.000Z"
@@ -1258,13 +1273,13 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Organisers' testimonial on zencloudtechnologies.com: \"more than 600 athletes joined\" in season one"
     ],
     "stack_rationale": [
-      "Flutter — one codebase compiles to native iOS and Android builds, which keeps both platforms in step for a single competitive audience instead of splitting a leaderboard across staggered launches. Its own rendering pipeline keeps long, constantly changing leaderboard lists smooth while socket events update them underneath the user.",
-      "Node.js — the backend workload is I/O-bound rather than compute-bound: score writes, leaderboard reads, registrations and socket fan-out. Node's event-driven, non-blocking runtime holds many concurrent persistent connections on modest resources, and shares a language with the React dashboard.",
-      "React — the organiser dashboard is dense, table-heavy and frequently updated during live events. React's component model maps directly onto the repeating event, division and score-row structures organisers work with, and its rendering model handles granular state changes without full-page reloads.",
-      "AWS Lambda — competition traffic spikes at workout releases and submission deadlines, then goes quiet. Serverless functions scale out per invocation and back to zero, so capacity for stateless work tracks the competition calendar rather than a fixed set of servers sized for either the peak or the average.",
-      "Amazon S3 — durable object storage keeps the platform's files off the application servers, so serving files never competes with the leaderboard for backend resources, and storage scales separately from compute.",
-      "Redis — a leaderboard is a ranking query, and re-sorting a relational table on every submission struggles under deadline bursts. An in-memory data structure store answers position and range queries from memory, which is what makes live standings feel immediate.",
-      "Socket.io — replaces polling with persistent push channels, so a score submission reaches everyone watching as an event rather than being discovered on the next poll. Its transport negotiation and automatic reconnection handle athletes moving between mobile data and wifi mid-competition."
+      "Flutter: one codebase compiles to native iOS and Android builds, which keeps both platforms in step for a single competitive audience instead of splitting a leaderboard across staggered launches. Its own rendering pipeline keeps long, constantly changing leaderboard lists smooth while socket events update them underneath the user.",
+      "Node.js: the backend workload is I/O-bound rather than compute-bound (score writes, leaderboard reads, registrations and socket fan-out). Node's event-driven, non-blocking runtime holds many concurrent persistent connections on modest resources, and shares a language with the React dashboard.",
+      "React: the organiser dashboard is dense, table-heavy and frequently updated during live events. React's component model maps directly onto the repeating event, division and score-row structures organisers work with, and its rendering model handles granular state changes without full-page reloads.",
+      "AWS Lambda: competition traffic spikes at workout releases and submission deadlines, then goes quiet. Serverless functions scale out per invocation and back to zero, so capacity for stateless work tracks the competition calendar rather than a fixed set of servers sized for either the peak or the average.",
+      "Amazon S3: durable object storage keeps the platform's files off the application servers, so serving files never competes with the leaderboard for backend resources, and storage scales separately from compute.",
+      "Redis: a leaderboard is a ranking query, and re-sorting a relational table on every submission struggles under deadline bursts. An in-memory data structure store answers position and range queries from memory, which is what makes live standings feel immediate.",
+      "Socket.io: replaces polling with persistent push channels, so a score submission reaches everyone watching as an event rather than being discovered on the next poll. Its transport negotiation and automatic reconnection handle athletes moving between mobile data and wifi mid-competition."
     ],
     "word_count": 1546,
     "updated": "2026-10-08T00:00:00.000Z"
@@ -1312,10 +1327,10 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Demo build at afriva-buyer.vercel.app"
     ],
     "stack_rationale": [
-      "Next.js 15 — server-side rendering was the deciding factor. A marketplace depends on its product and category pages being indexable, and SSR returns real HTML in the first response rather than an empty shell for crawlers and a spinner for buyers. The App Router also lets four role-separated dashboards ship from one deployment while keeping data fetching on the server, close to the database, instead of exposing query logic to the browser.",
-      "Supabase — managed PostgreSQL, not a document store, which is the right shape for a multi-vendor domain where vendors own products, products appear in orders, and orders split into shipments. Relational constraints let ownership rules be enforced once in the schema instead of being reimplemented in every dashboard. Bundling authentication with the database means the identity that signs a user in is the identity the database sees on the query, which serves the platform's role-based workflows directly.",
-      "Supabase Realtime — streams Postgres row changes over a websocket, which suits order tracking on two counts: it removes the repeating query every open tracking page would otherwise generate, and it removes the staleness window any polling interval builds in. Keeping the source of truth in the database rather than a parallel message store means there is nothing to reconcile between what a dashboard shows and what the database holds.",
-      "Redux Toolkit — the marketplace carries real browser-only state: multi-vendor carts that survive catalogue navigation, category filters and pagination that should not cost a round trip, and seller dashboard tables with selections, bulk actions and optimistic updates in flight. The slice pattern and bundled Immer support strip the boilerplate that makes large stores hard to maintain, and serialisability checks catch values that would break state restoration, a useful safeguard when four dashboards share one store."
+      "Next.js 15: server-side rendering was the deciding factor. A marketplace depends on its product and category pages being indexable, and SSR returns real HTML in the first response rather than an empty shell for crawlers and a spinner for buyers. The App Router also lets four role-separated dashboards ship from one deployment while keeping data fetching on the server, close to the database, instead of exposing query logic to the browser.",
+      "Supabase: managed PostgreSQL, not a document store, which is the right shape for a multi-vendor domain where vendors own products, products appear in orders, and orders split into shipments. Relational constraints let ownership rules be enforced once in the schema instead of being reimplemented in every dashboard. Bundling authentication with the database means the identity that signs a user in is the identity the database sees on the query, which serves the platform's role-based workflows directly.",
+      "Supabase Realtime: streams Postgres row changes over a websocket, which suits order tracking on two counts. It removes the repeating query every open tracking page would otherwise generate, and it removes the staleness window any polling interval builds in. Keeping the source of truth in the database rather than a parallel message store means there is nothing to reconcile between what a dashboard shows and what the database holds.",
+      "Redux Toolkit: the marketplace carries real browser-only state (multi-vendor carts that survive catalogue navigation, category filters and pagination that should not cost a round trip, and seller dashboard tables with selections, bulk actions and optimistic updates in flight). The slice pattern and bundled Immer support strip the boilerplate that makes large stores hard to maintain, and serialisability checks catch values that would break state restoration, a useful safeguard when four dashboards share one store."
     ],
     "word_count": 1544,
     "updated": "2026-10-08T00:00:00.000Z"
@@ -1323,8 +1338,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "33": {
     "project_id": 33,
     "title": "ConstrAction: A Bilingual Contract Generator for Quebec Contractors on Next.js 15, Supabase, Stripe and React-PDF",
-    "meta_description": "ConstrAction is a bilingual English/French contract generator for Quebec contractors on Next.js, Supabase and Stripe. Sameem built it for a Fiverr client.",
-    "summary_answer": "ConstrAction is a bilingual (English and French) construction contract generator for Quebec contractors, live at constraction.ca. Sameem built it as the full-stack engineer for a client through Fiverr. A contractor answers guided questions for a client–contractor or general contractor–subcontractor agreement, gets a ready-to-sign PDF in English or French, pays per contract or on an unlimited monthly plan through Stripe, and tracks each contract from draft to completion. A demo on sample data is linked from this page, with a 2-minute walkthrough recorded on it. For the same business, Sameem earlier worked on lead capture, CRM and subscription billing, joining GoHighLevel, Supabase and Stripe.",
+    "meta_description": "ConstrAction, a bilingual contract generator for Quebec contractors on Next.js, Supabase and Stripe, which Sameem built for a DevoraX client on Fiverr.",
+    "summary_answer": "ConstrAction is a bilingual (English and French) construction contract generator for Quebec contractors, live at constraction.ca. A client hired DevoraX through its Fiverr profile, which is in Sameem's name, and Sameem built it as the full-stack engineer. A contractor answers guided questions for a client–contractor or general contractor–subcontractor agreement, gets a ready-to-sign PDF in English or French, pays per contract or on an unlimited monthly plan through Stripe, and tracks each contract from draft to completion. A demo on sample data is linked from this page, with a 2-minute walkthrough recorded on it. For the same business, Sameem earlier worked on lead capture, CRM and subscription billing, joining GoHighLevel, Supabase and Stripe.",
     "sections": [
       {
         "heading": "What problem was ConstrAction built to solve?",
@@ -1377,7 +1392,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Edge Functions: small server-side functions that run outside both the browser and the main web application. They suit the work a product like this generates around its core flow: tasks that run on the server in response to an event, such as a notification or a billing change, with credentials the browser must never hold. Keeping it separate leaves the web application focused on its pages."
     ],
     "word_count": 1908,
-    "updated": "2026-10-19T00:00:00.000Z"
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   "35": {
     "project_id": 35,
@@ -1609,8 +1624,8 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
   "39": {
     "project_id": 39,
     "title": "Pianissimo Online: A Gamified, Bilingual Piano Academy PWA on Next.js 14 and Supabase Realtime",
-    "meta_description": "Pianissimo Online, a gamified English/Spanish PWA for an online piano school. Sameem built it as the full-stack engineer for a client through Fiverr.",
-    "summary_answer": "Pianissimo Online is an installable web app for an online piano school, in English and Spanish: structured courses, practice tracking with XP and badges, teacher feedback and a student community. Sameem built it as the full-stack engineer for a client through Fiverr. Logging practice earns XP, levels, badges, streaks and a place on a leaderboard, teachers grade challenges and keep class notes, and it runs on Next.js 14, Supabase Realtime, Cloudinary and next-intl. The product has no public link, but the demo at demoprojectsforclients.sameemamjad.com/projects/pianissimo runs on sample data, and the 2-minute walkthrough video on this page was recorded on it.",
+    "meta_description": "Pianissimo Online, a gamified English/Spanish PWA for an online piano school. Sameem built it as the full-stack engineer for a DevoraX client on Fiverr.",
+    "summary_answer": "Pianissimo Online is an installable web app for an online piano school, in English and Spanish: structured courses, practice tracking with XP and badges, teacher feedback and a student community. A client hired DevoraX through its Fiverr profile, which is in Sameem's name, and Sameem built it as the full-stack engineer. Logging practice earns XP, levels, badges, streaks and a place on a leaderboard, teachers grade challenges and keep class notes, and it runs on Next.js 14, Supabase Realtime, Cloudinary and next-intl. The product has no public link, but the demo at demoprojectsforclients.sameemamjad.com/projects/pianissimo runs on sample data, and the 2-minute walkthrough video on this page was recorded on it.",
     "sections": [
       {
         "heading": "What problem was Pianissimo Online built to solve?",
@@ -1661,17 +1676,17 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "next-intl (EN/ES): the internationalisation library behind the English and Spanish versions. It fits Next.js routing, with the locale usually carried in the URL so each language has its own addresses for sharing and search, and it keeps every string in one catalogue per language, with interpolation, plurals and date and number formatting handled per locale, which a product full of counts needs in both languages."
     ],
     "word_count": 1892,
-    "updated": "2026-10-19T00:00:00.000Z"
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   "40": {
     "project_id": 40,
     "title": "VoiceDesk: A White-Label AI Voice Receptionist on Node.js WebSockets, Deepgram and Twilio",
-    "meta_description": "VoiceDesk is a white-label AI voice receptionist agencies run for their clients. Sameem built it as the full-stack engineer for a client through Fiverr.",
-    "summary_answer": "VoiceDesk is a white-label AI voice receptionist: a multi-tenant platform where agencies run AI receptionists for their clients under their own brand. Sameem built it as the full-stack engineer for a client through Fiverr. Each business's agent talks to callers in real time in the browser or by phone, answers only from its own knowledge base, checks availability, books with SMS confirmation, captures leads and hands over to a person when needed. There is no public live product: the live demo runs on sample businesses on the demo hub, and the 3-minute walkthrough video on this page was recorded on it, including a real voice call.",
+    "meta_description": "VoiceDesk is a white-label AI voice receptionist agencies run for their clients. Sameem built it as the full-stack engineer for a DevoraX client on Fiverr.",
+    "summary_answer": "VoiceDesk is a white-label AI voice receptionist: a multi-tenant platform where agencies run AI receptionists for their clients under their own brand. A client hired DevoraX through its Fiverr profile, which is in Sameem's name, and Sameem built it as the full-stack engineer. Each business's agent talks to callers in real time in the browser or by phone, answers only from its own knowledge base, checks availability, books with SMS confirmation, captures leads and hands over to a person when needed. There is no public live product: the live demo runs on sample businesses on the demo hub, and the 3-minute walkthrough video on this page was recorded on it, including a real voice call.",
     "sections": [
       {
         "heading": "What problem was VoiceDesk built to solve?",
-        "body": "Hotels, clinics, restaurants and trades businesses miss calls after hours and at peak times, and for a business that takes bookings by phone, every missed call is a lost booking. An AI receptionist that answers every call, handles the routine questions and bookings, and passes the rest to a person is the obvious remedy.\n\nAgencies want to sell that remedy to these businesses, but off-the-shelf voice-agent tools cannot be rebranded, so the agency's client sees someone else's product, and they charge a platform fee on every minute. VoiceDesk is a multi-tenant platform where agencies run AI receptionists for their clients under their own brand, with an agent for each business that answers from its own knowledge base, books, captures leads and hands over to a person when needed. Sameem built it as the full-stack engineer for a client through Fiverr."
+        "body": "Hotels, clinics, restaurants and trades businesses miss calls after hours and at peak times, and for a business that takes bookings by phone, every missed call is a lost booking. An AI receptionist that answers every call, handles the routine questions and bookings, and passes the rest to a person is the obvious remedy.\n\nAgencies want to sell that remedy to these businesses, but off-the-shelf voice-agent tools cannot be rebranded, so the agency's client sees someone else's product, and they charge a platform fee on every minute. VoiceDesk is a multi-tenant platform where agencies run AI receptionists for their clients under their own brand, with an agent for each business that answers from its own knowledge base, books, captures leads and hands over to a person when needed. A client hired DevoraX through its Fiverr profile, which is in Sameem's name, and Sameem built it as the full-stack engineer."
       },
       {
         "heading": "How does a voice turn work, and where does the time go?",
@@ -1719,7 +1734,7 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "Supabase Postgres: the data in a product like this is relational and tenant-shaped. Agencies have businesses; businesses have agents, knowledge bases, bookings and calls; calls have transcripts and summaries. Postgres keys and constraints enforce those references, aggregate queries answer dashboard questions such as outcomes per business over a week, and access policies can hold tenant boundaries close to the data. Supabase runs the database as a managed service."
     ],
     "word_count": 1896,
-    "updated": "2026-10-19T00:00:00.000Z"
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   "41": {
     "project_id": 41,

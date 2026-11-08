@@ -64,3 +64,8 @@ supabase/.temp/
 # Firebase Admin SDK service-account keys are credentials. Never commit one,
 # wherever it gets dropped in the tree.
 *-firebase-adminsdk-*.json
+
+# Internal strategy, evidence and keyword research: kept local (the repo is public).
+/strategy/
+# Search Console exports (Coverage drilldowns and the like) dropped in the root.
+/*Coverage-Drilldown*.zip

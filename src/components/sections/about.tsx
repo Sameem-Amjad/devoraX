@@ -60,14 +60,15 @@ export const AboutSection = () => {
                 <span className="text-white font-medium">
                   two-person studio
                 </span>
-                : Sameem Amjad (Founder & Lead Architect Engineer) and Usman (CTO), two senior engineers who bring in
-                specialists when a scope needs them.
+                : Sameem Amjad (Founder & Lead Architect Engineer) and Usman (CTO), two senior engineers
+                who work on every sprint together. Sometimes a designer or another specialist joins a
+                project, and we name them to you before they start.
               </p>
               <p>
                 Between us we have built marketplaces, real-time leaderboards, video
                 pipelines and travel and legal-tech backends, much of it as engineers at
-                other companies. Each project page says who the work was for. We care most
-                about the parts that stop a launch:{" "}
+                other companies. Each project page says who the work was for, where that is
+                recorded. We care most about the parts that stop a launch:{" "}
                 <span className="text-teal-400 font-medium">
                   payments, native mobile builds and store review
                 </span>
@@ -153,7 +154,7 @@ export const AboutSection = () => {
 
                 {/* Code block */}
                 <div className="absolute bottom-6 left-6 right-6 font-mono text-xs text-teal-400 bg-black/85 backdrop-blur-md p-4 rounded-xl border border-teal-500/20">
-                  <div className="text-gray-600">// {CONSTANTS.AGENCY_NAME} Core Mission</div>
+                  <div className="text-gray-600">{"// "}{CONSTANTS.AGENCY_NAME} Core Mission</div>
                   <div>
                     <span className="text-emerald-400">class</span>{" "}
                     <span className="text-white">FutureBuilder</span>{" "}
@@ -164,7 +165,7 @@ export const AboutSection = () => {
                   </div>
                   <div className="pl-8">
                     <span className="text-blue-400">return</span>{" "}
-                    <span className="text-orange-400">"world-class products"</span>;
+                    <span className="text-orange-400">{'"apps that ship"'}</span>;
                   </div>
                   <div className="pl-4"><span className="text-yellow-400">{"}"}</span></div>
                   <div><span className="text-yellow-400">{"}"}</span></div>

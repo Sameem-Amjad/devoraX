@@ -89,11 +89,15 @@ export function CookieConsent() {
       aria-label="Privacy choices"
       className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-sm z-50 p-5 rounded-2xl bg-[#0d0d0d] border border-white/10 shadow-2xl shadow-black/60 backdrop-blur-md"
     >
+      {/* Accepting also lets the site keep the page a visit began on and send
+          it with a booking (lib/booking/visit.ts), so the banner says so: the
+          answer has to cover everything it allows. */}
       <p className="text-sm text-gray-300 leading-relaxed mb-4">
         This site uses {analyticsTools} to see how visitors use it: pages,
-        clicks and scrolling. Accept to allow their cookies; decline and each
-        page view is counted without them. No ads, and nothing you type into a
-        form is recorded.{" "}
+        clicks and scrolling. Accept to allow their cookies, and to send the
+        page your visit began on with any call you book; decline and each page
+        view is counted without them. No ads, and nothing you type into a form
+        is recorded.{" "}
         {/* Descriptive anchor text: Lighthouse's SEO audit fails a bare
             "Learn more", which tells a crawler nothing about the target. */}
         <a

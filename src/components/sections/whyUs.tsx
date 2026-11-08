@@ -5,9 +5,9 @@ import { Zap, ShieldCheck, Users, BarChart3, RefreshCcw, HeartHandshake } from "
 const DIFFERENTIATORS = [
   {
     icon: Zap,
-    title: "Speed Without Compromise",
+    title: "Less Time on Setup",
     description:
-      "Most agencies choose between fast and good. We choose both. Our battle-tested boilerplates, CI/CD pipelines and agile sprints shorten delivery without trading away code quality.",
+      "We start from boilerplates and CI/CD pipelines we already use, and work in short sprints, so more of your budget goes into the app itself rather than the plumbing around it.",
     gradient: "from-yellow-500 to-orange-500",
     glow: "rgba(234,179,8,0.2)",
   },
@@ -23,7 +23,7 @@ const DIFFERENTIATORS = [
     icon: Users,
     title: "You Work With the Founders",
     description:
-      "DevoraX is two senior engineers, Sameem and Usman, and the people you talk to are the people writing the code. When a scope needs a designer or another specialist, we bring one in and tell you who.",
+      "DevoraX is two senior engineers, Sameem and Usman, and the people you talk to are the people writing the code. Sometimes a designer or another specialist joins a project. We name them to you before they start.",
     gradient: "from-cyan-500 to-blue-500",
     glow: "rgba(6,182,212,0.2)",
   },
@@ -38,16 +38,18 @@ const DIFFERENTIATORS = [
   {
     icon: RefreshCcw,
     title: "Iterative & Transparent",
+    // The four check-in practices Sameem confirmed on 8 Nov 2026, and nothing
+    // more.
     description:
-      "Weekly demos, shared Jira boards, real-time Slack updates. You always know exactly where your project stands. No surprises, no black boxes, no excuses.",
+      "Every week you get a video demo of progress and a short written update. You also get a shared project board (Jira, Linear, Trello or similar) and a Slack or WhatsApp channel with Sameem and Usman.",
     gradient: "from-pink-500 to-rose-500",
     glow: "rgba(236,72,153,0.2)",
   },
   {
     icon: HeartHandshake,
-    title: "Long-Term Partnership",
+    title: "We Stay On After Launch",
     description:
-      "Clients come back: several Fiverr clients have hired us for more than one project. We don't disappear after launch; we stay on for fixes and new features when you need them.",
+      "Clients come back: several of our Fiverr clients have hired us for more than one project. We don't disappear after launch; we stay on for fixes and new features when you need them.",
     gradient: "from-teal-500 to-emerald-500",
     glow: "rgba(20,184,166,0.2)",
   },

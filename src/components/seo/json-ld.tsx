@@ -1,4 +1,5 @@
 import { getCaseStudy, CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
+import { projectPageName } from '@/data/projectIndex';
 import { OG_IMAGE, ORG_REF, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 import {
     absoluteMediaUrl,
@@ -38,10 +39,10 @@ export function projectImageUrl(raw?: string | null): string | null {
 }
 
 /**
- * Structured data for a single project / case study: the WebPage, its
- * BreadcrumbList and the Article, as one graph.
+ * Structured data for a single project page: the WebPage, its BreadcrumbList
+ * and the Article, as one graph.
  *
- * Uses `Article` rather than `CreativeWork`: a case study is editorial content
+ * Uses `Article` rather than `CreativeWork`: a write-up is editorial content
  * with an author, a publisher and a publication date, and `Article` is the type
  * search and AI engines actually consume for that. `CreativeWork` is a generic
  * parent type that carries no comparable support.
@@ -68,7 +69,10 @@ export function ProjectJsonLd({ project, trail }: { project: Project; trail: Cru
     // `mainEntityOfPage` pointed at a bare URL string rather than a declared node.
     const webPage = webPageNode({
         path,
-        name: `${project.title} Case Study`,
+        // "{title}: engineering write-up", unless a client contracted DevoraX
+        // for the work (data/projectIndex.ts). The name used to say "Case
+        // Study" on every project, employer work included.
+        name: projectPageName(project.id, project.title),
         description: project.description ?? undefined,
         // Only an image the page shows. The site card stands in for the Article
         // below, but it is not on the page.

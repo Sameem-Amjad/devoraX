@@ -25,6 +25,13 @@ import { BookCallCta } from '@/components/seo/book-call-cta';
 
 const PATH = '/about';
 const H1 = 'About DevoraX';
+/**
+ * The page's own copy changed on 8 Nov 2026 (who works on a project, and the
+ * reviews line); its facts change with data/brand.ts. dateModified is the
+ * newer of the two, as is its sitemap entry (lib/sitemap.ts).
+ */
+const PAGE_UPDATED = '2026-11-08T00:00:00.000Z';
+const DATE_MODIFIED = BRAND_FACTS_UPDATED > PAGE_UPDATED ? BRAND_FACTS_UPDATED : PAGE_UPDATED;
 const DESCRIPTION =
   'Who DevoraX is: a two-person software studio, founded in 2022 and based in Pakistan. Fact sheet, the two engineers, how we work and who it is for.';
 const TRAIL = [{ name: 'About', path: PATH }];
@@ -60,7 +67,7 @@ export default function AboutPage() {
             description: DESCRIPTION,
             about: ORGANIZATION_ID,
             mainEntity: ORGANIZATION_ID,
-            dateModified: BRAND_FACTS_UPDATED,
+            dateModified: DATE_MODIFIED,
           }),
           breadcrumbNode(PATH, TRAIL),
         ]}
@@ -98,8 +105,9 @@ export default function AboutPage() {
               Who runs DevoraX?
             </h2>
             <p className="mt-4 leading-relaxed text-gray-400">
-              Two people: two senior engineers who build every project and bring in
-              specialists when a scope needs them.
+              Two people: two senior engineers who work on every sprint together.
+              Sometimes a designer or another specialist joins a project. We name them
+              to you before they start.
             </p>
             <ul className="mt-6 space-y-4">
               <li className="rounded-xl border border-white/10 bg-[#0a0a0a] p-5">
@@ -221,11 +229,12 @@ export default function AboutPage() {
               <Link href="/press" className={linkClass}>
                 press kit
               </Link>
-              . For what clients have said, read{' '}
+              . For what clients have said, see{' '}
               <Link href="/reviews" className={linkClass}>
-                the {TESTIMONIAL_STATS.totalReviews} client reviews quoted from Fiverr
+                our Fiverr record
               </Link>
-              .
+              : {TESTIMONIAL_STATS.totalReviews} reviews quoted as written from DevoraX&apos;s
+              Fiverr profile, which is in Sameem Amjad&apos;s name.
             </p>
           </section>
 

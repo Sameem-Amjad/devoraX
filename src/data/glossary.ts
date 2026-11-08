@@ -32,14 +32,20 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: 'App Store Connect',
     definition:
       "App Store Connect is Apple's web portal for publishing and managing apps on the App Store. Developers enrolled in the Apple Developer Program use it to create an app, upload builds, add screenshots and descriptions, set pricing and availability, invite TestFlight testers and submit each version for App Store review. Sales, crash and ratings reports are there too.",
-    related: { href: '/services/1', label: 'Mobile app development, through to store release' },
+    related: {
+      href: '/solutions/lovable-app-to-app-store',
+      label: 'Lovable app to the App Store: what the launch involves',
+    },
   },
   {
     id: 'app-store-review',
     term: 'App Store review',
     definition:
       "App Store review is Apple's check of every new app and every update before it reaches the App Store. A reviewer tests the build against the App Review Guidelines, which cover safety, performance, business, design and legal requirements, then approves it or rejects it with the guideline it breaks. A rejected build can be fixed and resubmitted, or the decision appealed.",
-    related: { href: '/pricing', label: 'What the iOS and Android launch includes and costs' },
+    related: {
+      href: '/solutions/lovable-app-to-app-store#app-review',
+      label: 'Why Apple rejects some wrapped web apps',
+    },
   },
   {
     id: 'bolt',
@@ -104,14 +110,17 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: 'Google Play Console',
     definition:
       "Google Play Console is Google's dashboard for publishing Android apps on Google Play. Developers use it to set up the store listing, upload app bundles, run internal, closed and open testing tracks, roll releases out to users, and read crash reports, ratings and reviews. Apps are checked against Google Play's developer policies before they are published.",
-    related: { href: '/services/1', label: 'Mobile app development, through to store release' },
+    related: {
+      href: '/solutions/lovable-app-to-app-store#google-play-testing',
+      label: 'Google Play testing before a first release',
+    },
   },
   {
     id: 'launch-readiness-audit',
     term: 'Launch-readiness audit',
     definition:
-      "A launch-readiness audit is DevoraX's review of an app before it launches: its code, database security, payments, hosting and store readiness. The owner keeps the written report whatever they decide, and the audit says how many weeks the fix needs. An investor-ready version covers what technical due diligence will ask. It is an engineering review, not a security certification.",
-    related: { href: '/pricing', label: 'What the launch-readiness audit covers and costs' },
+      "A launch-readiness audit is DevoraX's review of an app before it launches: its code, database security, payments, hosting and store readiness. The owner keeps the written report whatever they decide, and the audit says how many weeks the fix needs. An investor-ready version adds a page for the investor's technical reviewer. It is an engineering review, not a security certification, and it doesn't replace a penetration test.",
+    related: { href: '/solutions/fix-vibe-coded-app', label: 'Vibe Code Audit: what it checks and costs' },
   },
   {
     id: 'lovable',
@@ -135,7 +144,10 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: 'Next.js',
     definition:
       'Next.js is an open-source React framework for building web applications, maintained by Vercel. It can render pages on the server or at build time, so complete HTML reaches browsers and search engines, and a single project holds the interface, the routing and server code such as API endpoints. It runs on Vercel or on any Node.js host.',
-    related: { href: '/services/2', label: 'AI and full-stack web development' },
+    related: {
+      href: '/solutions/fix-vibe-coded-app',
+      label: 'Vibe code audit: fixing and finishing an AI-built web app',
+    },
   },
   {
     id: 'online-marketplace',
@@ -220,7 +232,10 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: 'Stripe Connect',
     definition:
       "Stripe Connect is Stripe's product for platforms and marketplaces that take payments on behalf of other people. Each seller or provider gets a connected account and goes through Stripe's identity checks. Buyers pay through the platform, the platform can keep a commission on each sale, and Stripe pays each seller's share out to their bank account.",
-    related: { href: '/pricing', label: 'What Stripe Connect payouts cost to set up' },
+    related: {
+      href: '/solutions/sharetribe-developers#payouts',
+      label: 'How payouts to sellers work on Sharetribe',
+    },
   },
   {
     id: 'supabase',
@@ -237,16 +252,25 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: 'Technical due diligence',
     definition:
       "Technical due diligence is the review an investor or buyer makes of a company's software before committing money. It asks who owns the code, how the system is built and hosted, how user data is protected, how much technical debt there is, and whether the product can be maintained and scaled. Its findings can change the valuation or the terms of the deal.",
-    related: { href: '/pricing', label: 'The launch-readiness audit and its investor-ready version' },
+    related: {
+      href: '/insights/vibe-coded-app-security-checklist#investor-due-diligence',
+      label: 'What investors check in an app built with Lovable',
+    },
   },
   {
     id: 'testflight',
     term: 'TestFlight',
     definition:
       "TestFlight is Apple's service for testing iOS apps before they are released. The developer uploads a build to App Store Connect and invites testers by email or a public link, and testers install it through the TestFlight app and send feedback. Builds shared with testers outside the developer's own team go through Apple's beta app review first.",
-    related: { href: '/services/1', label: 'Mobile app development, through to store release' },
+    related: {
+      href: '/solutions/lovable-app-to-app-store',
+      label: 'Lovable app to the App Store: testing, submission and review',
+    },
   },
 ];
 
 // After GLOSSARY on purpose: the content audit once matched exports by name prefix and parsed this line instead.
-export const GLOSSARY_UPDATED = '2026-10-14T00:00:00.000Z';
+// 7 Nov 2026: four terms' related links moved from the retired /services/{id} pages to the door pages.
+// 8 Nov 2026: four more related links (App Store review, the audit, Stripe Connect, due diligence) point
+// at the door pages and the checklist instead of /pricing. Link changes only, so the date stays.
+export const GLOSSARY_UPDATED = '2026-11-07T00:00:00.000Z';

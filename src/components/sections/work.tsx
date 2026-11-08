@@ -265,19 +265,22 @@ export const WorkSection = ({ projects }: { projects: any[] }) => {
               className="text-gray-500 max-w-lg text-base"
             >
               Products our founders built or worked on, including work done as engineers at other
-              companies. Each project page says who it was for.
+              companies. Each project page says who it was for, where that is recorded.
             </motion.p>
           </div>
 
+          {/* Was "VIEW ALL CASE STUDIES" to /case-study, which now redirects to
+              /projects: most of this work was not DevoraX client work. Capitals
+              by CSS, so a screen reader reads words rather than letters. */}
           <motion.a
-            href="/case-study"
+            href="/projects"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="hidden md:flex items-center gap-2 text-xs font-mono text-gray-500 hover:text-teal-400 transition-colors mt-4 md:mt-0 group border border-white/[0.06] px-5 py-2.5 rounded-full hover:border-teal-500/30"
+            className="hidden md:flex items-center gap-2 text-xs font-mono uppercase text-gray-500 hover:text-teal-400 transition-colors mt-4 md:mt-0 group border border-white/[0.06] px-5 py-2.5 rounded-full hover:border-teal-500/30"
           >
-            VIEW ALL CASE STUDIES
+            See all work
             <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </motion.a>
         </div>

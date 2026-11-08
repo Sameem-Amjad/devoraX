@@ -1,18 +1,26 @@
 /**
- * Insights: data-backed research articles.
+ * Insights: data-backed research articles, and checklists.
  *
- * These exist for citation, not for keyword volume. They are written from the
- * 26 entries in the DevoraX portfolio: products DevoraX's founder, Sameem Amjad,
- * built or worked on, many of them as an employee of other companies. They are
- * not a record of DevoraX client work, and they state their own limits, which is
- * what separates a source worth quoting from marketing copy.
+ * These exist for citation, not for keyword volume. The research articles are
+ * written from the 26 entries in the DevoraX portfolio: products DevoraX's
+ * founder, Sameem Amjad, built or worked on, many of them as an employee of
+ * other companies. They are not a record of DevoraX client work, and they state
+ * their own limits, which is what separates a source worth quoting from
+ * marketing copy.
  *
- * Every count is computed by a script from the structured fields of the
- * `projects` table (tags, tech stack, category label, web/android/ios links),
- * never from free-text descriptions. Who each project was for (employer, direct
- * client work, no named client, no client) follows Sameem's answers of 9 Oct
- * 2026. Never hand-add a number here that is not derivable from those fields or
- * from a public, checkable source.
+ * In the research articles every count is computed by a script from the
+ * structured fields of the `projects` table (tags, tech stack, category label,
+ * web/android/ios links), never from free-text descriptions. Who each project
+ * was for (employer, direct client work, no named client, no client) follows
+ * Sameem's answers of 9 Oct 2026. Never hand-add a number here that is not
+ * derivable from those fields or from a public, checkable source.
+ *
+ * A checklist (`kind: 'checklist'`, Nov 2026) is not drawn from the portfolio.
+ * Each item is a check, what goes wrong when it fails, and a test a founder or a
+ * developer can run; platform facts in it come from the platform's own docs,
+ * dated. It states what it is based on and what it cannot tell you, like the
+ * research does, and it carries its own `updated` date, so publishing or
+ * revising one does not re-date the research articles.
  */
 export type InsightTable = {
   caption: string;
@@ -21,12 +29,28 @@ export type InsightTable = {
 };
 
 export type InsightSection = {
+  /** Anchor, lowercase-hyphenated: "investor-due-diligence". */
+  id?: string;
   heading: string;
   body: string;
   table?: InsightTable;
 };
 
-export type Insight = {
+/** One check on a checklist page, rendered at #item-{id}. */
+export type ChecklistItem = {
+  /** Short and stable, because pages link to it: "rls-enabled". */
+  id: string;
+  /** The heading it is listed under: "Data access", "Secrets", "Payments". */
+  group: string;
+  /** The check, imperative, one sentence. */
+  check: string;
+  /** What goes wrong if it fails, in a sentence or two. */
+  why: string;
+  /** How a founder or developer tests it: a query, a request, a setting to open. */
+  test: string;
+};
+
+type InsightBase = {
   slug: string;
   /** The visible H1 and the Article headline. */
   title: string;
@@ -38,292 +62,51 @@ export type Insight = {
   seo_title?: string;
   /**
    * First publication (ISO), taken from the commit that added the article.
-   * Feeds datePublished; INSIGHTS_UPDATED stays the dateModified.
+   * Feeds datePublished; `updated` (or INSIGHTS_UPDATED) is the dateModified.
    */
   published?: string;
   meta_description: string;
   /** Answer-first opener — the passage most likely to be quoted. */
   summary_answer: string;
-  /** Explicit statement of what the dataset is and is not. */
-  dataset_note: string;
   sections: InsightSection[];
-  key_findings: string[];
   limitations: string[];
   cannot_answer?: string[];
+  /** This page's own revision date (ISO). Without one, INSIGHTS_UPDATED applies. */
+  updated?: string;
+};
+
+export type ResearchInsight = InsightBase & {
+  kind?: 'research';
+  /** Explicit statement of what the dataset is and is not. */
+  dataset_note: string;
+  key_findings: string[];
   word_count: number;
 };
 
-/** Populated by the research generator. */
+export type ChecklistInsight = InsightBase & {
+  kind: 'checklist';
+  /** What the checklist is based on (sources, dates) and what it is not. */
+  dataset_note?: string;
+  key_findings?: string[];
+  items: ChecklistItem[];
+  /** Counted from the rendered text when absent. */
+  word_count?: number;
+  updated: string;
+};
+
+export type Insight = ResearchInsight | ChecklistInsight;
+
+/**
+ * Populated by the research generator; checklists are written by hand.
+ *
+ * Retired 7 Nov 2026: the portfolio-wide count, "What the 26 DevoraX Portfolio
+ * Entries Show About Stacks and Links", at
+ * /insights/what-we-measured-across-25-production-builds. Search engines had
+ * never crawled it, and its slug promised 25 builds the page didn't count. The
+ * URL 301s to /insights (next.config.ts), so don't regenerate it under that
+ * slug. The other research articles still draw on the same 26 entries.
+ */
 export const INSIGHTS: Insight[] = [
-  {
-    "slug": "what-we-measured-across-25-production-builds",
-    "title": "What the 26 DevoraX Portfolio Entries Show About Stacks and Links",
-    "seo_title": "Tech Stacks and Links in 26 Portfolio Entries",
-    "published": "2026-09-16T00:00:00.000Z",
-    "meta_description": "The 26 entries in the DevoraX portfolio, counted field by field: whose work each was, which links a reader can open, and which stacks recur.",
-    "summary_answer": "The DevoraX portfolio holds 26 entries: products and builds that DevoraX's founder, Sameem Amjad, built or worked on, 12 of them as an engineer at other companies and 4 as direct client work. Sixteen of the 26 store at least one public link, nine of them a live app store listing, and ten store none. The clearest stack pattern is backend concentration: 14 of 26 name a Node-family backend, and Node.js and AWS tie at nine entries each.",
-    "dataset_note": "This is n=26: every entry in the DevoraX portfolio, counted from its structured fields (tag list, declared tech stack, category label, and web, Google Play and App Store links) with a script rather than by hand. It is not a record of DevoraX client work. Twelve entries are products Sameem Amjad worked on as an engineer at other companies (Zencloud, Webrange Solutions, Pastel, Fleact Tech and ivector), four are his direct client work for Three28, Dooz, JUJU and Hear With You, five have no named client, and five have no client and no public link. It is not a market survey, a random sample or a controlled study, and it holds no cost, effort, timeline or outcome data. Links are counted as stored, and three of the web links are builds on vercel.app rather than production sites. Read every figure as \"in these 26 portfolio entries\", never as an industry rate.",
-    "sections": [
-      {
-        "heading": "What exactly is in this dataset?",
-        "body": "The dataset is the DevoraX portfolio: 26 entries, each stored with a title, a category label, a tag list, a declared tech stack and three link fields for web, Android and iOS. It is a portfolio of products that DevoraX's founder, Sameem Amjad, has built or worked on. Twelve entries are products Sameem worked on as an engineer at other companies: five at Zencloud, four at Webrange Solutions, one at Pastel, his current employer, one at Fleact Tech and one at ivector. Four are his direct client work: Three28, Dooz, JUJU and Hear With You hired him directly. Five more have no named client, and the last five have no client and no public link.\n\nEvery figure below comes from counting the entries' structured fields directly. Nothing is estimated, extrapolated or benchmarked, because no benchmark was run. Free-text descriptions are not counted, because their wording varies from entry to entry and a count built on prose would measure the writing rather than the product.",
-        "table": {
-          "caption": "The 26 entries by the context in which the work was done, with the links each group stores.",
-          "headers": [
-            "Context",
-            "Entries",
-            "Any public link",
-            "App store listing"
-          ],
-          "rows": [
-            [
-              "Engineer at another company (Zencloud 5, Webrange Solutions 4, Pastel 1, Fleact Tech 1, ivector 1)",
-              "12",
-              "10",
-              "4"
-            ],
-            [
-              "Direct client work (the client hired Sameem directly)",
-              "4",
-              "3",
-              "3"
-            ],
-            [
-              "No named client",
-              "5",
-              "3",
-              "2"
-            ],
-            [
-              "No client and no public link",
-              "5",
-              "0",
-              "0"
-            ],
-            [
-              "Total",
-              "26",
-              "16",
-              "9"
-            ]
-          ]
-        }
-      },
-      {
-        "heading": "How many of the 26 entries store a link a reader can open?",
-        "body": "Verifiability is worth counting first, because a portfolio entry nobody can open is not evidence. Sixteen of the 26 entries store at least one URL, 62% of the portfolio. Counting by the link's domain, 12 store a web address, seven a Google Play listing and seven an Apple App Store listing. Those overlap, since one product can publish to all three surfaces, so they deliberately sum to more than 26.\n\nNot every link is a production product. Three of the 12 web addresses are builds on vercel.app rather than production sites: Coffee Shop, Waitmate and Afriva. Nine entries link to a live app store listing: Food Magnet, Koor, CEDMAT, Three28, Pastel, Dooz, LoopedIn, TAL and Hear With You. Ten entries, 38%, store no link at all. Five of those are the builds with no client; the other five are Outstride, Augment Fit, JUJU, WOD Pro League and ConstrActive, which have no working public address today.",
-        "table": {
-          "caption": "Stored public links across the 26 entries, counted by the link's domain rather than by which field holds it. The web, Google Play and App Store rows overlap and do not sum to 26.",
-          "headers": [
-            "Link type",
-            "Entries",
-            "Share of 26"
-          ],
-          "rows": [
-            [
-              "Web URL",
-              "12",
-              "46%"
-            ],
-            [
-              "Web URL on vercel.app rather than a production site",
-              "3",
-              "12%"
-            ],
-            [
-              "Google Play URL",
-              "7",
-              "27%"
-            ],
-            [
-              "Apple App Store URL",
-              "7",
-              "27%"
-            ],
-            [
-              "At least one app store listing",
-              "9",
-              "35%"
-            ],
-            [
-              "At least one URL stored",
-              "16",
-              "62%"
-            ],
-            [
-              "No URL stored",
-              "10",
-              "38%"
-            ]
-          ]
-        }
-      },
-      {
-        "heading": "Which surfaces do the entries link to?",
-        "body": "Grouping the same 26 entries by the surfaces they link to, rather than by link type, gives mutually exclusive buckets that sum cleanly to 26. No link at all is the largest group, at ten entries, 38%. Web-only is next at seven, 27%, and three of those seven are builds on vercel.app. Five entries, 19%, link to web, Google Play and the App Store together: Food Magnet, Pastel, Dooz, LoopedIn and TAL. Four reach a mobile store with no web surface: Koor and CEDMAT on Google Play only, Three28 and Hear With You on the App Store only.\n\nFull three-surface presence is the exception in this portfolio, and a single web surface is the most common linked shape. That says what these 26 products publish today, not what the market builds, and a different 26 projects would redistribute every bucket.",
-        "table": {
-          "caption": "The 26 entries by linked surface, counted by link domain. Buckets are mutually exclusive and sum to 26.",
-          "headers": [
-            "Linked surfaces",
-            "Entries",
-            "Share of 26"
-          ],
-          "rows": [
-            [
-              "No URL stored",
-              "10",
-              "38%"
-            ],
-            [
-              "Web only",
-              "7",
-              "27%"
-            ],
-            [
-              "Web + Google Play + App Store",
-              "5",
-              "19%"
-            ],
-            [
-              "Google Play only, no web",
-              "2",
-              "8%"
-            ],
-            [
-              "App Store only, no web",
-              "2",
-              "8%"
-            ],
-            [
-              "Total",
-              "26",
-              "100%"
-            ]
-          ]
-        }
-      },
-      {
-        "heading": "Which technologies appear most often across the 26 entries?",
-        "body": "Technology frequency is counted with one explicit rule: an entry counts once for a technology if that name appears in its tag list or among its declared tech stack items. Free-text descriptions are excluded. Under that rule Node.js and AWS tie at nine entries each, Firebase follows at eight and React.js at seven. One detail of the rule is worth stating: Food Magnet's declared stack items read \"AWS Lambda Functions (Backend)\" and \"React.js (Admin Dashboard)\", and a name counts wherever it appears inside an item, so Food Magnet counts for AWS. A count that accepted only the bare string \"AWS\" would give AWS eight.\n\nThese are the stacks of the products, not a record of DevoraX's own technology decisions. Twelve of the 26 were built inside other companies, where the stack was set within that company rather than chosen by DevoraX.",
-        "table": {
-          "caption": "Technology frequency across the 26 entries, counted once per entry where the name appears in the tag list or the declared tech stack. Entries use several technologies, so rows do not sum to 26.",
-          "headers": [
-            "Technology",
-            "Entries (of 26)",
-            "Share"
-          ],
-          "rows": [
-            [
-              "Node.js",
-              "9",
-              "35%"
-            ],
-            [
-              "AWS",
-              "9",
-              "35%"
-            ],
-            [
-              "Firebase",
-              "8",
-              "31%"
-            ],
-            [
-              "React.js",
-              "7",
-              "27%"
-            ],
-            [
-              "React Native",
-              "6",
-              "23%"
-            ],
-            [
-              "Next.js",
-              "6",
-              "23%"
-            ],
-            [
-              "Flutter",
-              "6",
-              "23%"
-            ],
-            [
-              "NestJS",
-              "5",
-              "19%"
-            ],
-            [
-              "Stripe",
-              "3",
-              "12%"
-            ],
-            [
-              "Supabase",
-              "2",
-              "8%"
-            ],
-            [
-              "TypeScript",
-              "2",
-              "8%"
-            ],
-            [
-              "Kubernetes",
-              "1",
-              "4%"
-            ]
-          ]
-        }
-      },
-      {
-        "heading": "Why should the technology counts be read as a floor?",
-        "body": "The technology table is a floor, not a census, and the entries show exactly why. Nineteen of the 26 declare exactly two tech stack items, typically one frontend and one backend. Only seven declare more, and one declares eight. A list that stops at two names cannot describe a stack that runs to a dozen dependencies.\n\nThe project descriptions show what falls through the gap: MongoDB on Bondly, Socket.io and Redis on WOD Pro League and LoopedIn, PostgreSQL through Supabase on Afriva, and Fluent-FFmpeg, BullMQ and S3 signed URLs on JUJU. MongoDB, Redis, Socket.io, PostgreSQL and S3 each score zero across all 26 tag and tech stack lists. Vercel hosts three of the web links and appears in none of them either. Read every line in the technology table as a minimum."
-      },
-      {
-        "heading": "Does the portfolio favour React Native or Flutter?",
-        "body": "Twelve of the 26 entries name a cross-platform mobile framework in their tags or declared stack: six React Native and six Flutter. The two sets do not overlap, and no entry names a native-only toolchain such as Swift, SwiftUI, Kotlin or Jetpack Compose. Of the six React Native entries, four link to a store listing; of the six Flutter entries, three do.\n\nThe split follows context more closely than preference. Four of the six Flutter entries are products Sameem worked on as an employee, at Zencloud or Webrange Solutions, and JUJU and Hear With You were direct client work. None of the six React Native entries was employer work: two were direct client work, two have no named client and two have no client. Within a sample this size an even split carries no statistical weight, and the portfolio cannot test whether framework choice relates to anything else. What it does support is narrower: across these twelve mobile builds the default was cross-platform."
-      },
-      {
-        "heading": "What does the portfolio show about stack concentration?",
-        "body": "Two concentrations stand out. First, backends: nine entries name Node.js and five name NestJS, with no overlap between the sets, so 14 of 26, 54%, name a Node-family backend. Second, managed backend services: eight name Firebase and two Supabase, again with no overlap, so 10 of 26, 38%, lean on a backend-as-a-service rather than a self-managed data layer. Taking React.js, Next.js, React Native and the bare React tag together gives 18 of 26, 69%, touching the React ecosystem somewhere.\n\nContainer orchestration is the opposite story: Kubernetes appears in exactly one entry, the AI E-Commerce Ecosystem, which has no client and no public link. The category labels agree with the tags, with six entries labelled \"Node.js Backend & AWS\" and four labelled \"React Native & Node.js\"."
-      },
-      {
-        "heading": "What would make this portfolio more citable next time?",
-        "body": "The most useful output of counting a portfolio is the list of things it should have captured. Four gaps are visible. No entry has a dedicated field for the context of the work, whether it was done as an employee, for a direct client or as a self-initiated build, so this article has had to add it by hand. No entry records when the work was done: the only date is the timestamp from when the entry was created, which dates the portfolio entry rather than the build. The tech stack list caps most entries at two items, which is why the technology counts are a floor. And links are not re-checked automatically, so a domain that lapses or changes hands keeps pointing somewhere else until someone notices. None of these is hard to fix at capture time, and all are hard to fix afterwards."
-      }
-    ],
-    "key_findings": [
-      "16 of the 26 portfolio entries (62%) store at least one public URL and 10 store none; by link domain, 12 are web addresses (3 of them builds on vercel.app), 7 Google Play and 7 Apple App Store.",
-      "12 of the 26 entries are products Sameem Amjad worked on as an engineer at other companies, 4 are his direct client work, 5 have no named client, and 5 have no client and no public link.",
-      "9 entries link to a live app store listing: Food Magnet, Koor, CEDMAT, Three28, Pastel, Dooz, LoopedIn, TAL and Hear With You.",
-      "14 of 26 entries (54%) name a Node-family backend: 9 name Node.js and 5 name NestJS, with no overlap between the two sets.",
-      "Node.js and AWS tie as the most frequent technologies at 9 of 26 entries each, under the rule 'named in the tag list or the declared tech stack'.",
-      "Mobile work splits 6 React Native to 6 Flutter across 12 entries, no entry names a native iOS or Android toolchain, and 4 of the 6 Flutter entries were employer projects, against none of the React Native entries.",
-      "Only 5 of 26 entries link to web, Google Play and the App Store together; 7 link to the web only and 4 reach a single mobile store with no web surface."
-    ],
-    "limitations": [
-      "n=26 from one small studio's portfolio. These are the products one engineer has worked on across several employers and projects, not a random or representative sample of software projects.",
-      "Context has no dedicated field in the data. Whether each entry was employer work or direct client work, has no named client or has no client, was added by hand for this article.",
-      "The technology counts are a floor, not a census. 19 of the 26 entries cap their declared tech stack at two items, and the project descriptions name MongoDB, Redis, Socket.io, PostgreSQL and S3 on individual builds while those five score zero across all 26 tag and tech stack lists.",
-      "Counts use structured fields only. Free-text descriptions were not counted, so a technology mentioned only in prose does not appear in any table.",
-      "Links were counted as stored. A stored URL means a page is linked, not that it is a production system: 3 of the 12 web links are builds on vercel.app.",
-      "The portfolio contains finished or showcased work only. There is no entry for cancelled, abandoned or failed work, so every pattern here is survivorship-limited.",
-      "The only timestamp on any entry is its creation date, which dates the portfolio entry (8 in 2025, 18 in 2026) rather than the build.",
-      "23 of the 26 entries are flagged as featured, so this is a curated showcase rather than a complete list of everything Sameem has worked on."
-    ],
-    "cannot_answer": [
-      "Is React Native faster, cheaper or more maintainable than Flutter? The portfolio holds no benchmarks, build times, bundle sizes, crash rates or defect counts for either.",
-      "Does framework choice relate to whether an app reaches a public store? With 6 React Native and 6 Flutter entries, and 4 of the 6 Flutter entries employer projects against none of the React Native ones, the portfolio cannot support a correlation claim in either direction.",
-      "Did any stack choice cause any business outcome? The portfolio holds no outcome data, no control group and no counterfactual.",
-      "What did these builds cost, or how many developer hours did they take? No cost, effort or team-size data is stored in any entry.",
-      "How long did each project run from kickoff to launch? The only date on an entry is its creation date, which dates the portfolio entry rather than the build.",
-      "How do these figures compare to industry averages? n=26 from one portfolio cannot establish or test an industry baseline.",
-      "Which technology choices failed, and why? Only finished or showcased work is in the portfolio, so there is no failure data to analyse.",
-      "Who chose each stack? On the employer projects the decision sat inside another company, and no entry records who made it."
-    ],
-    "word_count": 2400
-  },
   {
     "slug": "react-native-vs-flutter-production-experience",
     "title": "React Native vs Flutter: What 12 Cross-Platform Builds in One Portfolio Show",
@@ -335,7 +118,7 @@ export const INSIGHTS: Insight[] = [
     "sections": [
       {
         "heading": "Which builds in the portfolio use React Native or Flutter?",
-        "body": "Of the 26 portfolio entries, twelve name a cross-platform mobile framework in their tags or tech stack: six React Native and six Flutter. That structured-field rule matters at the edges. Dooz Inspected Cars lists Angular and NestJS in its tech stack and React Native only in its tags, so it counts. The remaining thirteen entries name no mobile framework, which is not the same as having no app: Pastel and LoopedIn link app store listings, yet neither entry names the framework behind its app.\n\nThe table below is therefore the entire comparison set. It carries the context of each build, because context turns out to separate the two groups more cleanly than anything technical does.",
+        "body": "Of the 26 portfolio entries, twelve name a cross-platform mobile framework in their tags or tech stack: six React Native and six Flutter. That structured-field rule matters at the edges. Dooz Inspected Cars lists Angular and NestJS in its tech stack and React Native only in its tags, so it counts. The remaining thirteen entries name no mobile framework, which is not the same as having no app: Pastel and LoopedIn link app store listings, yet neither entry names the framework behind its app. Pastel is Sameem's employer, and its app is not DevoraX work: he has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026, and its iOS app launched before he joined.\n\nThe table below is therefore the entire comparison set. It carries the context of each build, because context turns out to separate the two groups more cleanly than anything technical does.",
         "table": {
           "caption": "All 12 cross-platform mobile builds in the 26-entry portfolio, with declared backend, context and the store listings each entry links.",
           "headers": [
@@ -681,12 +464,12 @@ export const INSIGHTS: Insight[] = [
     ],
     "limitations": [
       "n=12 mobile builds from one portfolio of 26 entries. This is far too small and too self-selected to support any industry-wide claim.",
-      "The portfolio is not a record of DevoraX client work. 4 of the 6 Flutter builds were employer projects at Zencloud or Webrange Solutions, and JUJU and Hear With You were direct client work; of the 6 React Native builds, 2 were direct client work, 2 have no named client and 2 have no client at all.",
+      "The portfolio is not only a record of DevoraX client work. 4 of the 6 Flutter builds were employer projects at Zencloud or Webrange Solutions, and JUJU and Hear With You were direct client work; of the 6 React Native builds, 2 were direct client work, 2 have no named client and 2 have no client at all.",
       "No controlled comparison was run. No paired build, no benchmark harness, no instrumentation, no control group.",
       "The two framework groups cover completely different verticals, so store presence is confounded with brief, employer, budget and year.",
       "Framework attribution depends on hand-maintained tags and tech stack lists. Only 9 of the 12 builds name their framework in both; 3 name it in one only, and the category label is too inconsistent to use for attribution.",
       "Store presence is read from stored links. Absence of a link is not proof that an app never reached a store, and a link that resolves today may not resolve tomorrow.",
-      "Two entries outside the comparison set, Pastel and LoopedIn, link app store listings without naming a mobile framework, so store presence across the portfolio is wider than these 12 builds.",
+      "Two entries outside the comparison set, Pastel and LoopedIn, link app store listings without naming a mobile framework, so neither is counted here. Pastel's listings are employer work, not DevoraX work: Pastel is Sameem's employer, and its iOS app launched before he joined in April 2026.",
       "Free-text descriptions were not counted, so technologies named only in prose, such as Express on WOD Pro League and TAL, are missing from the backend table."
     ],
     "cannot_answer": [
@@ -701,7 +484,8 @@ export const INSIGHTS: Insight[] = [
       "Whether builds with no store link were cancelled, released privately, or released and later delisted.",
       "Which framework the Pastel and LoopedIn apps use. Their entries name no mobile framework."
     ],
-    "word_count": 2533
+    "word_count": 2539,
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   {
     "slug": "supabase-vs-firebase-marketplace-backends",
@@ -709,12 +493,12 @@ export const INSIGHTS: Insight[] = [
     "seo_title": "Supabase vs Firebase for Marketplace Backends",
     "published": "2026-09-16T00:00:00.000Z",
     "meta_description": "Ten builds from the DevoraX portfolio, eight naming Firebase and two Supabase with no overlap: what they show about product shape, and what they cannot.",
-    "summary_answer": "Of the 26 entries in the DevoraX portfolio, ten name Supabase or Firebase in their tags or tech stack and none uses both: eight Firebase, two Supabase. Firebase sits alongside mobile frameworks, AWS services and, on Pastel, Sharetribe, while both Supabase builds are React-family web dashboards: Afriva, a demo build, and Augment Fit, which has no public link. With only two Supabase builds, that split describes product shape in one portfolio, not measured backend performance.",
-    "dataset_note": "The dataset is the 26 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, six were employer projects (Food Magnet at Zencloud, Bondly and Afriva at Webrange Solutions, Coffee Shop at Fleact Tech, Pathana at ivector, and Pastel, where Sameem works now), three have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
+    "summary_answer": "Of the 26 entries in the DevoraX portfolio, ten name Supabase or Firebase in their tags or tech stack and none uses both: eight Firebase, two Supabase. Firebase sits alongside mobile frameworks, AWS services and, on Pastel, Sharetribe (Pastel is Sameem's employer: he has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026). Both Supabase builds are React-family web dashboards: Afriva, employer work at Webrange Solutions whose public link is a demo build, and Augment Fit, which has no public link. With only two Supabase builds, that split describes product shape in one portfolio, not measured backend performance.",
+    "dataset_note": "The dataset is the 26 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, six were employer projects (Food Magnet at Zencloud, Bondly and Afriva at Webrange Solutions, Coffee Shop at Fleact Tech, Pathana at ivector, and Pastel, where Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026), three have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
     "sections": [
       {
         "heading": "How many builds in the portfolio use Supabase, and how many use Firebase?",
-        "body": "Across the 26 portfolio entries, ten name one of these two backends in their tags or tech stack: eight Firebase, two Supabase. No entry uses both. That split is the first finding, and the Supabase side is very small. Waitmate, a hospitality admin demo, is not on it: the public demo is a Next.js app on Firebase.\n\nThree further entries name one of the backends only in their written description, not in their tags or tech stack: Outstride and CEDMAT on Firebase, and ConstrActive, a construction CRM built on GoHighLevel, Supabase and Stripe. Of the three, only CEDMAT has a public link, on Google Play. Counting them, the split becomes ten Firebase to three Supabase, still with no overlap. Every other figure below comes from the ten tagged entries.",
+        "body": "Across the 26 portfolio entries, ten name one of these two backends in their tags or tech stack: eight Firebase, two Supabase. No entry uses both. That split is the first finding, and the Supabase side is very small. Waitmate, a hospitality admin dashboard, is not on it: its public demo is a Next.js app on Firebase.\n\nThree further entries name one of the backends only in their written description, not in their tags or tech stack: Outstride and CEDMAT on Firebase, and ConstrActive, a construction CRM built on GoHighLevel, Supabase and Stripe. Of the three, only CEDMAT has a public link, on Google Play. Counting them, the split becomes ten Firebase to three Supabase, still with no overlap. Every other figure below comes from the ten tagged entries.",
         "table": {
           "caption": "All 10 entries naming Supabase or Firebase in tags or tech stack, plus the 3 that name one only in their description. Links are those stored with each entry.",
           "headers": [
@@ -779,7 +563,7 @@ export const INSIGHTS: Insight[] = [
               "Firebase",
               "Tech stack only",
               "Sharetribe & iOS",
-              "Engineer at Pastel",
+              "Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026",
               "Web, Google Play, App Store"
             ],
             [
@@ -850,7 +634,7 @@ export const INSIGHTS: Insight[] = [
               "Pastel Marketplace",
               "Sharetribe, with Firebase in its tech stack",
               "Antiques and vintage marketplace",
-              "Sameem works on Pastel's iOS app as an engineer at Pastel",
+              "Sameem works on Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026",
               "mypastel.com; App Store; Google Play"
             ],
             [
@@ -908,7 +692,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Which platforms does each backend's group link to?",
-        "body": "Of the 26 entries, 16 link to at least one public surface: 12 web, seven Google Play, seven App Store. Inside the two backend groups the pattern diverges. Neither Supabase build has a production link: Afriva is a demo build on vercel.app, and Augment Fit has no public link. Neither has an app store listing.\n\nThe Firebase group is more mixed: six of eight link a web address, two of them the Coffee Shop and Waitmate builds on vercel.app, and three of eight link a store listing, with Food Magnet and Pastel on both Google Play and the App Store and Koor on Google Play. AgroBridge has no public link. The likeliest explanation for the split is what these particular products were built to be, not anything about the backends.",
+        "body": "Of the 26 entries, 16 link to at least one public surface: 12 web, seven Google Play, seven App Store. Inside the two backend groups the pattern diverges. Neither Supabase build has a production link: Afriva's public link is a demo build on vercel.app, and Augment Fit has no public link. Neither has an app store listing.\n\nThe Firebase group is more mixed: six of eight link a web address, two of them the Coffee Shop and Waitmate builds on vercel.app, and three of eight link a store listing, with Food Magnet and Pastel on both Google Play and the App Store and Koor on Google Play. AgroBridge has no public link. The likeliest explanation for the split is what these particular products were built to be, not anything about the backends.",
         "table": {
           "caption": "Counts for the 10 tag-or-tech-stack entries, derived from the tags, tech stack, category label and web, Google Play and App Store links. Each row names what it is counted from.",
           "headers": [
@@ -990,10 +774,10 @@ export const INSIGHTS: Insight[] = [
     ],
     "key_findings": [
       "Of 26 portfolio entries, 10 name Supabase or Firebase in tags or tech stack: 8 Firebase, 2 Supabase, and none uses both.",
-      "Neither of the 2 Supabase builds has a production link: 1 is a demo build on vercel.app and 1 has no public link. 3 of the 8 Firebase builds link an app store listing.",
+      "Neither of the 2 Supabase builds has a production link: 1 links a demo build on vercel.app and 1 has no public link. 3 of the 8 Firebase builds link an app store listing.",
       "Of 7 two-sided marketplace products in the portfolio, 4 name Firebase (Pastel's marketplace engine is Sharetribe), 1 runs on Supabase and 2 use neither.",
       "Firebase reads as a component rather than the whole backend: 2 of 8 carry the tag while declaring a different primary stack, and 4 of 8 also name AWS, against 0 of 2 on the Supabase side.",
-      "Both Supabase builds are React-family web dashboards, but dashboards are not exclusive to Supabase here: Waitmate, a hospitality admin demo, runs on Next.js and Firebase.",
+      "Both Supabase builds are React-family web dashboards, but dashboards are not exclusive to Supabase here: Waitmate, a hospitality admin dashboard, runs on Next.js and Firebase.",
       "No entry names Firestore, Realtime Database or PostgreSQL in its tags or tech stack, so the data-model debate is absent from the portfolio's own fields."
     ],
     "limitations": [
@@ -1018,7 +802,8 @@ export const INSIGHTS: Insight[] = [
       "How either compares to alternatives not used here, such as raw Postgres, PlanetScale, AWS Amplify or Appwrite.",
       "Bundle size, cold-start behaviour or offline sync quality on mobile. These were never captured in any entry."
     ],
-    "word_count": 2700
+    "word_count": 2712,
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   {
     "slug": "sharetribe-vs-custom-marketplace-build",
@@ -1026,8 +811,8 @@ export const INSIGHTS: Insight[] = [
     "seo_title": "Sharetribe vs Custom Marketplace Development",
     "published": "2026-09-17T00:00:00.000Z",
     "meta_description": "Where Sharetribe is the right answer, where a custom marketplace build is, and how that line falls in three real marketplaces from the DevoraX portfolio.",
-    "summary_answer": "Use Sharetribe when your marketplace is a standard listing-and-commission transaction and you have not yet proved supply. For a large share of marketplaces that is the permanent answer, not a stage. Build custom when the domain data model, the role surfaces or native apps are the product. The line can also run through one project: Pastel, the antiques marketplace where DevoraX's founder Sameem Amjad works as an engineer, runs its marketplace on Sharetribe and adds iOS and Android apps, which Sharetribe does not produce by default. Nobody built the fully custom alternative, so read that as description, not verdict.",
-    "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. Two are employer projects: Sameem Amjad, DevoraX's founder, builds Pastel's iOS app as a software engineer at Pastel (since April 2026; the iOS app launched in November 2025, before he joined), and he worked on Afriva, whose public link is a demo build, as an engineer at Webrange Solutions. The third, Dooz, is his direct client work: Dooz hired him directly, and he worked on its shared NestJS backend. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
+    "summary_answer": "Use Sharetribe when your marketplace is a standard listing-and-commission transaction and you have not yet proved supply. For a large share of marketplaces that is the permanent answer, not a stage. Build custom when the domain data model, the role surfaces or native apps are the product. The line can also run through one project: Pastel, the antiques marketplace where DevoraX's founder Sameem Amjad works as a Senior Software Developer on Pastel's team, as Pastel's employee, runs its marketplace on Sharetribe and adds iOS and Android apps, which Sharetribe does not produce by default. Nobody built the fully custom alternative, so read that as description, not verdict.",
+    "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. Two are employer projects: Sameem Amjad, DevoraX's founder, works on Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee (since April 2026; the iOS app launched in November 2025, before he joined; DevoraX work is separate from his job at Pastel), and he worked on Afriva, whose public link is a demo build, as an engineer at Webrange Solutions. The third, Dooz, is his direct client work: Dooz hired him directly, and he worked on its shared NestJS backend. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
     "sections": [
       {
         "heading": "What is actually being compared here?",
@@ -1070,7 +855,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Why does Pastel run on Sharetribe and still need custom apps?",
-        "body": "Pastel is an antiques and vintage marketplace built on Sharetribe, with its web marketplace at mypastel.com and apps on the App Store and Google Play. Sameem Amjad, DevoraX's founder, works on its iOS marketplace app as a software engineer at Pastel. Pastel is his employer, not a DevoraX client, so the choice of Sharetribe was Pastel's.\n\nThe reasoning behind that kind of choice is worth setting out. A marketplace payment is not a checkout. Money moves from a buyer to the platform, is held while a one-of-one antique is packed and shipped, and is released to the seller only once the exchange completes, with commissions, refunds, disputes and cross-border payouts attached. That surface area is larger than the storefront itself.\n\nSharetribe supplies it as a modelled state machine built for two-sided commerce, so the web marketplace and the apps read a transaction's current state rather than taking custody of funds. The custom engineering sits where Sharetribe stops: it does not produce iOS and Android apps by default, so those are separate builds. What Pastel does not tell you is whether a fully custom marketplace would have served it better. Nobody built that version, so the example shows the split is workable, not that it was the best possible choice."
+        "body": "Pastel is an antiques and vintage marketplace built on Sharetribe, with its web marketplace at mypastel.com and apps on the App Store and Google Play. Since April 2026 Sameem Amjad, DevoraX's founder, has worked on its iOS marketplace app as a Senior Software Developer on Pastel's team, as Pastel's employee. Pastel is his employer, not a DevoraX client, so the choice of Sharetribe was Pastel's, and DevoraX work is separate from his job at Pastel.\n\nThe reasoning behind that kind of choice is worth setting out. A marketplace payment is not a checkout. Money moves from a buyer to the platform, is held while a one-of-one antique is packed and shipped, and is released to the seller only once the exchange completes, with commissions, refunds, disputes and cross-border payouts attached. That surface area is larger than the storefront itself.\n\nSharetribe supplies it as a modelled state machine built for two-sided commerce, so the web marketplace and the apps read a transaction's current state rather than taking custody of funds. The custom engineering sits where Sharetribe stops: it does not produce iOS and Android apps by default, so those are separate builds. What Pastel does not tell you is whether a fully custom marketplace would have served it better. Nobody built that version, so the example shows the split is workable, not that it was the best possible choice."
       },
       {
         "heading": "When is Sharetribe clearly the right answer?",
@@ -1097,7 +882,7 @@ export const INSIGHTS: Insight[] = [
               "Pastel (Sharetribe, Firebase, iOS app)",
               "Sharetribe",
               "iOS and Android apps, which Sharetribe does not produce by default",
-              "Sameem works on Pastel's iOS app as an engineer at Pastel",
+              "Sameem works on Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026",
               "mypastel.com; App Store; Google Play"
             ],
             [
@@ -1135,7 +920,7 @@ export const INSIGHTS: Insight[] = [
             ],
             [
               "Subscription",
-              "No platform subscription, and DevoraX does not resell hosting: you pay your own infrastructure providers directly. Every build includes 35 days of free maintenance after launch for bugs in what was built; after that, ongoing fixes, updates and releases are covered by the $1,500-a-month care plan.",
+              "No platform subscription, and DevoraX does not resell hosting: you pay your own infrastructure providers directly. Every build includes 35 days of free maintenance after launch for bugs in what was built; after that, fixes, updates and new releases go through monthly care at $1,500 a month, or a single release quoted per change.",
               "The vendor's current pricing page. Hosted marketplace products and commerce platforms are sold as tiered subscriptions; multi-vendor apps are priced by their own publishers, on models that vary."
             ],
             [
@@ -1162,7 +947,7 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What does this portfolio prove about the choice, and what does it not?",
-        "body": "Less than the confidence of these headings suggests, so here are the bounds. DevoraX is a two-person studio that has been building since 2022. Its founder, Sameem Amjad, holds a 5.0 rating on Fiverr across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Two of the three marketplaces here are employer projects, and Dooz hired Sameem directly. A portfolio is by construction a record of what went well enough to show, so nothing cancelled or abandoned would appear in it.\n\nNobody has built the same marketplace twice, once hosted and once custom. There is no paired test, no migration in either direction and no instrumentation of either approach.\n\nDevoraX is also an interested party. It sells custom builds, and the four situations listed earlier are precisely the ones where it loses the custom-build sale. They are here because for a large share of readers the honest answer is a product DevoraX did not build."
+        "body": "Less than the confidence of these headings suggests, so here are the bounds. DevoraX is a two-person studio that has been building since 2022. Its Fiverr profile, which is in Sameem Amjad's name, shows a 5.0 rating across 50+ projects since January 2022, for clients in the US, UK, Canada and Hong Kong. Two of the three marketplaces here are employer projects, and Dooz hired Sameem directly. A portfolio is by construction a record of what went well enough to show, so nothing cancelled or abandoned would appear in it.\n\nNobody has built the same marketplace twice, once hosted and once custom. There is no paired test, no migration in either direction and no instrumentation of either approach.\n\nDevoraX is also an interested party. It sells custom builds, and the four situations listed earlier are precisely the ones where it loses the custom-build sale. They are here because for a large share of readers the honest answer is a product DevoraX did not build."
       },
       {
         "heading": "How should you decide, in order?",
@@ -1175,13 +960,13 @@ export const INSIGHTS: Insight[] = [
       "Pastel and Dooz both have native iOS and Android apps, which a hosted web marketplace product does not produce by default.",
       "For a marketplace with a standard transaction, an ordinary catalogue and unproven supply, a hosted product is the permanent answer rather than a stage before a custom build. Nothing in the portfolio shows anyone outgrowing one, because it contains no such case either way.",
       "DevoraX's published custom starting points are $2,900 (MVP Starter) and $7,500 (Growth), and nothing shaped like Dooz fits the smaller band, so for some specifications the honest answer is to cut scope or stay hosted.",
-      "Two of the three are employer projects: Pastel, where Sameem works now, and Afriva, at Webrange Solutions. The third, Dooz, hired Sameem directly to work on its shared NestJS backend."
+      "Two of the three are employer projects: Pastel, where Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026, and Afriva, at Webrange Solutions. The third, Dooz, hired Sameem directly to work on its shared NestJS backend."
     ],
     "limitations": [
       "Three marketplaces inside a 26-entry portfolio from a two-person studio. A portfolio is selection-biased by construction: no cancelled, abandoned or failed marketplace could appear in it, and the portfolio was not audited for every product that might be called marketplace-shaped.",
       "Two of the three are employer projects and the third was Sameem's direct client work. No entry records a DevoraX scope or price for any of them, so none shows how DevoraX itself scopes or prices a marketplace.",
       "Nobody built the same marketplace twice, once on a hosted product and once custom. There is no paired test, no A/B and no migration in either direction, so every comparison here is engineering reasoning rather than measurement.",
-      "DevoraX has not run Sharetribe or a Shopify multi-vendor app as an entire platform. The direct experience of Sharetribe behind this article is Pastel, where Sameem works on the iOS app, which is why the structural table has no Shopify column.",
+      "DevoraX has not run Sharetribe or a Shopify multi-vendor app as an entire platform. The direct experience of Sharetribe behind this article is Pastel, where Sameem works on the iOS app as Pastel's employee, which is why the structural table has no Shopify column.",
       "The portfolio holds no outcome data for these marketplaces, and even if it did, too much else differs between the three businesses for it to show whether build-versus-buy was the right call.",
       "DevoraX sells custom builds, so it has a commercial interest in this answer. The only prices in this article are its own published prices, and the build tiers among them are starting points, not quotes; no third-party pricing is stated anywhere, including in the cost table."
     ],
@@ -1191,7 +976,8 @@ export const INSIGHTS: Insight[] = [
       "Whether the build-versus-buy decision made any of these businesses more or less successful. There is no outcome data, no control group and no baseline.",
       "How hard it is to migrate from a hosted marketplace to custom code, or back. No product in the portfolio has made that move."
     ],
-    "word_count": 3014
+    "word_count": 3025,
+    "updated": "2026-11-08T00:00:00.000Z"
   },
   {
     "slug": "what-a-3000-mvp-budget-gets-you",
@@ -1208,11 +994,11 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "Why is $3,000 a scope number rather than a price?",
-        "body": "Because the fixed price is the output, not the input. A proposal prices a defined scope, so the only thing a smaller budget can move is what sits inside that scope. That is a more useful conversation than asking for a discount on a rate, and it is why the discovery call happens before the number. It helps to know the shape of the supplier too. DevoraX has been operating since 2022 and is two people, Sameem Amjad and Usman, who bring in specialists when a scope needs them. No portfolio entry holds any cost accounting, no price, no hours and no allocation, so this article will not explain the tier by describing an overhead structure nobody measured. What the DevoraX site does publish alongside the price is the working arrangement: direct Slack access, weekly demos and a shared project board.\n\nWhat actually moves the number is structural rather than cosmetic. How many distinct kinds of user need their own screens. Whether money changes hands inside the product. Whether anything has to stay correct under contention, such as a seat, a table or a unit of stock two people can claim at the same moment. Whether the product must exist in an app store as well as a browser. Whether the data is sensitive enough that isolation between tenants has to hold by construction rather than by careful coding. Each of those is a step change, not a percentage increase, because each adds a surface, a permission boundary and a set of failure cases somebody has to test. Colour schemes, copy and the number of marketing pages are small against any of them. Timelines follow the same logic: any duration in a proposal is an estimate for that scope, and no portfolio entry stores how long a build actually took."
+        "body": "Because the fixed price is the output, not the input. A proposal prices a defined scope, so the only thing a smaller budget can move is what sits inside that scope. That is a more useful conversation than asking for a discount on a rate, and it is why the discovery call happens before the number. It helps to know the shape of the supplier too. DevoraX has been operating since 2022 and is two people, Sameem Amjad and Usman, who work on every sprint together. Sometimes a designer or another specialist joins a project, and DevoraX names them to the client before they start. No portfolio entry holds any cost accounting, no price, no hours and no allocation, so this article will not explain the tier by describing an overhead structure nobody measured. What the DevoraX site does publish alongside the price is the working arrangement: every week a video demo of progress and a short written update, plus a shared project board (Jira, Linear, Trello or similar) and a Slack or WhatsApp channel with Sameem and Usman.\n\nWhat actually moves the number is structural rather than cosmetic. How many distinct kinds of user need their own screens. Whether money changes hands inside the product. Whether anything has to stay correct under contention, such as a seat, a table or a unit of stock two people can claim at the same moment. Whether the product must exist in an app store as well as a browser. Whether the data is sensitive enough that isolation between tenants has to hold by construction rather than by careful coding. Each of those is a step change, not a percentage increase, because each adds a surface, a permission boundary and a set of failure cases somebody has to test. Colour schemes, copy and the number of marketing pages are small against any of them. Timelines follow the same logic: any duration in a proposal is an estimate for that scope, and no portfolio entry stores how long a build actually took."
       },
       {
         "heading": "What does scope actually look like across five web builds?",
-        "body": "Five of the 26 portfolio entries are useful calibration here, because they are web products described in enough detail to count surfaces and roles, and they sit at visibly different levels of scope. Be clear about what they are before reading the table. Pathana is live at pathana.net. Coffee Shop is hosted at coffee-shop-original.vercel.app, and Waitmate and Afriva are demo builds on vercel.app. Augment Fit has no public link. Three of the five were employer work, as the Context column shows. All five are web-only, and that is a property of which five were picked rather than of the budget or of the market: nine of the 26 entries link a live Google Play or App Store listing.\n\nRead the table by counting surfaces and roles rather than features. Coffee Shop has one of each. Augment Fit is one admin panel with dashboards for two named roles, trainers and clients. Waitmate is a hospitality admin demo for reservations, tables and staff. Pathana is the instructive one: one platform where three parties, students, counsellors and families, get shared views of the same plans, so the roles multiply while the surfaces do not. Afriva has four separate role dashboards. Named feature counts stay inside a narrow band of three to four across all five, which is the point, because features are cheap relative to the number of places and permission levels each one has to be correct in. No entry stores a price, so the table has no column placing any build against the DevoraX tiers.",
+        "body": "Five of the 26 portfolio entries are useful calibration here, because they are web products described in enough detail to count surfaces and roles, and they sit at visibly different levels of scope. Be clear about what they are before reading the table. Pathana is live at pathana.net. Coffee Shop is hosted at coffee-shop-original.vercel.app, and Waitmate's and Afriva's public links are demo builds on vercel.app. Augment Fit has no public link. Three of the five were employer work, as the Context column shows. All five are web-only, and that is a property of which five were picked rather than of the budget or of the market: nine of the 26 entries link a live Google Play or App Store listing.\n\nRead the table by counting surfaces and roles rather than features. Coffee Shop has one of each. Augment Fit is one admin panel with dashboards for two named roles, trainers and clients. Waitmate is a hospitality admin dashboard for reservations, tables and staff. Pathana is the instructive one: one platform where three parties, students, counsellors and families, get shared views of the same plans, so the roles multiply while the surfaces do not. Afriva has four separate role dashboards. Named feature counts stay inside a narrow band of three to four across all five, which is the point, because features are cheap relative to the number of places and permission levels each one has to be correct in. No entry stores a price, so the table has no column placing any build against the DevoraX tiers.",
         "table": {
           "caption": "Five web builds from the DevoraX portfolio by described scope. No column here is a price or a price proxy: no entry stores what any build was sold for, so this table cannot be read against the published tiers.",
           "headers": [
@@ -1275,11 +1061,11 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What does a $3,000 budget specifically not buy?",
-        "body": "It does not buy role separation. Four role dashboards like Afriva's are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and a change to seller tooling must not quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. The portfolio holds no test matrix, review step or release procedure for any entry, so nothing here should be read as a description of how DevoraX tests. It does not buy institutional multi-tenancy either. A product like Pathana, where counsellors and families see students' records, has to keep each student's data visible only to the right people by construction rather than by careful coding, and the portfolio documents no assessment of how any build does that.\n\nIt does not buy a native release. All five reference builds are web products, while nine of the 26 entries link a live store listing, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits. A starting-tier build includes 35 days of free maintenance after launch, for bugs in what was built, with new features quoted separately; after that, ongoing support is the $1,500-a-month care plan, and the code and IP are yours on final payment."
+        "body": "It does not buy role separation. Four role dashboards like Afriva's are four products sharing a schema: each queries a different slice of the data, each enforces a different permission set, and a change to seller tooling must not quietly regress the buyer checkout path. That is a property of the architecture, not evidence of a process. The portfolio holds no test matrix, review step or release procedure for any entry, so nothing here should be read as a description of how DevoraX tests. It does not buy institutional multi-tenancy either. A product like Pathana, where counsellors and families see students' records, has to keep each student's data visible only to the right people by construction rather than by careful coding, and the portfolio documents no assessment of how any build does that.\n\nIt does not buy a native release. All five reference builds are web products, while nine of the 26 entries link a live store listing, and a store release is a second build with its own review process and its own release cadence. It does not buy assurance: none of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits. A starting-tier build includes 35 days of free maintenance after launch, for bugs in what was built, with new features quoted separately; after that, fixes and new releases go through monthly care at $1,500 a month, or a single release quoted per change, and the code and IP are yours on final payment."
       },
       {
         "heading": "When is the honest answer not to hire an agency like DevoraX at all?",
-        "body": "Frequently, and here is the version with no hedge on it. If you are a single-location cafe, restaurant, salon, gym or retailer who needs a branded site with a menu or catalogue and online ordering, rent. Hosted commerce platforms and site builders solve that exact shape as a subscription, and they arrive with payment handling, hosting, updates and a support contract that keeps renewing for as long as you pay. That is the Coffee Shop scope shape, and renting is the right answer for a reader arriving with that brief today. The same holds for appointment and session booking for a small team, and for an internal dashboard over data you already hold.\n\nThe table below is deliberately two-sided, because owning software has costs as surely as renting it does. Renting is a fee that never stops and a data model you configure rather than design. Owning is a hosting bill, a maintenance burden, support only for as long as it is contracted (35 days of free maintenance at the DevoraX starting tier, then the monthly care plan), and key-person risk with a two-person supplier. The test you can apply on your own is whether the thing your product does differently is a preference or a rule. If your difference is a preference, your own brand, your own layout, your own copy, rent. If it is a rule the hosted product cannot express, this capacity is contested, this payout splits four ways, this record is legally restricted, that is where custom starts earning the money. Afriva has four role dashboards; whether that could have been rented, nothing in the portfolio says.",
+        "body": "Frequently, and here is the version with no hedge on it. If you are a single-location cafe, restaurant, salon, gym or retailer who needs a branded site with a menu or catalogue and online ordering, rent. Hosted commerce platforms and site builders solve that exact shape as a subscription, and they arrive with payment handling, hosting, updates and a support contract that keeps renewing for as long as you pay. That is the Coffee Shop scope shape, and renting is the right answer for a reader arriving with that brief today. The same holds for appointment and session booking for a small team, and for an internal dashboard over data you already hold.\n\nThe table below is deliberately two-sided, because owning software has costs as surely as renting it does. Renting is a fee that never stops and a data model you configure rather than design. Owning is a hosting bill, a maintenance burden, support only for as long as it is contracted (35 days of free maintenance at the DevoraX starting tier, then monthly care or a single release quoted per change), and key-person risk with a two-person supplier. The test you can apply on your own is whether the thing your product does differently is a preference or a rule. If your difference is a preference, your own brand, your own layout, your own copy, rent. If it is a rule the hosted product cannot express, this capacity is contested, this payout splits four ways, this record is legally restricted, that is where custom starts earning the money. Afriva has four role dashboards; whether that could have been rented, nothing in the portfolio says.",
         "table": {
           "caption": "Where renting usually beats custom at this budget, and what renting costs in return. Third-party products are described by commercial model and positioning only. No current price is quoted for any of them, packaging in this space changes, and each vendor should be checked directly.",
           "headers": [
@@ -1294,7 +1080,7 @@ export const INSIGHTS: Insight[] = [
               "A brand site with a menu or catalogue and online ordering",
               "Hosted site builders and hosted commerce platforms, Shopify and Squarespace among them, sold as a subscription",
               "A recurring fee for as long as you use it, and a catalogue and checkout you configure rather than design",
-              "Your own hosting bill, your own upgrades, and support only for as long as it is contracted; the DevoraX starting tier includes 35 days of free maintenance after launch, then a $1,500-a-month care plan",
+              "Your own hosting bill, your own upgrades, and support only for as long as it is contracted; the DevoraX starting tier includes 35 days of free maintenance after launch, then monthly care at $1,500 a month, or a single release quoted per change",
               "When the ordering, pricing or fulfilment logic genuinely will not fit the platform's model"
             ],
             [
@@ -1331,14 +1117,14 @@ export const INSIGHTS: Insight[] = [
       },
       {
         "heading": "What should you actually do with roughly $3,000?",
-        "body": "Three answers, and only one of them involves hiring anybody. If your product is the default shape of a category with mature hosted products in it, rent one, spend nothing on engineering, and revisit in a year when you know which constraint actually hurts. That is the answer for anyone whose difference from the category default is a preference rather than a rule, and the Coffee Shop scope shape sits squarely inside it. If your product has one primary audience, a handful of features, and one rule the hosted products cannot express, a starting-tier custom build is a real option: one surface, one audience, a managed backend, a live link at the end. If your brief names three user roles, a store release, a compliance obligation or contention over finite capacity, this budget buys a half-built version of that, and the move is to cut to one role and ship it rather than to find a supplier who will agree to all of it at this price.\n\nTwo practical notes if you do spend it. Keep some of it back. A starting tier includes 35 days of free maintenance after launch, for bugs in what was built, and after that fixes and updates come from the monthly care plan or your own budget, so a budget entirely consumed at launch leaves nothing for them, nothing for new features and nothing for the hosting bill either. And insist the scope is written down as a fixed price against a specific list before anyone starts, which is how DevoraX works and is the only structure under which a small budget is safe for both sides. If a supplier cannot tell you what falls out of scope at your number, they have not scoped it, and the shortfall surfaces later as either an invoice or an argument. Ask the same supplier what they would tell you to rent instead, because the answer tells you what the proposal is really for."
+        "body": "Three answers, and only one of them involves hiring anybody. If your product is the default shape of a category with mature hosted products in it, rent one, spend nothing on engineering, and revisit in a year when you know which constraint actually hurts. That is the answer for anyone whose difference from the category default is a preference rather than a rule, and the Coffee Shop scope shape sits squarely inside it. If your product has one primary audience, a handful of features, and one rule the hosted products cannot express, a starting-tier custom build is a real option: one surface, one audience, a managed backend, a live link at the end. If your brief names three user roles, a store release, a compliance obligation or contention over finite capacity, this budget buys a half-built version of that, and the move is to cut to one role and ship it rather than to find a supplier who will agree to all of it at this price.\n\nTwo practical notes if you do spend it. Keep some of it back. A starting tier includes 35 days of free maintenance after launch, for bugs in what was built, and after that fixes and updates come from monthly care, a single release quoted per change, or your own budget, so a budget entirely consumed at launch leaves nothing for them, nothing for new features and nothing for the hosting bill either. And insist the scope is written down as a fixed price against a specific list before anyone starts, which is how DevoraX works and is the only structure under which a small budget is safe for both sides. If a supplier cannot tell you what falls out of scope at your number, they have not scoped it, and the shortfall surfaces later as either an invoice or an argument. Ask the same supplier what they would tell you to rent instead, because the answer tells you what the proposal is really for."
       }
     ],
     "key_findings": [
       "All five reference builds are web products, a property of the selection rather than of the budget: 9 of the 26 portfolio entries link a live Google Play or App Store listing.",
       "Surfaces and roles, not features, separate the five: Coffee Shop has one surface and one audience, Augment Fit one admin panel serving two named roles, Waitmate one admin dashboard, Pathana one platform with three parties sharing views, and Afriva four role dashboards, while named feature counts stay within a band of three to four throughout.",
       "No portfolio entry stores a price, a timeline or a team size, so none of the five named builds is evidence of what $2,900 buys.",
-      "DevoraX's published starting points are MVP Starter from $2,900, Growth from $7,500 and Enterprise custom-scoped, each priced as a fixed sum in a proposal after a free 30-minute discovery call. The MVP Starter includes 35 days of free maintenance after launch, for bugs in what was built; ongoing support after that is the $1,500-a-month care plan.",
+      "DevoraX's published starting points are MVP Starter from $2,900, Growth from $7,500 and Enterprise custom-scoped, each priced as a fixed sum in a proposal after a free 30-minute discovery call. The MVP Starter includes 35 days of free maintenance after launch, for bugs in what was built; after that, fixes and new releases go through monthly care at $1,500 a month, or a single release quoted per change.",
       "None of the five has a penetration test, a security assessment, a load test or an uptime SLA behind it, and DevoraX holds no certifications and has run no compliance audits.",
       "16 of the 26 entries link to something public, 3 of those links are builds on vercel.app rather than production sites, and 10 link to nothing. No entry stores a delivery, launch or failure status, so the portfolio cannot be read as a success rate in either direction."
     ],
@@ -1356,12 +1142,547 @@ export const INSIGHTS: Insight[] = [
       "What a build costs to run and maintain after handover. No hosting invoices, platform bills or post-launch support costs exist anywhere in the portfolio.",
       "Whether $2,900 is competitive against other suppliers. DevoraX holds no competitor quotes and did not price-check anybody for this article."
     ],
-    "word_count": 3402
+    "word_count": 3484,
+    "updated": "2026-11-08T00:00:00.000Z"
+  },
+  {
+    "kind": "checklist",
+    "slug": "vibe-coded-app-security-checklist",
+    "title": "The vibe-coded app security and launch checklist",
+    "seo_title": "Vibe Coding Security Checklist for App Launch",
+    "meta_description": "Vibe coding security checklist for Lovable and other AI-built apps: a test for every check, App Store review items and what Lovable's own scan covers.",
+    "summary_answer": "A vibe coding security checklist tests your app the way a stranger would. Before launch, four answers should be no. Can a signed-out visitor read private rows? Is a secret key in your app's JavaScript? Can anyone unlock paid features without a verified payment? Is any account the app runs on held outside your company? Each of the 50 checks below comes with a test you can run yourself, ending with what Apple and Google check before a mobile app goes live. Run them alongside Lovable's own scans. As of November 2026, the Quick scan runs at every publish and the Deep scan when someone starts it (or on an Enterprise schedule), and Lovable's docs say neither replaces \"a thorough security review\". The tests assume Lovable with Supabase or its built-in backend; Base44, Bolt, Replit and Cursor apps need the same checks in other settings.",
+    "dataset_note": "This vibe-coded app security checklist assumes two test accounts, A and B, each with some data, plus a private browser window and the DevTools Network tab. A few tests use a SQL editor (Supabase's, or More → Database → Manage on Lovable's built-in backend) or curl in a terminal. Run the abuse tests with your test accounts and your own email address and phone number, and delete test content afterwards. Every platform fact, figure and menu path was read on 7 November 2026 from that platform's own pages, which the text names. This is not a penetration test or a certification, it quotes no statistics on how often apps fail these checks, and the Tested by DevoraX column in the scan table is pending. DevoraX, which publishes it, also sells a $400 [vibe code audit](/solutions/fix-vibe-coded-app) of your code, database security, payments, hosting and store readiness; you don't need it to use the checks. Free to reuse under CC BY 4.0 with a link to this page; the passages quoted from Apple, Google, Lovable, Supabase, Stripe and others stay under their owners' terms.",
+    "sections": [
+      {
+        "id": "how-to-test",
+        "heading": "How do I run a vibe coding security check on my app?",
+        "body": "Work through the checks above in order, testing the app the way a stranger would. Your app's database address and public key ship in the JavaScript every visitor downloads: Lovable's [secrets docs](https://docs.lovable.dev/features/secrets) say its VITE_ values are \"embedded into the client bundle at build time\". Supabase's API key docs say publishable keys aren't meant to protect against anyone using \"the Network inspector in the browser\". So the question is never whether someone can reach your database, only what it answers, and most checks end with a request sent without your session, or with another user's.\n\nStart with [Data access](#group-data-access) and [Secrets](#group-secrets), because one open table or one secret key in the browser exposes every user at once. Then do [Sign-in](#group-sign-in), [Payments](#group-payments) and [Input and abuse](#group-input-and-abuse), then [Hosting and recovery](#group-hosting-and-recovery) and [Ownership](#group-ownership). For a mobile app, finish with [Store review](#group-store-review). Write down each result with the date, because a test describes only the version you ran it on.\n\nIf you would rather hand it over, our [vibe code audit](/solutions/fix-vibe-coded-app) reviews your code, database security, payments, hosting and store readiness. It costs $400, credited to the paid step that follows if you go ahead, and you keep the written report whatever you decide. It is an engineering review, not a security certification. Its page lists the start date, the report turnaround and the payment terms."
+      },
+      {
+        "id": "lovable-scan",
+        "heading": "What does Lovable's security scan check, and what can you check yourself?",
+        "body": "As of November 2026, Lovable runs two built-in scans, described in its [security overview](https://docs.lovable.dev/features/security), and running either is free. The Quick scan runs every time you publish and checks your database rules, your npm dependencies and any MCP server your app exposes.\n\nThe Deep scan includes all of that and also reads your application code. It runs when someone starts it: from the Security view, from the workspace Security center (admins and owners on Business and Enterprise plans) or, since 29 October 2026, from the project chat. Enterprise plans can also schedule it, and publishing an app whose MCP integration allows access without sign-in starts one in the background. Asking in the chat for a security review runs both scans and explains the findings; the scans are free, but the conversation uses credits.\n\nLovable's docs are plain about the limits: the scans \"do not replace a thorough security review\". Both are static analysis, which reads code and settings. Testing the running app with real attack payloads comes through the optional Aikido connector, billed by Aikido.\n\nThe table maps each area Lovable lists to the checks on this page. Its last row lists what this page tests that Lovable's security docs don't mention, which says nothing either way about whether the scans catch it. The Tested by DevoraX column reads pending on every row: we have not yet run the scans against known faults ourselves, so the table reports what Lovable's documentation says, not what we observed.",
+        "table": {
+          "caption": "What Lovable's built-in scans cover, as listed in its security overview on 7 November 2026, and where this page tests the same area.",
+          "headers": [
+            "Area (Lovable's wording, shortened)",
+            "Quick scan, at every publish",
+            "Deep scan, when started",
+            "Tests on this page",
+            "Tested by DevoraX"
+          ],
+          "rows": [
+            [
+              "Tables without row-level security, and access rules that let everyone through",
+              "Yes",
+              "Yes",
+              "[Scans](#item-deep-scan), [RLS on every table](#item-rls-enabled), [signed-out read](#item-signed-out-read), [open policies](#item-open-policies)",
+              "pending"
+            ],
+            [
+              "Leaked-password protection turned off",
+              "Yes",
+              "Yes",
+              "[Sign-in settings](#item-account-settings)",
+              "pending"
+            ],
+            [
+              "File storage rules",
+              "Yes",
+              "Yes",
+              "[Storage buckets](#item-storage-buckets)",
+              "pending"
+            ],
+            [
+              "Known vulnerabilities in npm dependencies (only critical-rated ones become findings, minus some Lovable judges can't affect its apps or are unlikely to be exploited)",
+              "Yes",
+              "Yes",
+              "[Dependencies](#item-dependencies)",
+              "pending"
+            ],
+            [
+              "An MCP server your app exposes without authentication",
+              "Yes",
+              "Yes",
+              "Not covered here",
+              "pending"
+            ],
+            [
+              "Access control and authorization, including server code that bypasses the database's rules and privileged actions that don't check the caller's role",
+              "No",
+              "Yes",
+              "[Cross-user access](#item-cross-user), [privilege columns](#item-privilege-columns), [server functions](#item-server-functions), [admin actions](#item-admin-only)",
+              "pending"
+            ],
+            [
+              "Unauthenticated and abusable endpoints",
+              "No",
+              "Yes",
+              "[Server functions](#item-server-functions), [rate limits](#item-rate-limits), [uploads](#item-uploads)",
+              "pending"
+            ],
+            [
+              "Unsafe input and injection",
+              "No",
+              "Yes",
+              "[Text shown as text](#item-stored-scripts)",
+              "pending"
+            ],
+            [
+              "Leaked secrets and credentials in code or the repository",
+              "No",
+              "Yes",
+              "[Secrets in the browser](#item-bundle-secrets), [Git history](#item-git-history)",
+              "pending"
+            ],
+            [
+              "Payments and billing: prices, fulfillment or paid features a customer can change or reach without paying",
+              "No",
+              "Yes",
+              "[Server-side prices](#item-server-prices), [access from the webhook](#item-access-from-webhook)",
+              "pending"
+            ],
+            [
+              "Authentication and account security: sign-in, account recovery and token checks",
+              "No",
+              "Yes",
+              "[Sign-in links](#item-auth-urls), [protected pages](#item-private-window)",
+              "pending"
+            ],
+            [
+              "Error messages and logs that reveal internal details or personal data",
+              "No",
+              "Yes",
+              "[Error responses](#item-error-leaks)",
+              "pending"
+            ],
+            [
+              "Not listed in Lovable's security docs on 7 November 2026: a real live-mode purchase, duplicate webhook events, renewals and refunds, auth email delivery, backups and restores, your own domain, account ownership, App Store and Google Play rules",
+              "Not listed",
+              "Not listed",
+              "[Payments](#group-payments), [auth emails](#item-auth-email-delivery), [Hosting and recovery](#group-hosting-and-recovery), [Ownership](#group-ownership), [Store review](#group-store-review)",
+              "pending"
+            ]
+          ]
+        }
+      },
+      {
+        "id": "store-review",
+        "heading": "App store submission checklist: what do Apple and Google check before launch?",
+        "body": "Apple checks that the app does more than your website (guideline 4.2) and that a reviewer can sign in (2.1(a)). It also checks how the app sells digital features (3.1.1), whether people can delete their account in the app (5.1.1(v)), whether it links a privacy policy (5.1.1(i)) and whether its App Privacy details declare its data use. Use the [Store review group](#group-store-review) above as your Apple app review checklist, next to [Apple's App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/), last updated 16 October 2026.\n\nGoogle Play adds its own checks, as of November 2026. Personal accounts created after 13 November 2023 need a closed test with 12 testers for 14 days, and every new app needs a Data safety form and a target of API level 36. Each of these has a test in the group above.\n\nFor digital features, the storefront matters. On the US storefront, an app may include buttons or links to your web checkout without an entitlement (3.1.1(a)). That lifts the ban on links only. Guideline 3.1.1 still says that to unlock features or functionality \"you must use in-app purchase\". Guideline 3.1.3(b) lets an app unlock what people bought on your website only \"provided those items are also available as in-app purchases within the app\". App Review decides whether a US app can rely on the web link alone.\n\nIn other storefronts, digital features use in-app purchase unless an entitlement or a 3.1.3 exception applies. Apple can still reject an app. A wrapped app can sell through in-app purchase when its wrapper supports it: as of November 2026, Median documents a plugin for StoreKit and Google Play Billing, and RevenueCat publishes a Capacitor SDK. You still have to set up the products, the purchase flow, the server-side record of who bought what, and the answers for App Review.\n\nOn Android, as of November 2026, Google Play's [Payments policy](https://support.google.com/googleplay/android-developer/answer/9858738) requires its billing system for digital features and subscriptions unless an exception applies. For US users, Play Console Help says developers may link out or offer another billing system by following that policy and Google's alternative billing or external content links programs. Developers enrolled in those programs report to Google and pay its service fees. [What applies where, rule by rule](/solutions/lovable-app-to-app-store#in-app-purchase).\n\nSameem has personally prepared and submitted iOS builds to App Review, published Android apps to Google Play production, shipped in-app purchase with StoreKit, Play Billing or RevenueCat, and answered store rejections; Usman sometimes helps. If you want us to take the launch on, we prepare the app against Apple's and Google's guidelines, submit it and answer the reviewers. The stores decide approval. The iOS and Android launch starts from $2,400, with the $400 audit credited to it if you start with one: see [Lovable app to the App Store](/solutions/lovable-app-to-app-store)."
+      },
+      {
+        "id": "retest-after-prompts",
+        "heading": "How do I re-run a vibe coding security test after a prompt changes sign-in or Stripe?",
+        "body": "Treat any prompt that touches sign-in, payments, tables or policies as a release. As of November 2026, Lovable's [built-in backend docs](https://docs.lovable.dev/features/cloud) set Modify database and Change data to Always allow by default, so the agent can change schema, policies and rows without asking. Its database docs add that every draft \"uses the same database as your project\", so with Change data on Always allow, a quick interface prompt can reach live data. Once you have real users, everyone who edits the project should set both permissions to Ask each time in their own account settings ([agent permissions](#item-agent-permissions)).\n\nBefore you publish, look at what changed. Lovable's version history, or the commit in your synced GitHub repository, shows the files the prompt touched. Lovable records each database change as a migration file in your code, under drizzle/migrations/ (older projects keep earlier files under supabase/migrations/), so a changed policy shows up there.\n\nThen re-run the tests that matter: [signed-out read](#item-signed-out-read), [cross-user access](#item-cross-user), [privilege columns](#item-privilege-columns), [sign-in links](#item-auth-urls), [webhook signature](#item-webhook-signature) and [access from the webhook](#item-access-from-webhook). Keep test users A and B, and a Stripe sandbox customer, ready for it. Publishing runs the Quick scan, which covers database rules, dependencies and MCP exposure only. Payments, authentication and server code are Deep scan areas, so after a change there, start a Deep scan before you publish."
+      },
+      {
+        "id": "before-launch",
+        "heading": "What should I do before launching an app built with Lovable?",
+        "body": "Work backwards from the date, because the slowest steps aren't in your code. A company Apple developer account needs a D-U-N-S Number first ([check](#item-own-developer-account)). A personal Google Play account created after 13 November 2023 needs 14 days of closed testing and then a production-access review ([check](#item-play-closed-test)). On 7 November 2026, [Apple's App Review page](https://developer.apple.com/distribute/app-review/) said it was \"typically reviewing at least 50% of submissions in less than 24 hours and 90% in less than 48 hours\", so leave room for a second round.\n\nThen go in this order. Move the repository and every account into your company's name ([Ownership](#group-ownership)). Start the D-U-N-S request and the closed test if you are going to the stores. Run Lovable's Quick and Deep scans, and resolve or justify every finding. Work through Data access, Secrets, Sign-in and Payments, and make one real purchase in live mode. Restore a backup into a copy, move your links to your own domain, and only then submit.\n\nIf you are going to the stores, this page covers the compliance half of an app store launch checklist; screenshots, store keywords and launch-day plans come after. Want a second pair of eyes before you submit? [Book a free 30-minute call](/book?from=vibe-coded-app-security-checklist)."
+      },
+      {
+        "id": "investor-due-diligence",
+        "heading": "What investors check in an app built with Lovable",
+        "body": "Investors' technical due diligence questions are about risk a demo can't show: who owns the code and the accounts, whether user data is protected, and what it will cost to keep building. madewithlove's technical due diligence checklist (updated 24 June 2026, written for SaaS acquisitions) assesses five areas: team, process, engineering, security and fit. Under security it lists authentication, authorisation and secrets management, known vulnerabilities and patching, audit logging and incident response, and certifications such as SOC 2 or ISO 27001.\n\nVariant Systems' guide to due diligence on AI-generated codebases (12 February 2026) adds the questions an AI-built app raises: which tools wrote the code, what each tool's terms say about IP, and whether anyone has scanned the code for copyleft licences.\n\nUse the questions below as a founder-side tech due diligence checklist, and have evidence ready for each. Who owns the code? As of November 2026, [Lovable's hosting and ownership docs](https://docs.lovable.dev/tips-tricks/deployment-hosting-ownership) say the apps, code and content you create with it \"are yours, subject to third-party rights such as open-source licenses\". Is the repository in the company's GitHub account, with its history ([check](#item-repo-owned))? Have the licences of your dependencies been checked ([check](#item-licences))?\n\nWhere does the data live: on Lovable's built-in backend (which Lovable says uses Supabase's open-source foundation) or in your own Supabase project, and can you export it ([check](#item-export-path))? Are row-level security, secrets and sign-in sound ([Data access](#group-data-access), [Secrets](#group-secrets), [Sign-in](#group-sign-in))? Which third parties receive user data ([check](#item-privacy-answers))? Has a backup been restored ([check](#item-restore-test))? Who holds the domain, Stripe and store accounts ([check](#item-accounts-owned))? What incidents have there been, and what changed after them?\n\nLovable's [Trust center](https://docs.lovable.dev/features/trust-center) can add evidence. Once you enable it, it publishes security facts Lovable observed about your live app at /.well-known/trust.html, though Lovable's docs call it \"informational, not a certification\" and \"not an audit\".\n\nOur launch-readiness audit has an investor-ready version. It states who commissioned the review, its date and its scope, and it says that DevoraX may be hired to fix what it finds, though you don't have to hire us. Beside the code, database security, payments, hosting and store readiness, it covers who owns the code under the terms of the tool that built the app. It also covers third-party licences, secrets in the repository and whether the accounts are in your company's name.\n\nIt answers the code and account questions above, not the team, process and certification questions in madewithlove's list. It is an engineering review, not a security certification, and it doesn't replace the third-party penetration test some investors ask for. It costs $400, credited to the paid step that follows if you go ahead, and you keep the written report whatever you decide. [Book a free 30-minute call](/book?from=vibe-coded-app-security-checklist) to see whether it fits your round."
+      },
+      {
+        "id": "cheaper-options",
+        "heading": "When is a free tool, or someone else's service, the better buy?",
+        "body": "Often. If your app has no sign-in, no payments and no user data, a brochure site for example, Lovable's Quick scan and the [Hosting and recovery](#group-hosting-and-recovery) checks are enough for a vibe-coded website security check. A paid review would mostly confirm what they show. If one check fails and its linked guide explains the fix, fix that check yourself. Lovable's Deep scan is free to run, Supabase's Security Advisor ships with the platform, and [Supabase's production checklist](https://supabase.com/docs/guides/deployment/going-into-prod) (updated 2 November 2026) covers project settings this page doesn't.\n\nOther free security checklists for vibe-coded apps cover ground this one leaves out. Lovable's own [security best practices](https://docs.lovable.dev/tips-tricks/security-best-practices) page ends with a seven-point list to confirm before publishing; it says what to confirm, and the tests here show how. Replit's [security checklist](https://docs.replit.com/learn/security-checklist) fits apps built on Replit. As of 7 November 2026, the boxed-dev/vibe-coding-security repository on GitHub lists 69 developer-level checks, including AI-agent and LLM items this page doesn't cover. Astra's checklist (dated 3 November 2026) has six browser tests that take about ten minutes.\n\nWe read six other vibe coding security checklists that day: Replit's, Astra's, BSS Commerce's, Cleveroad's, Fingerprint's and boxed-dev's. None of them covers App Store or Google Play review, which is why this page has a Store review group.\n\nPay someone when the stakes call for it. Lovable's docs suggest an additional professional security review for apps handling sensitive data or critical functionality, and health and financial data are the clearest cases. Its optional Aikido connector runs AI penetration tests on the running app, billed by Aikido. A security firm is the right buy when an investor wants a formal penetration test report. Our audit sits between the free tools and a pentest: an engineering review of your code, database security, payments, hosting and store readiness."
+      },
+      {
+        "id": "questions",
+        "heading": "Vibe coding security checklist: common questions",
+        "body": "Are vibe-coded apps secure?\n\nNot automatically, and not hopelessly either. An app built with Lovable, Base44, Bolt or Replit is as secure as its access rules, keys and server checks. The failures this page tests for, such as open tables, secret keys in the browser, functions that don't check the caller and features unlocked from a success page, are settings and code you can test and fix.\n\nIs vibe coding a security risk?\n\nIt can be. One documented example is [CVE-2025-48757](https://nvd.nist.gov/vuln/detail/CVE-2025-48757), published on the US National Vulnerability Database on 30 May 2025. Its entry says an insufficient row-level security policy in Lovable through 15 April 2025 \"allows remote unauthenticated attackers to read or write to arbitrary database tables of generated sites\". Lovable disputes it, on the grounds that each customer is responsible for protecting their application's data. The practical risk is code that ships faster than anyone reviews it, so test access from outside, keep secrets on the server, and [re-test after every prompt](#retest-after-prompts) that touches data, sign-in or payments.\n\nIs Lovable secure?\n\nAs of November 2026, Lovable has real protections: scans at every publish and on request ([what each covers](#lovable-scan)) and a Secrets manager that keeps keys out of the browser. Since 25 July 2026 it also revokes Lovable workspace API keys found in public GitHub repositories.\n\nIt has had a platform incident too. In \"Our response to the April 2026 incident\" (22 April 2026), Lovable says that between 3 February and 20 April 2026, any Lovable user with a project link could potentially read the source code and chat history of public projects. It says \"Private projects and Lovable Cloud were never impacted\", and that it has since made historically public projects private.\n\nLovable's docs put your app's security on you: \"You are responsible for ensuring that your app meets the security requirements appropriate for its use case, especially if it handles sensitive data or performs critical functions.\" The checks above cover the part that is yours.\n\nIf Lovable's security check shows no issues, is my app ready to launch?\n\nNot yet. A clean Quick scan covers database rules, dependencies and MCP exposure, and the Deep scan covers application code once someone runs it. Lovable's docs don't describe either scan as testing Stripe live mode, auth emails, backups, your domain or store review ([what each scan covers](#lovable-scan)). Both are reviews of your code and settings, not tests of the running app. Check that both scan cards say Up to date, read the Ignored findings list, then work through this page.\n\nDoes Apple require account deletion inside the app?\n\nYes, if people can create an account in it. Guideline 5.1.1(v) says: \"If your app supports account creation, you must also offer account deletion within the app.\" The [account deletion check](#item-account-deletion) covers what Apple's help page and Google Play add, with a test."
+      }
+    ],
+    "items": [
+      {
+        "id": "deep-scan",
+        "group": "Data access",
+        "check": "Run Lovable's Quick and Deep scans, or Supabase's Security Advisor, and resolve or justify every finding, including ignored ones.",
+        "why": "As of November 2026, Lovable's Quick scan runs at every publish, but the Deep scan, which reads your application code, runs when someone starts it (or on a schedule, on Enterprise plans). A finding someone chose to ignore drops out of the count but stays listed with the reason they picked.",
+        "test": "In Lovable's Security view, both scan cards should read Up to date, the open findings count should be zero, and every entry under Ignored findings should carry a reason you would defend to an investor. On your own Supabase project, open the Security Advisor in the dashboard (or run supabase db advisors) and expect no errors."
+      },
+      {
+        "id": "rls-enabled",
+        "group": "Data access",
+        "check": "Turn on row-level security (RLS) for every table in your public schema.",
+        "why": "Your Supabase address and public key are in the JavaScript every visitor downloads, so anyone can query your tables directly. Supabase's RLS guide (updated 3 November 2026) says a table in an exposed schema without RLS \"is readable and writable by any role with a grant on it\".",
+        "test": "Open the SQL editor (in the Supabase dashboard, or More → Database → Manage → SQL editor on Lovable's built-in backend) and run: select tablename from pg_tables where schemaname = 'public' and not rowsecurity; The result should be empty. On Lovable's built-in backend, More → Database → Manage → Policies also lists each table's policies. Fix steps: [RLS disabled in public](https://sameemamjad.com/guides/supabase-rls-disabled-in-public)."
+      },
+      {
+        "id": "signed-out-read",
+        "group": "Data access",
+        "check": "Confirm a signed-out stranger can read only the rows you meant to publish.",
+        "why": "RLS can be on and still let everyone in: Supabase's docs warn that a policy for signed-out visitors written as using ( true ) gives every one of them read access to the rows it covers.",
+        "test": "On your live app, open DevTools → Network and find a request to your-project.supabase.co/rest/v1/. Note the project address and the apikey header, which is your public key. In a terminal, run for each table: curl \"https://YOUR-PROJECT.supabase.co/rest/v1/TABLE?select=*&limit=5\" -H \"apikey: YOUR_PUBLIC_KEY\". Private tables should return [] or a permission error; only content you meant to publish should come back. No such request in the Network tab? Your app reads data through server code, so use the [server functions check](#item-server-functions) instead."
+      },
+      {
+        "id": "open-policies",
+        "group": "Data access",
+        "check": "Read every policy and replace any that lets everyone through on private data.",
+        "why": "A policy whose condition is simply true lets every user it applies to through, which switches RLS off for that table in practice. Lovable's Quick scan looks for \"access rules that let everyone through\".",
+        "test": "Run: select tablename, policyname, cmd, roles, qual, with_check from pg_policies where schemaname = 'public'; Any row on a private table whose qual or with_check is just true needs a real condition, such as auth.uid() = user_id. Supabase's Security Advisor also flags permissive policies and tables that have RLS on but no policy."
+      },
+      {
+        "id": "cross-user",
+        "group": "Data access",
+        "check": "Check that one signed-in user cannot read or change another user's records.",
+        "why": "A rule that only checks that someone is signed in lets every customer see every other customer's data. Lovable's Deep scan describes this area as users \"who can view or change data that is not theirs\".",
+        "test": "Signed in as test user A, open DevTools → Network, find the request that loads A's records, right-click it and choose Copy → Copy as fetch. Paste it into the Console, swap A's id for B's (or delete the filter), and run it: the response should be empty. Repeat with a request that edits or deletes a record: B's data must not change."
+      },
+      {
+        "id": "privilege-columns",
+        "group": "Data access",
+        "check": "Make sure users can't give themselves a role, a plan or credits by editing their own record.",
+        "why": "A policy that lets users update their own row lets them change every column in it unless some are protected. Supabase's docs add that user_metadata \"can be modified by authenticated end users\", so it must never decide permissions.",
+        "test": "Edit your own profile in the app as a normal user and copy that request as fetch. In the Console, change the body to set role to admin, plan to your top tier or credits to 9999, and send it. Reload: nothing should have changed. Then search your policies and code for user_metadata: any permission check that reads it has to move to a table users can't write."
+      },
+      {
+        "id": "views-and-functions",
+        "group": "Data access",
+        "check": "Check database views and SQL functions, which can skip RLS.",
+        "why": "Supabase's RLS guide says views \"bypass RLS by default\", so a view over a protected table can hand out every row, and a security definer function in an exposed schema runs with its creator's privileges.",
+        "test": "Run: select table_name from information_schema.views where table_schema = 'public'; and query each view with the signed-out curl test above. On your own Supabase project, the Security Advisor flags security definer views, and security definer functions that signed-out or signed-in users can execute."
+      },
+      {
+        "id": "storage-buckets",
+        "group": "Data access",
+        "check": "Keep private files in private storage buckets, and stop public buckets from listing their contents.",
+        "why": "A public bucket serves any file to anyone who has its address, and Supabase's Security Advisor has a separate check for public buckets that allow listing. Lovable's Quick scan reviews file storage rules as part of its database review.",
+        "test": "List your buckets and check each one's public setting against what it holds: avatars can be public; invoices, ID documents and private uploads should not be. Copy the address of a private file and open it in a private window: it should fail. If you use signed links, wait until one expires and try it again."
+      },
+      {
+        "id": "server-functions",
+        "group": "Data access",
+        "check": "Make every edge function, server function and API route check who is calling before it reads or changes data.",
+        "why": "Server code often runs with the service role, which bypasses RLS, so the function itself has to check the caller. Lovable's security best practices page puts it plainly: \"A function running on the server is still callable by a client\".",
+        "test": "List your functions (More → Edge functions on Lovable's built-in backend, or supabase/functions in the repository). Call each one as a stranger, with only your public key: curl -i -X POST \"https://YOUR-PROJECT.supabase.co/functions/v1/NAME\" -H \"apikey: YOUR_PUBLIC_KEY\" -H \"Content-Type: application/json\" -d '{}'. If your public key is a legacy one (a long key starting eyJ), also add -H \"Authorization: Bearer YOUR_PUBLIC_KEY\"; Supabase's API key docs say keys starting sb_publishable_ go on the apikey header only. Anything that acts for a user should answer 401 or 403. Then call it signed in as A with B's ids in the body: it should refuse. For server routes in a TanStack Start app, paste a copied request into the Console of a private window."
+      },
+      {
+        "id": "admin-only",
+        "group": "Data access",
+        "check": "Protect admin pages and admin actions on the server, not by hiding the menu.",
+        "why": "Hiding a link changes what the page shows, not what the data calls answer. Lovable's Deep scan checks that \"privileged actions check the caller's role rather than only that they signed in\".",
+        "test": "Signed in as a normal user, type your admin address (for example /admin) into the browser. Then copy a request from your own admin session as fetch and run it in the normal user's Console. Both should fail with no data in the response, whatever the page shows."
+      },
+      {
+        "id": "bundle-secrets",
+        "group": "Secrets",
+        "check": "Keep secret keys out of everything the browser downloads.",
+        "why": "Front-end values are public: Vite's docs say VITE_ variables \"are bundled into your source code at build time\", and Lovable's docs treat them as public too, fit only for values such as the Supabase URL and publishable key. A secret Stripe key or a Supabase service role key there gives away your money or your whole database.",
+        "test": "On the live site, open DevTools → Sources and press Ctrl+Shift+F (Cmd+Option+F on a Mac) to search every loaded file for sk_live_, sk_test_, rk_live_, sb_secret_, whsec_ and the first characters of each other secret key you use. Expect no matches. If you find a long key starting eyJ, decode it in the Console: JSON.parse(atob('PASTE_KEY'.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).role prints anon for the public key; service_role means your secret key is exposed."
+      },
+      {
+        "id": "server-side-api-calls",
+        "group": "Secrets",
+        "check": "Call paid services (AI models, email, SMS) from server code, never straight from the browser.",
+        "why": "A key the browser uses is a key anyone can copy and spend. Lovable's docs say values in its Secrets manager are \"injected into your Edge Functions automatically, and never reach the browser\".",
+        "test": "Use each AI, email or SMS feature with DevTools → Network open. The requests should go to your own backend (your-project.supabase.co/functions/v1/ or your own /api routes), never directly to the provider's API with your key in a header."
+      },
+      {
+        "id": "git-history",
+        "group": "Secrets",
+        "check": "Check your Git history and old messages for keys, and replace any key that ever left your control.",
+        "why": "Deleting a key from today's code leaves it in earlier commits, and Supabase's docs say a secret key must never travel \"over chat, email, or SMS\", so a key that did is no longer secret.",
+        "test": "In a fresh clone, run: git log -p --all | grep -nE \"sk_live_|rk_live_|sb_secret_|whsec_\" and repeat with the first characters of your other secret keys. Expect no output. Replace every key found there, ever pasted into a chat, an email or a past developer's hands, or kept in a Lovable project that was ever public: Lovable's post of 22 April 2026 says public projects' code and chat history were historically open by design, and readable by any Lovable user with the project link from 3 February to 20 April 2026. Create the new key at the provider, update it in Lovable's Secrets (More → Settings → Secrets) or at your host, and check that a request with the old key fails. In Stripe, set the old key's expiration to Now when you rotate it; otherwise both keys work for up to 7 days."
+      },
+      {
+        "id": "auth-urls",
+        "group": "Sign-in",
+        "check": "Make every sign-up email, password reset and social sign-in land on your real domain.",
+        "why": "Supabase's docs say the Site URL \"is critical for email confirmations and password resets\", and Lovable's docs say that when sign-in works in preview but fails on the published app, missing redirect URLs are \"usually the reason\". On Lovable's built-in backend, publishing sets the Site URL to your lovable.app address and adds a custom domain to the redirect list.",
+        "test": "On your production domain, on a phone as well as a laptop: sign up with a new address and confirm it from the email, sign out, reset the password, and sign in with each social provider. Every link should land on your own domain, signed in, never on localhost or a preview address. Then check Site URL and Redirect URLs in your auth settings (More → Users → Settings → Advanced on Lovable's built-in backend)."
+      },
+      {
+        "id": "account-settings",
+        "group": "Sign-in",
+        "check": "Require email confirmation, a minimum password length of 8 or more, and leaked-password protection.",
+        "why": "Lovable's docs note that without confirmation \"anyone can sign up with an address they don't own\", and call the leaked-password check \"the highest-value setting\". As of November 2026, Supabase makes leaked password protection available on the Pro Plan and above for your own projects.",
+        "test": "Sign up with an address you control and try to sign in before clicking the confirmation link: it should be refused. Then try to sign up with the password password123: it should be rejected. On Lovable's built-in backend the settings are under More → Users → Settings → Email (Auto-confirm email off, Password HIBP check on); on your own project, in Supabase Auth's settings."
+      },
+      {
+        "id": "auth-email-delivery",
+        "group": "Sign-in",
+        "check": "Send sign-in emails through a real email provider before launch, and set the hourly limit for launch day.",
+        "why": "Supabase's built-in sender is \"not meant for production use\": unless you set up custom SMTP it delivers only to your team's addresses, and on 7 November 2026 its limit was 2 messages per hour. Lovable's built-in backend also caps auth emails per hour, and raising that cap means setting up email sending first.",
+        "test": "Sign up five new accounts within an hour, using addresses outside your team. All five confirmation emails should arrive, from your own domain, and not in spam. Compare the hourly limit (Authentication → Rate Limits in Supabase, or Advanced in Lovable's email settings) with the sign-ups you expect on launch day. As of November 2026, Supabase starts the limit at 30 emails an hour once custom SMTP is set up, and you raise it on the Rate Limits page. If you see \"email rate limit exceeded\", follow [the fix for Supabase's email rate limit](https://sameemamjad.com/guides/supabase-email-rate-limit-exceeded)."
+      },
+      {
+        "id": "private-window",
+        "group": "Sign-in",
+        "check": "Make protected pages refuse signed-out visitors before any private data loads.",
+        "why": "A page that redirects to sign-in after loading may already have fetched the data. Lovable's best practices say to \"use frontend auth state only to control UI, never to enforce access\".",
+        "test": "Copy the address of a page that shows private data (a dashboard, an invoice, a profile) and open it in a private window. You should land on sign-in, and DevTools → Network should show no response containing that data, not even for a moment."
+      },
+      {
+        "id": "live-mode",
+        "group": "Payments",
+        "check": "Before launch, make one real purchase in live mode with your own card, then refund it.",
+        "why": "Test mode proves the code, not the live setup: live keys, products and webhook endpoints are separate, and Stripe's docs say an endpoint's signing secret differs between test and live. On Lovable's built-in payments, checkout on the published app takes real cards only after the go-live steps.",
+        "test": "On the published app, buy the cheapest plan with a real card. In the Stripe Dashboard (live mode, not the sandbox), check the payment, check the webhook delivery got a 2xx response, and check your account received the paid feature. Then refund it and confirm the app does what your terms say."
+      },
+      {
+        "id": "webhook-signature",
+        "group": "Payments",
+        "check": "Verify Stripe's signature on every webhook before acting on it.",
+        "why": "Stripe's docs say that without verification \"an attacker could send fake webhook events to your endpoint to trigger actions like fulfilling orders, granting account access, or modifying records\".",
+        "test": "Send your webhook address (listed under your webhook endpoints in Stripe) a fake event: curl -i -X POST \"YOUR_WEBHOOK_URL\" -H \"Content-Type: application/json\" -d '{\"type\":\"checkout.session.completed\"}'. It should answer 400 or 401, and nothing in your database should change. If real events fail the signature check instead, see [No signatures found matching the expected signature](https://sameemamjad.com/guides/stripe-webhook-no-signatures-found-matching-expected-signature)."
+      },
+      {
+        "id": "webhook-duplicates",
+        "group": "Payments",
+        "check": "Handle the same event arriving twice, or out of order, without granting or charging twice.",
+        "why": "Stripe's [webhook docs](https://docs.stripe.com/webhooks) say endpoints \"might occasionally receive the same event more than once\", and that events can arrive in a different order from the one in which they were created.",
+        "test": "In the Stripe Dashboard, open a delivered checkout or invoice event and click Resend (or, with the Stripe CLI, run stripe events resend EVENT_ID --webhook-endpoint=ENDPOINT_ID). The app should not create a second order, add credits twice or send a second receipt."
+      },
+      {
+        "id": "access-from-webhook",
+        "group": "Payments",
+        "check": "Unlock paid features from the webhook or a server-side check with Stripe, never from the success page.",
+        "why": "Anyone can open a success page by its address, and a feature granted only there goes missing whenever a buyer closes the tab before it loads.",
+        "test": "Complete a test checkout with Stripe's test card 4242 4242 4242 4242 and confirm your user's plan changes in the database. Then, as a different unpaid test user, open your success page address directly with any session id: nothing should unlock. If paying users don't get access, see [Stripe payment succeeded but no access](https://sameemamjad.com/guides/stripe-payment-succeeded-but-no-access)."
+      },
+      {
+        "id": "server-prices",
+        "group": "Payments",
+        "check": "Decide prices, and what each purchase unlocks, on the server, never from values the browser sends.",
+        "why": "If the browser sends the amount or the plan, a buyer can edit it. Lovable's Deep scan has an area for \"prices, fulfillment, or paid features that a customer can change or reach without paying\".",
+        "test": "Start a checkout with DevTools → Network open and find the request that creates it. Copy it as fetch, change the amount, quantity or price id to a cheaper one, and send it. The checkout that opens should still show the real price, and paying should unlock only what was paid for."
+      },
+      {
+        "id": "subscription-lifecycle",
+        "group": "Payments",
+        "check": "Test renewals, failed payments, cancellations and refunds, not only the first payment.",
+        "why": "Stripe sends invoice.payment_failed when a renewal payment fails and customer.subscription.deleted when a subscription ends; an app that ignores them keeps giving paid access.",
+        "test": "In your Stripe sandbox, open a test user's subscription and use Run simulation to move past the renewal date: the plan should stay active. Change that customer's card to 4000 0000 0000 0341, which Stripe's docs say attaches but fails when charged, and move past the next renewal: the app should react. Cancel another test subscription and refund a test payment: access should end when your terms say, and the user should see why."
+      },
+      {
+        "id": "stored-scripts",
+        "group": "Input and abuse",
+        "check": "Make sure text users type is always shown as text and never runs as code.",
+        "why": "Input that runs in another user's browser can act with that user's session. Lovable's Deep scan looks for \"untrusted input that reaches a query, a command, a file path, a browser, an email, an AI prompt, or an exported spreadsheet\".",
+        "test": "Using test accounts (on a staging copy if real users could see the field), save <img src=x onerror=alert(document.domain)> in every field another user or an admin will see: name, bio, comment, message, listing title. View it from another account and from the admin view. No pop-up should appear, and the text should show exactly as typed. Do the same for fields that end up in emails or CSV exports, then delete the test content."
+      },
+      {
+        "id": "rate-limits",
+        "group": "Input and abuse",
+        "check": "Limit how often anyone can sign up, request codes, send messages or call your AI features.",
+        "why": "Endpoints that send email or SMS, or call a paid AI model, cost money per request. Lovable's Deep scan covers \"functions and routes that anyone can trigger, upload to, or use to send messages without permission\".",
+        "test": "Pick one such request in DevTools → Network and copy it as fetch, with your own email address or phone number in it. In the Console, type for (let i = 0; i < 30; i++) await followed by the pasted fetch call, press Enter and watch the Status column in the Network tab. After a handful of calls you should see 429 Too Many Requests or a refusal, not 30 successes. Check the sign-up and email limits under Authentication → Rate Limits in Supabase too."
+      },
+      {
+        "id": "ai-spend",
+        "group": "Input and abuse",
+        "check": "Cap what your AI features can spend, per user in the app and in total at the provider.",
+        "why": "A free account that can call a paid model without limit is a direct line to your bill.",
+        "test": "As a free user, keep using the AI feature until a limit message appears; if it never does, there is no per-user cap. Then open your AI provider's billing settings and set a monthly budget or alert. For AI built into a Lovable app, watch its spend under More → Usage."
+      },
+      {
+        "id": "uploads",
+        "group": "Input and abuse",
+        "check": "Enforce file type and size limits for uploads on the server or the storage bucket, not just in the form.",
+        "why": "A check that runs only in the browser can be skipped, so anyone could store files of any type or size in your storage. Supabase's docs say a bucket can be created with rules that restrict the type and size of files it accepts.",
+        "test": "Through your app, try a file well above your size limit and a type you don't accept (for example an .html file renamed to .jpg). Then confirm the limit also exists outside the form: in each bucket's allowed file types and size limit, or in the server function that receives the upload."
+      },
+      {
+        "id": "restore-test",
+        "group": "Hosting and recovery",
+        "check": "Know where your backups are, and restore one into a copy before launch.",
+        "why": "As of November 2026, Lovable's built-in backend keeps one backup a day for about 14 days, and Supabase backs up Pro, Team and Enterprise projects daily and recommends that free-plan projects export their own. Neither kind includes storage files, and a backup you have never restored is a guess.",
+        "test": "On Lovable's built-in backend, More → Database → Manage → Backups should list daily backups. Export the database (More → Database → Manage → Settings → Export data), download it from More → Storage, have a developer load it into a scratch database with pg_restore, and compare row counts in your main tables. On your own Supabase project, check Database → Backups, or on the Free plan run supabase db dump and restore the file into a scratch project."
+      },
+      {
+        "id": "own-domain",
+        "group": "Hosting and recovery",
+        "check": "Run the app on a domain you own, over HTTPS, with every other address redirecting to it.",
+        "why": "Lovable's terms (last updated 28 August 2026) say it \"retains all ownership rights in the lovable.app domain and all subdomains\" and may reclaim a subdomain, so your users, sign-in links and store listings should point at an address you control.",
+        "test": "Run curl -sI http://yourdomain.com and curl -sI https://www.yourdomain.com. Each should answer 301 or 308, with a Location header pointing at the one https address you chose. Open that address in a browser: there should be no certificate warning."
+      },
+      {
+        "id": "deep-links",
+        "group": "Hosting and recovery",
+        "check": "Make every page load when it is opened directly or refreshed.",
+        "why": "A single-page app hosted without a rewrite rule returns 404 for any address except the home page, which breaks emailed links, shared links and bookmarks.",
+        "test": "Open a deep address such as https://yourdomain.com/settings/billing in a new tab, and refresh a signed-in page. Both should load the page, not a 404. Fix: [404 on refresh in a single-page app](https://sameemamjad.com/guides/fix-404-on-refresh-single-page-app)."
+      },
+      {
+        "id": "security-headers",
+        "group": "Hosting and recovery",
+        "check": "Send the basic security headers as real HTTP headers.",
+        "why": "They tell browsers to stay on HTTPS, not to guess file types and not to let other sites frame your app. MDN notes that X-Frame-Options set in a meta tag \"has no effect\".",
+        "test": "Run curl -sI https://yourdomain.com and look for strict-transport-security, x-content-type-options: nosniff, and either content-security-policy with frame-ancestors or x-frame-options. For a Lovable-hosted app, the optional Trust center (Project settings → Publishing, off by default since 17 August 2026) lists which of these Lovable observed on the live version."
+      },
+      {
+        "id": "error-leaks",
+        "group": "Hosting and recovery",
+        "check": "Keep stack traces, SQL and internal details out of error responses.",
+        "why": "Error text that names tables, columns or file paths tells an attacker where to aim. Lovable's Deep scan has an area for \"error messages and logs that reveal internal details or personal data\".",
+        "test": "With DevTools → Network open, cause errors on purpose: submit a form with a field missing, open a record id that doesn't exist, upload a file type you don't accept. Read each failed response: a short message is fine; SQL, stack traces, table names or keys are not."
+      },
+      {
+        "id": "dependencies",
+        "group": "Hosting and recovery",
+        "check": "Fix critical and high dependency vulnerabilities, and remove packages the app doesn't use.",
+        "why": "As of November 2026, Lovable's docs say only critical-rated dependency vulnerabilities become findings; high and medium ones appear only in the Security view's dependency list, so they never reach the findings count. Nobody may have checked the packages the AI chose either.",
+        "test": "In the repository, run npm audit --omit=dev and expect no critical or high results, or a written reason for each one you keep. Then read package.json: for any name you don't recognise, check its npm page links to a real repository with recent releases, and remove it if the app doesn't import it."
+      },
+      {
+        "id": "error-alerts",
+        "group": "Hosting and recovery",
+        "check": "Make sure a person hears about errors in the live app before customers report them.",
+        "why": "Without logs and an alert, a failing webhook or a broken sign-in can run for days unnoticed. Lovable's built-in backend keeps backend logs under More → Logs.",
+        "test": "Cause a harmless error on purpose and find it in your logs (More → Logs on Lovable's built-in backend, or Logs in the Supabase dashboard). Then check it reaches a person without anyone looking: an error-tracking alert by email or chat, and an uptime monitor on your domain."
+      },
+      {
+        "id": "repo-owned",
+        "group": "Ownership",
+        "check": "Keep the code in a GitHub repository your company owns, and check it builds from a fresh clone.",
+        "why": "Lovable creates and updates repositories in whichever GitHub account or organisation you connect, so a repository under a freelancer's or co-founder's personal account is under their control. Investors ask who owns the code.",
+        "test": "On GitHub, open the repository's Settings: your company's account or organisation should own it, with you as an admin, and its latest commit should match what is live. Clone it into an empty folder, install the packages and build it (npm install, then npm run build): it should succeed without files that exist only on someone's laptop."
+      },
+      {
+        "id": "licences",
+        "group": "Ownership",
+        "check": "List the licences of the packages your app ships, and give a reason for any copyleft one you keep.",
+        "why": "A copyleft licence such as the GPL or AGPL comes with conditions on sharing source code, and Variant Systems' due diligence guide (12 February 2026) asks whether anyone has scanned an AI-built codebase for copyleft licences.",
+        "test": "In the repository, after npm install, run npx license-checker --production --summary, which counts your production dependencies by licence. Then run it without --summary to find the package behind any GPL, LGPL or AGPL entry. Each one needs a written reason: why the app needs it and whether an alternative exists."
+      },
+      {
+        "id": "accounts-owned",
+        "group": "Ownership",
+        "check": "Hold every account the app runs on in your company's name: domain, Lovable workspace, Supabase, Stripe, email sender, and the Apple and Google developer accounts.",
+        "why": "Whoever owns an account can change or close it. Lovable's built-in payments create a Stripe account for the project that you take over by claiming it when you go live.",
+        "test": "Make a table with one row per service: account owner, your role, and whether two-factor sign-in is on. In each dashboard's team or users page, your company should hold the owner role (in App Store Connect, the Account Holder). If Lovable set up Stripe for you, finish the Claim your Stripe account step in its Payments tab."
+      },
+      {
+        "id": "two-factor",
+        "group": "Ownership",
+        "check": "Turn on two-factor sign-in for every account that can change the app, and remove people who have left.",
+        "why": "One stolen password on GitHub, Lovable, Supabase, Stripe or your domain registrar is enough to change the live app or move the money.",
+        "test": "Using the table above, turn on two-factor sign-in for every row, and remove anyone who no longer works on the app from each members list. Then replace the keys they could see: Stripe's docs recommend rotating keys when team members with access to them leave."
+      },
+      {
+        "id": "agent-permissions",
+        "group": "Ownership",
+        "check": "Decide what Lovable's agent may change in your live database without asking you.",
+        "why": "As of November 2026, Lovable's docs list Modify database (schema and policy changes) and Change data as Always allow by default on the built-in backend, so a prompt can change tables, policies and rows with no review step.",
+        "test": "Open Account settings → Preferences → Agent permissions and set Modify database and Change data to Ask each time once real users have signed up. Lovable saves these settings per account (changelog, 21 September 2026), so everyone with edit access to the project sets them in their own account. Then have each of them request a small schema change in the chat: Lovable should stop and ask before applying it."
+      },
+      {
+        "id": "export-path",
+        "group": "Ownership",
+        "check": "Know how you would move the app off the platform: database, storage files, code, secrets and sign-in settings.",
+        "why": "Lovable's docs say it \"does not transfer a project to another backend in one step\", and its database export leaves out storage files, edge function code, secrets, sign-in provider settings and API keys.",
+        "test": "Do a dry run: export the database, download your storage files from More → Storage, and confirm the GitHub repository holds the edge function code. List where each secret and sign-in setting lives so a developer could recreate them, and keep the export somewhere other than the project's own storage."
+      },
+      {
+        "id": "guideline-4-2",
+        "group": "Store review",
+        "check": "Give the iOS app something a website can't do, and make sure a reviewer finds it in the first minute.",
+        "why": "Apple's [guideline 4.2](https://developer.apple.com/app-store/review/guidelines/#4.2) says: \"Your app should include features, content, and UI that elevate it beyond a repackaged website.\" A wrapper that only shows your site gives the reviewer nothing more.",
+        "test": "Install the TestFlight build and write down what it does that Safari on the same address doesn't: push notifications, offline use, camera or file access, Sign in with Apple, widgets. If the list is empty, plan native features before you submit. More: [guideline 4.2 minimum functionality](https://sameemamjad.com/guides/app-store-guideline-4-2-minimum-functionality)."
+      },
+      {
+        "id": "own-developer-account",
+        "group": "Store review",
+        "check": "Submit under your own or your company's Apple developer account, not under the account of a template provider or app-building service.",
+        "why": "Guideline 4.2.6 says apps created from \"a commercialized template or app generation service will be rejected unless they are submitted directly by the provider of the app's content\". Enrolling as a company needs a D-U-N-S Number, and as of November 2026 Apple says to allow up to 5 business days to get it from D&B, then up to 2 for Apple.",
+        "test": "In App Store Connect, the seller name on the app should be you or your company, and your role should be Account Holder or Admin. Enrolling as a company? Look up or request the D-U-N-S Number on day one. More: [submitting a Lovable app under your own account](/solutions/lovable-app-to-app-store#app-review)."
+      },
+      {
+        "id": "iap-or-us-link",
+        "group": "Store review",
+        "check": "Decide how the iOS app sells digital features in each storefront: in-app purchase, plus, on the US storefront, an optional button or link to your web checkout (3.1.1(a)).",
+        "why": "Guideline 3.1.1 says that to unlock features or functionality, subscriptions included, \"you must use in-app purchase\", and 3.1.3(b) lets an app unlock what people bought on your website only \"provided those items are also available as in-app purchases within the app\". Physical goods and services used outside the app must not use in-app purchase (3.1.3(e)).",
+        "test": "List every button in the iOS build that takes money and what it opens: Apple's purchase sheet, your web checkout, or a checkout for physical goods. Each should match its storefront's rule. Under 3.1.1(a), a button or link to your web checkout is allowed in the US storefront version without an entitlement. That lifts the ban on links only, and App Review decides whether a US app can rely on the web link alone. In other storefronts, digital features need in-app purchase unless an entitlement or a 3.1.3 exception applies. More: [in-app purchase or Stripe, rule by rule](/solutions/lovable-app-to-app-store#in-app-purchase)."
+      },
+      {
+        "id": "iap-works",
+        "group": "Store review",
+        "check": "Make every in-app purchase complete, visible to the reviewer and working, with a way to restore it.",
+        "why": "Guideline 2.1(b) asks for in-app purchases that are \"complete, up-to-date, visible to the reviewer and functional\", and 3.1.1 asks for \"a restore mechanism for any restorable in-app purchases\".",
+        "test": "On the review build, buy each product with a sandbox tester account, delete and reinstall the app, and tap Restore Purchases: the purchase should come back. Check that your server records each purchase against the right user, so access follows them to the web too if you promise that. More: [in-app purchase in a wrapped Lovable app](/solutions/lovable-app-to-app-store#in-app-purchase)."
+      },
+      {
+        "id": "review-access",
+        "group": "Store review",
+        "check": "Give App Review a working demo account, and keep the backend running during review.",
+        "why": "Guideline 2.1(a) asks for demo account details, with your back-end service turned on, whenever an app has a login, and says Apple rejects builds that crash or show obvious technical problems.",
+        "test": "On a fresh install, over mobile data, sign in with the demo details you will enter in App Store Connect and reach every paid or gated screen. Make sure the account won't expire, run out of trial or ask for an emailed code while the review is open. More: [what App Review checks in a Lovable app](/solutions/lovable-app-to-app-store#app-review)."
+      },
+      {
+        "id": "account-deletion",
+        "group": "Store review",
+        "check": "Let users delete their account and its data from inside the app, and give Google Play a web page for deletion requests.",
+        "why": "Apple's 5.1.1(v): \"If your app supports account creation, you must also offer account deletion within the app.\" Apple's help page says offering only deactivation \"is insufficient\", and Google Play asks for an in-app path plus \"a web link resource\" for deletion requests.",
+        "test": "In the store build, create an account, add some data and delete the account from settings. In the database, the user and their rows should be gone, or kept only where the law requires it and the app said so. Open the web deletion link without the app: it should accept a request. If you offer Sign in with Apple, Apple's [account deletion page](https://developer.apple.com/help/app-review/guideline-reference/5-1-1-account-deletion/) says to revoke the user's tokens through its REST API. More: [Apple's rules for wrapped apps](/solutions/lovable-app-to-app-store#app-review)."
+      },
+      {
+        "id": "privacy-answers",
+        "group": "Store review",
+        "check": "Make the privacy policy, Apple's App Privacy answers and Google's Data safety form match what the app and its services collect.",
+        "why": "Apple's App Privacy page asks you to cover the data practices of third-party code you add to the app, and guideline 5.1.1(i) asks for a privacy policy link in App Store Connect and inside the app. Google Play says problems in the Data safety form's deletion answers get new submissions and updates rejected.",
+        "test": "List every service the app sends data to (Supabase or Lovable's backend, Stripe, analytics, error tracking, push, the AI provider) and what each receives. Compare that list with your privacy policy, the App Privacy answers in App Store Connect and the Data safety form in Play Console. Then open the privacy policy from inside the app. More: [App Privacy and the other review rules](/solutions/lovable-app-to-app-store#app-review)."
+      },
+      {
+        "id": "play-closed-test",
+        "group": "Store review",
+        "check": "On a personal Google Play account created after 13 November 2023, run a closed test with at least 12 testers for 14 days in a row before applying for production.",
+        "why": "As of November 2026, [Play Console Help](https://support.google.com/googleplay/android-developer/answer/14151465) says these accounts \"must run a closed test for their app with a minimum of 12 testers who have been opted in continuously for at least 14 days\", and production stays disabled until they do.",
+        "test": "In Play Console, open your closed testing track and check how many testers are opted in and when the twelfth joined. Plan the Android launch at least 14 days after that, plus Google's review of your production-access application, which Play Console Help says \"usually takes seven days or less, but can occasionally take longer\". Google can ask for more testing if fewer than 12 testers stayed opted in or tester engagement was too low, and a tester who opts out and back in starts their 14 days again. More: [12 testers for 14 days](https://sameemamjad.com/guides/google-play-closed-testing-12-testers-14-days)."
+      },
+      {
+        "id": "login-services",
+        "group": "Store review",
+        "check": "If the iOS app offers Google or another social sign-in, also offer an option that meets guideline 4.8, such as Sign in with Apple.",
+        "why": "Guideline 4.8 asks apps that use a third-party login for the main account to also offer a login service that limits data to name and email, lets users keep their email private and doesn't collect app interactions for advertising without consent. Apps that use only their own sign-in are exempt.",
+        "test": "Open the sign-in screen of the iOS build. If it shows Google, Facebook or another social button, check that Sign in with Apple (or another service that meets 4.8) is there too and works end to end on a device, including the return to the app; Lovable's redirect URLs accept custom schemes such as myapp://callback for this. More: [guideline 4.8 and the other review rules](/solutions/lovable-app-to-app-store#app-review)."
+      },
+      {
+        "id": "android-target-api",
+        "group": "Store review",
+        "check": "Build the Android app for Google Play's current target API level.",
+        "why": "Since 31 August 2026, Google Play has required new apps and app updates to target Android 16 (API level 36) or higher.",
+        "test": "Check targetSdkVersion in the Android project before you build the release bundle: it should be 36 or higher. In a Capacitor wrapper it sits in android/variables.gradle, and Capacitor's docs pair target SDK 36 with Capacitor 8, so an older Capacitor version means upgrading first."
+      }
+    ],
+    "limitations": [
+      "The checks are written for apps on Supabase or Lovable's built-in backend. Apps from Base44, Bolt, Replit or Cursor need the same checks, but their settings sit elsewhere and the SQL tests may not apply.",
+      "Platform facts were read on 7 November 2026. Lovable, Supabase, Stripe, Apple and Google change their products and rules often, so open the linked source before relying on a date, a limit or a menu path.",
+      "A test can show that a check fails. Passing every test doesn't prove an app is secure.",
+      "The Lovable scan table reports Lovable's documentation, not our own results; its Tested by DevoraX column is pending.",
+      "AI-specific risks such as prompt injection and agent tool permissions are covered only through the spend cap and input checks, and MCP servers are not covered here (Lovable's Quick scan checks for one exposed without authentication).",
+      "It quotes no statistics on how often these failures occur, because we have not verified a primary source for one.",
+      "It is not legal advice about privacy law, store agreements or platform terms."
+    ],
+    "cannot_answer": [
+      "Whether your app is secure overall. Testing, a third-party penetration test included, can find problems but cannot prove there are none.",
+      "What Apple or Google will decide about your app. The stores decide approval.",
+      "Whether your app meets GDPR, HIPAA, PCI DSS or other regulations.",
+      "How long fixes will take or what they will cost for your app, which depends on what the checks find."
+    ],
+    "updated": "2026-11-07T00:00:00.000Z"
   }
 ];
 
-/** When these articles were last substantively revised (honest freshness signal). */
+/**
+ * When the research articles were last substantively revised (honest freshness
+ * signal). A page with its own `updated` uses that instead.
+ */
 export const INSIGHTS_UPDATED = '2026-10-09T00:00:00.000Z';
+
+export function isChecklist(i: Insight): i is ChecklistInsight {
+  return i.kind === 'checklist';
+}
+
+/** The page's revision date: the byline, dateModified and the sitemap lastmod. */
+export function insightUpdated(i: Insight): string {
+  return i.updated ?? INSIGHTS_UPDATED;
+}
 
 export function getInsight(slug: string): Insight | undefined {
   return INSIGHTS.find((i) => i.slug === slug);

@@ -1,5 +1,6 @@
 /**
- * Renderer for a commercial solution landing page.
+ * Renderer for a vertical solution landing page. Door pages (kind 'offer')
+ * render through offer-page.tsx.
  *
  * A server component, so every word and every link is in the initial HTML —
  * search crawlers and AI engines do not execute JavaScript, and this is the page
@@ -15,72 +16,65 @@
  * figures, and they are labelled as checkable rather than as client-reported.
  */
 import Link from 'next/link';
-import type { Solution } from '@/data/solutions';
-import { getSolution } from '@/data/solutions';
+import type { Solution, VerticalSolution } from '@/data/solutions';
+import { getSolution, solutionLabel, solutionTrail, solutionUpdated } from '@/data/solutions';
 import { CASE_STUDY_CONTENT } from '@/data/caseStudyContent';
+import { projectLabelText, projectsLabelText } from '@/data/projectIndex';
+import { BreadcrumbTrail } from './breadcrumb-trail';
 import { Byline } from './byline';
-import { SOLUTIONS_UPDATED } from '@/data/solutions';
+// The content files' text format: paragraphs, and links written
+// [anchor](/path). Text without links renders exactly as plain text did.
+import { InlineText, RichText } from './rich-text';
 
-function paragraphs(body: string) {
-  return body.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);
-}
-
-export function SolutionPage({ solution }: { solution: Solution }) {
+export function SolutionPage({ solution }: { solution: VerticalSolution }) {
   const hub = solution.hub ? getSolution(solution.hub) : undefined;
   const related = solution.related_slugs
     .map((s) => getSolution(s))
     .filter(Boolean) as Solution[];
+  // The booking page records which page a call was booked from.
+  const bookHref = `/book?from=${encodeURIComponent(solution.slug)}`;
 
   return (
     <main id="main-content" className="min-h-screen bg-[#020202] text-white">
-      <div className="mx-auto max-w-4xl px-6 pb-24 pt-32">
-        <nav aria-label="Breadcrumb" className="mb-6">
-          <ol className="flex flex-wrap items-center gap-2 text-xs text-gray-400">
-            <li>
-              <Link href="/" className="hover:text-teal-400">Home</Link>
-            </li>
-            <li aria-hidden="true">/</li>
-            <li>
-              <Link href="/services" className="hover:text-teal-400">Services</Link>
-            </li>
-            {hub && (
-              <>
-                <li aria-hidden="true">/</li>
-                <li>
-                  <Link href={`/solutions/${hub.slug}`} className="hover:text-teal-400">
-                    {hub.h1}
-                  </Link>
-                </li>
-              </>
-            )}
-            <li aria-hidden="true">/</li>
-            <li className="text-teal-400">{solution.h1}</li>
-          </ol>
-        </nav>
+      {/* overflow-wrap: anywhere, inherited by every line on the page: the
+          content names store ids, domains and URLs with nowhere to break, and
+          on a phone one of them pushed the whole page sideways. A line breaks
+          inside a word only when the word cannot fit the line on its own. */}
+      <div className="mx-auto max-w-4xl px-6 pb-24 pt-32 [overflow-wrap:anywhere]">
+        {/* The trail the BreadcrumbList describes, from the same function. */}
+        <BreadcrumbTrail trail={solutionTrail(solution)} />
 
         <h1 className="text-4xl font-bold leading-tight text-white md:text-5xl">
           {solution.h1}
         </h1>
 
         <div className="mt-8">
-          <Byline updated={SOLUTIONS_UPDATED} kind="service page" />
+          {/* The page's own date where it has one, so revising one vertical
+              page does not re-date the others (data/solutions.ts). */}
+          <Byline updated={solutionUpdated(solution)} kind="service page" />
         </div>
 
         {/* Answer-first: the passage most likely to be extracted and quoted. */}
-        <p className="mt-8 text-xl leading-relaxed text-gray-200">{solution.hero_answer}</p>
+        <p className="mt-8 text-xl leading-relaxed text-gray-200">
+          <InlineText text={solution.hero_answer} />
+        </p>
 
         <div className="mt-8 flex flex-wrap gap-4">
           <Link
-            href="/contact"
+            href={bookHref}
             className="rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 px-7 py-3.5 font-bold text-black transition-all hover:shadow-[0_0_30px_rgba(45,212,191,0.35)]"
           >
             Book a scoping call
           </Link>
+          {/* Was "Read the case studies" to /case-study, which now redirects
+              to /projects. The label follows data/projectIndex.ts: "case
+              studies" only if every project behind this page was DevoraX
+              client work. */}
           <Link
-            href="/case-study"
+            href="/projects"
             className="rounded-xl border border-white/10 px-7 py-3.5 font-semibold text-gray-300 transition-colors hover:border-teal-500/40 hover:text-white"
           >
-            Read the case studies
+            Read the {projectsLabelText(solution.proof.map((p) => p.project_id))}
           </Link>
         </div>
 
@@ -93,8 +87,11 @@ export function SolutionPage({ solution }: { solution: Solution }) {
             <div className="mt-8 space-y-8">
               {solution.proof.map((p) => {
                 const study = CASE_STUDY_CONTENT[p.project_id];
+                // A <div>, not an <article>: extractors such as trafilatura
+                // take the first <article> on a page as its whole body, so the
+                // first proof card was read as the page (see offer-ladder.tsx).
                 return (
-                  <article
+                  <div
                     key={p.project_id}
                     className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-7"
                   >
@@ -116,9 +113,11 @@ export function SolutionPage({ solution }: { solution: Solution }) {
                         <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-500">
                           What you can check
                         </p>
+                        {/* As offer-page.tsx: a figure is often a bare URL or
+                            store id, such as a Google Play link. */}
                         <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                           {p.figures.map((f) => (
-                            <li key={f} className="font-mono text-sm text-teal-400">
+                            <li key={f} className="min-w-0 font-mono text-sm text-teal-400 [overflow-wrap:anywhere]">
                               {f}
                             </li>
                           ))}
@@ -131,12 +130,11 @@ export function SolutionPage({ solution }: { solution: Solution }) {
                           href={`/projects/${p.project_id}`}
                           className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
                         >
-                          Read the {study.word_count.toLocaleString('en-US')}-word engineering
-                          case study
+                          Read the {projectLabelText(p.project_id)}
                         </Link>
                       </p>
                     )}
-                  </article>
+                  </div>
                 );
               })}
             </div>
@@ -184,11 +182,7 @@ export function SolutionPage({ solution }: { solution: Solution }) {
           {solution.sections.map((s) => (
             <div key={s.heading} className="mt-12 first:mt-0">
               <h2 className="text-2xl font-bold text-white md:text-3xl">{s.heading}</h2>
-              {paragraphs(s.body).map((p, i) => (
-                <p key={i} className="mt-4 leading-relaxed text-gray-400">
-                  {p}
-                </p>
-              ))}
+              <RichText text={s.body} />
             </div>
           ))}
         </section>
@@ -197,7 +191,9 @@ export function SolutionPage({ solution }: { solution: Solution }) {
         <section className="mt-16">
           <div className="rounded-2xl border border-amber-500/20 bg-amber-500/[0.03] p-7">
             <h2 className="text-xl font-bold text-white">When not to hire us for this</h2>
-            <p className="mt-4 leading-relaxed text-gray-400">{solution.when_not_to_hire}</p>
+            <p className="mt-4 leading-relaxed text-gray-400">
+              <InlineText text={solution.when_not_to_hire} />
+            </p>
           </div>
         </section>
 
@@ -214,7 +210,9 @@ export function SolutionPage({ solution }: { solution: Solution }) {
                   <summary className="cursor-pointer list-none font-semibold text-gray-300 group-open:text-white [&::-webkit-details-marker]:hidden">
                     {f.q}
                   </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-gray-400">{f.a}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                    <InlineText text={f.a} />
+                  </p>
                 </details>
               ))}
             </div>
@@ -234,7 +232,7 @@ export function SolutionPage({ solution }: { solution: Solution }) {
                   >
                     {hub.h1}
                   </Link>
-                  <span className="text-gray-600"> — the broader service this sits under</span>
+                  <span className="text-gray-600">: the broader service this sits under</span>
                 </li>
               )}
               {related.map((r) => (
@@ -243,16 +241,18 @@ export function SolutionPage({ solution }: { solution: Solution }) {
                     href={`/solutions/${r.slug}`}
                     className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
                   >
-                    {r.h1}
+                    {solutionLabel(r)}
                   </Link>
                 </li>
               ))}
+              {/* Was "Full service overview", to /services/{service_id}: the
+                  four service pages redirect now (next.config.ts). */}
               <li>
                 <Link
-                  href={`/services/${solution.service_id}`}
+                  href="/services"
                   className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
                 >
-                  Full service overview
+                  All services and prices
                 </Link>
               </li>
             </ul>
@@ -263,11 +263,12 @@ export function SolutionPage({ solution }: { solution: Solution }) {
           <h2 className="text-2xl font-bold text-white">Start with a scoping call</h2>
           <p className="mx-auto mt-4 max-w-xl leading-relaxed text-gray-400">
             A free 30-minute call to work out what you are building and what is actually hard
-            about it. If there is a fit you get a written fixed-price proposal. If there is
-            not, we will say so on the call.
+            about it. If there is a fit, a new build gets a written fixed-price proposal, and
+            an app you already have usually starts with the $400 audit, credited to the fix.
+            If there is not, we will say so on the call.
           </p>
           <Link
-            href="/contact"
+            href={bookHref}
             className="mt-7 inline-block rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 px-8 py-4 font-bold text-black transition-all hover:shadow-[0_0_30px_rgba(45,212,191,0.35)]"
           >
             Book a call

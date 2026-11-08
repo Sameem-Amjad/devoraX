@@ -12,9 +12,9 @@ import Logo from '@/components/global/logo';
 import { PrivacyChoicesButton } from '@/components/ui/privacyChoicesButton';
 import { BRAND_FACTS, ENTITY_STATEMENT, ORG_PROFILES } from '@/data/brand';
 import {
-  SERVICE_LINKS,
-  SOLUTION_LINKS,
-  CASE_STUDY_LINKS,
+  DOOR_LINKS,
+  MARKETPLACE_LINK,
+  WORK_LINKS,
   COMPANY_LINKS,
   LEGAL_LINKS,
 } from '@/data/siteNav';
@@ -67,7 +67,11 @@ export function SiteFooter() {
             </div>
           </div>
 
-          {/* Services — one descriptive anchor per real service page */}
+          {/* Services: the three door pages and the marketplace hub, each
+              under the anchor text every link to it uses (a door's nav_label).
+              They replaced the four /services/{id} pages, which now redirect,
+              and the first six solution pages. The other vertical pages are
+              listed on /services, one click from here. */}
           <nav aria-labelledby="footer-services">
             <h2
               id="footer-services"
@@ -76,41 +80,33 @@ export function SiteFooter() {
               Services
             </h2>
             <ul className="space-y-3">
-              {SERVICE_LINKS.map((l) => (
+              {[...DOOR_LINKS, MARKETPLACE_LINK].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className={linkClass}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-              {/* The solution pages are the cluster spokes. Linking them from the
-                  footer puts every one a single click from every page, which is
-                  what makes the cluster a graph rather than a list. */}
-              {SOLUTION_LINKS.slice(0, 6).map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className={linkClass}>
-                    {l.label}
+                    {l.anchor}
                   </Link>
                 </li>
               ))}
               <li>
                 <Link href="/services" className={linkClass}>
-                  All services
+                  All services and prices
                 </Link>
               </li>
             </ul>
           </nav>
 
-          {/* Case studies — deep links to the site's most substantial pages */}
+          {/* The projects kept in the index (data/projectIndex.ts): the work
+              the offer rests on. Not "Case Studies": that label is only for
+              work a client contracted DevoraX for. */}
           <nav aria-labelledby="footer-work">
             <h2
               id="footer-work"
               className="text-white font-semibold text-sm mb-5 uppercase tracking-widest"
             >
-              Case Studies
+              Work behind the offer
             </h2>
             <ul className="space-y-3">
-              {CASE_STUDY_LINKS.slice(0, 8).map((l) => (
+              {WORK_LINKS.map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className={linkClass}>
                     {l.label}
@@ -118,8 +114,8 @@ export function SiteFooter() {
                 </li>
               ))}
               <li>
-                <Link href="/case-study" className={linkClass}>
-                  All case studies
+                <Link href="/projects" className={linkClass}>
+                  See all work
                 </Link>
               </li>
             </ul>
