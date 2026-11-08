@@ -3,13 +3,16 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { RippleEffect } from '@/components/ui/rippleEffect';
 import { CookieConsent } from '@/components/ui/cookieConsent';
+import { VisitTracker } from '@/components/ui/visitTracker';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { MotionProvider } from '@/components/ui/motionProvider';
 import { JsonLd } from '@/components/seo/structured-data';
 import { BRAND_FACTS, ENTITY_STATEMENT, ORG_PROFILES, SITE_URL } from '@/data/brand';
 import { POSITIONING } from '@/data/offer';
+import { isOffer, solutionsInOrder } from '@/data/solutions';
 import { CTO_ID, FOUNDER_ID, LOGO_ID, ORGANIZATION_ID, WEBSITE_ID } from '@/lib/seo';
+import { WORKING_DAYS, WORK_WINDOWS, clockTime, hostUtcOffset } from '@/lib/booking/availability';
 
 /**
  * One font, and it is actually applied.
@@ -82,14 +85,13 @@ const KEYWORDS = [
   'real-time analytics platform',
   'headless CMS development',
   'GraphQL API development',
-  // Brand + trust
+  // Brand + trust. No "Devora …" variant (the brand is DevoraX, one word), and
+  // no "technology partner" or "CTO as a service": the studio sells the steps
+  // of its offer ladder, not a standing partnership.
   'DevoraX agency',
-  'Devora tech agency',
   'Pakistan software development company',
   'remote software development team',
   'agile software development',
-  'startup technology partner',
-  'CTO as a service',
 ];
 
 export const metadata: Metadata = {
@@ -135,7 +137,7 @@ export const metadata: Metadata = {
         url: OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'DevoraX — AI-Powered Mobile & Web Development Agency',
+        alt: `${SITE_NAME}: ${TAGLINE}`,
         type: 'image/jpeg',
       },
     ],
@@ -149,7 +151,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE,
-        alt: 'DevoraX Agency',
+        alt: `${SITE_NAME}: ${TAGLINE}`,
       },
     ],
   },
@@ -216,6 +218,17 @@ export const viewport: Viewport = {
 
 // ── JSON-LD Schemas ──────────────────────────────────────────────────────────
 
+const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const HOST_OFFSET = hostUtcOffset();
+
+/** The call windows (10:00 to 18:00 and 19:00 to 23:00 PKT), one entry each. */
+const CALL_HOURS = WORK_WINDOWS.map((w) => ({
+  '@type': 'OpeningHoursSpecification',
+  dayOfWeek: WORKING_DAYS.map((d) => DAY_NAMES[d]),
+  opens: `${clockTime(w.start)}${HOST_OFFSET}`,
+  closes: `${clockTime(w.end)}${HOST_OFFSET}`,
+}));
+
 /**
  * One connected entity graph, not a pile of disconnected nodes.
  *
@@ -237,9 +250,8 @@ const organizationNode = {
   '@id': ORGANIZATION_ID,
   name: BRAND_FACTS.name,
   legalName: BRAND_FACTS.name,
-  // Kept as a schema-level variant rather than in the visible copy: people do
-  // shorten it, and this is where that belongs.
-  alternateName: BRAND_FACTS.alternateName,
+  // No alternateName: the old "Devora" was a different word from the brand
+  // (see data/brand.ts).
   url: BASE_URL,
   slogan: POSITIONING.headline,
   logo: {
@@ -303,13 +315,9 @@ const organizationNode = {
       areaServed: 'Worldwide',
       availableLanguage: 'English',
       url: `${BASE_URL}/contact`,
-      // The discovery-call hours the booking system offers, in PKT (UTC+5).
-      hoursAvailable: {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '10:00:00+05:00',
-        closes: '18:00:00+05:00',
-      },
+      // The discovery-call hours the booking system offers, one entry per
+      // window, read from the file the booking API itself uses, in PKT.
+      hoursAvailable: CALL_HOURS,
     },
     {
       '@type': 'ContactPoint',
@@ -320,19 +328,21 @@ const organizationNode = {
       url: `${BASE_URL}/contact`,
     },
   ],
-  // The catalogue now matches the four services the site actually publishes, and
-  // each entry resolves to that service's own page node. It previously listed six
-  // — including "E-Commerce Solutions" and "Data & Analytics", which do not exist
-  // — and none of the six linked anywhere.
+  // The door pages, each resolving to the Service node its own page emits
+  // (`/solutions/{slug}#service`, named by its nav_label, with its offers). It
+  // listed the four /services/{id} pages until 7 Nov 2026, when they started
+  // redirecting; before that, six services, two of which did not exist.
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Software Development Services',
-    itemListElement: [
-      { '@type': 'Service', '@id': `${BASE_URL}/services/1#service`, name: 'Mobile App Development' },
-      { '@type': 'Service', '@id': `${BASE_URL}/services/2#service`, name: 'AI & Full-Stack Web Development' },
-      { '@type': 'Service', '@id': `${BASE_URL}/services/3#service`, name: 'Cloud Architecture & DevOps' },
-      { '@type': 'Service', '@id': `${BASE_URL}/services/4#service`, name: 'UI/UX Design Systems' },
-    ],
+    name: 'DevoraX services',
+    itemListElement: solutionsInOrder()
+      .filter(isOffer)
+      .map((s) => ({
+        '@type': 'Service',
+        '@id': `${BASE_URL}/solutions/${s.slug}#service`,
+        name: s.nav_label,
+        url: `${BASE_URL}/solutions/${s.slug}`,
+      })),
   },
 };
 
@@ -340,10 +350,9 @@ const websiteNode = {
   '@type': 'WebSite',
   '@id': WEBSITE_ID,
   url: BASE_URL,
-  // Google reads `name` and `alternateName` here when it picks the site name it
-  // shows in results.
+  // Google reads `name` (and `alternateName`, deliberately absent) here when it
+  // picks the site name it shows in results.
   name: SITE_NAME,
-  alternateName: BRAND_FACTS.alternateName,
   description: DESCRIPTION,
   publisher: { '@id': ORGANIZATION_ID },
   // NOTE: no `potentialAction`/SearchAction — the site has no /search route, so
@@ -388,6 +397,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <SiteFooter />
         </MotionProvider>
         <CookieConsent />
+        {/* Where a visit began and the page before /book, for the booking
+            form (lib/booking/visit.ts). Renders nothing. */}
+        <VisitTracker />
         <script
           dangerouslySetInnerHTML={{
             __html: `if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js');})}`,

@@ -18,9 +18,21 @@ export const SLOT_MINUTES = 30;
 /** Days bookable, 0 = Sunday. Default: Monday–Friday. */
 export const WORKING_DAYS = [1, 2, 3, 4, 5];
 
-/** Working window in HOST_TIMEZONE, 24h. A call must start AND end inside it. */
-export const WORK_START_HOUR = 10; // 10:00
-export const WORK_END_HOUR = 18; // 18:00 — last start is 17:30 for a 30m call
+/**
+ * Bookable windows on every working day, in HOST_TIMEZONE hours (24h; 9.5 is
+ * 09:30). A call must start AND end inside one window, so the last start in
+ * each is SLOT_MINUTES before its end. Windows must not overlap or cross
+ * midnight.
+ *
+ * The evening window is for founders in the Americas: 19:00 to 23:00 in
+ * Karachi is 9 am to 1 pm in New York (10 am to 2 pm while the US is on
+ * daylight saving time). BRAND_FACTS.callHours in data/brand.ts states these
+ * hours in words; change both together.
+ */
+export const WORK_WINDOWS: readonly { start: number; end: number }[] = [
+  { start: 10, end: 18 }, // 10:00 to 18:00, last start 17:30
+  { start: 19, end: 23 }, // 19:00 to 23:00, last start 22:30
+];
 
 /** Don't let someone book a call starting in ten minutes. */
 export const MIN_NOTICE_MINUTES = 4 * 60;
@@ -70,6 +82,21 @@ const offsetMinutes = (instant: Date, tz: string) => {
   return (asUTC - Math.floor(instant.getTime() / 1000) * 1000) / 60000;
 };
 
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+/** HOST_TIMEZONE's UTC offset as schema.org writes it, e.g. "+05:00". */
+export const hostUtcOffset = (at = new Date()) => {
+  const mins = offsetMinutes(at, HOST_TIMEZONE);
+  const abs = Math.abs(mins);
+  return `${mins < 0 ? "-" : "+"}${pad2(Math.floor(abs / 60))}:${pad2(abs % 60)}`;
+};
+
+/** A window hour (9.5 = 09:30) as "09:30:00", the form schema.org times take. */
+export const clockTime = (hour: number) => {
+  const mins = Math.round(hour * 60);
+  return `${pad2(Math.floor(mins / 60))}:${pad2(mins % 60)}:00`;
+};
+
 /**
  * The instant at which `tz` shows the given wall-clock time.
  *
@@ -94,6 +121,11 @@ export const zonedTimeToInstant = (
 
 /* ── Slot generation ─────────────────────────────────────────── */
 
+/** True when a call starting `startMin` minutes after midnight (host time)
+ *  fits inside one window: its start and its end, not just its start. */
+const fitsAWindow = (startMin: number) =>
+  WORK_WINDOWS.some((w) => startMin >= w.start * 60 && startMin + SLOT_MINUTES <= w.end * 60);
+
 /** True when `instant` starts a legal slot: right grid, working day, in hours. */
 export const isBookableSlot = (instant: Date, now = new Date()) => {
   if (Number.isNaN(instant.getTime())) return false;
@@ -106,15 +138,12 @@ export const isBookableSlot = (instant: Date, now = new Date()) => {
   if (!WORKING_DAYS.includes(p.weekday)) return false;
   if (p.second !== 0 || p.minute % SLOT_MINUTES !== 0) return false;
 
-  // The whole call must fit inside the working window, not just its start.
-  const startMin = p.hour * 60 + p.minute;
-  return startMin >= WORK_START_HOUR * 60 && startMin + SLOT_MINUTES <= WORK_END_HOUR * 60;
+  return fitsAWindow(p.hour * 60 + p.minute);
 };
 
-/** Every bookable slot in the window, ascending. Availability is taken out later. */
+/** Every bookable slot in the horizon, ascending. Availability is taken out later. */
 export const generateSlots = (now = new Date()): Date[] => {
   const slots: Date[] = [];
-  const perDay = ((WORK_END_HOUR - WORK_START_HOUR) * 60) / SLOT_MINUTES;
 
   for (let dayOffset = 0; dayOffset <= MAX_DAYS_AHEAD; dayOffset++) {
     // Step through days in HOST_TIMEZONE, not UTC, so a day never shifts.
@@ -122,8 +151,11 @@ export const generateSlots = (now = new Date()): Date[] => {
     const d = partsInZone(probe, HOST_TIMEZONE);
     if (!WORKING_DAYS.includes(d.weekday)) continue;
 
-    for (let i = 0; i < perDay; i++) {
-      const mins = WORK_START_HOUR * 60 + i * SLOT_MINUTES;
+    // Every start on the day's grid that fits a window. Walking the whole day
+    // rather than each window keeps the slots in order and never lists one
+    // twice.
+    for (let mins = 0; mins + SLOT_MINUTES <= 24 * 60; mins += SLOT_MINUTES) {
+      if (!fitsAWindow(mins)) continue;
       const slot = zonedTimeToInstant(
         HOST_TIMEZONE,
         d.year,
@@ -138,7 +170,9 @@ export const generateSlots = (now = new Date()): Date[] => {
   return slots.sort((a, b) => a.getTime() - b.getTime());
 };
 
-/** "Tue 23 Sep, 3:00 PM PKT" — for emails and the calendar event body. */
+/** "Tue 23 Sep, 3:00 pm GMT+5": the bookings table's booking_time and the
+ *  calendar event body. hourCycle "h12", not hour12: true, which lets the
+ *  runtime pick h11, where 12:30 pm prints as "0:30 pm" (Node 20 does). */
 export const formatSlot = (instant: Date, tz: string = HOST_TIMEZONE) =>
   new Intl.DateTimeFormat("en-GB", {
     timeZone: tz,
@@ -147,6 +181,6 @@ export const formatSlot = (instant: Date, tz: string = HOST_TIMEZONE) =>
     month: "short",
     hour: "numeric",
     minute: "2-digit",
-    hour12: true,
+    hourCycle: "h12",
     timeZoneName: "short",
   }).format(instant);

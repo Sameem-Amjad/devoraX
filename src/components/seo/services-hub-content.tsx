@@ -1,235 +1,133 @@
 /**
- * Long-form body for the /services hub.
+ * The body of the /services hub: the door sections and the market pages.
  *
- * The hub carried 165 words — a heading, a grid of four cards and a closing
- * paragraph — for a URL that has to compete on commercial queries. It also had no
- * question-form headings and no comparison table anywhere on the site, which are
- * the two structures generative engines extract most reliably.
+ * Rebuilt on 7 Nov 2026 around the three door pages. The hub used to describe
+ * four practices (mobile, web and AI, cloud, UI/UX), each with its own
+ * /services/{id} page; those pages now redirect (next.config.ts), and a founder
+ * with a stuck app was left to work out which practice their problem belonged
+ * to. Each door section is two or three sentences from data/offer.ts, a price
+ * line generated from the steps its page sells, and one link whose anchor text
+ * is the page's nav_label, the name every link to it uses.
  *
- * Every sentence here is assembled from `SERVICE_CONTENT`, which attributes each
- * project to whoever it was really for (an employer, a product Sameem worked on
- * whose client is not named, or a build with no client and no public link) and
- * carries no figure a reader cannot check. Nothing new is asserted here, so keep it that way: the
- * hardcoded copy below is navigation and framing only.
+ * Server components, so every link is in the initial HTML. Plain <div>s, never
+ * <article>s: extractors such as trafilatura take the first <article> on a
+ * page as its whole body.
  */
 import Link from 'next/link';
-import { SERVICE_CONTENT } from '@/data/serviceContent';
-import { SERVICE_CASE_STUDIES } from '@/data/serviceContent';
-import { CASE_STUDY_CONTENT } from '@/data/caseStudyContent';
+import { ArrowRight } from 'lucide-react';
+import { DOOR_LINKS, MARKETPLACE_LINK, MARKET_LINKS, type WayIn } from '@/data/siteNav';
 
-const SERVICE_ORDER = [1, 2, 3, 4];
+const linkClass =
+  'inline-flex items-center gap-1.5 font-semibold text-teal-400 underline underline-offset-4 hover:text-teal-300';
 
-/** Short, checkable summaries of what each practice covers. */
-const AT_A_GLANCE: Record<
-  number,
-  { anchor: string; typical: string; stack: string }
-> = {
-  1: {
-    anchor: 'Mobile App Development',
-    typical: 'iOS and Android from one codebase',
-    stack: 'React Native, Flutter, Node.js, Firebase',
-  },
-  2: {
-    anchor: 'AI & Full-Stack Web Development',
-    typical: 'Web platforms and AI-backed features',
-    stack: 'Next.js, TypeScript, Python, Supabase',
-  },
-  3: {
-    anchor: 'Cloud Architecture & DevOps',
-    typical: 'Backend infrastructure and deployment',
-    stack: 'AWS, Docker, Kubernetes, serverless',
-  },
-  4: {
-    anchor: 'UI/UX Design Systems',
-    typical: 'Interface design and design systems',
-    stack: 'Figma, design tokens, component libraries',
-  },
-};
-
-function shortName(title: string) {
-  const head = title.split(':')[0].trim();
-  return head.length > 3 ? head : title;
-}
-
-function hubServices() {
-  return SERVICE_ORDER.map((id) => SERVICE_CONTENT[id]).filter(Boolean);
-}
-
-/**
- * The questions the hub shows: a spread across the four services rather than
- * all from one. The FAQ section and the FAQPage node both read this, so the
- * markup can only describe questions that are on the page.
- */
-function hubFaqs() {
-  return hubServices().flatMap((s) => (s.faq || []).slice(0, 2)).slice(0, 8);
-}
-
-export function ServicesHubContent() {
-  const services = hubServices();
-  const faqs = hubFaqs();
-
+function DoorLink({ door }: { door: WayIn }) {
   return (
-    <>
-      {/* ── Comparison table ── */}
-      <section aria-labelledby="compare-heading" className="py-20 border-t border-white/5">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 id="compare-heading" className="text-3xl font-bold text-white md:text-4xl">
-            Which service does your project need?
-          </h2>
-          <p className="mt-5 leading-relaxed text-gray-400">
-            Most projects start in one practice and pull in a second. A mobile app
-            needs a backend; a web platform needs infrastructure; both need an
-            interface. The table below is the quickest way to find where yours
-            starts.
-          </p>
+    <Link href={door.href} className={linkClass}>
+      {door.anchor}
+      <ArrowRight aria-hidden="true" className="h-4 w-4 flex-shrink-0" />
+    </Link>
+  );
+}
 
-          <div className="mt-10 overflow-x-auto">
-            <table className="w-full border-collapse text-left text-sm">
-              <caption className="sr-only">
-                DevoraX services compared by typical build and core technology stack
-              </caption>
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th scope="col" className="py-3 pr-4 font-semibold text-white">
-                    Service
-                  </th>
-                  <th scope="col" className="py-3 pr-4 font-semibold text-white">
-                    Typical build
-                  </th>
-                  <th scope="col" className="py-3 font-semibold text-white">
-                    Core stack
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {services.map((s) => {
-                  const g = AT_A_GLANCE[s.service_id];
-                  return (
-                    <tr key={s.service_id} className="border-b border-white/5 align-top">
-                      <th scope="row" className="py-4 pr-4 font-medium">
-                        <Link
-                          href={`/services/${s.service_id}`}
-                          className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
-                        >
-                          {g.anchor}
-                        </Link>
-                      </th>
-                      <td className="py-4 pr-4 text-gray-400">{g.typical}</td>
-                      <td className="py-4 text-gray-400">{g.stack}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+/** The three doors, then new marketplace builds. Each block's id is an anchor. */
+export function DoorSections() {
+  return (
+    <section aria-labelledby="doors-heading" className="py-20 border-b border-white/5">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 id="doors-heading" className="text-3xl md:text-4xl font-bold text-white">
+          Where is your app stuck?
+        </h2>
+        <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
+          Three ways in for an app you already have. Each page sets out what we check and do,
+          what it costs, the terms, and whose work stands behind it.
+        </p>
 
-      {/* ── Per-service detail, each heading a question ── */}
-      <section aria-labelledby="coverage-heading" className="py-20 border-t border-white/5 bg-[#030303]">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 id="coverage-heading" className="text-3xl font-bold text-white md:text-4xl">
-            What does each service cover?
-          </h2>
-
-          <div className="mt-12 space-y-14">
-            {services.map((s) => {
-              const g = AT_A_GLANCE[s.service_id];
-              const studyIds = SERVICE_CASE_STUDIES[s.service_id] || [];
-              const headingId = `service-${s.service_id}-heading`;
-              // A <section>, not an <article>: extractors such as trafilatura
-              // take the first <article> on a page as the whole page body.
-              return (
-                <section key={s.service_id} aria-labelledby={headingId}>
-                  <h3 id={headingId} className="text-xl font-bold text-white">
-                    What is included in {g.anchor.toLowerCase()}?
-                  </h3>
-                  <p className="mt-4 leading-relaxed text-gray-400">{s.hero_answer}</p>
-
-                  {s.deliverables?.length > 0 && (
-                    <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-                      {s.deliverables.slice(0, 6).map((d) => (
-                        <li key={d} className="flex gap-2 text-sm text-gray-500">
-                          <span aria-hidden="true" className="text-teal-500">
-                            —
-                          </span>
-                          {d}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                    <Link
-                      href={`/services/${s.service_id}`}
-                      className="font-semibold text-teal-400 underline underline-offset-4 hover:text-teal-300"
-                    >
-                      Full {g.anchor.toLowerCase()} details
-                    </Link>
-                    {studyIds.slice(0, 3).map((pid) => {
-                      const study = CASE_STUDY_CONTENT[pid];
-                      if (!study) return null;
-                      return (
-                        <Link
-                          key={pid}
-                          href={`/projects/${pid}`}
-                          className="text-gray-500 underline underline-offset-4 hover:text-teal-400"
-                        >
-                          {shortName(study.title)} case study
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </section>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FAQ, rendered with <details> so every answer is in the HTML ── */}
-      {faqs.length > 0 && (
-        <section aria-labelledby="faq-heading" className="py-20 border-t border-white/5">
-          <div className="mx-auto max-w-4xl px-6">
-            <h2 id="faq-heading" className="text-3xl font-bold text-white md:text-4xl">
-              Common questions about working with us
-            </h2>
-            <div className="mt-10 space-y-3">
-              {faqs.map((f) => (
-                <details
-                  key={f.q}
-                  className="group rounded-xl border border-white/5 bg-[#0a0a0a] p-6 open:border-teal-500/30"
-                >
-                  <summary className="cursor-pointer list-none font-semibold text-gray-300 group-open:text-white [&::-webkit-details-marker]:hidden">
-                    {f.q}
-                  </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-gray-400">{f.a}</p>
-                </details>
-              ))}
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+          {DOOR_LINKS.map((d) => (
+            <div
+              key={d.id}
+              id={d.id}
+              className="scroll-mt-32 flex flex-col rounded-2xl border border-white/10 bg-[#0a0a0a] p-8"
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+                {d.label}
+              </span>
+              <h3 className="mt-3 text-xl font-bold text-white">{d.title}</h3>
+              <p className="mt-4 flex-grow leading-relaxed text-gray-400">{d.body}</p>
+              {d.price && (
+                <p className="mt-5 border-t border-white/5 pt-4 text-sm font-semibold text-gray-300">
+                  {d.price}
+                </p>
+              )}
+              <p className="mt-5">
+                <DoorLink door={d} />
+              </p>
             </div>
+          ))}
+        </div>
+
+        <div
+          id={MARKETPLACE_LINK.id}
+          className="scroll-mt-32 mt-6 rounded-2xl border border-white/10 bg-[#0a0a0a] p-8 md:flex md:items-start md:gap-12"
+        >
+          <div className="md:w-1/3">
+            <span className="text-xs font-semibold uppercase tracking-widest text-teal-400">
+              {MARKETPLACE_LINK.label}
+            </span>
+            <h3 className="mt-3 text-xl font-bold text-white">{MARKETPLACE_LINK.title}</h3>
           </div>
-        </section>
-      )}
-    </>
+          <div className="mt-4 md:mt-0 md:flex-1">
+            <p className="leading-relaxed text-gray-400">{MARKETPLACE_LINK.body}</p>
+            <p className="mt-5">
+              <DoorLink door={MARKETPLACE_LINK} />
+            </p>
+            <p className="mt-4 text-sm text-gray-500">
+              Another kind of app from scratch? New builds use the{' '}
+              <Link
+                href="/pricing#new-builds"
+                className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+              >
+                fixed-price MVP packages
+              </Link>
+              .
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
 /**
- * FAQPage node for the hub's graph (`url` is the /services URL), built from the
- * list the FAQ section renders. The answers sit in <details>: collapsed, but in
- * the HTML and one click from view.
+ * The vertical pages other than the hub. The footer used to link the first six
+ * solution pages; it carries only the doors and the hub now, so this list is
+ * what keeps every market page one click from a page linked site-wide.
  */
-export function servicesHubFaqNode(url: string) {
-  const faqs = hubFaqs();
-  if (!faqs.length) return null;
-  return {
-    '@type': 'FAQPage',
-    '@id': `${url}#faq`,
-    isPartOf: { '@id': `${url}#webpage` },
-    mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
-      name: f.q,
-      acceptedAnswer: { '@type': 'Answer', text: f.a },
-    })),
-  };
+export function MarketPages() {
+  if (!MARKET_LINKS.length) return null;
+  return (
+    <section aria-labelledby="markets-heading" className="py-20 border-b border-white/5">
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 id="markets-heading" className="text-3xl md:text-4xl font-bold text-white">
+          Pages for specific markets
+        </h2>
+        <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
+          Each one rests on a named product Sameem Amjad worked on, most of them as an employee
+          of other companies, and says whose work it was.
+        </p>
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {MARKET_LINKS.map((l) => (
+            <li key={l.href}>
+              <Link
+                href={l.href}
+                className="text-gray-300 underline underline-offset-4 hover:text-teal-400"
+              >
+                {l.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
 }

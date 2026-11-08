@@ -1,9 +1,13 @@
 "use client";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, CalendarDays, MessageSquare, Check } from "lucide-react";
 import { FloatingBubbles } from "@/components/ui/floatingBubbles";
 
-export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
+// The booking button is a link to /book?from=home, the same booking page and
+// label as everywhere else on the site. It opened the booking form over the
+// homepage, under a "strategy call" name the site no longer uses.
+export const CTASection = () => {
   return (
     <section className="py-32 bg-[#020202] relative overflow-hidden border-t border-white/5">
       {/* Swimming bubbles */}
@@ -30,7 +34,7 @@ export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => 
 
           {/* Headline */}
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-8">
-            Let's build your{" "}
+            Let&apos;s build your{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-400 to-emerald-400 drop-shadow-[0_0_30px_rgba(45,212,191,0.3)]">
               next big thing.
             </span>
@@ -44,16 +48,14 @@ export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => 
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
-            <motion.button
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onOpenBooking}
-              className="group w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black rounded-xl font-bold shadow-[0_0_40px_rgba(45,212,191,0.45)] hover:shadow-[0_0_60px_rgba(45,212,191,0.65)] transition-all flex items-center justify-center gap-2.5"
+            <Link
+              href="/book?from=home"
+              className="group w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black rounded-xl font-bold shadow-[0_0_40px_rgba(45,212,191,0.45)] hover:shadow-[0_0_60px_rgba(45,212,191,0.65)] hover:scale-[1.04] active:scale-[0.97] transition-all flex items-center justify-center gap-2.5"
             >
-              <CalendarDays className="w-5 h-5" />
-              Book a Free Strategy Call
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
+              <CalendarDays aria-hidden="true" className="w-5 h-5" />
+              Book a free 30-minute call
+              <ArrowRight aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
 
             <motion.a
               whileHover={{ scale: 1.04 }}
@@ -66,13 +68,16 @@ export const CTASection = ({ onOpenBooking }: { onOpenBooking: () => void }) => 
             </motion.a>
           </div>
 
-          {/* Trust signals */}
+          {/* Trust signals. "Response within 24h" went: no turnaround promise
+              is made anywhere on the site. "Fixed-price proposals" went too:
+              only new builds get one, while an app you already have is priced
+              by the audit and $1,200 sprint weeks, so the line now says what is
+              true of every route. */}
           <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600">
             {[
               "Free 30-min discovery call",
-              "Fixed-price proposals",
+              "Prices published up front",
               "NDA on request",
-              "Response within 24h",
             ].map((item) => (
               <span key={item} className="flex items-center gap-1.5 font-medium">
                 <Check className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />

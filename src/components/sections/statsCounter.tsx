@@ -1,5 +1,5 @@
 "use client";
-import { motion, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, useInView, useMotionValue, animate } from "framer-motion";
 import { useEffect, useRef } from "react";
 
 /**
@@ -23,7 +23,7 @@ const STATS: Stat[] = [
   { value: 50, suffix: "+", label: "Fiverr Projects",      sub: "Since January 2022" },
   { value: 4,  suffix: "",  label: "Client Countries",     sub: "US, UK, Canada, Hong Kong" },
   { value: 4,  suffix: "+", label: "Years of Client Work", sub: "On Fiverr since 2022" },
-  { value: 2,  suffix: "",  label: "Senior Engineers",     sub: "Specialists added when needed" },
+  { value: 2,  suffix: "",  label: "Senior Engineers",     sub: "Any specialist named before they start" },
 ];
 
 function CountUp({ to, suffix, decimals = 0 }: { to: number; suffix: string; decimals?: number }) {

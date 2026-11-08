@@ -13,7 +13,8 @@
 import { NextResponse } from "next/server";
 import { SITE_URL } from "@/data/brand";
 import { serviceClient } from "@/lib/booking/db";
-import { isHeardAbout } from "@/lib/booking/attribution";
+import { HEARD_ABOUT_V1, isHeardAbout, isLinkChannel } from "@/lib/booking/attribution";
+import { MAX_APP_LINK, MAX_DEADLINE, cleanText, isBuiltWith } from "@/lib/booking/brief";
 import { createCalendarEvent, calendarConfigured } from "@/lib/booking/googleCalendar";
 import {
   isBookableSlot,
@@ -37,10 +38,12 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const bad = (message: string, status = 400) =>
   NextResponse.json({ error: message }, { status });
 
-/* Attribution: how the visitor heard about us, the page they booked on, and
-   the site that sent them (lib/booking/attribution.ts). All optional and all
-   from the browser, so anything malformed becomes null rather than an error.
-   None of it is worth failing a booking over. */
+/* Attribution: how the visitor heard about us, the page they booked from, the
+   site that sent them, the first page of their visit (sent only with analytics
+   consent) and the profile a tagged booking link was on
+   (lib/booking/attribution.ts); and the optional brief (lib/booking/brief.ts).
+   All optional and all from the browser, so anything malformed becomes null
+   rather than an error. None of it is worth failing a booking over. */
 
 // The path only. A query string or hash can carry tokens or personal details,
 // and nothing here needs them.
@@ -60,18 +63,15 @@ const cleanHost = (value: unknown): string | null => {
   return host === OWN_HOST || host === `www.${OWN_HOST}` ? null : host;
 };
 
-/* Insert errors caused by the attribution fields rather than the booking. The
-   columns come from a migration applied by hand, and this code may be live
-   before it: until then PostgREST refuses the unknown columns (PGRST204, or
-   Postgres's 42703 if PostgREST's schema cache is out of date). 23514, a
-   failed check, means attribution.ts and the migration's list of answers have
-   drifted apart. Each one rejects the whole insert, so retrying without the
-   fields cannot write the booking twice. */
-const ATTRIBUTION_ERRORS = new Set(["PGRST204", "42703", "23514"]);
-
-// Once per server instance: it flags a pending migration, which one line does
-// as well as one line per booking.
-let warnedNoAttribution = false;
+/* Insert errors caused by optional columns rather than the booking. The
+   columns come from migrations applied by hand, and this code may be live
+   before the newest one: until then PostgREST refuses the unknown columns
+   (PGRST204, or Postgres's 42703 if PostgREST's schema cache is out of date).
+   23514, a failed check, means attribution.ts and a migration's list of
+   answers have drifted apart, or a heard_about answer is newer than the
+   database. Each one rejects the whole insert, so retrying with fewer fields
+   cannot write the booking twice. */
+const SCHEMA_ERRORS = new Set(["PGRST204", "42703", "23514"]);
 
 export async function POST(request: Request) {
   let body: Record<string, unknown>;
@@ -90,6 +90,16 @@ export async function POST(request: Request) {
     booked_from: cleanPath(body.bookedFrom),
     referrer_host: cleanHost(body.referrerHost),
   };
+  // The form-written columns 20261107120000_bookings_lead_tracking.sql adds;
+  // the owner-set ones (qualified, new_channel, developer_account and the
+  // rest) are never sent.
+  const leadTracking = {
+    landing_path: cleanPath(body.landingPath),
+    lead_channel: isLinkChannel(body.leadChannel) ? body.leadChannel : null,
+    app_link: cleanText(body.appLink, MAX_APP_LINK),
+    built_with: isBuiltWith(body.builtWith) ? body.builtWith : null,
+    deadline: cleanText(body.deadline, MAX_DEADLINE),
+  };
 
   if (!name || name.length > MAX_NAME) return bad("Please give a name");
   if (!EMAIL_RE.test(email)) return bad("That email address doesn't look right");
@@ -101,7 +111,7 @@ export async function POST(request: Request) {
   // Slot rules are re-checked here rather than trusted from the client. The
   // modal only offers legal slots, but the modal is not what guards this.
   if (!isBookableSlot(startsAt)) {
-    return bad("That time isn't available — please pick another slot", 422);
+    return bad("That time isn't available. Please pick another slot.", 422);
   }
 
   try {
@@ -118,7 +128,7 @@ export async function POST(request: Request) {
       .gte("created_at", dayAgo);
 
     if ((count ?? 0) >= 3) {
-      return bad("You already have several calls booked — reply to the invite to add more.", 429);
+      return bad("You already have several calls booked. Reply to the invite to add more.", 429);
     }
 
     const booking = {
@@ -137,24 +147,39 @@ export async function POST(request: Request) {
     const insertBooking = (row: Record<string, unknown>) =>
       supabase.from("bookings").insert(row).select("id").single();
 
-    let result = await insertBooking({ ...booking, ...attribution });
-    if (result.error && ATTRIBUTION_ERRORS.has(result.error.code)) {
-      if (!warnedNoAttribution) {
-        warnedNoAttribution = true;
-        console.warn(
-          "[booking] saving bookings without attribution:",
-          result.error.code,
-          result.error.message
-        );
-      }
-      result = await insertBooking(booking);
+    /* Three tiers, so a missing migration costs only the fields it adds:
+       everything; then the booking with the 20261014120000 attribution, its
+       answer kept only if that migration's check allows it; then the booking
+       alone. Each fallback is logged, every time rather than once per
+       instance: bookings are few, and each line says which tier saved one and
+       why. The last line is the one the post-deploy check looks for. */
+    const tiers = [
+      { row: { ...booking, ...attribution, ...leadTracking }, log: "" },
+      {
+        row: {
+          ...booking,
+          ...attribution,
+          heard_about:
+            attribution.heard_about && HEARD_ABOUT_V1.includes(attribution.heard_about)
+              ? attribution.heard_about
+              : null,
+        },
+        log: "[booking] saving bookings without the lead tracking fields (tier 2 of 3):",
+      },
+      { row: booking, log: "[booking] saving bookings without attribution (tier 3 of 3):" },
+    ];
+
+    let result = await insertBooking(tiers[0].row);
+    for (let i = 1; i < tiers.length && result.error && SCHEMA_ERRORS.has(result.error.code); i++) {
+      console.warn(tiers[i].log, result.error.code, result.error.message);
+      result = await insertBooking(tiers[i].row);
     }
     const { data, error } = result;
 
     if (error) {
       // 23505 = unique violation: someone took this slot in between.
       if (error.code === "23505") {
-        return bad("Sorry — that slot was just taken. Please pick another.", 409);
+        return bad("Sorry, that slot was just taken. Please pick another.", 409);
       }
       throw error;
     }

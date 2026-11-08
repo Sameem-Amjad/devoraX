@@ -1,6 +1,6 @@
 // --- Configuration & Data ---
 
-import { Cpu, Layout, Server, Smartphone, ShoppingCart, Database, GitBranch, Shield, Search, Layers, Code2, Rocket, TrendingUp } from "lucide-react";
+import { Search, Layers, Code2, Rocket, TrendingUp } from "lucide-react";
 
 // The brand is DevoraX — the domain, the Organization schema `name`, the logo
 // and every case study say so. This constant said "Devora", which is what the
@@ -13,106 +13,16 @@ const CEO_NAME = "Sameem Amjad";
 const PRIMARY_GRADIENT = "from-cyan-400 via-teal-400 to-emerald-400";
 const GLOW_COLOR = "group-hover:shadow-[0_0_25px_rgba(45,212,191,0.5)]";
 
-const PORTFOLIO_ITEMS = [
-  {
-    id: 1,
-    title: "FinTech Mobile App",
-    category: "React Native & Node.js",
-    description: "A cross-platform banking app: React Native on a Node.js API. No public link and no named client.",
-    image: "linear-gradient(135deg, #022c22 0%, #115e59 100%)",
-    accent: "from-teal-400 to-emerald-400"
-  },
-  {
-    id: 2,
-    title: "AI E-Commerce Ecosystem",
-    category: "Next.js & Microservices",
-    description: "Scalable multi-vendor marketplace with AI-driven recommendations built on Docker/K8s.",
-    image: "linear-gradient(135deg, #020617 0%, #0f172a 100%)",
-    accent: "from-cyan-400 to-blue-500"
-  },
-  {
-    id: 3,
-    title: "Predictive Analytics Dashboard",
-    category: "MERN Stack",
-    description: "Real-time data visualization platform using ML models to predict market trends.",
-    image: "linear-gradient(135deg, #111827 0%, #1f2937 100%)",
-    accent: "from-emerald-400 to-cyan-400"
-  }
-];
+// PORTFOLIO_ITEMS, removed on 8 Nov 2026, was never imported. It still held
+// claims the site has no source for ("AI-driven recommendations built on
+// Docker/K8s", "ML models to predict market trends"). The portfolio is the
+// projects table, shown on /projects.
 
-const SERVICES = [
-  { title: "Mobile Innovation", icon: <Smartphone className="w-6 h-6" />, desc: "High-performance React Native & Flutter apps." },
-  { title: "AI & Full-Stack Web", icon: <Cpu className="w-6 h-6" />, desc: "Next.js, Python, & Intelligent Web Solutions." },
-  { title: "Cloud Architecture", icon: <Server className="w-6 h-6" />, desc: "Scalable AWS, Docker, & Kubernetes infrastructure." },
-  { title: "Modern UI/UX", icon: <Layout className="w-6 h-6" />, desc: "Futuristic interfaces & Design Systems." },
-];
-
-const EXTENDED_SERVICES = [
-  {
-    title: "Mobile App Development",
-    icon: "Smartphone",
-    desc_text: "Cross-platform iOS & Android applications built with React Native and Flutter. Buttery-smooth performance, offline-first architecture, and App Store-ready delivery.",
-    tags: ["React Native", "Flutter", "iOS", "Android"],
-    gradient: "from-teal-500 to-emerald-500",
-    glow: "rgba(20,184,166,0.3)",
-  },
-  {
-    title: "AI & Full-Stack Web",
-    icon: "Cpu",
-    desc_text: "Intelligent web platforms powered by Next.js and Python AI/ML pipelines. From LLM integrations to real-time dashboards, we build systems that think.",
-    tags: ["Next.js", "Python", "OpenAI", "LangChain"],
-    gradient: "from-cyan-500 to-blue-500",
-    glow: "rgba(6,182,212,0.3)",
-  },
-  {
-    title: "Cloud & DevOps",
-    icon: "Server",
-    desc_text: "AWS infrastructure (Lambda, S3, EC2, CloudFront, MediaConvert), Docker containers and automated CI/CD pipelines, with monitoring and alerts set up before launch.",
-    tags: ["AWS", "Docker", "Kubernetes", "Terraform"],
-    gradient: "from-violet-500 to-purple-500",
-    glow: "rgba(139,92,246,0.3)",
-  },
-  {
-    title: "UI/UX Design Systems",
-    icon: "Layout",
-    desc_text: "Pixel-perfect, brand-consistent design systems built to scale. We transform complex workflows into intuitive, delightful user experiences.",
-    tags: ["Figma", "Tailwind", "shadcn/ui", "Framer"],
-    gradient: "from-pink-500 to-rose-500",
-    glow: "rgba(236,72,153,0.3)",
-  },
-  {
-    title: "E-Commerce Solutions",
-    icon: "ShoppingCart",
-    desc_text: "High-conversion online stores with AI recommendations, multi-currency checkout, real-time inventory, and headless CMS architecture.",
-    tags: ["Shopify", "Next.js", "Stripe", "Algolia"],
-    gradient: "from-orange-500 to-amber-500",
-    glow: "rgba(249,115,22,0.3)",
-  },
-  {
-    title: "Data & Analytics",
-    icon: "Database",
-    desc_text: "Turn raw data into competitive advantage. We build real-time analytics pipelines, BI dashboards, and predictive ML models that drive decisions.",
-    tags: ["Python", "PostgreSQL", "Grafana", "dbt"],
-    gradient: "from-emerald-500 to-cyan-500",
-    glow: "rgba(16,185,129,0.3)",
-  },
-  {
-    title: "API & Integrations",
-    icon: "GitBranch",
-    desc_text: "Seamlessly connect any tech stack. RESTful & GraphQL APIs, third-party integrations, webhooks, and event-driven microservice architectures.",
-    tags: ["REST", "GraphQL", "Webhooks", "gRPC"],
-    gradient: "from-sky-500 to-indigo-500",
-    glow: "rgba(14,165,233,0.3)",
-  },
-  {
-    title: "Secure-by-Default Builds",
-    icon: "Shield",
-    desc_text: "Security built into the code: OWASP Top 10 checks, role-based access, encrypted storage and signed media URLs. DevoraX holds no security certifications and does not sell penetration tests or compliance audits.",
-    tags: ["OWASP Top 10", "RBAC", "Signed URLs", "Encryption"],
-    gradient: "from-red-500 to-orange-500",
-    glow: "rgba(239,68,68,0.3)",
-  },
-];
+// The homepage's service cards are the three door pages and the marketplace
+// hub (data/offer.ts, joined to their pages in data/siteNav.ts). SERVICES and
+// EXTENDED_SERVICES, removed on 7 Nov 2026, padded that grid to eight cards
+// with services no page sells: "E-Commerce Solutions", "Data & Analytics",
+// "API & Integrations" and the like.
 
 const PROCESS_STEPS = [
   {
@@ -125,28 +35,29 @@ const PROCESS_STEPS = [
   {
     number: "02",
     title: "Architect",
-    description: "Our engineers design a scalable system blueprint — choosing the right stack, data models, and infrastructure patterns before a single line of code.",
+    description: "Our engineers design a scalable system blueprint, choosing the right stack, data models, and infrastructure patterns before a single line of code.",
     icon: <Layers className="w-6 h-6" />,
     color: "cyan",
   },
   {
     number: "03",
     title: "Build",
-    description: "Agile sprints with weekly demos. You stay in the loop as we ship tested, production-ready features with clear milestones.",
+    // The four check-in practices confirmed on 8 Nov 2026, and nothing more.
+    description: "Sprints with a video demo of progress and a short written update every week, a shared project board, and a Slack or WhatsApp channel with Sameem and Usman.",
     icon: <Code2 className="w-6 h-6" />,
     color: "emerald",
   },
   {
     number: "04",
     title: "Launch",
-    description: "Zero-downtime deployments, performance audits, and go-live support. We treat launch day as the beginning, not the end.",
+    description: "Deployment, performance checks and go-live support. We treat launch day as the beginning, not the end.",
     icon: <Rocket className="w-6 h-6" />,
     color: "blue",
   },
   {
     number: "05",
     title: "Scale",
-    description: "Post-launch monitoring, feature iteration, and infrastructure scaling. We're your long-term engineering partner, not just a vendor.",
+    description: "Post-launch monitoring, feature iteration, and infrastructure scaling. After launch we stay on for fixes and new releases if you want us: monthly care, or a single release quoted per change.",
     icon: <TrendingUp className="w-6 h-6" />,
     color: "violet",
   },
@@ -166,25 +77,27 @@ const PRICING_PLANS = [
     period: "/ starting",
     description: "Rapid prototyping to validate your AI or Tech idea.",
     features: ["Discovery Workshop", "Core Feature Development", "Modern UI Design", "35 Days Free Maintenance"],
-    cta: "Start Your MVP",
+    // Every plan button goes to /book?from=home, so each says so, in the
+    // label every booking link on the site uses.
+    cta: "Book a free 30-minute call",
     highlight: false
   },
   {
     name: "Growth & Scale",
     price: "$7,500",
     period: "/ starting",
-    description: "Robust solutions for growing tech businesses.",
+    description: "For products that have outgrown an MVP.",
     features: ["Advanced Architecture", "Cross-Platform Mobile App", "Scalable Backend (AWS)", "35 Days Free Maintenance"],
-    cta: "Scale Now",
+    cta: "Book a free 30-minute call",
     highlight: true
   },
   {
     name: "Enterprise Transformation",
     price: "Custom",
     period: "",
-    description: "Larger builds scoped in phases, with specialists brought in where the scope needs them.",
+    description: "Larger builds scoped in phases. If a phase needs a designer or another specialist, we name them to you before they start.",
     features: ["Both Founders on Your Project", "Microservices Architecture", "Automated Uptime Alerts", "Ongoing Support via the $1,500/mo Care Plan"],
-    cta: "Contact Sales",
+    cta: "Book a free 30-minute call",
     highlight: false
   }
 ];
@@ -197,16 +110,17 @@ const PRICING_PLANS = [
 // working to build — and the real reviews are stronger anyway, because a reader
 // can check them.
 
-export default {
-  HEADER_TITLE: "Devora",
+// No HEADER_TITLE: the logo wrote "Devora" from it and drew the X, so the
+// header's text said "Devora". components/global/logo.tsx now writes the whole
+// name from AGENCY_NAME.
+const CONSTANTS = {
   AGENCY_NAME,
   CEO_NAME,
   PRIMARY_GRADIENT,
   GLOW_COLOR,
-  PORTFOLIO_ITEMS,
-  SERVICES,
-  EXTENDED_SERVICES,
   PROCESS_STEPS,
   TECH_STACK,
   PRICING_PLANS
-}
+};
+
+export default CONSTANTS;

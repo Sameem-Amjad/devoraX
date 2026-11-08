@@ -1,14 +1,17 @@
 /**
  * The homepage figures, derived or sourced rather than typed in loosely.
  *
- * Every figure here must be something a buyer can check today: Sameem's public
+ * Every figure here must be something a buyer can check today: the public
  * Fiverr record (5.0 rating, 50+ projects since January 2022, clients in the US,
  * UK, Canada and Hong Kong), the team page (two people), or a store listing
- * linked from the portfolio. Earlier versions showed "Projects Delivered",
- * "Live Products", "Five-Star Reviews" and "Clients Served" counts. The first two
- * counted employer work and builds with no public link as DevoraX deliveries, and
- * the review and client counts disagreed with each other across the site. None of
- * those is shown any more.
+ * linked from the portfolio. The Fiverr record is DevoraX's: the profile is in
+ * Sameem's name and sells the studio's services (owner decision, 8 Nov 2026).
+ *
+ * Earlier versions showed "Projects Delivered", "Live Products", "Five-Star
+ * Reviews" and "Clients Served" counts. The first two counted employer work and
+ * builds with no public link as DevoraX deliveries, and the review and client
+ * counts disagreed with each other across the site. None of those is shown any
+ * more.
  *
  * The store-app count is computed from the projects table, so it cannot drift
  * when a listing is added or a link dies.
@@ -73,7 +76,9 @@ export function getSiteStats(projects: ProjectLinks[]): SiteStat[] {
       value: 2,
       suffix: '',
       label: 'Senior Engineers',
-      sub: 'Specialists added when needed',
+      // A specialist joins only sometimes, and is named to the client before
+      // they start (owner decision, 8 Nov 2026).
+      sub: 'Any specialist named before they start',
     },
   ];
 }

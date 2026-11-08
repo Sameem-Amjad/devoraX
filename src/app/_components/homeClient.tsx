@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Hero } from "@/components/sections/hero";
@@ -19,23 +18,38 @@ const IndustriesSection = dynamic(() => import("@/components/sections/industries
 const StatsCounterSection = dynamic(() => import("@/components/sections/statsCounter").then(m => ({ default: m.StatsCounterSection })));
 const FAQSection = dynamic(() => import("@/components/sections/faq").then(m => ({ default: m.FAQSection })));
 const CTASection = dynamic(() => import("@/components/sections/ctaSection").then(m => ({ default: m.CTASection })));
-const BookingModal = dynamic(() => import("@/components/models/bookingModel/bookingModel"));
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
 import { TESTIMONIALS, FIVERR_PROFILE_URL } from "@/data/testimonials";
+import type { SiteStat } from "@/data/siteStats";
+import type { WayIn } from "@/data/siteNav";
+import type { NavLink } from "@/data/primaryNav";
 import { Star, Check, ArrowRight, Quote } from "lucide-react";
 
-export default function HomeClient({ initialProjects, initialServices, stats }: any) {
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [view, setView] = useState("home");
-  const [activeService, setActiveService] = useState(null);
+type HomeClientProps = {
+  /** Rows of the projects table, in the order the work grid shows them. */
+  initialProjects: unknown[];
+  /** The three door pages and the marketplace hub, joined on the server (data/siteNav.ts). */
+  doors: WayIn[];
+  marketplace: WayIn;
+  /** The vertical market pages, linked under the industries grid (data/siteNav.ts). */
+  markets: NavLink[];
+  stats: SiteStat[];
+};
 
+// Every booking action on the homepage is a link to /book?from=home, the one
+// booking page, rather than a button that opened the booking form over this
+// page (7 Nov 2026). The booking still counts as made from the homepage: /book
+// turns from=home into booked_from "/" (lib/booking/attribution.ts).
+const BOOK_HREF = "/book?from=home";
+
+export default function HomeClient({ initialProjects, doors, marketplace, markets, stats }: HomeClientProps) {
   return (
     <div className="min-h-screen bg-[#020202] text-white selection:bg-teal-500/30 font-sans">
       {/* Header and footer are now rendered site-wide from the root layout. */}
       <main id="main-content">
         {/* ── Hero ── */}
-        <Hero onOpenBooking={() => setIsBookingOpen(true)} />
+        <Hero doors={doors} />
 
         {/* ── Trusted By ── */}
         <TrustedBySection />
@@ -55,12 +69,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
         <WorkSection projects={initialProjects} />
         <WaveDivider fromColor="#020202" toColor="#000000" height={60} />
 
-        {/* ── Services ── */}
-        <Services
-          services={initialServices}
-          setView={setView}
-          setActiveService={setActiveService}
-        />
+        {/* ── Services: the doors and the marketplace hub ── */}
+        <Services doors={doors} marketplace={marketplace} />
         <WaveDivider fromColor="#000000" toColor="#030303" height={60} />
 
         {/* ── How We Work ── */}
@@ -71,8 +81,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
         <WhyUsSection />
         <WaveDivider fromColor="#030303" toColor="#000000" height={60} />
 
-        {/* ── Industries ── */}
-        <IndustriesSection />
+        {/* ── Industries, then a row of links to the market pages ── */}
+        <IndustriesSection markets={markets} />
         <WaveDivider fromColor="#000000" toColor="#020202" height={60} />
 
         {/* ── Stats Counter ── */}
@@ -127,12 +137,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
                       : "bg-[#0a0a0a] border-white/5 hover:border-white/15"
                   }`}
                 >
-                  {plan.highlight && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-teal-500 to-emerald-500 text-black text-xs font-bold tracking-wide">
-                      Most Popular
-                    </div>
-                  )}
-
+                  {/* No "Most Popular" badge: no sales record backs a
+                      ranking of the packages. The highlight stays visual. */}
                   <div className="mb-8">
                     <h3 className="text-lg font-bold text-white mb-2">{plan.name}</h3>
                     <div className="flex items-end gap-1 mb-4">
@@ -153,8 +159,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
                     ))}
                   </ul>
 
-                  <button
-                    onClick={() => setIsBookingOpen(true)}
+                  <Link
+                    href={BOOK_HREF}
                     className={`group w-full py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
                       plan.highlight
                         ? "bg-gradient-to-r from-teal-500 to-emerald-500 text-black hover:shadow-[0_0_25px_rgba(45,212,191,0.4)]"
@@ -162,8 +168,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
                     }`}
                   >
                     {plan.cta}
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                    <ArrowRight aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
                 </motion.div>
               ))}
             </div>
@@ -175,18 +181,20 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
               className="text-center text-gray-600 text-sm mt-10"
             >
               All plans include a free 30-min discovery call and fixed-price proposal.{" "}
-              <button
-                onClick={() => setIsBookingOpen(true)}
-                className="text-teal-400 hover:underline"
-              >
+              <Link href={BOOK_HREF} className="text-teal-400 hover:underline">
                 Book yours today →
-              </button>
+              </Link>
             </motion.p>
           </div>
         </section>
 
         {/* ── Testimonials ── */}
-        <section id="testimonials" aria-label="Client Testimonials" className="py-32 bg-[#020202] border-t border-white/5">
+        {/* The reviews are the studio's: they come from DevoraX's Fiverr
+            profile, which is in Sameem's name (owner decision, 8 Nov 2026). The
+            headings used to read "Client Stories" and "Trusted by Innovators",
+            which said nothing a reader could check. The countries are the whole
+            record's, not only the six reviews shown here. */}
+        <section id="testimonials" aria-label="Client reviews" className="py-32 bg-[#020202] border-t border-white/5">
           <div className="max-w-7xl mx-auto px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -195,17 +203,19 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
               className="text-center mb-20"
             >
               <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-4 px-4 py-1.5 rounded-full bg-teal-500/5 border border-teal-500/20">
-                Client Stories
+                Client Reviews
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-                Trusted by{" "}
+                Reviews from our{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-                  Innovators
+                  Fiverr clients
                 </span>
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto">
-                Every review below is a real, public Fiverr review, from clients in the US, the UK,
-                Canada and Hong Kong. 5.0 rating across 50+ projects since 2022.{" "}
+                Every review below is a real, public review from DevoraX&apos;s Fiverr profile, which
+                is in Sameem Amjad&apos;s name, written by a client who hired us there. Our record
+                there: a 5.0 rating across 50+ projects since January 2022, with clients in the US,
+                the UK, Canada and Hong Kong.{" "}
                 <a
                   href={FIVERR_PROFILE_URL}
                   target="_blank"
@@ -280,15 +290,8 @@ export default function HomeClient({ initialProjects, initialServices, stats }: 
         <FAQSection />
 
         {/* ── CTA ── */}
-        <CTASection onOpenBooking={() => setIsBookingOpen(true)} />
+        <CTASection />
       </main>
-
-
-      <AnimatePresence>
-        {isBookingOpen && (
-          <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

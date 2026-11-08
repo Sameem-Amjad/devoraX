@@ -1,17 +1,31 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, Mail, MessageSquare, Linkedin, Clock } from 'lucide-react';
-import { ObfuscatedEmail } from '@/components/ui/obfuscatedEmail';
+import { ArrowLeft, ArrowRight, CalendarDays, Mail, Linkedin } from 'lucide-react';
 import { JsonLd } from '@/components/seo/structured-data';
 import { FAQS } from '@/data/faqs';
-import { FOUNDER_PROFILES } from '@/data/brand';
+import { InlineText } from '@/components/seo/rich-text';
+import { BRAND_FACTS, FOUNDER_PROFILES } from '@/data/brand';
+import { OFFER_LADDER } from '@/data/offer';
 import { ORGANIZATION_ID, SITE_URL, breadcrumbNode, webPageNode } from '@/lib/seo';
 
+/* A short page that leads with the booking page and gives the email address.
+   It used to promise a reply "within one business day" and a fixed-price
+   proposal "within 48 hours". Those were promises, not practices anyone had
+   confirmed, and the site makes no turnaround promise anywhere now. Its own
+   "Book a Free Strategy Call" card ended in an email link, so a visitor who
+   came here from the header's "Book a Call" had no way to book at all; the
+   header goes to /book now, and so does this page's first button. */
+
 const DESCRIPTION =
-  'Book a free 30-minute strategy call or send a project brief. We reply within one business day with scope, timeline and a fixed-price proposal.';
+  'Book a free 30-minute call with Sameem Amjad about your app, or email business@thedevorax.tech. Weekday calls, with evening slots for US time zones.';
+
+// Title 23 characters, 33 with " | DevoraX", and the same words as the H1. It
+// was "Contact Us — Book a Free Strategy Call": an em dash, and a "strategy
+// call" the page doesn't offer.
+const TITLE = 'Book a Call or Email Us';
 
 export const metadata: Metadata = {
-  title: 'Contact Us — Book a Free Strategy Call',
+  title: TITLE,
   description: DESCRIPTION,
   keywords: [
     'contact DevoraX',
@@ -29,14 +43,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: `${SITE_URL}/contact`,
     siteName: 'DevoraX',
-    title: 'Contact | DevoraX',
-    description: 'Book a free strategy call or send us a project brief. We respond within one business day.',
+    title: `${TITLE} | DevoraX`,
+    description:
+      'Book a free 30-minute call about your app, or email us. Weekday calls, with evening slots for US time zones.',
     images: [{ url: `${SITE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'Contact DevoraX' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Contact | DevoraX',
-    description: 'Book a free strategy call or send us a project brief.',
+    title: `${TITLE} | DevoraX`,
+    description: 'Book a free 30-minute call about your app, or email us.',
     images: [{ url: `${SITE_URL}/og-image.jpg`, alt: 'Contact DevoraX' }],
   },
 };
@@ -60,15 +75,24 @@ const graph = [
 
 const FOUNDER_LINKEDIN = FOUNDER_PROFILES.find((p) => p.label === 'LinkedIn')!.url;
 
-const CONTACT_CHANNELS = [
+// The first two rungs of the offer ladder: the call, and the audit it usually
+// leads to. Read from data/offer.ts so this page says what /pricing says.
+const CALL = OFFER_LADDER[0];
+const AUDIT = OFFER_LADDER[1];
+
+const linkClass = 'text-teal-400 underline underline-offset-4 hover:text-teal-300';
+
+// Printed in full rather than assembled in the browser: the address is
+// already in the HTML of every page (the footer's email link, /book, /press),
+// so hiding it here kept it only from visitors without JavaScript.
+const OTHER_CHANNELS = [
   {
     Icon: Mail,
-    label: 'Email us',
-    value: null,
-    emailUser: 'business',
-    emailDomain: 'thedevorax.tech',
-    href: 'mailto:business@thedevorax.tech',
-    description: 'For project enquiries and proposals',
+    label: 'Email',
+    value: BRAND_FACTS.salesEmail,
+    href: `mailto:${BRAND_FACTS.salesEmail}`,
+    description: "For anything that doesn't need a call, or when no time on the calendar suits you.",
+    external: false,
   },
   // Twitter/X channel removed: @devorax_agency returns 404 on both x.com and
   // twitter.com. Advertising a contact channel that does not exist is worse than
@@ -81,7 +105,7 @@ const CONTACT_CHANNELS = [
     label: 'LinkedIn',
     value: 'Sameem Amjad',
     href: FOUNDER_LINKEDIN,
-    description: 'Message the founder directly',
+    description: 'Message the founder directly.',
     external: true,
   },
 ];
@@ -92,7 +116,7 @@ export default function ContactPage() {
       <JsonLd graph={graph} />
 
       <main id="main-content" className="min-h-screen bg-[#020202] text-white">
-        {/* ── Header ── */}
+        {/* ── Header: the call first, then the email address ── */}
         <header className="relative pt-36 pb-20 border-b border-white/5 overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(20,184,166,0.07)_0%,_transparent_60%)] pointer-events-none" />
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -112,126 +136,71 @@ export default function ContactPage() {
               </ol>
             </nav>
 
-            <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-4 px-4 py-1.5 rounded-full bg-teal-500/5 border border-teal-500/20">
-              Get In Touch
-            </span>
-
             <h1 className="text-4xl md:text-6xl font-bold text-white mt-4 mb-6 leading-tight">
-              Let&apos;s Build Something{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-                Exceptional
-              </span>
+              Book a call or email us
             </h1>
             <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
-              Every project starts with a conversation. Book a free 30-minute strategy call and we&apos;ll
-              review your requirements, recommend the right approach, and deliver a fixed-price proposal
-              within 48 hours — no commitment required.
+              The quickest way to start is a free 30-minute call with Sameem Amjad, who
+              founded DevoraX. {CALL.body}
+            </p>
+
+            <div className="mt-10 flex flex-col sm:flex-row sm:items-center gap-x-8 gap-y-5">
+              {/* No ?from=: /book counts the booking as made from this page,
+                  the page before it. */}
+              <Link
+                href="/book"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black font-bold rounded-xl hover:shadow-[0_0_30px_rgba(45,212,191,0.4)] transition-all"
+              >
+                <CalendarDays className="w-5 h-5" />
+                Book a free 30-minute call
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              {/* Text rather than a second button, so the address can wrap
+                  onto its own line on a narrow phone. */}
+              <p className="text-gray-400">
+                Or email{' '}
+                <a href={`mailto:${BRAND_FACTS.salesEmail}`} className={`font-semibold ${linkClass}`}>
+                  {BRAND_FACTS.salesEmail}
+                </a>
+              </p>
+            </div>
+            <p className="mt-6 max-w-2xl text-sm leading-relaxed text-gray-400">
+              Calls run {BRAND_FACTS.callHours} The booking page shows every time in your own
+              time zone.
             </p>
           </div>
         </header>
 
-        {/* ── Main content ── */}
-        <section aria-label="Contact options" className="py-24">
+        {/* ── Other ways to reach us ── */}
+        <section aria-labelledby="channels-heading" className="py-20">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-16 items-start">
-
-              {/* Left — channels */}
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-8">Contact Channels</h2>
-                <ul className="space-y-4 list-none">
-                  {CONTACT_CHANNELS.map(({ Icon, label, value, emailUser, emailDomain, href, description, external }) => (
-                    <li key={label}>
-                      <a
-                        href={href}
-                        target={external ? '_blank' : undefined}
-                        rel={external ? 'noopener noreferrer' : undefined}
-                        className="group flex items-start gap-5 p-6 rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-teal-500/30 transition-all"
-                      >
-                        <div className="w-11 h-11 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 flex-shrink-0 group-hover:bg-teal-500/20 transition-colors">
-                          <Icon className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1">{label}</div>
-                          <div className="text-white font-semibold group-hover:text-teal-300 transition-colors">
-                            {emailUser && emailDomain
-                              ? <ObfuscatedEmail user={emailUser} domain={emailDomain} />
-                              : value}
-                          </div>
-                          <div className="text-sm text-gray-500 mt-1">{description}</div>
-                        </div>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Response time */}
-                <div className="mt-8 p-5 rounded-xl border border-white/5 bg-[#0a0a0a] flex items-start gap-4">
-                  <Clock className="w-5 h-5 text-teal-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-semibold text-white mb-1">Typical response time</p>
-                    <p className="text-sm text-gray-500">
-                      We respond to all project enquiries within <strong className="text-teal-400">1 business day</strong>.
-                      Discovery calls are available Monday–Friday, 10 am–6 pm PKT (UTC+5).
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right — book call CTA */}
-              <div className="lg:sticky lg:top-32">
-                <div className="p-10 rounded-3xl bg-gradient-to-b from-teal-900/20 to-black border border-teal-500/20 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(20,184,166,0.08)_0%,_transparent_60%)] pointer-events-none" />
-                  <div className="relative z-10">
-                    <MessageSquare className="w-8 h-8 text-teal-400 mb-5" />
-                    <h2 className="text-2xl font-bold text-white mb-3">
-                      Book a Free Strategy Call
-                    </h2>
-                    <p className="text-gray-400 leading-relaxed mb-8">
-                      In 30 minutes we&apos;ll review your project, identify the right technical approach, and
-                      walk through a realistic timeline and budget estimate. No sales pitch, just straight talk.
-                    </p>
-
-                    <ul className="space-y-3 mb-8">
-                      {[
-                        'Free, no-commitment discovery session',
-                        'Fixed-price proposal delivered within 48 h',
-                        'Full IP & source code ownership on delivery',
-                        'Weekly sprint demos from day one',
-                      ].map((point) => (
-                        <li key={point} className="flex items-start gap-3 text-sm text-gray-300">
-                          <span className="w-5 h-5 rounded-full bg-teal-500/15 flex items-center justify-center flex-shrink-0 mt-0.5 text-teal-400 text-xs font-bold">✓</span>
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <a
-                      href="mailto:business@thedevorax.tech?subject=Project%20Enquiry%20%E2%80%94%20Discovery%20Call%20Request"
-                      className="w-full flex items-center justify-center gap-2 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black font-bold rounded-xl hover:shadow-[0_0_30px_rgba(45,212,191,0.4)] transition-all"
-                    >
-                      Send project brief
-                      <ArrowRight className="w-4 h-4" />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Services link */}
-                <div className="mt-6 p-5 rounded-xl border border-white/5 bg-[#0a0a0a] flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-semibold text-white">Explore our services</p>
-                    <p className="text-xs text-gray-500 mt-0.5">See what we offer before reaching out</p>
-                  </div>
-                  <Link
-                    href="/services"
-                    className="flex items-center gap-1.5 text-xs font-semibold text-teal-400 hover:text-teal-300 transition-colors group"
+            <h2 id="channels-heading" className="text-2xl font-bold text-white mb-8">
+              Other ways to reach us
+            </h2>
+            <ul className="grid gap-4 md:grid-cols-2 list-none">
+              {OTHER_CHANNELS.map(({ Icon, label, value, href, description, external }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noopener noreferrer' : undefined}
+                    className="group flex h-full items-start gap-5 p-6 rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-teal-500/30 transition-all"
                   >
-                    View services
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </Link>
-                </div>
-              </div>
-
-            </div>
+                    <div className="w-11 h-11 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 flex-shrink-0 group-hover:bg-teal-500/20 transition-colors">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1">{label}</div>
+                      {/* An email address has no spaces to break at. */}
+                      <div className="text-white font-semibold group-hover:text-teal-300 transition-colors [overflow-wrap:anywhere]">
+                        {value}
+                      </div>
+                      <div className="text-sm text-gray-500 mt-1">{description}</div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
@@ -242,22 +211,23 @@ export default function ContactPage() {
             <p className="mt-5 leading-relaxed text-gray-400">
               Booking reserves a 30-minute slot for a conversation. It does not
               commit you to anything, and either side can reschedule. The form
-              stores your name, email and the date and time you picked — nothing
-              else — and what we do with it is set out in our{' '}
-              <Link
-                href="/privacy"
-                className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
-              >
+              needs your name, your email and a time; everything else on it is
+              optional. What it stores, and why, is set out in our{' '}
+              <Link href="/privacy" className={linkClass}>
                 privacy policy
               </Link>
               .
             </p>
             <p className="mt-4 leading-relaxed text-gray-400">
-              On the call we work out what you are trying to build, what already
-              exists, and which parts of it are actually hard. If there is a fit,
-              you get a written proposal with a fixed price and a scope, so the
-              number you are quoted is the number you pay. If there is not a fit,
-              we will say so on the call rather than send a proposal anyway.
+              On the call we work out where the app is stuck, what already exists
+              and which parts of it are actually hard. For an app that already
+              exists, the usual next step is the launch-readiness audit:{' '}
+              {AUDIT.price.toLowerCase()}. A new build gets a written proposal
+              with a fixed price and a scope. Every step and its price is on the{' '}
+              <Link href="/pricing" className={linkClass}>
+                pricing page
+              </Link>
+              . If we are not the right fit, we say so on the call.
             </p>
             <p className="mt-4 leading-relaxed text-gray-400">
               You do not need a specification to have this conversation. If you
@@ -280,7 +250,9 @@ export default function ContactPage() {
                   <summary className="cursor-pointer list-none font-semibold text-gray-300 group-open:text-white [&::-webkit-details-marker]:hidden">
                     {f.q}
                   </summary>
-                  <p className="mt-4 text-sm leading-relaxed text-gray-400">{f.a}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-400">
+                    <InlineText text={f.a} />
+                  </p>
                 </details>
               ))}
             </div>
@@ -292,11 +264,13 @@ export default function ContactPage() {
               >
                 What we build
               </Link>
+              {/* Was "Engineering case studies" to /case-study, which now
+                  redirects to /projects. */}
               <Link
-                href="/case-study"
+                href="/projects"
                 className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
               >
-                Engineering case studies
+                Our work
               </Link>
               <Link
                 href="/terms"

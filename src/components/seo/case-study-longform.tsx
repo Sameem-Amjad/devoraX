@@ -1,5 +1,6 @@
 import type { CaseStudyContent } from '@/data/caseStudyContent';
 import { CASE_STUDY_CONTENT_UPDATED } from '@/data/caseStudyContent';
+import { projectLabelText } from '@/data/projectIndex';
 import { Byline } from './byline';
 
 /** A section heading as an element id, for aria-labelledby. */
@@ -30,7 +31,12 @@ export function CaseStudyLongform({ content }: { content?: CaseStudyContent }) {
   return (
     <div className="mt-20 border-t border-white/5 pt-14">
       <div className="max-w-3xl">
-        <Byline updated={content.updated ?? CASE_STUDY_CONTENT_UPDATED} kind="case study" />
+        {/* "(engineering write-up)": "case study" only for work a client
+            contracted DevoraX for (data/projectIndex.ts). */}
+        <Byline
+          updated={content.updated ?? CASE_STUDY_CONTENT_UPDATED}
+          kind={projectLabelText(content.project_id)}
+        />
         {/* Answer-first summary — the passage most likely to be quoted. */}
         {/* break-words throughout: a study can name a long bare domain, such as
             the demo hub's, which would otherwise push a phone screen sideways. */}

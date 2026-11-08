@@ -1,92 +1,56 @@
-import { Metadata } from 'next';
-import { createPublicClient } from '@/lib/public';
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, ArrowLeft, Code2, Cpu, Layout, Server, Smartphone, Zap } from 'lucide-react';
-import { ServicesHubContent, servicesHubFaqNode } from '@/components/seo/services-hub-content';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { DoorSections, MarketPages } from '@/components/seo/services-hub-content';
 import { OfferLadder } from '@/components/seo/offer-ladder';
 import { JsonLd } from '@/components/seo/structured-data';
-import { absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
+import { TERMS } from '@/data/terms';
+import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
 
-const BASE_URL = 'https://thedevorax.tech';
 export const revalidate = 3600;
 
-// Title 39 chars rendered ("… | DevoraX"); description under 155 chars, no
-// brand in the body (the title already carries it). Leads with the offer.
-// Also the name and description of the CollectionPage node below.
-const TITLE = 'Software Development Services';
+/*
+ * The services hub, rebuilt on 7 Nov 2026 around the three door pages and the
+ * offer ladder. It used to list the four rows of the services table, each
+ * linking to a /services/{id} page; those pages redirect now (next.config.ts),
+ * and the rows stay in the database because projects.service_id points at them.
+ *
+ * Title 45 characters, 55 with " | DevoraX"; description 152. The description
+ * names the steps a founder pays for, at the ladder's prices (data/offer.ts):
+ * change them together.
+ */
+const TITLE = 'Services and Prices: Audit, Finish and Launch';
 const DESCRIPTION =
-  'Finish and ship a stuck app: launch-readiness audit, fixed-price finish sprint, Stripe payments, iOS and Android launch, monthly care. Two-person studio.';
+  'Services and prices for a stuck app: a $400 audit credited to the fix, finish sprints at $1,200 a week, Stripe payments, and the iOS and Android launch.';
 
 export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: '/services', imageAlt: 'DevoraX services and prices' }),
   keywords: [
-    'mobile app development services',
-    'AI web development agency',
-    'cloud architecture consulting',
-    'DevOps automation services',
-    'React Native development',
-    'Next.js development agency',
-    'UI/UX design services',
-    'e-commerce platform development',
-    'full-stack software development',
-    'custom software development services',
+    'vibe code audit',
+    'lovable app to app store',
+    'sharetribe developers',
+    'finish an AI-built app',
+    'app store launch for a web app',
+    'stripe payments setup',
+    'multi vendor marketplace development',
     'DevoraX services',
-    'Pakistan software agency',
+    'DevoraX pricing',
   ],
-  alternates: { canonical: `${BASE_URL}/services` },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: `${BASE_URL}/services`,
-    siteName: 'DevoraX',
-    title: 'Services | DevoraX',
-    description:
-      'We finish and ship stuck apps: payments that work, real iOS and Android apps, and App Store approval. Audit first, then a fixed price.',
-    images: [{ url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt: 'DevoraX Services' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Services | DevoraX',
-    description: 'Mobile apps, AI platforms, cloud architecture, and more.',
-    images: [{ url: `${BASE_URL}/og-image.jpg`, alt: 'DevoraX Services' }],
-  },
 };
-
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  Smartphone, Cpu, Server, Layout, Code2, Zap,
-};
-
-function ServiceIcon({ name }: { name: string }) {
-  const Icon = ICON_MAP[name] || Code2;
-  return <Icon className="w-6 h-6" />;
-}
 
 const PATH = '/services';
-const PAGE_URL = absoluteUrl(PATH);
 
-const itemListNode = (services: { id: string | number; title: string }[]) => ({
-  '@type': 'ItemList',
-  '@id': `${PAGE_URL}#services`,
-  name: 'DevoraX Software Development Services',
-  description: 'Software development services from DevoraX, a two-person studio',
-  numberOfItems: services.length,
-  itemListElement: services.map((s, i) => ({
-    '@type': 'ListItem',
-    position: i + 1,
-    name: s.title,
-    url: `${BASE_URL}/services/${s.id}`,
-  })),
-});
+// Who does the work, specialists included, from the terms row the door pages
+// and /pricing print (data/terms.ts), so this page can't say something
+// different. It used to add its own specialist sentence after it.
+const WHO_WORKS = TERMS.find((t) => t.id === 'who-works')?.answer;
 
-export default async function ServicesPage() {
-  const supabase = createPublicClient();
-  const { data: services } = await supabase.from('services').select('*').order('created_at', { ascending: true });
-  const list = services || [];
-
+export default function ServicesPage() {
   return (
     <>
-      {/* No Offer or price markup here: the /pricing page carries it. */}
+      {/* A CollectionPage: the page is a set of links to the service pages.
+          No Offer or price markup here: /pricing and the door pages carry it,
+          each for what it sells. */}
       <JsonLd
         graph={[
           webPageNode({
@@ -94,11 +58,8 @@ export default async function ServicesPage() {
             name: TITLE,
             description: DESCRIPTION,
             type: 'CollectionPage',
-            mainEntity: `${PAGE_URL}#services`,
           }),
           breadcrumbNode(PATH, [{ name: 'Services', path: PATH }]),
-          itemListNode(list),
-          servicesHubFaqNode(PAGE_URL),
         ]}
       />
 
@@ -128,90 +89,49 @@ export default async function ServicesPage() {
             </span>
 
             <h1 className="text-4xl md:text-6xl font-bold text-white mt-4 mb-6 leading-tight">
-              End-to-End Software{' '}
+              Services and prices:{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-                Development Services
+                audit, finish and launch
               </span>
             </h1>
+            {/* The quoting sentence is the one /pricing and the FAQ use, word for word. */}
             <p className="text-lg text-gray-400 max-w-2xl leading-relaxed">
-              We finish and ship stuck apps: payments that work, real iOS and Android apps, and App
-              Store approval. Built with Lovable, Replit, Bolt or Cursor, running on Sharetribe, or left
-              half-built by a previous developer, it starts with a free 30-minute call and a fixed-price
-              audit. The mobile, web, AI and cloud practices below are the work behind it.
+              We finish and ship stuck apps: payments that work, and real iOS and Android apps,
+              prepared and submitted to the App Store and Google Play. The stores decide approval.
+              Most work starts with the $400 audit, credited to the fix. Two exceptions:
+              Sharetribe Web Template work with no custom code is quoted from your requirements,
+              and a payments-only fix can be quoted on the free call.
             </p>
           </div>
         </header>
 
-        {/* ── The offer: two doors, the ladder, and who it is for ── */}
+        {/* ── The three doors, then new marketplace builds ── */}
+        <DoorSections />
+
+        {/* ── The ladder and who it is for ── */}
         <OfferLadder />
 
-        {/* ── Services Grid ── */}
-        <section aria-label="Service catalogue" className="py-24">
-          <div className="max-w-7xl mx-auto px-6">
-            {list.length === 0 ? (
-              <p className="text-center text-gray-500 py-20">Services are loading — check back shortly.</p>
-            ) : (
-              <ul className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 list-none">
-                {list.map((service: any) => (
-                  <li key={service.id}>
-                    <Link
-                      href={`/services/${service.id}`}
-                      className="group block h-full p-8 rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-teal-500/30 hover:bg-[#0d1a1a] transition-all duration-300 relative overflow-hidden"
-                    >
-                      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-teal-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        {/* ── The vertical pages ── */}
+        <MarketPages />
 
-                      <div className="w-12 h-12 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 mb-5 group-hover:bg-teal-500/20 transition-colors">
-                        <ServiceIcon name={service.icon} />
-                      </div>
-
-                      <h2 className="text-xl font-bold text-white mb-3 group-hover:text-teal-300 transition-colors">
-                        {service.title}
-                      </h2>
-                      <p className="text-sm text-gray-500 leading-relaxed mb-5 line-clamp-3">
-                        {service.desc_text}
-                      </p>
-
-                      {Array.isArray(service.tags) && service.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2 mb-5">
-                          {service.tags.slice(0, 3).map((tag: string) => (
-                            <span
-                              key={tag}
-                              className="text-[0.65rem] font-medium px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-400"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-400 group-hover:gap-2.5 transition-all">
-                        View service details
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </section>
-
-        {/* ── Long-form body: comparison table, per-service detail, FAQ ── */}
-        <ServicesHubContent />
-
-        {/* ── Why Choose DevoraX ── */}
-        <section aria-labelledby="why-devorax-heading" className="py-20 border-t border-white/5 bg-[#030303]">
+        {/* ── Who does the work ── */}
+        <section aria-labelledby="who-heading" className="py-20 bg-[#030303]">
           <div className="max-w-7xl mx-auto px-6">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 id="why-devorax-heading" className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Two Engineers, Full Stack
+              <h2 id="who-heading" className="text-3xl md:text-4xl font-bold text-white mb-6">
+                Two engineers on every sprint
               </h2>
-              <p className="text-gray-400 text-lg leading-relaxed mb-10">
-                DevoraX is a two-person studio: Sameem Amjad and Usman, two senior engineers who work
-                across mobile, web, AI and cloud. Whether you need a React Native app, an AI pipeline
-                integrated into your existing platform, or a cloud migration, the people you talk to
-                are the people writing the code. When a scope needs a designer or another specialist,
-                we bring one in and tell you who.
+              <p className="text-gray-400 text-lg leading-relaxed mb-4">
+                DevoraX is a two-person studio, founded in 2022 and based in Pakistan. The
+                people on the call are the people writing the code. {WHO_WORKS}
+              </p>
+              <p className="text-gray-500 mb-10">
+                The start date, how we keep in touch, what happens if the work runs over, store
+                rejections, payment, the audit credit and who holds the accounts are all in{' '}
+                <Link href="/pricing#terms" className="text-teal-400 underline underline-offset-4 hover:text-teal-300">
+                  the terms on the pricing page
+                </Link>
+                .
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                 {[
@@ -234,11 +154,13 @@ export default async function ServicesPage() {
                   </div>
                 ))}
               </div>
+              {/* Every project starts with the free call, booked on /book;
+                  ?from= records this page as where the booking came from. */}
               <Link
-                href="/contact"
+                href="/book?from=services"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black font-bold rounded-xl hover:shadow-[0_0_30px_rgba(45,212,191,0.4)] transition-all"
               >
-                Start a project
+                Book a free 30-minute call
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

@@ -2,14 +2,48 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
-import { INSIGHTS, getInsight, INSIGHTS_UPDATED } from '@/data/insights';
+import { INSIGHTS, getInsight, insightUpdated, isChecklist, type Insight } from '@/data/insights';
 import { InsightArticle } from '@/components/seo/insight-article';
 import { JsonLd } from '@/components/seo/structured-data';
 import { OG_IMAGE, ORG_REF, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
+import { countWords } from '@/lib/richText';
 
 /** Fully static — these articles are files, not database rows. */
 export function generateStaticParams() {
   return INSIGHTS.map((a) => ({ slug: a.slug }));
+}
+
+/**
+ * First publication. A page added later carries its own `updated` and no
+ * `published`, and must not borrow the research articles' older date.
+ */
+function publishedOn(article: Insight): string {
+  return article.published ?? insightUpdated(article);
+}
+
+/** The stored count for the research; a checklist's is counted from what the page shows. */
+function wordCount(article: Insight): number {
+  if (article.word_count) return article.word_count;
+  const tables = article.sections.flatMap((s) =>
+    s.table ? [s.table.caption, ...s.table.headers, ...s.table.rows.flat()] : []
+  );
+  const items = isChecklist(article)
+    ? [
+        ...new Set(article.items.map((i) => i.group)),
+        ...article.items.flatMap((i) => [i.check, i.why, i.test]),
+      ]
+    : [];
+  return countWords(
+    article.title,
+    article.summary_answer,
+    article.dataset_note ?? '',
+    ...(article.key_findings ?? []),
+    ...items,
+    ...article.sections.flatMap((s) => [s.heading, s.body]),
+    ...tables,
+    ...article.limitations,
+    ...(article.cannot_answer ?? [])
+  );
 }
 
 export async function generateMetadata({
@@ -47,8 +81,8 @@ export async function generateMetadata({
       siteName: 'DevoraX',
       title,
       description: article.meta_description,
-      publishedTime: article.published ?? INSIGHTS_UPDATED,
-      modifiedTime: INSIGHTS_UPDATED,
+      publishedTime: publishedOn(article),
+      modifiedTime: insightUpdated(article),
       images: [{ ...OG_IMAGE, alt: article.title }],
     },
     twitter: {
@@ -68,9 +102,11 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
   const path = `/insights/${article.slug}`;
   const url = absoluteUrl(path);
   const articleId = `${url}#article`;
-  // First publication, per article. INSIGHTS_UPDATED is the last substantive
-  // revision of them all, the date the Byline shows as "Last updated".
-  const published = article.published ?? INSIGHTS_UPDATED;
+  // First publication, per article. The revision date is the page's own
+  // `updated`, or INSIGHTS_UPDATED for the research articles: the date the
+  // Byline shows as "Last updated".
+  const published = publishedOn(article);
+  const updated = insightUpdated(article);
 
   const graph = [
     // The Byline says "Reviewed by Sameem Amjad", so the page node names the
@@ -81,8 +117,8 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
       description: article.meta_description,
       mainEntity: articleId,
       datePublished: published,
-      dateModified: INSIGHTS_UPDATED,
-      reviewedOn: INSIGHTS_UPDATED,
+      dateModified: updated,
+      reviewedOn: updated,
     }),
     breadcrumbNode(path, [
       { name: 'Insights', path: '/insights' },
@@ -98,7 +134,7 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
       image: [OG_IMAGE.url],
       url,
       datePublished: published,
-      dateModified: INSIGHTS_UPDATED,
+      dateModified: updated,
       // The Byline reads "Written by DevoraX", so the author is the company.
       // Sameem is named as the reviewer, on the page node, not as the author.
       author: ORG_REF,
@@ -106,7 +142,7 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
       mainEntityOfPage: { '@id': `${url}#webpage` },
       isAccessibleForFree: true,
       inLanguage: 'en-US',
-      wordCount: article.word_count,
+      wordCount: wordCount(article),
     },
   ];
 

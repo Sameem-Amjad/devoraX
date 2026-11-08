@@ -1,5 +1,5 @@
 /**
- * Cross-links at the foot of a case study.
+ * Cross-links at the foot of a project write-up.
  *
  * The long-form pages carry 1,700–3,700 words each and, before this, one to four
  * internal links — all of them chrome (logo, back-link), none of them editorial.
@@ -11,15 +11,7 @@
  */
 import Link from 'next/link';
 import { CASE_STUDY_CONTENT } from '@/data/caseStudyContent';
-import { SERVICE_CASE_STUDIES } from '@/data/serviceContent';
 import { INSIGHTS } from '@/data/insights';
-
-const SERVICE_LABEL: Record<number, string> = {
-  1: 'Mobile App Development',
-  2: 'AI & Full-Stack Web Development',
-  3: 'Cloud Architecture & DevOps',
-  4: 'UI/UX Design Systems',
-};
 
 function shortName(title: string) {
   const head = title.split(':')[0].trim();
@@ -86,12 +78,10 @@ export function RelatedReading({ projectId }: { projectId: number | string }) {
     .slice(0, 4)
     .filter((x) => x.shared > 0);
 
-  // Which service practice does this project sit under?
-  const serviceId = Object.entries(SERVICE_CASE_STUDIES).find(([, ids]) =>
-    ids.includes(id)
-  )?.[0];
-
-  if (!siblings.length && !serviceId) return null;
+  // The services link below always renders, so the section does too. It used
+  // to name the practice the project sat under ("Mobile App Development
+  // service") and link its /services/{id} page; those pages redirect now
+  // (next.config.ts), and /services lists every door page instead.
 
   return (
     <aside className="mt-16 border-t border-white/5 pt-10" aria-labelledby="related-reading">
@@ -125,14 +115,12 @@ export function RelatedReading({ projectId }: { projectId: number | string }) {
       )}
 
       <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-        {serviceId && (
-          <Link
-            href={`/services/${serviceId}`}
-            className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
-          >
-            {SERVICE_LABEL[Number(serviceId)]} service
-          </Link>
-        )}
+        <Link
+          href="/services"
+          className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
+        >
+          Services and prices
+        </Link>
         {relatedInsights(currentText, id).map((a) => (
           <Link
             key={a.slug}
@@ -142,11 +130,12 @@ export function RelatedReading({ projectId }: { projectId: number | string }) {
             {a.title}
           </Link>
         ))}
+        {/* Was "All case studies" to /case-study, which now redirects to /projects. */}
         <Link
-          href="/case-study"
+          href="/projects"
           className="text-gray-400 underline underline-offset-4 hover:text-teal-400"
         >
-          All case studies
+          See all work
         </Link>
       </div>
     </aside>

@@ -1,11 +1,14 @@
 import Link from 'next/link';
-import { FAQS } from '@/data/faqs';
-import { FIT, OFFER_LADDER, OFFER_UPDATED, POSITIONING } from '@/data/offer';
+import { FIT, OFFER_LADDER, OFFER_UPDATED, POSITIONING, PRICES_UPDATED } from '@/data/offer';
+import { DOOR_LINKS } from '@/data/siteNav';
+import { TERMS_DATA_UPDATED, termText, termsFor } from '@/data/terms';
 import { ORG_REF, absoluteUrl, breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
+import { offerPrice } from '@/lib/offerPricing';
 import { JsonLd } from '@/components/seo/structured-data';
 import { BreadcrumbTrail } from '@/components/seo/breadcrumb-trail';
 import { BookCallCta } from '@/components/seo/book-call-cta';
 import { DateText } from '@/components/seo/date-text';
+import { TermsBlock } from '@/components/seo/terms-block';
 
 /**
  * The answer to "how much does it cost to finish my app?", and the page a
@@ -13,9 +16,14 @@ import { DateText } from '@/components/seo/date-text';
  *
  * Every price on it comes from OFFER_LADDER (data/offer.ts), which is also what
  * /services, the home page and llms.txt print, so the four cannot quote
- * different numbers. The schema prices are parsed from the same strings the
- * table shows, never typed in a second time.
+ * different numbers. The schema prices come from each step's schemaPrice,
+ * through the same helper the door pages use (lib/offerPricing.ts).
  */
+
+/* Hourly, so the start date in the terms (data/terms.ts) is checked against
+   the day the page is served: a week that has passed becomes "ask on the
+   call" within the hour, as on /book and the door pages. */
+export const revalidate = 3600;
 
 const PATH = '/pricing';
 const PAGE_URL = absoluteUrl(PATH);
@@ -34,49 +42,21 @@ export const metadata = pageMetadata({
 const linkClass = 'text-teal-400 underline underline-offset-4 hover:text-teal-300';
 
 /**
- * The FAQs about money and terms: what it costs, who owns the code once it is
- * paid for, what happens after launch, and NDAs. Picked by question, so each
- * answer renders verbatim from data/faqs.ts and the FAQPage node describes only
- * what this page shows.
+ * The full terms Q&A (#terms) is this page's FAQ: every row of data/terms.ts
+ * marked 'pricing', the one source of terms the door pages, the listing kit and
+ * /terms also follow. It replaced a pick of the homepage FAQS, which restated
+ * some of the same terms in other words.
  */
-const PRICING_FAQS = FAQS.filter((f) =>
-  /\bcost\b|\bown the code\b|\bafter launch\b|\bNDAs?\b/i.test(f.q)
-);
+const PRICING_TERMS = termsFor('pricing');
+
+/** The page changed when its steps or prices did, or when the terms it prints did. */
+const PAGE_UPDATED = OFFER_UPDATED > TERMS_DATA_UPDATED ? OFFER_UPDATED : TERMS_DATA_UPDATED;
 
 /**
- * Schema price for one ladder step, read from the string the table prints:
- * "Free" → 0, "$400, …" → 400, "$1,200 per week" → a weekly unit price,
- * "From $1,200 …" → a minimum price. A price written in a shape this does not
- * recognise gets no schema price rather than a guessed one.
+ * The free call has no schemaPrice, because no door page sells it, but this
+ * catalogue lists it, and price 0 is how an Offer says it is free.
  */
-function offerPrice(price: string) {
-  const usd = (s: string) => Number(s.replace(/,/g, ''));
-  if (/^free\b/i.test(price)) return { price: 0, priceCurrency: 'USD' };
-  const from = price.match(/^from \$([\d,]+)/i);
-  if (from) {
-    return {
-      priceSpecification: {
-        '@type': 'PriceSpecification',
-        minPrice: usd(from[1]),
-        priceCurrency: 'USD',
-      },
-    };
-  }
-  const per = price.match(/^\$([\d,]+) per (week|month)\b/i);
-  if (per) {
-    return {
-      priceSpecification: {
-        '@type': 'UnitPriceSpecification',
-        price: usd(per[1]),
-        priceCurrency: 'USD',
-        unitText: per[2].toLowerCase(),
-      },
-    };
-  }
-  const flat = price.match(/^\$([\d,]+)/);
-  if (flat) return { price: usd(flat[1]), priceCurrency: 'USD' };
-  return {};
-}
+const FREE = { price: 0, priceCurrency: 'USD' } as const;
 
 const serviceNode = {
   '@type': 'Service',
@@ -94,24 +74,31 @@ const serviceNode = {
       '@type': 'Offer',
       name: s.title,
       description: s.body,
-      ...offerPrice(s.price),
+      ...(s.id === 'call' ? FREE : offerPrice(s)),
     })),
   },
 };
 
-const faqNode = PRICING_FAQS.length
-  ? {
-      '@type': 'FAQPage',
-      '@id': `${PAGE_URL}#faq`,
-      mainEntity: PRICING_FAQS.map((f) => ({
-        '@type': 'Question',
-        name: f.q,
-        acceptedAnswer: { '@type': 'Answer', text: f.a },
-      })),
-    }
-  : null;
+/**
+ * The FAQPage for the terms block, answer for answer as TermsBlock renders them
+ * (termText is the plain-text form of what TermAnswer prints). Built when the
+ * page renders, because the start-date row opens with nextStartLine(), which
+ * depends on the day.
+ */
+function termsFaqNode(now: Date) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${PAGE_URL}#terms`,
+    mainEntity: PRICING_TERMS.map((t) => ({
+      '@type': 'Question',
+      name: t.question,
+      acceptedAnswer: { '@type': 'Answer', text: termText(t, 'pricing', now) },
+    })),
+  };
+}
 
 export default function PricingPage() {
+  const faqNode = PRICING_TERMS.length ? termsFaqNode(new Date()) : null;
   return (
     <>
       <JsonLd
@@ -121,7 +108,7 @@ export default function PricingPage() {
             name: H1,
             description: DESCRIPTION,
             about: `${PAGE_URL}#service`,
-            dateModified: OFFER_UPDATED,
+            dateModified: PAGE_UPDATED,
           }),
           breadcrumbNode(PATH, TRAIL),
           serviceNode,
@@ -133,22 +120,24 @@ export default function PricingPage() {
           <BreadcrumbTrail trail={TRAIL} />
           <h1 className="text-4xl font-bold text-white md:text-5xl">{H1}</h1>
           <p className="mt-4 text-sm text-gray-400">
-            Prices last changed <DateText iso={OFFER_UPDATED} />
+            Prices last changed <DateText iso={PRICES_UPDATED} />
           </p>
 
           {/* Answer first, with the real numbers: the passage an answer engine
               is most likely to lift for "how much does it cost to finish my app". */}
           <p className="mt-6 text-xl leading-relaxed text-gray-200">
-            Finishing an app you already have starts with a $400 launch-readiness audit,
-            credited to the fix if you go ahead. The fix is a finish sprint at $1,200 per
-            week, usually 1–2 weeks, and the audit says how many weeks it needs, so you
+            Finishing an app you already have usually starts with a $400 launch-readiness
+            audit, credited to the fix if you go ahead. The fix is a finish sprint at $1,200
+            per week, usually 1–2 weeks, and the audit says how many weeks it needs, so you
             know the total before work starts.
           </p>
           <p className="mt-4 leading-relaxed text-gray-400">
-            Payments start from $1,200, with Connect payouts to sellers from $2,400. An iOS
-            and Android launch starts from $2,400, and monthly care after launch is $1,500
-            per month. The first 30-minute call is free, there is no hourly billing, and
-            what we quote is what you pay.
+            Payments start from $1,200, with Connect payouts to sellers from $2,400, and an
+            iOS and Android launch starts from $2,400. Both are billed like sprints, in
+            $1,200 weeks paid in advance. Monthly care after launch is $1,500 per month. The
+            first 30-minute call is free and there is no hourly billing. What we quote is
+            what you pay: if the work takes longer than the audit or the written quote
+            estimated, we finish the agreed scope at no extra cost.
           </p>
 
           <section aria-labelledby="prices" className="mt-14">
@@ -187,6 +176,20 @@ export default function PricingPage() {
                 </tbody>
               </table>
             </div>
+            {/* Every door's price block links here, so the steps link back to
+                the doors that sell them. */}
+            <p className="mt-4 text-sm leading-relaxed text-gray-400">
+              Which steps you need depends on where the app is stuck:{' '}
+              {DOOR_LINKS.map((d, i) => (
+                <span key={d.slug}>
+                  {i > 0 ? (i === DOOR_LINKS.length - 1 ? ' or ' : ', ') : ''}
+                  <Link href={d.href} className={linkClass}>
+                    {d.anchor}
+                  </Link>
+                </span>
+              ))}
+              .
+            </p>
           </section>
 
           <section aria-labelledby="how-set" className="mt-14">
@@ -194,17 +197,25 @@ export default function PricingPage() {
               How is the price set?
             </h2>
             <p className="mt-4 leading-relaxed text-gray-400">
-              The launch-readiness audit sets it. The audit reviews your code, database
-              security, payments, hosting and store readiness, then says how many weeks of
-              finish sprint the fix needs, so you know the total before work starts. You keep
-              the written report whatever you decide, and the $400 is credited to the fix if
-              you go ahead.
+              Most work starts with the $400 audit, credited to the fix. Two exceptions:
+              Sharetribe Web Template work with no custom code is quoted from your
+              requirements, and a payments-only fix can be quoted on the free call.
             </p>
             <p className="mt-4 leading-relaxed text-gray-400">
-              Payments and the iOS and Android launch are priced from a starting point. Stripe
-              checkout and subscriptions start from $1,200, Connect payouts to sellers from
-              $2,400, and the launch from $2,400. A full React Native build is quoted after
-              the audit.
+              Where there is an audit, it sets the price. The launch-readiness audit reviews
+              your code, database security, payments, hosting and store readiness, then says
+              how many weeks of finish sprint the fix needs, so you know the total before
+              work starts. You keep the written report whatever you decide, and the $400 is
+              credited to the fix if you go ahead.
+            </p>
+            <p className="mt-4 leading-relaxed text-gray-400">
+              Payments and the iOS and Android launch are priced from a starting point and
+              billed like sprints, weekly in advance in $1,200 weeks. Stripe checkout and
+              subscriptions start from $1,200, one week of our work; Connect payouts to sellers
+              from $2,400, two weeks; and the launch from $2,400, two weeks. The launch includes
+              the store listing, App Privacy details and Google Play&apos;s Data safety form, and
+              in-app purchase or a US web-checkout link is a separate line in the launch quote.
+              A full React Native build is quoted after the audit.
             </p>
           </section>
 
@@ -216,7 +227,8 @@ export default function PricingPage() {
               New builds from scratch use the fixed-price MVP packages: MVP Starter from
               $2,900, Growth &amp; Scale from $7,500, and Enterprise Transformation, priced
               custom. Each starts with a free 30-minute discovery call and a fixed-price
-              proposal.{' '}
+              proposal, and MVP Starter and Growth &amp; Scale include 35 days of free
+              maintenance after launch.{' '}
               <Link href="/#pricing" className={linkClass}>
                 Compare the MVP packages on the home page
               </Link>
@@ -249,23 +261,10 @@ export default function PricingPage() {
             </div>
           </section>
 
-          {PRICING_FAQS.length > 0 && (
-            <section aria-labelledby="faq" className="mt-14">
-              <h2 id="faq" className="scroll-mt-32 text-2xl font-bold text-white">
-                Questions about price and terms
-              </h2>
-              <div className="mt-6 space-y-8">
-                {PRICING_FAQS.map((f) => (
-                  <div key={f.q}>
-                    <h3 className="text-lg font-semibold text-white">{f.q}</h3>
-                    <p className="mt-2 leading-relaxed text-gray-400">{f.a}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+          {/* #terms: the full Q&A the door pages and /terms point to. */}
+          <TermsBlock surface="pricing" />
 
-          <BookCallCta />
+          <BookCallCta from="pricing" />
         </div>
       </main>
     </>

@@ -6,11 +6,13 @@ import { FIVERR_PROFILE_URL } from "@/data/testimonials";
 //
 // This strip used to scroll eight product names (Dooz, Koor, Afriva, Pastel,
 // WOD Pro League, TAL Services, Pathana, Loopedin) under "Trusted by ambitious
-// companies worldwide". None of them is a DevoraX client: most are products
-// Sameem worked on as an employee of other companies, and for the rest no client
-// relationship is confirmed. Showing them as client logos claimed something that
-// is not true. What a buyer can verify is the Fiverr record, so that is what this
-// strip shows, with the link to check it.
+// companies worldwide". Most of them were never DevoraX clients: they are
+// products Sameem worked on as an employee of other companies, or for clients
+// who hired him directly. Showing them as client logos claimed something that is
+// not true. What a buyer can verify is the Fiverr record, so that is what this
+// strip shows, with the link to check it. The record is the studio's: the
+// profile is in Sameem's name, sells DevoraX's services, and the team delivered
+// the orders (owner decision, 8 Nov 2026).
 const FACTS = [
   { value: "5.0", label: "Fiverr rating" },
   { value: "50+", label: "Fiverr projects since 2022" },

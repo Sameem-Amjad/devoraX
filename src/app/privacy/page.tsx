@@ -7,14 +7,16 @@ import {
   clarityEnabled,
   gaEnabled,
 } from '@/lib/analytics';
+import { LANDING_PATH_KEY } from '@/lib/booking/visit';
 import { JsonLd } from '@/components/seo/structured-data';
 import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
 
 const CONTACT_EMAIL = 'business@thedevorax.tech';
 
-const TITLE = 'Privacy Policy — What We Collect and Why';
+const TITLE = 'Privacy Policy: What We Collect and Why';
+// 143 characters: within the 155 a results page shows.
 const DESCRIPTION =
-  'What this site collects when you book a call or browse, where it is stored, how long it is kept, and how to have it deleted. Plain language, no dark patterns.';
+  'What this site collects when you book a call or browse, where it is stored, how long it is kept, and how to have it deleted, in plain language.';
 
 // One date (data/legal.ts) for the visible "Last updated" line, the WebPage
 // node's dateModified and the sitemap, so the three can't disagree.
@@ -80,17 +82,44 @@ export default function PrivacyPage() {
                 website.
               </p>
               <p className="mt-4 leading-relaxed">
+                The form also asks three optional questions about your app: a{' '}
+                <strong className="text-gray-200">link to it</strong>,{' '}
+                <strong className="text-gray-200">what it was built with</strong>{' '}
+                and your <strong className="text-gray-200">deadline</strong>. If you
+                answer them, we store your answers with the booking.
+              </p>
+              <p className="mt-4 leading-relaxed">
                 With each booking we also store your{' '}
                 <strong className="text-gray-200">time zone</strong>, which your
-                browser reports so the invitation shows your local time, the{' '}
-                <strong className="text-gray-200">page you booked from</strong> and,
-                if your browser passes it on, the{' '}
+                browser reports so the invitation shows your local time; the{' '}
+                <strong className="text-gray-200">page you booked from</strong>,
+                which is the page whose link took you to the booking page, when
+                there was one; and, if your browser passes it on, the{' '}
                 <strong className="text-gray-200">website that sent you here</strong>{' '}
                 (only the site&apos;s name, such as google.com, never the full
-                address). If you answer the optional question &ldquo;How did you
-                hear about us?&rdquo;, we store{' '}
+                address). If the booking link you followed was on one of our
+                profiles, such as LinkedIn, we store{' '}
+                <strong className="text-gray-200">which profile</strong>. If you
+                answer the optional question &ldquo;How did you hear about
+                us?&rdquo;, we store{' '}
                 <strong className="text-gray-200">how you heard about us</strong> as
-                well. We use these to see which channels bring us enquiries.
+                well.
+                {analyticsEnabled && (
+                  <>
+                    {' '}If you have accepted analytics cookies, we also store the{' '}
+                    <strong className="text-gray-200">
+                      first page you opened on this site
+                    </strong>{' '}
+                    in that visit (see &ldquo;Cookies and local storage&rdquo;
+                    below).
+                  </>
+                )}{' '}
+                We use these to see which channels bring us enquiries.
+              </p>
+              <p className="mt-4 leading-relaxed">
+                After the call we may add our own notes to the booking, such as
+                whether what you need is work we offer and whether you went on to
+                buy a paid step.
               </p>
               <p className="mt-4 leading-relaxed">
                 If you email us directly, we hold that correspondence in our mailbox
@@ -116,9 +145,10 @@ export default function PrivacyPage() {
                   We use {analyticsTools} to understand how visitors use this site:
                   which pages they view, where they click and how far they scroll.
                   They also record when the booking dialog is opened and when a
-                  booking is made, with the page it happened on and, if you answered
-                  it, how you heard about us. They never record your name, email
-                  address or message.
+                  booking is made, with the page it happened on, the page you
+                  booked from and, if you answered it, how you heard about us.
+                  They never record your name, email address, message or your
+                  answers about your app.
                   {clarityEnabled &&
                     ' Microsoft Clarity also produces heatmaps and session recordings. What you type into a form is masked in your browser before anything is sent, and the whole booking dialog is masked too.'}{' '}
                   We use this only to improve the site, and we run no ads.
@@ -207,6 +237,17 @@ export default function PrivacyPage() {
                   there is no consent banner to answer.
                 </p>
               )}
+              {analyticsEnabled && (
+                <p className="mt-4 leading-relaxed">
+                  If you accept, the first page you open on this site in a browser
+                  tab (its path only, such as /pricing) is also kept in that
+                  tab&apos;s session storage under the key{' '}
+                  <code className="text-teal-400">{LANDING_PATH_KEY}</code>. It is
+                  sent to us only if you book a call, as described above. Session
+                  storage is cleared when you close the tab, and declining the
+                  banner removes the value at once.
+                </p>
+              )}
             </section>
 
             <section>
@@ -235,7 +276,7 @@ export default function PrivacyPage() {
               <p className="mt-4 leading-relaxed">
                 We also read the free and busy periods of our own calendar so the
                 site does not offer you a time we are already booked. That check
-                returns only whether a period is free — never the contents, titles
+                returns only whether a period is free, never the contents, titles
                 or guests of any other appointment.
               </p>
               <p className="mt-4 leading-relaxed">

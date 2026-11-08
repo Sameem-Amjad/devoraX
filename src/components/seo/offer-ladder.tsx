@@ -1,46 +1,18 @@
 import Link from 'next/link';
-import { DOORS, FIT, OFFER_LADDER } from '@/data/offer';
+import { FIT, OFFER_LADDER } from '@/data/offer';
 
 /**
- * The offer, as a server component: the two doors, the ladder from free call
- * to monthly care, and who it is (and is not) for.
+ * The offer ladder from free call to monthly care, and who it is (and is not)
+ * for, as a server component.
  *
- * Rendered on /services, directly under the header, because that is where a
- * founder comparing options lands. Server-rendered so crawlers and AI engines
- * read every step from the initial HTML. Content lives in src/data/offer.ts.
+ * Rendered on /services under the door sections (services-hub-content.tsx),
+ * which used to be this component's "Two ways in". Server-rendered so crawlers
+ * and AI engines read every step from the initial HTML. Content lives in
+ * src/data/offer.ts. #how-we-work is linked from the homepage's pricing section.
  */
 export function OfferLadder() {
   return (
     <>
-      {/* ── Two doors ── */}
-      <section aria-labelledby="doors-heading" className="py-20 border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 id="doors-heading" className="text-3xl md:text-4xl font-bold text-white">
-            Two ways in
-          </h2>
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {/* Plain <div>s, not <article>s. Extractors such as trafilatura take
-                the first <article> on a page as its body, so the first card was
-                read as the whole of /services and most of the page was lost.
-                The ids are anchors: the home hero and llms.txt link to
-                /services#<id>. */}
-            {DOORS.map((d) => (
-              <div
-                key={d.id}
-                id={d.id}
-                className="scroll-mt-32 rounded-2xl border border-white/10 bg-[#0a0a0a] p-8"
-              >
-                <span className="text-xs font-semibold uppercase tracking-widest text-teal-400">
-                  {d.label}
-                </span>
-                <h3 className="mt-3 text-xl font-bold text-white">{d.title}</h3>
-                <p className="mt-4 leading-relaxed text-gray-400">{d.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── The ladder ── */}
       <section
         id="how-we-work"
@@ -53,8 +25,9 @@ export function OfferLadder() {
           </h2>
           <p className="mt-5 max-w-2xl leading-relaxed text-gray-400">
             The audit is $400 and credited to the fix. The fix is $1,200 per week, and the
-            audit tells you how many weeks before you commit. Start at the top and stop
-            wherever you like.
+            audit tells you how many weeks before you commit. Payments and the iOS and
+            Android launch are billed in the same $1,200 weeks, in advance. Start at the top
+            and stop wherever you like.
           </p>
           <ol className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 list-none">
             {OFFER_LADDER.map((s, i) => (

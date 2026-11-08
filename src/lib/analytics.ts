@@ -24,6 +24,15 @@
  * A stored choice is re-sent on every page load, ahead of each tag's first
  * hit.
  *
+ * Custom events (track() below):
+ * - booking_open { page_path }: the booking dialog opened.
+ * - booking_submit { page_path, heard_about, booked_from }: a booking was
+ *   saved; the GA4 key event. booked_from is the path stored with the
+ *   booking, the page that led to it (lib/booking/visit.ts), so bookings can
+ *   be counted by page and not only as "/book". Register heard_about and
+ *   booked_from as event-scoped custom dimensions to report on them.
+ * - contact_click { method, page_path }: an email link was clicked.
+ *
  * /admin is never measured. Its pages show booking names and emails, and a
  * Clarity recording would capture them. */
 

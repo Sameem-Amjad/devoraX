@@ -1,5 +1,6 @@
 import 'server-only';
 import { SITE_URL, absoluteUrl } from '@/lib/seo';
+import { isIndexable } from '@/data/projectIndex';
 
 /**
  * Tell IndexNow (Bing, Yandex, Naver, Seznam, Yep) that pages were published,
@@ -19,11 +20,38 @@ import { SITE_URL, absoluteUrl } from '@/lib/seo';
  */
 const KEY = process.env.INDEXNOW_KEY ?? '206ac19bf00249b5ffddb3961620044f';
 
+/**
+ * Paths that permanently redirect (next.config.ts). The deploy-time run
+ * (scripts/indexnow.mjs) reports each once, when it leaves the sitemap; a
+ * project save has no reason to send them again.
+ */
+const REDIRECTED = new Set([
+  '/case-study',
+  '/insights/what-we-measured-across-25-production-builds',
+  '/services/1',
+  '/services/2',
+  '/services/3',
+  '/services/4',
+]);
+
+/**
+ * Whether a path is one search engines should come and read: not a redirect,
+ * and not a project page off the index allowlist (data/projectIndex.ts), which
+ * is noindex. A deleted allowlisted project still counts, so the engines see
+ * its 404.
+ */
+function worthPinging(path: string): boolean {
+  if (REDIRECTED.has(path)) return false;
+  const project = /^\/projects\/(\d+)$/.exec(path);
+  return project ? isIndexable(project[1]) : true;
+}
+
 /** `paths` are site paths ("/projects/12"), not absolute URLs. */
 export async function notifyIndexNow(paths: string[]): Promise<void> {
-  if (process.env.VERCEL_ENV !== 'production' || !paths.length) return;
+  const wanted = paths.filter(worthPinging);
+  if (process.env.VERCEL_ENV !== 'production' || !wanted.length) return;
 
-  const urlList = [...new Set(paths.map(absoluteUrl))];
+  const urlList = [...new Set(wanted.map(absoluteUrl))];
   try {
     const res = await fetch('https://api.indexnow.org/IndexNow', {
       method: 'POST',

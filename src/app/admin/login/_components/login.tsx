@@ -34,7 +34,7 @@ export const LoginScreen = ({ onLogin }: { onLogin: () => void }) => {
         <div className="flex justify-center mb-8">
           <Logo />
         </div>
-        <h2 className="text-xl font-bold text-white mb-6 text-center">System Access</h2>
+        <h1 className="text-xl font-bold text-white mb-6 text-center">System Access</h1>
         {error && (
           <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded">
             {error}

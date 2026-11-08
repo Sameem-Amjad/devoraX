@@ -38,7 +38,7 @@ export const TechStackSection = () => {
           viewport={{ once: true }}
           className="text-xs font-semibold text-gray-600 uppercase tracking-widest"
         >
-          Technologies we master
+          Technologies we use
         </motion.p>
       </div>
 

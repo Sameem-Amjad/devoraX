@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { createPublicClient } from "@/lib/public";
 import { notFound } from "next/navigation";
 import ProjectDetailClient from "@/app/projects/[id]/_components/projectClient";
@@ -6,8 +7,37 @@ import { ProjectJsonLd, projectImageUrl } from '@/components/seo/json-ld';
 import { CaseStudyLongform } from '@/components/seo/case-study-longform';
 import { RelatedReading } from '@/components/seo/related-reading';
 import { getCaseStudy } from '@/data/caseStudyContent';
+import { doorsCiting } from '@/data/doorsCiting';
+import { isIndexable, projectPageName, projectPageTitle } from '@/data/projectIndex';
 
 const BASE_URL = 'https://thedevorax.tech';
+
+/**
+ * Only the allowlisted projects stay in the index (data/projectIndex.ts).
+ * Every other project page, including one added to the database later, is
+ * noindex but still followed, so the links on it keep counting.
+ *
+ * A page-level googleBot replaces the root layout's rather than merging with
+ * it, so every directive the layout sets has to be repeated here.
+ * max-video-preview had been lost that way, which mattered once these pages
+ * started carrying walkthrough videos.
+ */
+function projectRobots(id: string): Metadata['robots'] {
+  if (!isIndexable(id)) {
+    return { index: false, follow: true, googleBot: { index: false, follow: true } };
+  }
+  return {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  };
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const supabase = createPublicClient();
@@ -20,8 +50,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   if (!project) {
     // Only de-index when the row genuinely does not exist (PGRST116 = no rows).
-    // A transient DB/network error must NOT emit `noindex` — that would hand
-    // Googlebot a de-indexing directive for a page that is actually fine.
+    // A transient DB/network error must NOT emit `noindex` on an allowlisted
+    // page: that would hand Googlebot a de-indexing directive for a page that
+    // is actually fine.
     const genuinelyMissing = !error || error.code === 'PGRST116';
     if (genuinelyMissing) {
       return {
@@ -30,11 +61,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
         robots: { index: false, follow: false },
       };
     }
+    // An id off the allowlist is noindex whatever the database says, so an
+    // outage can't put it back in the index; an allowlisted one keeps the
+    // layout's robots, as before.
     return {
       title: 'Software Project Portfolio',
       description:
         'Marketplaces, real-time apps, media backends and AI builds that DevoraX\'s founders built or worked on, including as employees of other companies.',
       alternates: { canonical: `${BASE_URL}/projects/${id}` },
+      ...(isIndexable(id) ? {} : { robots: projectRobots(id) }),
     };
   }
 
@@ -43,7 +78,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   // Project titles alone ("Loopedin", "Afriva") fall under the ~30-char floor
   // once rendered, and some descriptions are far under 120. Qualify the title
   // and top the description up from `content` rather than shipping a stub.
-  const title = `${project.title} Case Study`;
+  // The qualifier is the page's label: "Case Study" only for work a client
+  // contracted DevoraX for, otherwise "Engineering Write-up". "DevoraX Case
+  // Study" over an employer's product said DevoraX delivered it.
+  const title = projectPageTitle(id, project.title);
   // Prefer the hand-written, fact-checked description from the long-form study.
   const study = getCaseStudy(id);
   const base = (study?.meta_description || project.description || '').replace(/\s+/g, ' ').trim();
@@ -68,50 +106,40 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   // false. Omitting the numbers lets the consumer measure the real image instead
   // of laying out against a wrong one.
   const remoteImage = projectImageUrl(project.image);
-  const alt = `${project.title} — DevoraX case study`;
+  const alt = projectPageName(id, project.title);
   const ogImage = remoteImage
     ? { url: remoteImage, alt }
     : { url: `${BASE_URL}/og-image.jpg`, width: 1200, height: 630, alt };
+  // The social title is the page title with the suffix the template adds to
+  // <title>, which Open Graph and Twitter titles don't get.
+  const socialTitle = `${title} | DevoraX`;
 
   return {
     title,
     description,
+    // No "DevoraX project": most of these were built for an employer or for
+    // a client who hired Sameem directly, and each page says whose work it was.
     keywords: [
       project.title,
-      'DevoraX project',
-      'software development case study',
+      'engineering write-up',
       'mobile app development',
       'web development portfolio',
       ...(Array.isArray(project.tags) ? project.tags : []),
     ],
-    // A page-level googleBot replaces the root layout's rather than merging
-    // with it, so every directive the layout sets has to be repeated here.
-    // max-video-preview had been lost that way, which mattered once these
-    // pages started carrying walkthrough videos.
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        'max-snippet': -1,
-        'max-image-preview': 'large',
-        'max-video-preview': -1,
-      },
-    },
+    robots: projectRobots(id),
     alternates: { canonical: canonicalUrl },
     openGraph: {
       type: 'article',
       locale: 'en_US',
       url: canonicalUrl,
       siteName: 'DevoraX',
-      title: `${project.title} | DevoraX Case Study`,
+      title: socialTitle,
       description,
       images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${project.title} | DevoraX Case Study`,
+      title: socialTitle,
       description,
       images: [ogImage],
     },
@@ -156,10 +184,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (error || !project) return notFound();
 
   const study = getCaseStudy(id);
+  // The door pages that cite this project as proof. Rendered here, on the
+  // server, so the solution pages' data stays out of the browser bundle.
+  const doors = doorsCiting(id);
   // One list of crumbs for the visible breadcrumb and the BreadcrumbList, so
-  // the two can't disagree. Projects, not 'Case Studies' → /case-study: these
-  // pages live under /projects, and a breadcrumb has to describe the path that
-  // actually exists.
+  // the two can't disagree. Projects, the one portfolio index (/case-study now
+  // redirects to it): these pages live under /projects, and a breadcrumb has
+  // to describe the path that actually exists.
   const trail = [
     { name: 'Projects', path: '/projects' },
     { name: project.title, path: `/projects/${project.id}` },
@@ -184,6 +215,27 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       </article>
       <div className="mx-auto max-w-7xl px-6 pb-20">
         <div className="max-w-3xl">
+          {/* Outside RelatedReading, which renders nothing for a project
+              with no study (34). */}
+          {doors.length > 0 && (
+            <nav aria-labelledby="cited-on" className="mt-16 border-t border-white/5 pt-10">
+              <h2 id="cited-on" className="text-xl font-bold text-white">
+                Services that cite this work
+              </h2>
+              <ul className="mt-4 space-y-2">
+                {doors.map((door) => (
+                  <li key={door.slug}>
+                    <Link
+                      href={`/solutions/${door.slug}`}
+                      className="font-medium text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                    >
+                      {door.nav_label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
           <RelatedReading projectId={id} />
         </div>
       </div>

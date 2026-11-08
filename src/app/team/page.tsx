@@ -13,11 +13,13 @@ import {
   webPageNode,
 } from "@/lib/seo";
 
+// 152 characters. A specialist joins only sometimes, and is named to the
+// client before they start (owner decision, 8 Nov 2026).
 const DESCRIPTION =
-  "DevoraX is two people: Sameem Amjad, founder, and Usman, CTO. Two senior engineers who build every project and bring in specialists when a scope needs them.";
+  "DevoraX is two people: Sameem Amjad, founder, and Usman, CTO. Both work on every sprint, and any specialist who joins is named to you before they start.";
 
 export const metadata: Metadata = {
-  title: "Our Team — Sameem Amjad and Usman",
+  title: "Our Team: Sameem Amjad and Usman",
   description: DESCRIPTION,
   keywords: [
     "DevoraX team",

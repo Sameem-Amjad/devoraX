@@ -34,8 +34,11 @@ export const ProcessSection = () => {
               Build
             </span>
           </h2>
+          {/* Was "A proven, transparent process from first conversation to
+              long-term partnership", self-praise with no delivery record
+              behind it. */}
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            A proven, transparent process from first conversation to long-term partnership.
+            How a build runs, from the first call to the fixes and releases after launch.
           </p>
         </motion.div>
 
@@ -93,9 +96,13 @@ export const ProcessSection = () => {
           transition={{ delay: 0.5 }}
           className="mt-20 text-center"
         >
+          {/* Was "Average time from kickoff to first production deploy: 4–6
+              weeks", an average with no delivery record behind it. The only
+              timing the site states is the finish sprint's "usually 1–2 weeks"
+              (data/offer.ts); new-build timing is set in each proposal. */}
           <p className="text-gray-600 text-sm">
-            Average time from kickoff to first production deploy:{" "}
-            <span className="text-teal-400 font-semibold">4–6 weeks</span>
+            New-build timing is set in the proposal. A finish sprint on an app you already have
+            usually takes <span className="text-teal-400 font-semibold">1–2 weeks</span>.
           </p>
         </motion.div>
       </div>

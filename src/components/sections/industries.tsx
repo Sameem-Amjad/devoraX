@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import { getIndustry, industryHref, type IndustrySlug } from "@/data/industries";
+import type { NavLink } from "@/data/primaryNav";
 
 // Only industries with a real product in the portfolio, and each card names it.
 //
@@ -20,7 +21,13 @@ import { getIndustry, industryHref, type IndustrySlug } from "@/data/industries"
 //
 // Real Estate and Health came back on 2 Nov 2026, each naming the projects that
 // now back it. The titles come from src/data/industries.ts, and each card links
-// to /projects filtered to that industry.
+// to /projects filtered to that industry. A card is one link, so the market
+// pages (/solutions/...) get their own row of links under the grid; they arrive
+// as props from the server page (data/siteNav.ts), so this client component
+// doesn't import the solution pages' data.
+//
+// Koor was DevoraX client work (owner decision, 8 Nov 2026); its client is not
+// named.
 const INDUSTRIES: {
   slug: IndustrySlug;
   icon: React.ReactNode;
@@ -40,7 +47,7 @@ const INDUSTRIES: {
   {
     slug: "marketplaces",
     icon: <ShoppingCart className="w-7 h-7 text-orange-400" />,
-    description: "Multi-vendor marketplaces with separate buyer, seller and admin surfaces: Afriva, Pastel's iOS app and the Dooz used-car marketplace.",
+    description: "Multi-vendor marketplaces with separate buyer, seller and admin surfaces: Afriva, the Dooz used-car marketplace, and Pastel's iOS app, which Sameem works on as Pastel's employee.",
     tags: ["Next.js", "Supabase", "Sharetribe", "NestJS"],
     gradient: "from-orange-500/15 to-amber-500/5",
     border: "hover:border-orange-500/30",
@@ -48,7 +55,7 @@ const INDUSTRIES: {
   {
     slug: "food-hospitality",
     icon: <UtensilsCrossed className="w-7 h-7 text-emerald-400" />,
-    description: "Food Magnet's live food-truck locations, Koor's home-chef ordering app, VoiceDesk's AI receptionist for hotels and restaurants, and Royal Malt's drink launch site.",
+    description: "Food Magnet's live food-truck locations, VoiceDesk's AI receptionist for hotels and restaurants, and Royal Malt's drink launch site. Koor, a home-chef ordering app, was DevoraX client work.",
     tags: ["Live GPS", "Voice AI", "React Native"],
     gradient: "from-emerald-500/15 to-teal-500/5",
     border: "hover:border-emerald-500/30",
@@ -111,7 +118,7 @@ const INDUSTRIES: {
   },
 ];
 
-export const IndustriesSection = () => {
+export const IndustriesSection = ({ markets = [] }: { markets?: NavLink[] }) => {
   return (
     <section className="py-32 bg-black border-t border-white/5 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-900/8 blur-[140px] rounded-full pointer-events-none" />
@@ -135,7 +142,8 @@ export const IndustriesSection = () => {
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
             Each card names real products from the portfolio. Several were built while
-            Sameem was an engineer at other companies; each project page says which.
+            Sameem was an engineer at other companies; each project page says which,
+            where that is recorded.
           </p>
         </motion.div>
 
@@ -184,6 +192,23 @@ export const IndustriesSection = () => {
             </motion.div>
           ))}
         </div>
+
+        {markets.length > 0 && (
+          <p className="mt-12 text-center text-sm leading-relaxed text-gray-400">
+            Pages for specific markets:{" "}
+            {markets.map((m, i) => (
+              <React.Fragment key={m.href}>
+                {i > 0 && " · "}
+                <Link
+                  href={m.href}
+                  className="text-teal-400 underline underline-offset-4 hover:text-teal-300"
+                >
+                  {m.label}
+                </Link>
+              </React.Fragment>
+            ))}
+          </p>
+        )}
       </div>
     </section>
   );

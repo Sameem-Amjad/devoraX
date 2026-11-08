@@ -69,7 +69,13 @@ export function Byline({
         </>
       )}
       <span aria-hidden="true">·</span>
-      <span className="text-gray-400">Based on project records and public sources ({kind})</span>
+      {/* A checklist is written from platform documentation, not from the
+          portfolio, so it must not claim project records as its basis. */}
+      <span className="text-gray-400">
+        {kind === 'checklist'
+          ? 'Based on public sources and platform documentation (checklist)'
+          : `Based on project records and public sources (${kind})`}
+      </span>
     </div>
   );
 }

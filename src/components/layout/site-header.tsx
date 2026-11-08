@@ -17,7 +17,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Logo from '@/components/global/logo';
-import { PRIMARY_NAV } from '@/data/siteNav';
+// Not '@/data/siteNav': that module carries the whole link graph's data.
+import { PRIMARY_NAV } from '@/data/primaryNav';
 
 export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,24 +54,45 @@ export function SiteHeader() {
             </Link>
           ))}
 
+          {/* Straight to the booking page. It went to /contact, which had no
+              booking form, so a visitor who wanted a call had one more page
+              to get through. No ?from= here: the header is on every page, and
+              /book counts the booking as made from the page before it. */}
           <Link
-            href="/contact"
+            href="/book"
             className="bg-white/5 hover:bg-teal-500/10 text-white border border-white/10 hover:border-teal-500/50 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all"
           >
             Book a Call
           </Link>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsOpen((v) => !v)}
-          aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={isOpen}
-          aria-controls="mobile-menu"
-          className="md:hidden text-white"
-        >
-          {isOpen ? <X /> : <Menu />}
-        </button>
+        {/* On a phone the booking link sits in the bar itself, beside the
+            menu button. Behind the menu it was out of sight on every first
+            screen: on a door page the next booking link was about two screens
+            down. Hidden below 360px, where it would crowd the logo.
+            While the menu is open it leaves the accessibility tree and the
+            tab order, so a screen reader meets one "Book a Call" link, the
+            menu's, not two. It still shows and still works by touch. */}
+        <div className="flex items-center gap-4 md:hidden">
+          <Link
+            href="/book"
+            aria-hidden={isOpen || undefined}
+            tabIndex={isOpen ? -1 : undefined}
+            className="hidden min-[360px]:inline-block bg-teal-500/10 hover:bg-teal-500/20 text-white border border-teal-500/40 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+          >
+            Book a Call
+          </Link>
+          <button
+            type="button"
+            onClick={() => setIsOpen((v) => !v)}
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            className="text-white"
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </nav>
 
       {/* Rendered in the DOM and hidden with CSS rather than unmounted, so the
@@ -92,7 +114,7 @@ export function SiteHeader() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href="/book"
             onClick={() => setIsOpen(false)}
             className="bg-teal-600 text-white w-full py-3 rounded-xl font-semibold mt-2 text-center"
           >

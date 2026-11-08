@@ -6,15 +6,24 @@ import { WaveDivider } from "../ui/waveDivider";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import CONSTANTS from "@/utils/constants/constants";
-import { POSITIONING, DOORS } from "@/data/offer";
+import { POSITIONING } from "@/data/offer";
+import type { WayIn } from "@/data/siteNav";
 import { Mail, ArrowRight, ChevronDown } from "lucide-react";
 
-// Positioning (Oct 2026): one promise, two doors. The copy lives in
-// src/data/offer.ts so the hero, /services and llms.txt say the same thing.
+// Positioning (Oct 2026): one promise; since 7 Nov 2026, three doors, each with
+// its own page. The copy lives in src/data/offer.ts so the hero, /services and
+// llms.txt say the same thing. The doors arrive as props, joined to their pages
+// on the server (data/siteNav.ts), so this client component doesn't import the
+// solution pages' data to read three labels.
 // The headline used to rotate through "Mobile Apps / AI Platforms / ...", which
 // described a generic agency; it is now static, which also keeps the LCP text
 // stable on first paint.
-export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
+//
+// The call to action is a link to /book, like every other booking link on the
+// site, rather than a button that opened the booking form over the homepage:
+// one booking path, a URL that can be opened in a new tab, and the booking
+// still counted as made from the homepage (?from=home).
+export const Hero = ({ doors }: { doors: WayIn[] }) => {
   return (
     <section className="relative pt-32 pb-20 md:pt-44 md:pb-28 overflow-hidden min-h-screen flex flex-col justify-center">
       <CircuitBackground />
@@ -27,7 +36,9 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
 
       <div className="max-w-7xl mx-auto px-6 relative z-10 text-center">
 
-        {/* Agency badge */}
+        {/* Agency badge. The Fiverr record is the studio's: the profile is in
+            Sameem's name, sells DevoraX's services, and the team delivered the
+            orders (owner decision, 8 Nov 2026). */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -70,29 +81,36 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           {POSITIONING.audience}
         </motion.p>
 
-        {/* Two doors: AI-built apps and marketplaces. Real links into /services. */}
-        <motion.div
+        {/* The three doors, each a real link to its page. The link text is the
+            page's anchor text everywhere on the site (its nav_label); the label
+            above it sits outside the link, and the link's ::after covers the
+            tile, so the whole tile is still the click target. */}
+        <motion.ul
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.35 }}
-          className="grid sm:grid-cols-2 gap-3 max-w-3xl mx-auto mb-12 text-left"
+          className="grid sm:grid-cols-3 gap-3 max-w-4xl mx-auto mb-12 text-left list-none"
         >
-          {DOORS.map((d) => (
-            <Link
+          {doors.map((d) => (
+            <li
               key={d.id}
-              href={`/services#${d.id}`}
-              className="group block rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 backdrop-blur-sm hover:border-teal-500/40 hover:bg-teal-500/[0.05] transition-colors"
+              className="group relative rounded-xl border border-white/10 bg-white/[0.03] px-5 py-4 backdrop-blur-sm hover:border-teal-500/40 hover:bg-teal-500/[0.05] focus-within:border-teal-500/40 transition-colors"
             >
-              <span className="text-[0.65rem] font-semibold uppercase tracking-widest text-teal-400">
+              <span className="block text-[0.65rem] font-semibold uppercase tracking-widest text-teal-400">
                 {d.label}
               </span>
               <span className="mt-1 flex items-center justify-between gap-3 text-sm font-semibold text-white">
-                {d.title}
-                <ArrowRight className="w-4 h-4 flex-shrink-0 text-gray-500 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all" />
+                <Link href={d.href} className="after:absolute after:inset-0 after:content-['']">
+                  {d.anchor}
+                </Link>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="w-4 h-4 flex-shrink-0 text-gray-500 group-hover:text-teal-400 group-hover:translate-x-0.5 transition-all"
+                />
               </span>
-            </Link>
+            </li>
           ))}
-        </motion.div>
+        </motion.ul>
 
         {/* CTA buttons */}
         <motion.div
@@ -101,13 +119,13 @@ export const Hero = ({ onOpenBooking }: { onOpenBooking: () => void }) => {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <button
-            onClick={onOpenBooking}
+          <Link
+            href="/book?from=home"
             className="group w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black rounded-xl font-bold transition-all shadow-[0_0_30px_rgba(45,212,191,0.4)] hover:shadow-[0_0_55px_rgba(45,212,191,0.65)] hover:scale-[1.03] flex items-center justify-center gap-2"
           >
-            Book a Free 30-Minute Call
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+            Book a free 30-minute call
+            <ArrowRight aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
           <a
             href="mailto:business@thedevorax.tech"
             className="w-full sm:w-auto px-10 py-4 bg-transparent text-white border border-white/10 rounded-xl font-bold transition-all flex items-center justify-center gap-2 hover:bg-white/5 hover:border-teal-500/50 group"

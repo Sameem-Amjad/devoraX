@@ -15,7 +15,8 @@ import {
   updateBookingStatusAction,
 } from "@/app/admin/dashboard/_components/adminActions";
 import { useRouter } from "next/navigation";
-import { heardAboutLabel } from "@/lib/booking/attribution";
+import { heardAboutLabel, leadChannelLabel } from "@/lib/booking/attribution";
+import { appLinkHref, builtWithLabel } from "@/lib/booking/brief";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -52,24 +53,70 @@ const STATUS_BOOKING: Record<string, string> = {
 };
 
 // How the visitor heard about us, and where they booked. Every part is
-// optional, and rows from before the attribution migration (or saved while it
-// was still unapplied) have none of it. An answer this build has no label for
-// is shown as stored rather than hidden.
-const BookingSource = ({ heardAbout, bookedFrom, referrerHost }: {
+// optional, and rows from before the attribution migrations (or saved while
+// one was still unapplied) have none of it. An answer this build has no label
+// for is shown as stored rather than hidden.
+const BookingSource = ({ heardAbout, leadChannel, bookedFrom, landingPath, referrerHost }: {
   heardAbout?: string | null;
+  leadChannel?: string | null;
   bookedFrom?: string | null;
+  landingPath?: string | null;
   referrerHost?: string | null;
 }) => {
   const answer = heardAboutLabel(heardAbout) ?? heardAbout;
-  if (!answer && !bookedFrom && !referrerHost) return <span className="text-gray-600">—</span>;
+  const channel = leadChannelLabel(leadChannel) ?? leadChannel;
+  if (!answer && !channel && !bookedFrom && !landingPath && !referrerHost) {
+    return <span className="text-gray-600">—</span>;
+  }
   return (
     <div className="max-w-[14rem] space-y-0.5">
       {answer && <div className="text-gray-300">{answer}</div>}
+      {channel && <div className="text-gray-300">Link on {channel}</div>}
       {bookedFrom && (
         <div className="text-gray-500 truncate" title={bookedFrom}>Booked from {bookedFrom}</div>
       )}
+      {landingPath && (
+        <div className="text-gray-500 truncate" title={landingPath}>Landed on {landingPath}</div>
+      )}
       {referrerHost && (
         <div className="text-gray-500 truncate" title={referrerHost}>Referred by {referrerHost}</div>
+      )}
+    </div>
+  );
+};
+
+// The booking form's optional brief (lib/booking/brief.ts). The link was
+// typed by a visitor, so it is only clickable when it is an http(s) address.
+const BookingBrief = ({ appLink, builtWith, deadline }: {
+  appLink?: string | null;
+  builtWith?: string | null;
+  deadline?: string | null;
+}) => {
+  if (!appLink && !builtWith && !deadline) return null;
+  const href = appLinkHref(appLink);
+  const tool = builtWithLabel(builtWith) ?? builtWith;
+  return (
+    <div className="mt-1.5 max-w-[16rem] space-y-0.5 text-xs text-gray-400">
+      {appLink && (
+        <div className="truncate" title={appLink}>
+          App:{" "}
+          {href ? (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              className="text-teal-400 underline underline-offset-2 hover:text-teal-300"
+            >
+              {appLink}
+            </a>
+          ) : (
+            appLink
+          )}
+        </div>
+      )}
+      {tool && <div>Built with {tool}</div>}
+      {deadline && (
+        <div className="truncate" title={deadline}>Deadline: {deadline}</div>
       )}
     </div>
   );
@@ -489,6 +536,11 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                             <div className="text-gray-500 text-xs flex items-center gap-1 mt-0.5">
                               <Mail className="w-3 h-3" /> {b.email}
                             </div>
+                            <BookingBrief
+                              appLink={b.app_link}
+                              builtWith={b.built_with}
+                              deadline={b.deadline}
+                            />
                           </td>
                           <td className="px-4 py-3 hidden md:table-cell text-gray-400 text-xs">
                             <div className="flex items-center gap-1">
@@ -509,7 +561,9 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                           <td className="px-4 py-3 hidden lg:table-cell text-xs">
                             <BookingSource
                               heardAbout={b.heard_about}
+                              leadChannel={b.lead_channel}
                               bookedFrom={b.booked_from}
+                              landingPath={b.landing_path}
                               referrerHost={b.referrer_host}
                             />
                           </td>

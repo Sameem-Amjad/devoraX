@@ -120,7 +120,7 @@ export const FounderSection = () => {
       >
         <Image
           src="/images/banner.jpg"
-          alt="Sameem Amjad — DevoraX"
+          alt="Sameem Amjad, founder of DevoraX"
           fill
           className="object-cover object-top"
           priority
@@ -249,9 +249,9 @@ export const FounderSection = () => {
             {/* Education & certs */}
             <div className="mt-5 w-full space-y-2">
               {[
-                { icon: GraduationCap, text: "COMSATS University — B.Sc. CS, 2023" },
-                { icon: Award, text: "GDSC Islamabad — Web Dev, 2023" },
-                { icon: Award, text: "Fiverr — Online Freelancing Essentials, 2024" },
+                { icon: GraduationCap, text: "COMSATS University: B.Sc. CS, 2023" },
+                { icon: Award, text: "GDSC Islamabad: Web Dev, 2023" },
+                { icon: Award, text: "Fiverr: Online Freelancing Essentials, 2024" },
               ].map(({ icon: Icon, text }) => (
                 <div
                   key={text}
@@ -276,19 +276,20 @@ export const FounderSection = () => {
               className="space-y-4"
             >
               <p className="text-gray-200 text-lg leading-relaxed">
-                I'm a{" "}
+                I&apos;m a{" "}
                 <span className="text-white font-semibold">
                   Software Engineer specializing in scalable backend architectures
                 </span>{" "}
-                and high-performance full-stack ecosystems. I don't just build
-                applications — I engineer secure, data-driven systems that solve
+                and high-performance full-stack ecosystems. I don&apos;t just build
+                applications: I engineer secure, data-driven systems that solve
                 complex business problems.
               </p>
               <p className="text-gray-400 text-base leading-relaxed">
                 As the{" "}
                 <span className="text-teal-400 font-medium">Founder & Lead Architect Engineer of DevoraX</span>,
-                I run a two-person studio with Usman, our CTO, and we bring in
-                specialists when a scope needs them. As an engineer at Zencloud and
+                I run a two-person studio with Usman, our CTO. Sometimes a designer
+                or another specialist joins a project, and we name them to you
+                before they start. As an engineer at Zencloud and
                 Webrange Solutions I worked on real-time fitness leaderboards, media
                 backends and a Danish power-of-attorney service built to GDPR
                 requirements, across the MERN stack, Next.js, cloud and mobile.
@@ -296,8 +297,7 @@ export const FounderSection = () => {
               <p className="text-gray-500 text-sm leading-relaxed">
                 My approach combines{" "}
                 <span className="text-gray-300">clean, maintainable code</span> with
-                robust cloud infrastructure on AWS — ensuring every product is
-                lightning-fast, scalable, and built to last.
+                cloud infrastructure on AWS that can grow with the product.
               </p>
             </motion.div>
 

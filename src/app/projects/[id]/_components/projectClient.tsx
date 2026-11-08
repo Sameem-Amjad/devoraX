@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { projectDemoUrl, projectGallery, projectVideo } from "@/lib/projectMedia";
 import { industryHref, projectIndustry } from "@/data/industries";
+import { projectEngagement } from "@/data/projectIndex";
 import { ProjectGallery, ProjectVideoPlayer } from "./projectWalkthrough";
 
 // ─── Icon map (matches what's stored in DB) ───────────────────────────────────
@@ -57,6 +58,8 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
   const hasImage   = !!(project.image && project.image !== "null" && project.image !== '""' && String(project.image).startsWith("http"));
 
   const hasPSR = project.problem || project.solution || project.result;
+  // 'unstated': the page says only that Sameem worked on the build.
+  const engagementStated = projectEngagement(project.id) !== "unstated";
 
   // Optional media. Each parses to null/[] when absent or malformed, and the
   // page then renders exactly as it did before these columns existed.
@@ -152,14 +155,17 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
         {/* ── Stats Strip ── */}
         {statsEntries.length > 0 && (
           <div className="mb-14">
+            {/* Three stats stack on a phone: three columns left a value such
+                as "Sharetribe" about 60px, and it pushed the page sideways.
+                overflow-wrap is the backstop for a long value elsewhere. */}
             <div className={`grid gap-4 ${
               statsEntries.length <= 2 ? "grid-cols-2" :
-              statsEntries.length === 3 ? "grid-cols-3" :
+              statsEntries.length === 3 ? "grid-cols-1 sm:grid-cols-3" :
               "grid-cols-2 sm:grid-cols-3 md:grid-cols-4"
             }`}>
               {statsEntries.map(([key, val]) => (
-                <div key={key} className="bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{val}</div>
+                <div key={key} className="min-w-0 bg-[#0a0a0a] border border-white/10 p-5 rounded-2xl text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1 [overflow-wrap:anywhere]">{val}</div>
                   <div className="text-teal-400 text-xs uppercase tracking-wider capitalize">{key}</div>
                 </div>
               ))}
@@ -167,11 +173,13 @@ const ProjectDetailClient = ({ project, trail }: { project: any; trail: Crumb[] 
             {/* This strip used to carry usage, revenue and uptime figures
                 labelled "reported by the client". Public data contradicted
                 several and nothing backed the rest, so they were removed. It now
-                holds facts about the build and who it was for, plus figures shown
-                on a public store listing. */}
+                holds facts about the build and, where that is recorded, who it
+                was for, plus figures shown on a public store listing. A project
+                whose engagement is not recorded (data/projectIndex.ts) claims
+                none here either. */}
             <p className="mt-4 text-xs text-gray-500">
-              Facts about the build and who it was for. Any figure here is shown on a public
-              store listing or site linked on this page —{" "}
+              Facts about the build{engagementStated ? " and who it was for" : ""}. Any figure here
+              is shown on a public store listing or site linked on this page. See{" "}
               <Link href="/terms" className="underline underline-offset-4 hover:text-teal-400">
                 how we present portfolio work
               </Link>
