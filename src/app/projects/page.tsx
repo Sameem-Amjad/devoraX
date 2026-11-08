@@ -5,6 +5,7 @@ import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { JsonLd } from '@/components/seo/structured-data';
 import { absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 import { projectIndustry } from '@/data/industries';
+import { isHiddenProject } from '@/data/projectIndex';
 import { ProjectsGrid } from './_components/projectsGrid';
 
 const BASE_URL = 'https://thedevorax.tech';
@@ -74,7 +75,7 @@ export default async function ProjectsPage() {
     .from('projects')
     .select('*')
     .order('created_at', { ascending: false });
-  const list = projects || [];
+  const list = (projects || []).filter((p) => !isHiddenProject(p.id));
 
   return (
     <>
