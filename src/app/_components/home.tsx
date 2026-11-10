@@ -14,7 +14,8 @@ import { TERMS, nextStartLine, nextStartWeek, termText } from "@/data/terms";
 import type { SiteStat } from "@/data/siteStats";
 import type { WayIn } from "@/data/siteNav";
 import type { NavLink } from "@/data/primaryNav";
-import type { HomePoster, HomeProject } from "@/lib/homeProjects";
+import type { HomeProject, HomeReel } from "@/lib/homeProjects";
+import { SpotlightTracker } from "@/components/ui/spotlightTracker";
 import CONSTANTS from "@/utils/constants/constants";
 
 /**
@@ -25,9 +26,9 @@ import CONSTANTS from "@/utils/constants/constants";
  *
  * A server component. It was one "use client" file that imported every
  * section, so each section's code shipped to the browser whether or not it
- * did anything there. The sections are server components now, except the two
- * that hold state (the pricing views and a project card's walkthrough
- * preview) and the scroll reveal.
+ * did anything there. The sections are server components now, except the
+ * ones that hold state or draw (the hero's backdrop and showcase window, the
+ * pricing views, a project card's walkthrough preview) and the scroll reveal.
  *
  * Sections that left the page in Nov 2026, and where their content went:
  *  - the Fiverr-record strip, the hero's stat strip, the About cards and the
@@ -43,8 +44,8 @@ import CONSTANTS from "@/utils/constants/constants";
 type HomeProps = {
   /** The projects the work grid shows, in order (see src/app/page.tsx). */
   featured: HomeProject[];
-  /** Walkthrough posters for the hero's row. */
-  posters: HomePoster[];
+  /** Walkthroughs for the hero's showcase window. */
+  reels: HomeReel[];
   /** The three door pages and the marketplace hub, joined on the server (data/siteNav.ts). */
   doors: WayIn[];
   marketplace: WayIn;
@@ -83,12 +84,14 @@ function ladderSteps(now: Date): LadderStep[] {
   }));
 }
 
-export default function Home({ featured, posters, doors, marketplace, markets, stats, now }: HomeProps) {
+export default function Home({ featured, reels, doors, marketplace, markets, stats, now }: HomeProps) {
   return (
     <div className="min-h-screen bg-ink font-sans text-paper selection:bg-accent/30">
       {/* Header and footer are rendered site-wide from the root layout. */}
+      {/* Lights the card under the pointer (.spotlight in globals.css). */}
+      <SpotlightTracker />
       <main id="main-content">
-        <Hero doors={doors} posters={posters} startWeek={nextStartWeek(now)} />
+        <Hero doors={doors} reels={reels} startWeek={nextStartWeek(now)} />
         <ProofBand stats={stats} />
         <WorkSection projects={featured} markets={markets} />
         <Services doors={doors} marketplace={marketplace} />

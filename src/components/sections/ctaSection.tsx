@@ -23,7 +23,7 @@ const SIGNALS = ["Free 30-min discovery call", "Prices published up front", "NDA
 
 export const CTASection = ({ startLine }: { startLine: string }) => {
   return (
-    <section aria-labelledby="cta-heading" className="relative overflow-hidden bg-ink py-24 md:py-32">
+    <section aria-labelledby="cta-heading" className="home-section bg-ink py-24 md:py-32">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute bottom-0 left-1/2 h-[420px] w-[min(1000px,100vw)] -translate-x-1/2 bg-[radial-gradient(closest-side,rgba(45,212,191,0.12),transparent)]"
@@ -34,7 +34,7 @@ export const CTASection = ({ startLine }: { startLine: string }) => {
           id="cta-heading"
           className="text-balance font-display text-[clamp(2.4rem,6.6vw,5rem)] font-semibold leading-[1] tracking-[-0.04em] text-paper"
         >
-          Tell us where your app <span className="text-accent">is stuck</span>
+          Tell us where your app <span className="text-shimmer">is stuck</span>
         </h2>
 
         <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper-dim md:text-xl">
@@ -45,7 +45,7 @@ export const CTASection = ({ startLine }: { startLine: string }) => {
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/book?from=home"
-            className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-accent-ink transition-colors hover:bg-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:w-auto"
+            className="btn-glow group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-accent-ink transition-transform duration-300 hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:w-auto"
           >
             Book a free 30-minute call
             <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />

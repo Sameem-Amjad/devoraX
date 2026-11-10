@@ -28,7 +28,7 @@ export const TermsSection = () => {
   );
 
   return (
-    <section aria-labelledby="terms-heading" className="border-b border-rule bg-ink py-24 md:py-32">
+    <section aria-labelledby="terms-heading" className="home-section glow-left bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
           index="04"

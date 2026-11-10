@@ -55,7 +55,7 @@ const STACK: { group: string; tools: string[] }[] = [
 
 export const StackSection = () => {
   return (
-    <section id="tools" aria-labelledby="stack-heading" className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32">
+    <section id="tools" aria-labelledby="stack-heading" className="home-section glow-right scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading index="07" label="Stack" headingId="stack-heading" title="Tools we use">
           <p>The tools we use at each layer of a product, from AI inference to the interface.</p>

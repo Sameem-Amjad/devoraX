@@ -134,7 +134,7 @@ export const Services = ({ doors, marketplace }: { doors: WayIn[]; marketplace: 
     <section
       id="services"
       aria-labelledby="services-heading"
-      className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32"
+      className="home-section glow-left scroll-mt-24 bg-ink py-24 md:py-32"
     >
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading index="02" label="Ways in" headingId="services-heading" title="Where is your app stuck?">
@@ -152,7 +152,7 @@ export const Services = ({ doors, marketplace }: { doors: WayIn[]; marketplace: 
                 as="li"
                 key={card.id}
                 delay={(idx % 2) * 90}
-                className={`group relative flex flex-col overflow-hidden rounded-2xl border border-rule bg-ink-raised p-6 transition-all duration-300 focus-within:border-accent/50 hover:-translate-y-0.5 hover:border-rule-strong md:p-8 ${style.wide ? "md:col-span-2" : ""}`}
+                className={`spotlight group relative flex flex-col overflow-hidden rounded-2xl border border-rule bg-ink-raised p-6 transition-all duration-300 focus-within:border-accent/50 hover:-translate-y-0.5 hover:border-rule-strong md:p-8 ${style.wide ? "md:col-span-2" : ""}`}
               >
                 {/* The dotted field that fades in under the pointer. */}
                 <div

@@ -35,7 +35,7 @@ type WorkSectionProps = {
 
 export const WorkSection = ({ projects, markets }: WorkSectionProps) => {
   return (
-    <section id="work" aria-labelledby="work-heading" className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32">
+    <section id="work" aria-labelledby="work-heading" className="home-section glow-right scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
           index="01"

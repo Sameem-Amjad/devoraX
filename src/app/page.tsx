@@ -7,7 +7,7 @@ import { getSiteStats } from "@/data/siteStats";
 import { INDEXABLE_PROJECTS, isHiddenProject } from "@/data/projectIndex";
 import { DOOR_LINKS, MARKETPLACE_LINK, MARKET_LINKS } from "@/data/siteNav";
 import { JsonLd } from "@/components/seo/structured-data";
-import { homePosters, toHomeProject } from "@/lib/homeProjects";
+import { homeReels, toHomeProject } from "@/lib/homeProjects";
 import { ORGANIZATION_ID, SITE_URL, webPageNode } from "@/lib/seo";
 
 // The positioning line first, brand last, 39 chars.
@@ -65,8 +65,8 @@ const webPage = webPageNode({
 
 /** Cards in the work grid: two columns, three rows. */
 const FEATURED = 6;
-/** Posters in the hero's row. */
-const POSTERS = 12;
+/** Walkthroughs in the hero's showcase window. */
+const REELS = 5;
 
 export default async function HomePage() {
   const supabase = createPublicClient();
@@ -105,8 +105,9 @@ export default async function HomePage() {
           // Only the cards the grid shows, and only the fields a card prints
           // (lib/homeProjects.ts): the rest of the table stays on the server.
           featured={projects.slice(0, FEATURED).map(toHomeProject)}
-          // Newest walkthroughs first, as the table is ordered.
-          posters={homePosters(rows.filter((p) => !isHiddenProject(p.id)), POSTERS)}
+          // The walkthroughs the hero's window plays, in the grid's order:
+          // the allowlisted builds that have one first, then the newest.
+          reels={homeReels(projects, REELS)}
           // Joined to their pages here, on the server, so the client bundle
           // carries three labels and links rather than the pages' data.
           doors={DOOR_LINKS}

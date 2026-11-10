@@ -79,7 +79,7 @@ export function ProjectCard({ project }: { project: HomeProject }) {
     <article
       onPointerEnter={startPreview}
       onPointerLeave={stopPreview}
-      className="group relative flex h-full flex-col rounded-2xl border border-rule bg-ink-raised p-3 transition-colors duration-300 focus-within:border-rule-strong hover:border-rule-strong"
+      className="spotlight group relative flex h-full flex-col rounded-2xl border border-rule bg-ink-raised p-3 transition-colors duration-300 focus-within:border-accent/40 hover:border-accent/40"
     >
       <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-ink-high">
         {cover ? (
