@@ -32,8 +32,8 @@ import type { OfferStepId } from './offer';
  * that has passed, so a missed update shows "ask on the call" rather than a
  * date that is no longer true.
  */
-export const NEXT_START = '2026-11-09';
-export const NEXT_START_UPDATED = '2026-11-07';
+export const NEXT_START = '2026-11-16';
+export const NEXT_START_UPDATED = '2026-11-10';
 
 /** The audit report usually arrives this many working days after we get access to the code. */
 export const AUDIT_TURNAROUND_WORKING_DAYS = 2;
@@ -46,9 +46,10 @@ export const AUDIT_CREDIT_STEPS: OfferStepId[] = ['sprint', 'payments', 'launch'
  * 2026: the check-ins row; specialists in who-works; the overrun row covers
  * every written quote; the launch and Payments billed in $1,200 weeks; one
  * release quoted per change after the defect window; the accounts default in
- * the ownership row, which the doors now show.
+ * the ownership row, which the doors now show. 10 Nov 2026: the payment row
+ * says the same prices apply on Upwork, which adds its own client fee.
  */
-export const TERMS_DATA_UPDATED = '2026-11-08T00:00:00.000Z';
+export const TERMS_DATA_UPDATED = '2026-11-10T00:00:00.000Z';
 
 /** Where a row renders: the door pages' block, the full Q&A on /pricing, the listing kit. */
 export type TermSurface = 'doors' | 'pricing' | 'kit';
@@ -113,7 +114,7 @@ export const TERMS: Term[] = [
     id: 'payment',
     question: 'How do I pay?',
     answer:
-      'The audit is paid up front, and the written report is yours whatever you decide. Sprints, the Payments step and the iOS and Android launch are billed weekly, in advance, in $1,200 weeks: Payments from $1,200 is one week, Connect payouts from $2,400 and the launch from $2,400 are two weeks each.',
+      'The audit is paid up front, and the written report is yours whatever you decide. Sprints, the Payments step and the iOS and Android launch are billed weekly, in advance, in $1,200 weeks: Payments from $1,200 is one week, Connect payouts from $2,400 and the launch from $2,400 are two weeks each. Prefer platform protection? You can hire us on Upwork at the same prices; Upwork adds its own client fee.',
     surfaces: ['doors', 'pricing', 'kit'],
   },
   {
