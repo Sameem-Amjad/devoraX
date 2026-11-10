@@ -53,7 +53,7 @@ const PEOPLE = [
 
 export const FoundersSection = () => {
   return (
-    <section id="about" aria-labelledby="about-heading" className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32">
+    <section id="about" aria-labelledby="about-heading" className="home-section glow-right scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20">
         <div>
           <SectionHeading index="05" label="The studio" headingId="about-heading" title="Who finishes your app" />
@@ -93,7 +93,7 @@ export const FoundersSection = () => {
                 as="li"
                 key={person.name}
                 delay={i * 110}
-                className="flex flex-col rounded-2xl border border-rule bg-ink-raised p-3"
+                className="spotlight flex flex-col rounded-2xl border border-rule bg-ink-raised p-3"
               >
                 <div className="relative aspect-square overflow-hidden rounded-xl bg-ink-high">
                   <Image

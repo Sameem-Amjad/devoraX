@@ -44,7 +44,7 @@ export const ReviewsSection = () => {
     <section
       id="testimonials"
       aria-labelledby="reviews-heading"
-      className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32"
+      className="home-section glow-left scroll-mt-24 bg-ink py-24 md:py-32"
     >
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading index="06" label="Reviews" headingId="reviews-heading" title="Reviews from our Fiverr clients">
@@ -73,7 +73,7 @@ export const ReviewsSection = () => {
               as="li"
               key={review.username}
               delay={(i % 3) * 80}
-              className="flex w-[86%] flex-shrink-0 snap-center break-inside-avoid flex-col rounded-2xl border border-rule bg-ink-raised p-7 md:mb-5 md:w-auto"
+              className="spotlight flex w-[86%] flex-shrink-0 snap-center break-inside-avoid flex-col rounded-2xl border border-rule bg-ink-raised p-7 md:mb-5 md:w-auto"
             >
               <div className="flex items-center justify-between gap-4">
                 <span className="flex gap-0.5" role="img" aria-label={`${review.rating} out of 5 stars`}>

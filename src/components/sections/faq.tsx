@@ -22,7 +22,7 @@ import { SectionHeading } from './sectionHeading';
 
 export const FAQSection = () => {
   return (
-    <section id="faq" aria-labelledby="faq-heading" className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32">
+    <section id="faq" aria-labelledby="faq-heading" className="home-section glow-left scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-x-16 px-6 lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)]">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <SectionHeading index="08" label="FAQ" headingId="faq-heading" title="Questions we always get">

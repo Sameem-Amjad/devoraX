@@ -29,8 +29,22 @@ export type HomeProject = {
   web: string | null;
 };
 
-/** A walkthrough poster for the hero's row: the image and the project it shows. */
-export type HomePoster = { src: string; title: string };
+/**
+ * One walkthrough in the hero's showcase: the recording, its poster, and the
+ * three lines printed under it. Every string is the row's own.
+ */
+export type HomeReel = {
+  id: number;
+  title: string;
+  /** The stack line, e.g. "Next.js & Supabase". */
+  category: string;
+  /** What a reader can check today; the caption's second line. */
+  result: string | null;
+  src: string;
+  poster: string;
+  /** "2:06" */
+  length: string;
+};
 
 type Row = Record<string, unknown>;
 
@@ -72,13 +86,22 @@ export function toHomeProject(row: Row): HomeProject {
   };
 }
 
-/** The walkthrough posters of the projects that have one, in the order given. */
-export function homePosters(rows: Row[], limit: number): HomePoster[] {
-  const posters: HomePoster[] = [];
+/** The first `limit` projects that have a walkthrough, in the order given. */
+export function homeReels(rows: Row[], limit: number): HomeReel[] {
+  const reels: HomeReel[] = [];
   for (const row of rows) {
     const video = projectVideo(row.video);
-    if (video) posters.push({ src: video.poster, title: text(row.title) });
-    if (posters.length === limit) break;
+    if (!video) continue;
+    reels.push({
+      id: Number(row.id),
+      title: text(row.title),
+      category: text(row.category),
+      result: text(row.result) || null,
+      src: video.src,
+      poster: video.poster,
+      length: durationLabel(video.duration),
+    });
+    if (reels.length === limit) break;
   }
-  return posters;
+  return reels;
 }

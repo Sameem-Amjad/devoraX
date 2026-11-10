@@ -61,23 +61,6 @@
     }
 }
 
-/* Marquee: the track holds its items twice, so -50% is one full loop. */
-@keyframes marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-}
-.animate-marquee {
-    animation: marquee 28s linear infinite;
-}
-/* The hero's row of walkthrough posters: slow enough to read a poster as it
-   passes, and it stops under the pointer. */
-.animate-marquee-slow {
-    animation: marquee 90s linear infinite;
-}
-.marquee-pause:hover .animate-marquee-slow {
-    animation-play-state: paused;
-}
-
 /* Scroll reveal (components/ui/reveal.tsx). Content is visible by default, so
    the server HTML and a browser without JavaScript show everything. The
    component marks only what is still below the fold as "pending", then
@@ -94,21 +77,212 @@
         transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* The hero's faint engineering grid, faded out toward the edges. */
-.hero-grid {
-    background-image:
-        linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
-        linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 75% 60% at 50% 30%, black 20%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 30%, black 20%, transparent 75%);
+/* ─── The hero's backdrop (components/ui/heroBackdrop.tsx) ───
+
+   Four layers, back to front: three slow lights, the engineering grid, the
+   same grid drawn brighter and shown only around the pointer, and a canvas of
+   signals running along the grid's lines. The first two are what the old hero
+   had (its grid, glow and drifting blobs); the last two are new. */
+
+/* The lights. Each is a radial gradient, soft by construction, and is only
+   ever moved or scaled, which the compositor does without repainting. They
+   were blurred, screen-blended boxes at first: on a throttled phone profile
+   that alone made 62% of scroll frames slow, because a blend needs the pixels
+   behind it on every frame. As gradients they cost nothing to scroll. */
+.aurora {
+    position: absolute;
+    border-radius: 9999px;
+    will-change: transform;
+}
+@keyframes aurora-a {
+    0%, 100% { transform: translate(-50%, 0) scale(1); }
+    50%      { transform: translate(-46%, 6%) scale(1.14); }
+}
+@keyframes aurora-b {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33%      { transform: translate(60px, -40px) scale(1.1); }
+    66%      { transform: translate(-40px, 50px) scale(0.94); }
+}
+@keyframes aurora-c {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50%      { transform: translate(-70px, -50px) scale(1.16); }
+}
+.aurora-a {
+    background: radial-gradient(closest-side, rgb(45 212 191 / 0.4), rgb(45 212 191 / 0.12) 55%, transparent);
+    animation: aurora-a 14s ease-in-out infinite;
+}
+.aurora-b {
+    background: radial-gradient(closest-side, rgb(34 211 238 / 0.2), transparent);
+    animation: aurora-b 19s ease-in-out infinite;
+}
+.aurora-c {
+    background: radial-gradient(closest-side, rgb(16 185 129 / 0.2), transparent);
+    animation: aurora-c 23s ease-in-out infinite;
 }
 
-/* Reduced motion: no marquee and no reveal movement. Framer Motion follows the
-   same setting through MotionProvider. */
+/* The grid, faded out toward the edges. The canvas above it shares the mask,
+   so a signal fades where its line does. */
+.hero-grid,
+.hero-grid-lit,
+.hero-mask {
+    mask-image: radial-gradient(ellipse 85% 75% at 50% 32%, black 25%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 32%, black 25%, transparent 80%);
+}
+.hero-grid {
+    background-image:
+        linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+}
+/* The same lines in the accent, visible in a circle around the pointer.
+   --mx and --my are set by the component; off-screen until the pointer moves. */
+.hero-grid-lit {
+    background-image:
+        linear-gradient(to right, rgb(45 212 191 / 0.5) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(45 212 191 / 0.5) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), black, transparent 70%);
+    -webkit-mask-image: radial-gradient(240px circle at var(--mx, -999px) var(--my, -999px), black, transparent 70%);
+}
+.hero-pointer-light {
+    background: radial-gradient(420px circle at var(--mx, -999px) var(--my, -999px), rgb(45 212 191 / 0.1), transparent 70%);
+}
+
+/* ─── The hero's type and buttons ─── */
+
+/* The headline and the promise arrive by rising into focus. Transform and
+   blur only, never opacity: both are candidates for the largest contentful
+   paint and must be painted from the first frame. */
+@keyframes rise-in {
+    from { transform: translateY(26px); filter: blur(12px); }
+    to   { transform: none; filter: none; }
+}
+/* Smaller pieces may fade. */
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: none; }
+}
+.rise-in { animation: rise-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.fade-up { animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* "stuck apps": the brand gradient, moving, with the glow the old headline had. */
+@keyframes shimmer {
+    to { background-position: -200% 0; }
+}
+.text-shimmer {
+    background-image: linear-gradient(100deg, #22d3ee 0%, #2dd4bf 25%, #6ee7b7 50%, #2dd4bf 75%, #22d3ee 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 7s linear infinite;
+    filter: drop-shadow(0 0 34px rgb(45 212 191 / 0.4));
+}
+
+/* The primary button: a glow, and a sheen that crosses it every few seconds. */
+@keyframes sheen {
+    0%, 62% { transform: translateX(-140%) skewX(-20deg); }
+    100%    { transform: translateX(340%) skewX(-20deg); }
+}
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 0 0 1px rgb(45 212 191 / 0.45),
+        0 12px 44px -10px rgb(45 212 191 / 0.7);
+}
+.btn-glow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 38%;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.5), transparent);
+    animation: sheen 5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* The showcase's progress line under the active reel. */
+@keyframes reel-progress {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+.reel-progress {
+    transform-origin: left;
+    animation: reel-progress linear both;
+}
+
+/* ─── Section atmosphere ───
+
+   Each homepage section carries a beam along its top edge and one soft light
+   to one side, so the page below the hero is lit rather than flat. Both are
+   pseudo-elements: no extra markup, and nothing for a screen reader. */
+.home-section {
+    position: relative;
+    /* clip, not hidden: hidden would make the section a scroll container and
+       stop the FAQ's heading from sticking. */
+    overflow: clip;
+    isolation: isolate;
+}
+.home-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: min(880px, 82%);
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, rgb(45 212 191 / 0.55), transparent);
+    z-index: 1;
+}
+.home-section::after {
+    content: "";
+    position: absolute;
+    top: -180px;
+    width: 720px;
+    height: 620px;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: -1;
+}
+.home-section.glow-left::after {
+    left: -260px;
+    background: radial-gradient(closest-side, rgb(20 184 166 / 0.13), transparent);
+}
+.home-section.glow-right::after {
+    right: -260px;
+    background: radial-gradient(closest-side, rgb(34 211 238 / 0.11), transparent);
+}
+
+/* A card that lights up under the pointer. --sx and --sy are set on the card
+   by components/ui/spotlightTracker.tsx, one listener for the whole page. */
+.spotlight {
+    position: relative;
+}
+.spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(460px circle at var(--sx, 50%) var(--sy, 50%), rgb(45 212 191 / 0.13), transparent 62%);
+}
+.spotlight:hover::before {
+    opacity: 1;
+}
+
+/* Reduced motion: nothing loops and nothing travels. Framer Motion follows the
+   same setting through MotionProvider; the backdrop's canvas checks it itself. */
 @media (prefers-reduced-motion: reduce) {
-    .animate-marquee,
-    .animate-marquee-slow {
+    .aurora-a,
+    .aurora-b,
+    .aurora-c,
+    .text-shimmer,
+    .btn-glow::after,
+    .rise-in,
+    .fade-up,
+    .reel-progress {
         animation: none;
     }
     .reveal[data-reveal="pending"] {

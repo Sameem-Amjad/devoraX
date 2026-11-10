@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { CountUp } from "@/components/ui/countUp";
 import { Reveal } from "@/components/ui/reveal";
 import { FIVERR_PROFILE_URL } from "@/data/testimonials";
 import type { SiteStat } from "@/data/siteStats";
@@ -15,12 +16,13 @@ import type { SiteStat } from "@/data/siteStats";
  * Every figure comes from src/data/siteStats.ts, where each is something a
  * buyer can check today: the public Fiverr record, the team page, or a store
  * listing linked from the portfolio (that count is computed from the projects
- * table on the server). The values are plain text in the server HTML: no
- * count-up from zero, which once published "0+" to every crawler.
+ * table on the server). The server HTML carries the real values; the count-up
+ * (components/ui/countUp.tsx) only animates them in the browser. An earlier
+ * counter rendered zero on the server and published "0+" to every crawler.
  */
 export const ProofBand = ({ stats }: { stats: SiteStat[] }) => {
   return (
-    <section aria-labelledby="proof-heading" className="border-b border-rule bg-ink">
+    <section aria-labelledby="proof-heading" className="home-section bg-ink">
       <Reveal className="mx-auto max-w-7xl px-6 py-14 md:py-16">
         <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <h2 id="proof-heading" className="font-display text-2xl font-semibold tracking-[-0.02em] text-paper">
@@ -50,7 +52,7 @@ export const ProofBand = ({ stats }: { stats: SiteStat[] }) => {
                 </span>
               </dt>
               <dd className="font-display text-4xl font-semibold tabular-nums tracking-[-0.03em] text-paper md:text-5xl">
-                {stat.value.toFixed(stat.decimals ?? 0)}
+                <CountUp value={stat.value} decimals={stat.decimals ?? 0} />
                 {stat.suffix && <span className="text-accent">{stat.suffix}</span>}
               </dd>
             </div>
