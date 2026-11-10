@@ -272,6 +272,40 @@
     opacity: 1;
 }
 
+/* ─── The site's cursor (components/ui/siteCursor.tsx) ───
+
+   A dot and a lagging ring, ported from the portfolio in this site's colours.
+   The native cursor is hidden only where the custom one runs: the class goes
+   on <body> from the component, on devices with a mouse or trackpad.
+   `difference` keeps the pair visible on anything: teal on the dark page,
+   dark on the teal buttons. */
+@media (hover: hover) and (pointer: fine) {
+    .custom-cursor-on,
+    .custom-cursor-on * {
+        cursor: none !important;
+    }
+}
+.cursor-dot,
+.cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+    border-radius: 9999px;
+    mix-blend-mode: difference;
+}
+.cursor-dot {
+    width: 7px;
+    height: 7px;
+    background: #2dd4bf;
+}
+.cursor-ring {
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgb(243 241 236 / 0.6);
+}
+
 /* Reduced motion: nothing loops and nothing travels. Framer Motion follows the
    same setting through MotionProvider; the backdrop's canvas checks it itself. */
 @media (prefers-reduced-motion: reduce) {

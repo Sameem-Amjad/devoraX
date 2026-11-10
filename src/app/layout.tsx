@@ -6,6 +6,7 @@ import { VisitTracker } from '@/components/ui/visitTracker';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { MotionProvider } from '@/components/ui/motionProvider';
+import { SiteCursor } from '@/components/ui/siteCursor';
 import { JsonLd } from '@/components/seo/structured-data';
 import { BRAND_FACTS, ENTITY_STATEMENT, ORG_PROFILES, SITE_URL } from '@/data/brand';
 import { POSITIONING } from '@/data/offer';
@@ -393,6 +394,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <SiteHeader />
           {children}
           <SiteFooter />
+          {/* The dot, ring and trail that replace the pointer on a mouse or
+              trackpad. Renders nothing on touch devices, under reduced
+              motion, on /admin, or before JavaScript runs. */}
+          <SiteCursor />
         </MotionProvider>
         <CookieConsent />
         {/* Where a visit began and the page before /book, for the booking
