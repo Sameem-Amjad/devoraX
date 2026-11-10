@@ -1,134 +1,212 @@
-"use client";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight, ShieldCheck, ShoppingCart, Smartphone, Store } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 import type { WayIn } from "@/data/siteNav";
+import { SectionHeading } from "./sectionHeading";
 
-// The three door pages and the marketplace hub (7 Nov 2026). This grid used to
-// show eight cards: the four database services, whose /services/{id} pages now
-// redirect, and four fillers ("E-Commerce Solutions", "Data & Analytics", "API &
-// Integrations", "Secure-by-Default Builds") that described no page and no
-// offer. The cards and their copy come from data/offer.ts through
-// data/siteNav.ts, the same source as the hero, /services and the footer.
+// The three door pages and the marketplace hub (7 Nov 2026). The cards and
+// their copy come from data/offer.ts through data/siteNav.ts, the same source
+// as the hero, /services and the footer. Nothing was added to the four: an
+// earlier grid padded them to eight with services no page sells.
+//
+// Layout (Nov 2026): a bento grid, two wide cards and two narrow ones, adapted
+// from the "Bento Grid" component on 21st.dev (kokonutd/bento-grid). It
+// replaced four equal columns in which the first card's copy ran to 26 lines
+// beside 9-line neighbours. Each card ends in a small diagram of what the work
+// involves, drawn from the words of its own body copy and nothing else.
 //
 // Each card's link text is its page's anchor text everywhere on the site (a
 // door page's nav_label) and nothing else: the label, the copy and the price
 // sit outside the link. The link's ::after covers the whole card, so the card
 // is still one click target.
-const STYLE: Record<string, { icon: React.ReactNode; gradient: string; glow: string }> = {
+type Visual =
+  | { kind: "flow"; steps: string[] }
+  | { kind: "verdicts" }
+  | { kind: "surfaces"; parts: string[]; base: string };
+
+const STYLE: Record<string, { icon: React.ReactNode; status: string; wide: boolean; visual: Visual }> = {
   "app-store": {
-    icon: <Smartphone className="w-6 h-6" aria-hidden="true" />,
-    gradient: "from-teal-500 to-emerald-500",
-    glow: "rgba(20,184,166,0.3)",
+    icon: <Smartphone className="h-5 w-5" aria-hidden="true" />,
+    status: "App you already have",
+    wide: true,
+    visual: {
+      kind: "flow",
+      steps: ["Native shell", "Store listing", "App Privacy details", "Data safety form", "Submission"],
+    },
   },
   sharetribe: {
-    icon: <Store className="w-6 h-6" aria-hidden="true" />,
-    gradient: "from-cyan-500 to-blue-500",
-    glow: "rgba(6,182,212,0.3)",
+    icon: <Store className="h-5 w-5" aria-hidden="true" />,
+    status: "App you already have",
+    wide: false,
+    visual: { kind: "flow", steps: ["Custom features", "Seller payouts", "iOS and Android app"] },
   },
   "vibe-code-audit": {
-    icon: <ShieldCheck className="w-6 h-6" aria-hidden="true" />,
-    gradient: "from-violet-500 to-purple-500",
-    glow: "rgba(139,92,246,0.3)",
+    icon: <ShieldCheck className="h-5 w-5" aria-hidden="true" />,
+    status: "App you already have",
+    wide: false,
+    visual: { kind: "verdicts" },
   },
   "new-marketplace": {
-    icon: <ShoppingCart className="w-6 h-6" aria-hidden="true" />,
-    gradient: "from-orange-500 to-amber-500",
-    glow: "rgba(249,115,22,0.3)",
+    icon: <ShoppingCart className="h-5 w-5" aria-hidden="true" />,
+    status: "New build",
+    wide: true,
+    visual: {
+      kind: "surfaces",
+      parts: ["Buyer app or storefront", "Vendor portal", "Admin console"],
+      base: "One backend",
+    },
   },
 };
 const FALLBACK = STYLE["app-store"];
+
+// A chip's shape and its colours are separate strings: two text-colour
+// utilities on one element are settled by the stylesheet's order, not the
+// class attribute's.
+const chipShape = "rounded-md border px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.1em]";
+const chipPlain = `${chipShape} border-rule bg-white/[0.03] text-paper-dim`;
+const chipAccent = `${chipShape} border-accent/40 bg-accent/[0.06] text-accent`;
+
+function CardVisual({ visual, wide }: { visual: Visual; wide: boolean }) {
+  if (visual.kind === "verdicts") {
+    // The audit's three verdicts, in the words of the card's own copy.
+    return (
+      <div aria-hidden="true" className="flex flex-wrap gap-2">
+        <span className={`${chipShape} border-emerald-400/40 bg-emerald-400/[0.06] text-emerald-300`}>Keep</span>
+        <span className={`${chipShape} border-amber-400/40 bg-amber-400/[0.06] text-amber-300`}>Harden</span>
+        <span className={`${chipShape} border-rose-400/40 bg-rose-400/[0.06] text-rose-300`}>Rebuild</span>
+      </div>
+    );
+  }
+  if (visual.kind === "surfaces") {
+    return (
+      <div aria-hidden="true">
+        <div className="grid grid-cols-3 gap-2">
+          {visual.parts.map((part) => (
+            <span key={part} className={`${chipPlain} flex min-h-16 items-center justify-center text-center`}>
+              {part}
+            </span>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          {visual.parts.map((part) => (
+            <span key={part} className="mx-auto h-5 w-px bg-rule-strong" />
+          ))}
+        </div>
+        <span className={`${chipAccent} block py-3 text-center`}>{visual.base}</span>
+      </div>
+    );
+  }
+  if (wide) {
+    // The steps down a rail, the last one in the accent.
+    return (
+      <ol aria-hidden="true" className="list-none space-y-3 border-l border-rule-strong pl-6">
+        {visual.steps.map((step, i) => {
+          const last = i === visual.steps.length - 1;
+          return (
+            <li key={step} className="relative flex items-center gap-3">
+              <span
+                className={`absolute -left-[1.78rem] h-2 w-2 rounded-full ${last ? "bg-accent" : "bg-paper-faint"}`}
+              />
+              <span className="font-mono text-[0.62rem] text-paper-faint">{String(i + 1).padStart(2, "0")}</span>
+              <span className={last ? chipAccent : chipPlain}>{step}</span>
+            </li>
+          );
+        })}
+      </ol>
+    );
+  }
+  return (
+    <div aria-hidden="true" className="flex flex-wrap items-center gap-x-1.5 gap-y-2">
+      {visual.steps.map((step, i) => (
+        <span key={step} className="flex items-center gap-1.5">
+          {i > 0 && <span className="text-paper-faint">→</span>}
+          <span className={i === visual.steps.length - 1 ? chipAccent : chipPlain}>{step}</span>
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export const Services = ({ doors, marketplace }: { doors: WayIn[]; marketplace: WayIn }) => {
   const cards = [...doors, marketplace];
 
   return (
-    <section id="services" aria-labelledby="services-heading" className="py-32 bg-black relative border-t border-white/5 overflow-hidden">
-      {/* Ambient glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-900/8 blur-[140px] rounded-full pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-teal-900/8 blur-[120px] rounded-full pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-20"
-        >
-          <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-4 px-4 py-1.5 rounded-full bg-teal-500/5 border border-teal-500/20">
-            What We Do
-          </span>
-          <h2 id="services-heading" className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-            Where is your app{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-400">
-              stuck?
-            </span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+    <section
+      id="services"
+      aria-labelledby="services-heading"
+      className="scroll-mt-24 border-b border-rule bg-ink py-24 md:py-32"
+    >
+      <div className="mx-auto max-w-7xl px-6">
+        <SectionHeading index="02" label="Ways in" headingId="services-heading" title="Where is your app stuck?">
+          <p>
             Three ways in for an app you already have, and fixed-price builds for a new
             marketplace. Each one starts with a free 30-minute call.
           </p>
-        </motion.div>
+        </SectionHeading>
 
-        <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 list-none">
+        <ul className="grid list-none grid-cols-1 gap-4 md:grid-cols-3">
           {cards.map((card, idx) => {
             const style = STYLE[card.id] ?? FALLBACK;
             return (
-              <motion.li
+              <Reveal
+                as="li"
                 key={card.id}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.07 }}
-                className="group relative p-7 rounded-2xl bg-[#0a0a0a] border border-white/5 hover:border-white/15 focus-within:border-teal-500/40 transition-all duration-300 overflow-hidden flex flex-col"
+                delay={(idx % 2) * 90}
+                className={`group relative flex flex-col overflow-hidden rounded-2xl border border-rule bg-ink-raised p-6 transition-all duration-300 focus-within:border-accent/50 hover:-translate-y-0.5 hover:border-rule-strong md:p-8 ${style.wide ? "md:col-span-2" : ""}`}
               >
-                {/* Gradient top accent */}
-                <div
-                  className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${style.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
-                />
-
-                {/* Background glow on hover */}
-                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-                {/* Icon */}
-                <div
-                  className="relative w-12 h-12 rounded-xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300"
-                  style={{ background: `linear-gradient(135deg, ${style.glow.replace("0.3", "0.2")}, transparent)`, border: `1px solid ${style.glow}` }}
-                >
-                  {style.icon}
-                </div>
-
-                <span className="relative text-[0.65rem] font-semibold uppercase tracking-widest text-teal-400 mb-2">
-                  {card.label}
-                </span>
-                <h3 className="text-lg font-bold text-white mb-3">
-                  {/* z-10 lifts the ::after over the text below, which is
-                      positioned, so a click anywhere on the card lands here. */}
-                  <Link
-                    href={card.href}
-                    className="after:absolute after:inset-0 after:z-10 after:content-['']"
-                  >
-                    {card.anchor}
-                  </Link>
-                </h3>
-                <p className="text-sm text-gray-500 leading-relaxed relative flex-grow">
-                  {card.body}
-                </p>
-
-                {card.price && (
-                  <p className="relative mt-5 text-xs font-semibold text-teal-400">{card.price}</p>
-                )}
-
-                {/* Visual cue only: the link is the heading above. */}
+                {/* The dotted field that fades in under the pointer. */}
                 <div
                   aria-hidden="true"
-                  className="mt-5 flex items-center gap-1.5 text-xs font-semibold text-gray-600 group-hover:text-teal-400 transition-colors relative"
-                >
-                  <span>Learn more</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.07)_1px,transparent_1px)] bg-[length:6px_6px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                />
+
+                <div className="relative flex items-center justify-between gap-4">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-rule bg-white/[0.04] text-accent">
+                    {style.icon}
+                  </span>
+                  <span className="rounded-full border border-rule bg-white/[0.04] px-3 py-1 font-mono text-[0.62rem] uppercase tracking-[0.14em] text-paper-faint">
+                    {style.status}
+                  </span>
                 </div>
-              </motion.li>
+
+                {/* A wide card sets its copy beside its diagram; a narrow one
+                    stacks them. */}
+                <div
+                  className={`mt-8 flex-grow ${
+                    style.wide ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:items-center md:gap-12" : ""
+                  }`}
+                >
+                  <div>
+                    <span className="relative font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent">
+                      {card.label}
+                    </span>
+                    <h3 className="relative mt-2 font-display text-2xl font-semibold tracking-[-0.02em] text-paper md:text-[1.75rem]">
+                      {/* z-10 lifts the ::after over the positioned text below,
+                          so a click anywhere on the card lands here. */}
+                      <Link href={card.href} className="after:absolute after:inset-0 after:z-10 after:content-['']">
+                        {card.anchor}
+                      </Link>
+                    </h3>
+                    <p className="relative mt-4 text-[0.95rem] leading-relaxed text-paper-dim">{card.body}</p>
+                  </div>
+
+                  <div className={`relative mt-8 ${style.wide ? "md:mt-0" : ""}`}>
+                    <CardVisual visual={style.visual} wide={style.wide} />
+                  </div>
+                </div>
+
+                <div className="relative mt-8 flex items-end justify-between gap-6 border-t border-rule pt-5">
+                  <p className="text-sm font-medium text-paper">{card.price}</p>
+                  {/* Visual cue only: the link is the heading above. */}
+                  <span
+                    aria-hidden="true"
+                    className="flex flex-shrink-0 items-center gap-1.5 text-sm font-semibold text-paper-faint transition-colors group-hover:text-accent"
+                  >
+                    Learn more
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </Reveal>
             );
           })}
         </ul>

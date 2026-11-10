@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { RippleEffect } from '@/components/ui/rippleEffect';
 import { CookieConsent } from '@/components/ui/cookieConsent';
 import { VisitTracker } from '@/components/ui/visitTracker';
 import { SiteHeader } from '@/components/layout/site-header';
@@ -387,7 +386,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to main content
         </a>
-        <RippleEffect />
         <MotionProvider>
           {/* Header and footer live here so every route has them. They used to be
               rendered inside the homepage client component, which left most of the

@@ -1,7 +1,5 @@
 // --- Configuration & Data ---
 
-import { Search, Layers, Code2, Rocket, TrendingUp } from "lucide-react";
-
 // The brand is DevoraX — the domain, the Organization schema `name`, the logo
 // and every case study say so. This constant said "Devora", which is what the
 // hero, the about section and the logo rendered, so the homepage referred to the
@@ -9,9 +7,6 @@ import { Search, Layers, Code2, Rocket, TrendingUp } from "lucide-react";
 // mentions are the single strongest correlate for being surfaced by generative
 // engines, and splitting them across two spellings splits the signal.
 const AGENCY_NAME = "DevoraX";
-const CEO_NAME = "Sameem Amjad";
-const PRIMARY_GRADIENT = "from-cyan-400 via-teal-400 to-emerald-400";
-const GLOW_COLOR = "group-hover:shadow-[0_0_25px_rgba(45,212,191,0.5)]";
 
 // PORTFOLIO_ITEMS, removed on 8 Nov 2026, was never imported. It still held
 // claims the site has no source for ("AI-driven recommendations built on
@@ -24,51 +19,13 @@ const GLOW_COLOR = "group-hover:shadow-[0_0_25px_rgba(45,212,191,0.5)]";
 // with services no page sells: "E-Commerce Solutions", "Data & Analytics",
 // "API & Integrations" and the like.
 
-const PROCESS_STEPS = [
-  {
-    number: "01",
-    title: "Discover",
-    description: "We deep-dive into your vision, user needs, and competitive landscape. Every great product starts with the right questions.",
-    icon: <Search className="w-6 h-6" />,
-    color: "teal",
-  },
-  {
-    number: "02",
-    title: "Architect",
-    description: "Our engineers design a scalable system blueprint, choosing the right stack, data models, and infrastructure patterns before a single line of code.",
-    icon: <Layers className="w-6 h-6" />,
-    color: "cyan",
-  },
-  {
-    number: "03",
-    title: "Build",
-    // The four check-in practices confirmed on 8 Nov 2026, and nothing more.
-    description: "Sprints with a video demo of progress and a short written update every week, a shared project board, and a Slack or WhatsApp channel with Sameem and Usman.",
-    icon: <Code2 className="w-6 h-6" />,
-    color: "emerald",
-  },
-  {
-    number: "04",
-    title: "Launch",
-    description: "Deployment, performance checks and go-live support. We treat launch day as the beginning, not the end.",
-    icon: <Rocket className="w-6 h-6" />,
-    color: "blue",
-  },
-  {
-    number: "05",
-    title: "Scale",
-    description: "Post-launch monitoring, feature iteration, and infrastructure scaling. After launch we stay on for fixes and new releases if you want us: monthly care, or a single release quoted per change.",
-    icon: <TrendingUp className="w-6 h-6" />,
-    color: "violet",
-  },
-];
-
-const TECH_STACK = [
-  "React", "Next.js", "TypeScript", "Node.js", "Python", "Flutter",
-  "React Native", "AWS", "Docker", "Kubernetes", "PostgreSQL", "MongoDB",
-  "Redis", "GraphQL", "Tailwind CSS", "Framer Motion", "Prisma", "Supabase",
-  "Vercel", "Stripe", "OpenAI", "LangChain", "Terraform", "GitHub Actions",
-];
+// PROCESS_STEPS and TECH_STACK, removed on 10 Nov 2026 with the sections that
+// printed them. The five generic steps ("Discover, Architect, Build, Launch,
+// Scale") gave way to the offer ladder (data/offer.ts), which is the process
+// for an app that already exists, and the 24-item technology marquee to the
+// stack table (components/sections/stack.tsx), which keeps every tool the
+// marquee and the toolbox listed. CEO_NAME, PRIMARY_GRADIENT and GLOW_COLOR
+// went with them: nothing read them any more.
 
 const PRICING_PLANS = [
   {
@@ -115,11 +72,6 @@ const PRICING_PLANS = [
 // name from AGENCY_NAME.
 const CONSTANTS = {
   AGENCY_NAME,
-  CEO_NAME,
-  PRIMARY_GRADIENT,
-  GLOW_COLOR,
-  PROCESS_STEPS,
-  TECH_STACK,
   PRICING_PLANS
 };
 

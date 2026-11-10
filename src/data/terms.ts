@@ -219,3 +219,12 @@ export function nextStartLine(now: Date): string {
   if (nextStartPassed(now)) return 'Ask on the call: our next start date is updated weekly.';
   return `We can start a new sprint in the week of ${longDate(NEXT_START)} (updated ${longDate(NEXT_START_UPDATED)}).`;
 }
+
+/**
+ * The start week on its own ("16 November 2026"), for a short label such as the
+ * homepage hero's status line, or null once that week has passed. The caller
+ * then shows something else rather than a date that is no longer true.
+ */
+export function nextStartWeek(now: Date): string | null {
+  return nextStartPassed(now) ? null : longDate(NEXT_START);
+}

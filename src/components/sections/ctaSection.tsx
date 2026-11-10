@@ -1,92 +1,75 @@
-"use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, CalendarDays, MessageSquare, Check } from "lucide-react";
-import { FloatingBubbles } from "@/components/ui/floatingBubbles";
+import { ArrowRight, Check, Mail } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 
-// The booking button is a link to /book?from=home, the same booking page and
-// label as everywhere else on the site. It opened the booking form over the
-// homepage, under a "strategy call" name the site no longer uses.
-export const CTASection = () => {
+/**
+ * The last section: one ask, in the offer's own words.
+ *
+ * The headline was "Let's build your next big thing.", a line for a general
+ * agency, over floating bubbles. It now asks what the free call asks
+ * (data/offer.ts: "Tell us where the app is stuck…"), and the paragraph under
+ * it is unchanged.
+ *
+ * The booking link goes to /book?from=home, the same booking page and label as
+ * everywhere else on the site. The start-week sentence is the published term
+ * (data/terms.ts), rendered on the server page and passed in, so it is the
+ * same sentence the door pages print and falls back the same way when its
+ * week has passed.
+ *
+ * No turnaround promise here ("Response within 24h" went in October), and
+ * "Fixed-price proposals" stays out: only new builds get one.
+ */
+const SIGNALS = ["Free 30-min discovery call", "Prices published up front", "NDA on request"];
+
+export const CTASection = ({ startLine }: { startLine: string }) => {
   return (
-    <section className="py-32 bg-[#020202] relative overflow-hidden border-t border-white/5">
-      {/* Swimming bubbles */}
-      <FloatingBubbles count={14} />
+    <section aria-labelledby="cta-heading" className="relative overflow-hidden bg-ink py-24 md:py-32">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-1/2 h-[420px] w-[min(1000px,100vw)] -translate-x-1/2 bg-[radial-gradient(closest-side,rgba(45,212,191,0.12),transparent)]"
+      />
 
-      {/* Layered glows */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,_rgba(20,184,166,0.08)_0%,_transparent_70%)] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />
-
-      {/* Top edge line */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-teal-500/40 to-transparent" />
-
-      <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+      <Reveal className="relative mx-auto max-w-5xl px-6 text-center">
+        <h2
+          id="cta-heading"
+          className="text-balance font-display text-[clamp(2.4rem,6.6vw,5rem)] font-semibold leading-[1] tracking-[-0.04em] text-paper"
         >
-          {/* Badge */}
-          <span className="inline-block text-xs font-semibold text-teal-400 uppercase tracking-widest mb-6 px-4 py-1.5 rounded-full bg-teal-500/5 border border-teal-500/20">
-            Ready to build?
-          </span>
+          Tell us where your app <span className="text-accent">is stuck</span>
+        </h2>
 
-          {/* Headline */}
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-8">
-            Let&apos;s build your{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-cyan-400 to-emerald-400 drop-shadow-[0_0_30px_rgba(45,212,191,0.3)]">
-              next big thing.
-            </span>
-          </h2>
+        <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper-dim md:text-xl">
+          Whether your app is stuck before launch, stuck in App Store review or still an
+          idea, start with a free 30-minute call. We will tell you what it takes to ship.
+        </p>
 
-          {/* Sub-copy */}
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-14 leading-relaxed">
-            Whether your app is stuck before launch, stuck in App Store review or still an
-            idea, start with a free 30-minute call. We will tell you what it takes to ship.
-          </p>
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Link
+            href="/book?from=home"
+            className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 font-semibold text-accent-ink transition-colors hover:bg-teal-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:w-auto"
+          >
+            Book a free 30-minute call
+            <ArrowRight aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+          <a
+            href="mailto:business@thedevorax.tech"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-rule-strong px-8 py-4 font-semibold text-paper transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent sm:w-auto"
+          >
+            <Mail aria-hidden="true" className="h-4 w-4" />
+            Send us a Message
+          </a>
+        </div>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-16">
-            <Link
-              href="/book?from=home"
-              className="group w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-teal-500 to-emerald-500 text-black rounded-xl font-bold shadow-[0_0_40px_rgba(45,212,191,0.45)] hover:shadow-[0_0_60px_rgba(45,212,191,0.65)] hover:scale-[1.04] active:scale-[0.97] transition-all flex items-center justify-center gap-2.5"
-            >
-              <CalendarDays aria-hidden="true" className="w-5 h-5" />
-              Book a free 30-minute call
-              <ArrowRight aria-hidden="true" className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+        <p className="mt-8 font-mono text-xs uppercase leading-relaxed tracking-[0.12em] text-paper-faint">{startLine}</p>
 
-            <motion.a
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              href="mailto:business@thedevorax.tech"
-              className="group w-full sm:w-auto px-10 py-4 border border-white/10 text-white rounded-xl font-bold hover:bg-white/5 hover:border-teal-500/40 transition-all flex items-center justify-center gap-2.5"
-            >
-              <MessageSquare className="w-5 h-5 group-hover:text-teal-400 transition-colors" />
-              Send us a Message
-            </motion.a>
-          </div>
-
-          {/* Trust signals. "Response within 24h" went: no turnaround promise
-              is made anywhere on the site. "Fixed-price proposals" went too:
-              only new builds get one, while an app you already have is priced
-              by the audit and $1,200 sprint weeks, so the line now says what is
-              true of every route. */}
-          <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600">
-            {[
-              "Free 30-min discovery call",
-              "Prices published up front",
-              "NDA on request",
-            ].map((item) => (
-              <span key={item} className="flex items-center gap-1.5 font-medium">
-                <Check className="w-3.5 h-3.5 text-teal-500 flex-shrink-0" />
-                {item}
-              </span>
-            ))}
-          </div>
-        </motion.div>
-      </div>
+        <ul className="mt-8 flex list-none flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-paper-dim">
+          {SIGNALS.map((item) => (
+            <li key={item} className="flex items-center gap-2">
+              <Check aria-hidden="true" className="h-4 w-4 flex-shrink-0 text-accent" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </Reveal>
     </section>
   );
 };
