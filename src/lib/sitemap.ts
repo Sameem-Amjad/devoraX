@@ -81,6 +81,15 @@ const PAGES_UPDATED_2026_11_07 = new Date('2026-11-07T00:00:00.000Z');
  *  the studio's. (/reviews dates itself in data/testimonials.ts.) */
 const PAGES_UPDATED_2026_11_08 = new Date('2026-11-08T00:00:00.000Z');
 
+/** The homepage was rebuilt on 10 Nov 2026: a new hero over the walkthrough
+ *  posters, one proof band in place of five repeats of the same figures, six
+ *  large project cards, the door pages as a bento grid, the offer ladder as
+ *  the process with its terms beside each step, the published terms in place
+ *  of "Why DevoraX", the two founders' photographs, and the stack after the
+ *  work. Its copy now includes the ladder and the terms, so those dates count
+ *  toward it too. */
+const HOME_UPDATED_2026_11_10 = new Date('2026-11-10T00:00:00.000Z');
+
 /** Parse a DB timestamp defensively — never emit an Invalid Date into the XML. */
 function toDate(value: string | null | undefined, fallback: Date): Date {
   if (!value) return fallback;
@@ -196,8 +205,15 @@ function projectsUpdated(projects: ProjectRow[]): Date {
 export function pageEntries(projects: ProjectRow[]): SitemapEntry[] {
   const brandFacts = new Date(BRAND_FACTS_UPDATED);
   return [
-    // The homepage lists projects and prints every FAQ answer.
-    { url: absoluteUrl('/'), lastModified: newest([projectsUpdated(projects), PAGES_UPDATED_2026_11_08, new Date(FAQS_UPDATED)], PAGES_UPDATED_2026_11_08) },
+    // The homepage lists projects and prints every FAQ answer, the offer
+    // ladder and six of the terms.
+    {
+      url: absoluteUrl('/'),
+      lastModified: newest(
+        [projectsUpdated(projects), HOME_UPDATED_2026_11_10, new Date(FAQS_UPDATED), new Date(OFFER_UPDATED), new Date(TERMS_DATA_UPDATED)],
+        HOME_UPDATED_2026_11_10
+      ),
+    },
     // /about prints the brand facts and its own copy; the page's dateModified
     // is the newer of the same two.
     { url: absoluteUrl('/about'), lastModified: newest([brandFacts, PAGES_UPDATED_2026_11_08], PAGES_UPDATED_2026_11_08) },

@@ -1,11 +1,38 @@
 @import "tailwindcss";
 
-/* Bind the one webfont the site loads to Tailwind's `font-sans`.
-   Without this the `--font-inter` variable set by next/font was never read by
-   any rule, so the browser downloaded the font and then rendered in the system
-   stack anyway. */
+/* Fonts and the homepage's colour tokens.
+
+   `--font-inter` comes from the root layout and is the body face on every page.
+   The display and mono faces are loaded by the homepage alone (src/app/page.tsx),
+   so their variables exist only there; each has a fallback inside var(), because
+   an undefined variable would otherwise void the whole font-family and drop
+   `font-mono` to the inherited sans on every other page.
+
+   Colours: one near-black, two raised surfaces, two hairlines, three text
+   strengths that all pass WCAG AA on the near-black, and ONE accent. To change
+   the accent site-wide on the homepage, change --color-accent here. */
 @theme {
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+    --color-ink: #050607;
+    --color-ink-raised: #0c0e0f;
+    --color-ink-high: #141719;
+    --color-rule: rgb(255 255 255 / 0.09);
+    --color-rule-strong: rgb(255 255 255 / 0.2);
+    --color-paper: #f3f1ec;
+    --color-paper-dim: #bab7ae;
+    --color-paper-faint: #918f87;
+    --color-accent: #2dd4bf;
+    --color-accent-ink: #03110e;
+}
+
+/* `inline`, so `font-display` and `font-mono` write the var() into the element's
+   own font-family. Declared the ordinary way, the token would be resolved once
+   on :root, where the homepage's two variables do not exist (they are set on
+   the homepage's wrapper), and every element would inherit the fallback. */
+@theme inline {
+    --font-display: var(--font-space-grotesk, var(--font-inter)), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains-mono, ui-monospace), SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
 /* Hide scrollbar for all browsers */
@@ -34,76 +61,61 @@
     }
 }
 
-/* Marquee animations */
+/* Marquee: the track holds its items twice, so -50% is one full loop. */
 @keyframes marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
 }
-@keyframes marquee-reverse {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
-}
 .animate-marquee {
     animation: marquee 28s linear infinite;
 }
-.animate-marquee-reverse {
-    animation: marquee-reverse 28s linear infinite;
+/* The hero's row of walkthrough posters: slow enough to read a poster as it
+   passes, and it stops under the pointer. */
+.animate-marquee-slow {
+    animation: marquee 90s linear infinite;
+}
+.marquee-pause:hover .animate-marquee-slow {
+    animation-play-state: paused;
 }
 
-/* ─── Swimming / Wave Effects ─── */
-
-/* Animated SVG wave layers */
-@keyframes wave-drift-1 {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+/* Scroll reveal (components/ui/reveal.tsx). Content is visible by default, so
+   the server HTML and a browser without JavaScript show everything. The
+   component marks only what is still below the fold as "pending", then
+   "shown" when it scrolls in. */
+.reveal[data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(18px);
 }
-@keyframes wave-drift-2 {
-    0%   { transform: translateX(-25%); }
-    100% { transform: translateX(-75%); }
-}
-@keyframes wave-drift-3 {
-    0%   { transform: translateX(-10%); }
-    100% { transform: translateX(-60%); }
-}
-.wave-layer-1 { animation: wave-drift-1 12s linear infinite; }
-.wave-layer-2 { animation: wave-drift-2 8s linear infinite; }
-.wave-layer-3 { animation: wave-drift-3 6s linear infinite; }
-
-/* Water ripple on click */
-@keyframes water-ripple {
-    0%   { transform: translate(-50%,-50%) scale(0); opacity: 1; }
-    100% { transform: translate(-50%,-50%) scale(28); opacity: 0; }
+.reveal[data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Fluid morphing blobs */
-@keyframes fluid-morph-1 {
-    0%,100% { transform: translate(0,0) scale(1);    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
-    33%     { transform: translate(30px,-20px) scale(1.08); border-radius: 40% 60% 45% 55% / 60% 40% 60% 40%; }
-    66%     { transform: translate(-20px,30px) scale(0.95); border-radius: 55% 45% 60% 40% / 45% 55% 45% 55%; }
+/* The hero's faint engineering grid, faded out toward the edges. */
+.hero-grid {
+    background-image:
+        linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 30%, black 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 30%, black 20%, transparent 75%);
 }
-@keyframes fluid-morph-2 {
-    0%,100% { transform: translate(0,0) scale(1);    border-radius: 40% 60% 45% 55% / 55% 45% 60% 40%; }
-    33%     { transform: translate(-25px,15px) scale(1.05); border-radius: 60% 40% 55% 45% / 40% 60% 40% 60%; }
-    66%     { transform: translate(15px,-30px) scale(1.1);  border-radius: 45% 55% 40% 60% / 60% 40% 55% 45%; }
-}
-@keyframes fluid-morph-3 {
-    0%,100% { transform: translate(0,0) scale(1);    border-radius: 50% 50% 40% 60% / 50% 50% 55% 45%; }
-    50%     { transform: translate(20px,20px) scale(1.06); border-radius: 40% 60% 55% 45% / 45% 55% 40% 60%; }
-}
-.fluid-blob-1 { animation: fluid-morph-1 14s ease-in-out infinite; }
-.fluid-blob-2 { animation: fluid-morph-2 18s ease-in-out infinite; }
-.fluid-blob-3 { animation: fluid-morph-3 22s ease-in-out infinite; }
 
-/* Floating / swimming cursor trail */
-@keyframes swim-float {
-    0%,100% { transform: translateY(0px) rotate(0deg); }
-    50%     { transform: translateY(-12px) rotate(4deg); }
+/* Reduced motion: no marquee and no reveal movement. Framer Motion follows the
+   same setting through MotionProvider. */
+@media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-marquee-slow {
+        animation: none;
+    }
+    .reveal[data-reveal="pending"] {
+        opacity: 1;
+        transform: none;
+    }
+    .reveal[data-reveal="shown"] {
+        transition: none;
+    }
 }
-.swim-float { animation: swim-float 4s ease-in-out infinite; }
-
-/* Gentle pulse glow */
-@keyframes glow-pulse {
-    0%,100% { opacity: 0.4; }
-    50%     { opacity: 0.9; }
-}
-.glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
