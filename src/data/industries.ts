@@ -64,6 +64,7 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   'hear-with-you': 'media',
   'expertprofile-ai': 'media',
   'mint-choc-media': 'media',
+  linguabridge: 'media', // a translation agency's marketing site
   // Legal, finance & Web3
   'fintech-mobile-app': 'legal-finance',
   'predictive-analytics-dashboard': 'legal-finance',

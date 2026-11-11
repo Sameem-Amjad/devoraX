@@ -129,6 +129,7 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   49: { name: 'Triagely', label: 'DevoraX client' },
   50: { name: 'Tallyfile', label: 'DevoraX client' },
   51: { name: 'Biscuit', label: 'DevoraX client' },
+  52: { name: 'LinguaBridge', label: 'Sameem worked on this build' },
 };
 
 /** The label a reader sees beside one of our own sites. */
@@ -205,6 +206,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 41 },
           { project: 42 },
           { project: 48 },
+          { project: 52, note: 'a translation agency marketing site' },
           { project: 28, note: 'React venue search' },
           { project: 20 },
           { review: 'irmairvin', job: 'A Next.js landing page for an appointment app' },
