@@ -7,8 +7,8 @@ import { Reveal } from "@/components/ui/reveal";
  *
  * The headline was "Let's build your next big thing.", a line for a general
  * agency, over floating bubbles. It now asks what the free call asks
- * (data/offer.ts: "Tell us where the app is stuck…"), and the paragraph under
- * it is unchanged.
+ * (data/offer.ts: "Tell us where the app is stuck…"). The paragraph and the
+ * three lines under the buttons were rewritten on 11 Nov 2026.
  *
  * The booking link goes to /book?from=home, the same booking page and label as
  * everywhere else on the site. The start-week sentence is the published term
@@ -19,7 +19,7 @@ import { Reveal } from "@/components/ui/reveal";
  * No turnaround promise here ("Response within 24h" went in October), and
  * "Fixed-price proposals" stays out: only new builds get one.
  */
-const SIGNALS = ["Free 30-min discovery call", "Prices published up front", "NDA on request"];
+const SIGNALS = ["The first call is free", "Published prices, no hourly billing", "NDA signed on request"];
 
 export const CTASection = ({ startLine }: { startLine: string }) => {
   return (
@@ -38,8 +38,8 @@ export const CTASection = ({ startLine }: { startLine: string }) => {
         </h2>
 
         <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper-dim md:text-xl">
-          Whether your app is stuck before launch, stuck in App Store review or still an
-          idea, start with a free 30-minute call. We will tell you what it takes to ship.
+          Tell us what the app does, where it stopped and what has to happen by when. On the
+          free 30-minute call we say what it would take to ship, and whether you need us at all.
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">

@@ -139,8 +139,8 @@ export const Services = ({ doors, marketplace }: { doors: WayIn[]; marketplace: 
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading index="02" label="Ways in" headingId="services-heading" title="Where is your app stuck?">
           <p>
-            Three ways in for an app you already have, and fixed-price builds for a new
-            marketplace. Each one starts with a free 30-minute call.
+            Pick the one that sounds like your app today. Three are for an app you already have and
+            one is for a marketplace built new, and each starts with a free 30-minute call.
           </p>
         </SectionHeading>
 

@@ -2,6 +2,7 @@ import { Hero } from "@/components/sections/hero";
 import { ProofBand } from "@/components/sections/proofBand";
 import { WorkSection } from "@/components/sections/work";
 import { Services } from "@/components/sections/services";
+import { CatalogueSection } from "@/components/sections/catalogue";
 import { PricingSection, type LadderStep } from "@/components/sections/pricing";
 import { TermsSection } from "@/components/sections/termsSection";
 import { FoundersSection } from "@/components/sections/founders";
@@ -10,6 +11,7 @@ import { StackSection } from "@/components/sections/stack";
 import { FAQSection } from "@/components/sections/faq";
 import { CTASection } from "@/components/sections/ctaSection";
 import { FIT, OFFER_LADDER, type OfferStepId } from "@/data/offer";
+import { HOME_FAQ_GROUPS } from "@/data/homeFaqs";
 import { TERMS, nextStartLine, nextStartWeek, termText } from "@/data/terms";
 import type { SiteStat } from "@/data/siteStats";
 import type { WayIn } from "@/data/siteNav";
@@ -20,9 +22,14 @@ import CONSTANTS from "@/utils/constants/constants";
 
 /**
  * The homepage, in the order a buyer asks its questions: what you do, whether
- * it can be checked, the work, which offer fits, how it runs and what it
- * costs, the terms, who does it, what clients said, the stack, the questions,
- * the ask.
+ * it can be checked, the work, which offer fits, what else we build, how it
+ * runs and what it costs, the terms, who does it, what clients said, the
+ * stack, the questions, the ask.
+ *
+ * 11 Nov 2026 (owner's brief): "What we build", the ten-category catalogue
+ * (data/catalogue.ts), went in after the service cards, which keeps the work
+ * grid's project links first on the page; and "Questions we always get"
+ * became four tabs, one per service (data/homeFaqs.ts).
  *
  * A server component. It was one "use client" file that imported every
  * section, so each section's code shipped to the browser whether or not it
@@ -95,12 +102,13 @@ export default function Home({ featured, reels, doors, marketplace, markets, sta
         <ProofBand stats={stats} />
         <WorkSection projects={featured} markets={markets} />
         <Services doors={doors} marketplace={marketplace} />
+        <CatalogueSection />
         <PricingSection steps={ladderSteps(now)} plans={CONSTANTS.PRICING_PLANS} />
         <TermsSection />
         <FoundersSection />
         <ReviewsSection />
         <StackSection />
-        <FAQSection />
+        <FAQSection groups={HOME_FAQ_GROUPS} />
         <CTASection startLine={nextStartLine(now)} />
       </main>
     </div>

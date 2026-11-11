@@ -67,7 +67,7 @@ export const PricingSection = ({ steps, plans }: { steps: LadderStep[]; plans: P
     <section id="pricing" aria-labelledby="pricing-heading" className="home-section glow-right scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
-          index="03"
+          index="04"
           label="How it runs"
           headingId="pricing-heading"
           title="How it runs, and what it costs"

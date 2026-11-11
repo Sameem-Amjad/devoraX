@@ -3,9 +3,11 @@ import Link from 'next/link';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { DoorSections, MarketPages } from '@/components/seo/services-hub-content';
 import { OfferLadder } from '@/components/seo/offer-ladder';
+import { CatalogueFull } from '@/components/seo/catalogue-full';
 import { JsonLd } from '@/components/seo/structured-data';
 import { TERMS } from '@/data/terms';
 import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
+import { catalogueFaqPageNode } from '@/lib/catalogue';
 
 export const revalidate = 3600;
 
@@ -46,20 +48,23 @@ const PATH = '/services';
 const WHO_WORKS = TERMS.find((t) => t.id === 'who-works')?.answer;
 
 export default function ServicesPage() {
+  const webPage = webPageNode({
+    path: PATH,
+    name: TITLE,
+    description: DESCRIPTION,
+    type: 'CollectionPage',
+  });
   return (
     <>
       {/* A CollectionPage: the page is a set of links to the service pages.
           No Offer or price markup here: /pricing and the door pages carry it,
-          each for what it sells. */}
+          each for what it sells. The FAQPage holds the catalogue's questions,
+          from the same array "What we build" renders (lib/catalogue.ts). */}
       <JsonLd
         graph={[
-          webPageNode({
-            path: PATH,
-            name: TITLE,
-            description: DESCRIPTION,
-            type: 'CollectionPage',
-          }),
+          webPage,
           breadcrumbNode(PATH, [{ name: 'Services', path: PATH }]),
+          catalogueFaqPageNode(String(webPage['@id'])),
         ]}
       />
 
@@ -107,6 +112,9 @@ export default function ServicesPage() {
 
         {/* ── The three doors, then new marketplace builds ── */}
         <DoorSections />
+
+        {/* ── What we build: the catalogue behind the four services ── */}
+        <CatalogueFull />
 
         {/* ── The ladder and who it is for ── */}
         <OfferLadder />

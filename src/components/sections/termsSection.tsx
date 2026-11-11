@@ -31,7 +31,7 @@ export const TermsSection = () => {
     <section aria-labelledby="terms-heading" className="home-section glow-left bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
         <SectionHeading
-          index="04"
+          index="05"
           label="Terms"
           headingId="terms-heading"
           title="What you can hold us to"
@@ -48,7 +48,7 @@ export const TermsSection = () => {
             </Link>
           }
         >
-          <p>The same terms as on our pricing page, in the same words.</p>
+          <p>Six of our published terms, printed word for word as they appear on the pricing page.</p>
         </SectionHeading>
 
         <ul className="grid list-none gap-x-16 md:grid-cols-2">
