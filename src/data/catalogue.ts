@@ -127,6 +127,7 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   47: { name: 'SteamBlast Arena', label: 'Client project' },
   48: { name: 'Bevy Irie', label: 'Client project' },
   49: { name: 'Triagely', label: 'DevoraX client' },
+  50: { name: 'Tallyfile', label: 'DevoraX client' },
 };
 
 /** The label a reader sees beside one of our own sites. */
@@ -286,6 +287,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 35, note: 'in-browser face tracking' },
           { project: 45, note: 'AI style concepts kept apart from the buildable design; the demo shows labelled demo renders' },
           { project: 49, note: "support triage for an online store: categories, priorities, drafts and wholesale lead scores" },
+          { project: 50, note: 'invoice PDFs read by AI, every number checked in plain code' },
         ],
       },
       {
@@ -327,6 +329,7 @@ export const CATALOGUE: CatalogueCategory[] = [
         refs: [
           { project: 40, note: 'Gemini through Google AI Studio, and Claude' },
           { project: 49, note: 'Gemini, with a second model when the first is busy' },
+          { project: 50, note: 'Gemini returning structured fields that code then checks' },
         ],
       },
       {
@@ -335,6 +338,7 @@ export const CATALOGUE: CatalogueCategory[] = [
         refs: [
           { project: 40, note: 'booking with SMS confirmation, lead capture, warm transfer' },
           { project: 49, note: 'an exported inbox sorted, drafted and lead-scored in one run' },
+          { project: 50, note: 'a folder of invoices turned into one checked CSV' },
         ],
       },
       {
@@ -1214,6 +1218,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 33 },
           { project: 27, note: 'generated PDFs' },
           { project: 36, note: 'one-click PDF reports' },
+          { project: 50, note: 'the other direction: invoice data read out of PDFs' },
         ],
       },
       {

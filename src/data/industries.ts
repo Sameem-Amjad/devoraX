@@ -68,6 +68,7 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   'predictive-analytics-dashboard': 'legal-finance',
   'digital-power-of-attorney-platform': 'legal-finance',
   solnotary: 'legal-finance',
+  tallyfile: 'legal-finance',
   // Health & wellbeing
   'ar-lip-filler': 'health',
   gentler: 'health',
