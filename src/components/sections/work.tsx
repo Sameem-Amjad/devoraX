@@ -56,8 +56,8 @@ export const WorkSection = ({ projects, markets }: WorkSectionProps) => {
           }
         >
           <p>
-            Products our founders built or worked on, including work done as engineers at other
-            companies. Each project page says who it was for, where that is recorded.
+            Products from the portfolio, each with links you can check. Some of this work was done
+            as engineers at other companies, and each project page says who it was for.
           </p>
         </SectionHeading>
 

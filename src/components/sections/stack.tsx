@@ -14,6 +14,8 @@ import { SectionHeading } from "./sectionHeading";
  * Added to them are the tools the portfolio's own project rows name that
  * neither list had: NestJS, Express, Socket.IO, Angular, Firebase,
  * Elasticsearch, Stripe, Sharetribe, Twilio, Gemini, Deepgram and MediaPipe.
+ * 11 Nov 2026: ElevenLabs and DigitalOcean, which Hear With You (34) uses
+ * (owner-confirmed, and in its project row). Tools are only ever added here.
  */
 const STACK: { group: string; tools: string[] }[] = [
   {
@@ -28,6 +30,7 @@ const STACK: { group: string; tools: string[] }[] = [
       "Gemini",
       "Deepgram",
       "MediaPipe",
+      "ElevenLabs",
     ],
   },
   {
@@ -40,7 +43,7 @@ const STACK: { group: string; tools: string[] }[] = [
   },
   {
     group: "Cloud & DevOps",
-    tools: ["AWS", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Vercel"],
+    tools: ["AWS", "Docker", "Kubernetes", "Terraform", "GitHub Actions", "Vercel", "DigitalOcean"],
   },
   {
     group: "Databases & Storage",
@@ -57,8 +60,8 @@ export const StackSection = () => {
   return (
     <section id="tools" aria-labelledby="stack-heading" className="home-section glow-right scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHeading index="07" label="Stack" headingId="stack-heading" title="Tools we use">
-          <p>The tools we use at each layer of a product, from AI inference to the interface.</p>
+        <SectionHeading index="08" label="Stack" headingId="stack-heading" title="Tools we use">
+          <p>Grouped by layer, from the AI models and the app frameworks down to payments and design.</p>
         </SectionHeading>
 
         <Reveal>

@@ -361,8 +361,9 @@ const websiteNode = {
   inLanguage: 'en-US',
 };
 
-// NOTE: FAQPage schema lives on the homepage (app/page.tsx), generated from the
-// same FAQS array the visible <FAQSection /> renders. It must not be emitted
+// NOTE: FAQPage schema lives on the pages that show the questions: the homepage
+// (app/page.tsx, from data/homeFaqs.ts, the same questions <FAQSection />
+// renders), each service page and /services. It must not be emitted
 // site-wide: structured data may only describe content visible on that page.
 //
 // NOTE: BreadcrumbList is emitted per-route (see /services, /projects, /contact,

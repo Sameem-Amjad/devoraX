@@ -86,7 +86,7 @@ export const DOORS: Door[] = [
     label: 'AI-built app, not in the stores yet',
     title: 'Built with Lovable, Base44 or Replit, and not in the stores yet',
     body:
-      "We take the web app to the App Store and Google Play in a native shell: native features, the store listing, App Privacy details, the Data safety form and Google Play testing. In-app purchase or a US web-checkout link is a separate line in the launch quote, and a React Native rebuild, if the audit calls for one, is quoted after it. We prepare the app against Apple's and Google's guidelines, submit it and answer the reviewers. The stores decide approval.",
+      "We put your Lovable, Base44 or Replit web app into a native shell, add phone features such as push notifications and prepare the store listing and privacy forms. Then we submit it to the App Store and Google Play and answer the reviewers. In-app purchase is quoted separately. The stores decide approval.",
   },
   {
     id: 'sharetribe',
@@ -94,7 +94,7 @@ export const DOORS: Door[] = [
     label: 'Marketplace on Sharetribe',
     title: 'Running on Sharetribe, and needing custom code or an app',
     body:
-      'Custom features, changes to how and when sellers are paid, and a native iOS and Android app, for a marketplace already running on Sharetribe. Feature work is quoted in sprint weeks from your requirements, and on the free call we tell you whether an audit comes first.',
+      "For a marketplace already on Sharetribe: custom features the Console can't set up, changes to when and how sellers are paid, and a native iOS and Android app on Sharetribe's APIs. We quote feature work in sprint weeks once we have your requirements, and the free call settles whether an audit is needed first.",
   },
   {
     id: 'vibe-code-audit',
@@ -102,7 +102,7 @@ export const DOORS: Door[] = [
     label: 'AI-built app that keeps breaking',
     title: 'Built with Lovable, Base44, Replit, Bolt or Cursor, and stuck',
     body:
-      'The demo works, but sign-in breaks, the database is open to anyone or payments never went live. The audit reads the code and gives each part a keep, harden or rebuild verdict, then, if you go ahead, we fix and finish the app in sprints. It is an engineering review, not a security certification.',
+      "Your app works in the demo but breaks in use: sign-in, data rules or payments. The audit reads the code and gives each part a keep, harden or rebuild verdict, and if you go ahead, finish sprints fix what it found. The report is an engineering review, not a security certification.",
   },
 ];
 
@@ -117,7 +117,7 @@ export const MARKETPLACE_BUILD: Door = {
   label: 'New marketplace',
   title: 'Building a multi-vendor marketplace',
   body:
-    "A buyer app or storefront, a vendor portal and an admin console over one backend, for a marketplace a template won't carry. A new build is fixed price, agreed in writing before work starts; a marketplace someone left half-built usually starts with the audit.",
+    "A new marketplace where independent sellers list and buyers order: a storefront or buyer app, a vendor portal and an admin console, all reading one backend. We build it when a template such as Sharetribe won't carry your model, at a fixed price agreed in writing before work starts.",
 };
 
 /**

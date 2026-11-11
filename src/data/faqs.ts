@@ -1,9 +1,11 @@
 /**
- * Single source of truth for the homepage FAQ.
+ * The general questions: /contact renders them and llms.txt lists them.
  *
- * Both the visible <FAQSection /> and the server-rendered FAQPage JSON-LD read
- * from this array. Structured data must describe content that is actually
- * visible on the page, so keeping one array prevents the two from drifting.
+ * Until 11 Nov 2026 they were also the homepage FAQ. The homepage now shows
+ * each service's own six questions in tabs (data/homeFaqs.ts, which also
+ * builds its FAQPage node), and these ten stay on /contact. faqPageSchema
+ * below is no longer emitted by any page; it is kept for a page that shows
+ * these questions and wants their markup.
  *
  * Answers use the content files' text format (lib/richText.ts): a link is
  * written [anchor](/path). The homepage and /contact render them with

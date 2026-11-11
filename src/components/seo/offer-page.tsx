@@ -202,6 +202,24 @@ export function OfferPage({ offer }: { offer: OfferSolution }) {
           </p>
         )}
 
+        {/* Three key points under the introduction (11 Nov 2026): ground the
+            answer above does not cover, in the page's card style. */}
+        {offer.key_points && offer.key_points.length > 0 && (
+          <section aria-labelledby="key-points-heading" className="mt-12">
+            <h2 id="key-points-heading" className="sr-only">
+              Key points
+            </h2>
+            <ul className="grid list-none gap-4 md:grid-cols-3">
+              {offer.key_points.map((k) => (
+                <li key={k.heading} className={`${cardClass} p-6`}>
+                  <h3 className="text-lg font-bold text-white">{k.heading}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">{k.body}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {offer.triggers.length > 0 && (
           <section aria-labelledby="triggers-heading" className={sectionClass}>
             <h2 id="triggers-heading" className={h2Class}>

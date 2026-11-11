@@ -3,6 +3,7 @@ import { INSIGHTS } from '@/data/insights';
 import { solutionLabel, solutionsInOrder } from '@/data/solutions';
 import { INDEXABLE_PROJECTS, PROJECT_NAMES } from '@/data/projectIndex';
 import { FAQS } from '@/data/faqs';
+import { CATALOGUE } from '@/data/catalogue';
 import { TESTIMONIALS_UPDATED } from '@/data/testimonials';
 import { OFFER_LADDER, FIT } from '@/data/offer';
 import { DOOR_LINKS, MARKETPLACE_LINK } from '@/data/siteNav';
@@ -137,6 +138,15 @@ export async function GET() {
   // a redirecting link has no place here.
   for (const s of solutionsInOrder()) {
     lines.push(`- [${solutionLabel(s)}](${BASE_URL}/solutions/${s.slug}): ${plainText(s.hero_answer)}`);
+  }
+
+  // The catalogue behind the four services (data/catalogue.ts), one line per
+  // category: what it is, what it covers, and its anchor on /services, where
+  // every sub-service lists its projects with who they were for.
+  lines.push('', '## What we build', '');
+  lines.push('Ten kinds of work behind the four services above. They are not separate offers and carry no prices.', '');
+  for (const c of CATALOGUE) {
+    lines.push(`- [${c.name}](${BASE_URL}/services#${c.id}): ${c.description} Covers: ${c.sub_services.map((s) => s.name).join('; ')}.`);
   }
 
   lines.push('', '## Engineering write-ups', '');

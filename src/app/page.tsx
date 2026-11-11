@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import { createPublicClient } from "@/lib/public";
 import Home from "@/app/_components/home";
-import { faqPageSchema } from "@/data/faqs";
+import { homeFaqPageSchema } from "@/data/homeFaqs";
 import { getSiteStats } from "@/data/siteStats";
 import { INDEXABLE_PROJECTS, isHiddenProject } from "@/data/projectIndex";
 import { DOOR_LINKS, MARKETPLACE_LINK, MARKET_LINKS } from "@/data/siteNav";
@@ -97,9 +97,10 @@ export default async function HomePage() {
   return (
     <>
       {/* Server-rendered so crawlers (and AI crawlers, which don't run JS) see it.
-          The FAQPage is generated from the same FAQS array <FAQSection /> renders
-          below, and is tied to this page so it does not float free in the graph. */}
-      <JsonLd graph={[webPage, { ...faqPageSchema, isPartOf: { "@id": webPage["@id"] } }]} />
+          The FAQPage is generated from the same service questions <FAQSection />
+          renders below (data/homeFaqs.ts), and is tied to this page so it does not
+          float free in the graph. */}
+      <JsonLd graph={[webPage, { ...homeFaqPageSchema, isPartOf: { "@id": webPage["@id"] } }]} />
       <div className={`${display.variable} ${mono.variable}`}>
         <Home
           // Only the cards the grid shows, and only the fields a card prints

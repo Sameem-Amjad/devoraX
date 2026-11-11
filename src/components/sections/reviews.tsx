@@ -47,12 +47,12 @@ export const ReviewsSection = () => {
       className="home-section glow-left scroll-mt-24 bg-ink py-24 md:py-32"
     >
       <div className="mx-auto max-w-7xl px-6">
-        <SectionHeading index="06" label="Reviews" headingId="reviews-heading" title="Reviews from our Fiverr clients">
+        <SectionHeading index="07" label="Reviews" headingId="reviews-heading" title="Reviews from our Fiverr clients">
           <p>
-            Every review below is a real, public review from DevoraX&apos;s Fiverr profile, which
-            is in Sameem Amjad&apos;s name, written by a client who hired us there. Our record
-            there: a 5.0 rating across 50+ projects since January 2022, with clients in the US,
-            the UK, Canada and Hong Kong.{" "}
+            These are real, public reviews from DevoraX&apos;s Fiverr profile, which is in Sameem
+            Amjad&apos;s name, each written by a client who hired us there. The profile shows a 5.0
+            rating across 50+ projects since January 2022, for clients in the US, the UK, Canada
+            and Hong Kong.{" "}
             <a href={FIVERR_PROFILE_URL} target="_blank" rel="noopener noreferrer" className={link}>
               Verify them on Fiverr
             </a>

@@ -78,6 +78,24 @@ export function SolutionPage({ solution }: { solution: VerticalSolution }) {
           </Link>
         </div>
 
+        {/* Three key points under the introduction (11 Nov 2026), where a page
+            has them: the marketplace hub. Same card style as the proof below. */}
+        {solution.key_points && solution.key_points.length > 0 && (
+          <section aria-labelledby="key-points-heading" className="mt-12">
+            <h2 id="key-points-heading" className="sr-only">
+              Key points
+            </h2>
+            <ul className="grid list-none gap-4 md:grid-cols-3">
+              {solution.key_points.map((k) => (
+                <li key={k.heading} className="rounded-2xl border border-white/10 bg-[#0a0a0a] p-6">
+                  <h3 className="text-lg font-bold text-white">{k.heading}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-gray-400">{k.body}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
         {/* ── The work behind the page, high up: this is the argument ── */}
         {solution.proof.length > 0 && (
           <section className="mt-16 border-t border-white/5 pt-12">

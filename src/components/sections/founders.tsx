@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { BRAND_FACTS, FOUNDER_PROFILES } from "@/data/brand";
-import { TERMS } from "@/data/terms";
 import CONSTANTS from "@/utils/constants/constants";
 import { SectionHeading } from "./sectionHeading";
 
@@ -15,19 +14,17 @@ import { SectionHeading } from "./sectionHeading";
  * figures. A two-person studio's strongest fact is the two people, so they are
  * the picture now. The three paragraphs are the About block's, unchanged.
  *
- * Each line under a name is already published elsewhere on the site:
- *  - Sameem's is the sentence about his store record in the "Can you guarantee
- *    approval?" term (data/terms.ts), read from that file.
- *  - Usman's is the first sentence of his bio on /team (TeamClient.tsx). He is
- *    named by first name only, as everywhere on the site.
+ * Each line under a name comes from what /team already says (TeamClient.tsx,
+ * rewritten 11 Nov 2026):
+ *  - Sameem's from the opening of his bio there: backend architecture. His
+ *    store record stays word for word in the "Can you guarantee approval?"
+ *    term (data/terms.ts), which the pricing section prints beside the launch.
+ *  - Usman's from his bio there. He is named by first name only, as everywhere
+ *    on the site.
  *
  * Both photographs are cropped square from the top. Usman's file carries a
  * small sparkle mark in its bottom-right corner, which the crop leaves out.
  */
-const APPROVAL = TERMS.find((t) => t.id === "approval")?.answer ?? "";
-/** "Sameem has personally prepared and submitted iOS builds to App Review, …" */
-const SAMEEM_RECORD = APPROVAL.slice(APPROVAL.indexOf("Sameem has"));
-
 const LINKEDIN = FOUNDER_PROFILES.find((p) => p.label === "LinkedIn");
 
 const PEOPLE = [
@@ -38,7 +35,7 @@ const PEOPLE = [
     // The file is a square portrait inside a decorative ring; enlarged about
     // the face so the ring falls outside the frame.
     photoClass: "origin-[51%_30%] scale-[1.6]",
-    line: SAMEEM_RECORD,
+    line: "Software engineer focused on scalable backend architecture, from the database through to the store release.",
     link: LINKEDIN ? { label: "Sameem on LinkedIn", href: LINKEDIN.url } : null,
   },
   {
@@ -46,7 +43,7 @@ const PEOPLE = [
     role: "CTO",
     photo: "/images/usman_cto.jpeg",
     photoClass: "object-top",
-    line: "Full-Stack AI Architect with 5+ years building scalable Generative-AI systems, custom web apps and SaaS platforms.",
+    line: "Full-Stack AI Architect who leads architecture and DevOps across React Native, Flutter and web apps on Kubernetes and AWS.",
     link: null,
   },
 ];
@@ -56,27 +53,29 @@ export const FoundersSection = () => {
     <section id="about" aria-labelledby="about-heading" className="home-section glow-right scroll-mt-24 bg-ink py-24 md:py-32">
       <div className="mx-auto grid max-w-7xl gap-14 px-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20">
         <div>
-          <SectionHeading index="05" label="The studio" headingId="about-heading" title="Who finishes your app" />
+          <SectionHeading index="06" label="The studio" headingId="about-heading" title="Who finishes your app" />
 
           <Reveal className="space-y-5 text-lg leading-relaxed text-paper-dim">
             <p>
-              {CONSTANTS.AGENCY_NAME}, founded in 2022, finishes and ships apps that got
-              stuck: the AI-built prototype that never went live, the Sharetribe marketplace
-              that needs custom features and a real mobile app, the project a previous
-              developer left half-done. We are a{" "}
-              <span className="font-medium text-paper">two-person studio</span>: Sameem Amjad
-              (Founder & Lead Architect Engineer) and Usman (CTO), two senior engineers who work
-              on every sprint together. Sometimes a designer or another specialist joins a
-              project, and we name them to you before they start.
+              {CONSTANTS.AGENCY_NAME} is{" "}
+              <span className="font-medium text-paper">two engineers</span>, Sameem Amjad (Founder &
+              Lead Architect Engineer) and Usman (CTO), and both of us work on every sprint. The
+              studio was founded in {BRAND_FACTS.founded} and takes one client sprint at a time.
+              When a designer or another specialist joins a project, we name them to you before
+              they start.
             </p>
             <p>
-              Between us we have built marketplaces, real-time leaderboards, video
-              pipelines and travel and legal-tech backends, much of it as engineers at
-              other companies. Each project page says who the work was for, where that is
-              recorded. We care most about the parts that stop a launch:{" "}
-              <span className="font-medium text-paper">payments, native mobile builds and store review</span>.
+              Much of what we have shipped was built as engineers at other companies or for
+              clients who hired Sameem directly: marketplaces, live leaderboards, video pipelines,
+              a flight-risk check and legal-tech backends. Each project page says who the work
+              was for.
             </p>
-            <p>Then we stay on for the fixes and releases that follow.</p>
+            <p>
+              What usually stops a launch is{" "}
+              <span className="font-medium text-paper">payments, a native mobile build or store review</span>,
+              so that is where we put our closest attention. After launch, we stay on for the
+              fixes and releases that follow.
+            </p>
           </Reveal>
 
           <Reveal className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule pt-6 font-mono text-xs uppercase tracking-[0.14em] text-paper-faint">

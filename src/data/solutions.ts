@@ -67,6 +67,11 @@ export type VerticalSolution = {
   title: string;
   meta_description: string;
   hero_answer: string;
+  /**
+   * Three key points under the introduction: a heading of 2 to 5 words and one
+   * or two sentences each, covering ground the introduction does not.
+   */
+  key_points?: { heading: string; body: string }[];
   sections: { heading: string; body: string }[];
   proof: SolutionProof[];
   included: string[];
@@ -155,6 +160,11 @@ export type OfferSolution = {
   price_notes?: Partial<Record<OfferStepId, string>>;
   /** Two to four sentences: the job, the price and the first step, true on its own. */
   hero_answer: string;
+  /**
+   * Three key points under the introduction: a heading of 2 to 5 words and one
+   * or two sentences each, covering ground the introduction does not.
+   */
+  key_points?: { heading: string; body: string }[];
   /** "Is this you?": situations in buyers' words, paraphrased, never fake quotes. */
   triggers: string[];
   /** "What we check and do", step by step. */
@@ -183,7 +193,21 @@ export const SOLUTIONS: Solution[] = [
     "h1": "Multi-Vendor Marketplace Development: Buyer, Vendor and Admin on One Backend",
     "title": "Multi-Vendor Marketplace Development",
     "meta_description": "Multi-vendor marketplace development from a two-person studio whose founder worked on Afriva and Dooz. Buyer app, vendor portal, admin. Fixed price.",
-    "hero_answer": "DevoraX is a two-person software studio, founded in 2022, that builds multi-vendor marketplaces: a buyer storefront or app, a vendor portal, an admin console, payments, search and order tracking over one backend. The marketplace work behind this page is its founder Sameem Amjad's, most of it done as an employee of other companies: Afriva as an engineer at Webrange Solutions, Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026, and the shared NestJS backend of Dooz Inspected Cars, which hired him directly. DevoraX work is separate from his job at Pastel. DevoraX now takes this kind of work directly: custom builds for operators a template will not fit, and [custom features plus the native iOS and Android app for marketplaces already running on Sharetribe](/solutions/sharetribe-developers), which ships no native app.",
+    "hero_answer": "DevoraX builds multi-vendor marketplaces from scratch: a buyer storefront or app, a vendor portal and an admin console over one backend, for founders whose model a template won't carry. The marketplace work behind this page is Sameem Amjad's, done for others: Afriva as an engineer at Webrange Solutions, Dooz Inspected Cars' shared NestJS backend for Dooz directly, and Pastel's iOS app as Pastel's employee since April 2026, separate from DevoraX work. A new build starts with a free 30-minute call and a written fixed-price proposal. Already on Sharetribe? [Our Sharetribe developers page](/solutions/sharetribe-developers) covers custom features and a native app.",
+    "key_points": [
+      {
+        "heading": "Vendor rules in the database",
+        "body": "A vendor's right to change only its own stock and orders is enforced in the database schema, so a request sent around the interface meets the same rule."
+      },
+      {
+        "heading": "Exclusions written down",
+        "body": "Native apps on top of a web build, multi-carrier shipping and live location tracking are listed as separate work before you sign, so the fixed price stays fixed."
+      },
+      {
+        "heading": "One order record for all",
+        "body": "Buyers, vendors and your admin see the same order record and its status, so nobody has to send an email to ask where an order is."
+      }
+    ],
     "sections": [
       {
         "heading": "What does a multi-vendor marketplace build include, and what is quoted separately?",
@@ -290,43 +314,31 @@ export const SOLUTIONS: Solution[] = [
     "faqs": [
       {
         "q": "Should I use Sharetribe or a Shopify multi-vendor app instead of a custom build?",
-        "a": "If your model fits one, yes. They are cheaper and they run immediately. A custom build pays off when the vendor relationship is the product: verification states, inspection data, per-vendor terms, or a catalogue of single units that retire when sold. The two are not exclusive either. A hosted marketplace engine can carry the transactions while custom clients carry the browsing. Pastel, where Sameem works on the iOS app as Pastel's employee, is built on Sharetribe; marketplace money movement is rarely worth rewriting without a reason. Already on Sharetribe and need custom features or a native app? That is the work on [our Sharetribe developers page](/solutions/sharetribe-developers)."
+        "a": "If your model fits one, yes: they cost less and run straight away. A custom build pays off when the vendor relationship is the product, such as verification states, inspection data, per-vendor terms or a catalogue of single units that retire when sold. [Pastel](/projects/23) (Sameem's employer, Pastel), where Sameem works on the iOS app as Pastel's employee, is itself built on Sharetribe. Already on Sharetribe? See [Sharetribe Developers](/solutions/sharetribe-developers)."
       },
       {
         "q": "How long does a marketplace build take?",
-        "a": "We do not publish build timelines and will not give you one on a first call. Marketplace scope varies too much. A two-role catalogue and a four-role platform with split fulfilment, live tracking and third-party quote integrations are different projects. The written proposal after the discovery call fixes the scope, the exclusions and the price. If you need a committed date before anyone has seen the scope, we are the wrong supplier. For a marketplace that already exists, a finish sprint usually takes 1–2 weeks, and the audit says how many weeks the fix needs before work starts."
+        "a": "We don't publish build timelines, and we won't give you one on a first call. A two-role catalogue and a four-role platform with split fulfilment and live tracking are different projects. The written proposal after the discovery call fixes the scope, the exclusions and the price. For a marketplace that already exists, a finish sprint usually takes 1–2 weeks, and the audit sets the number of weeks first."
       },
       {
-        "q": "Can you build mobile apps as well as the web marketplace?",
-        "a": "Yes. Three of the four products named here are on the app stores, and Sameem's part in them touches mobile directly. Since April 2026 he has worked on Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee, which is separate from DevoraX work. Dooz hired him directly for the NestJS backend that its iOS and Android apps share with its Angular web client. Food Magnet is a Flutter app with a React admin console. Mobile clients are quoted separately from a web build, because they are separate work with their own release process."
+        "q": "Can you build the mobile apps as well as the web marketplace?",
+        "a": "Yes, quoted separately from the web build, because apps have their own release process. At [Pastel](/projects/23) (Sameem's employer, Pastel), Sameem has worked on the iOS app as Pastel's employee since April 2026, separately from DevoraX work. [Dooz Inspected Cars](/projects/25) (Sameem's direct client) hired him for the NestJS backend that its iOS and Android apps share with its website."
       },
       {
-        "q": "Do you handle marketplace payments and vendor payouts?",
-        "a": "Payments through a provider, yes. Food Magnet takes payments through Stripe. Payouts, held funds, commissions and disputes are a much larger surface than checkout, and Pastel uses Sharetribe's transaction process for that rather than its own state machine. Which approach suits you depends on your commission model and where your sellers are, and that is one of the things the discovery call decides."
+        "q": "Do you handle marketplace payments and payouts to vendors?",
+        "a": "Payments through a provider, yes; payouts to vendors need more care. Payouts, held funds, commissions and disputes are a much larger surface than checkout, which is why a hosted engine such as Sharetribe runs them through its own transaction process. [Food Magnet](/projects/14) (As an engineer at Zencloud) takes payments through Stripe. Which route suits you depends on your commission model and where your sellers are."
       },
       {
-        "q": "What happens if the scope changes after we start?",
-        "a": "It is quoted as a change and you decide. The fixed price covers the scope in the signed proposal. A new requirement gets its own price before any work goes into it, so you are never handed an invoice you did not agree to, and we are never quietly cutting quality elsewhere to absorb it. Changes are handled in writing and priced before the work, not after it."
+        "q": "Who owns the marketplaces you show as examples?",
+        "a": "Their own businesses, not DevoraX. [Afriva](/projects/32) (As an engineer at Webrange Solutions) was built at Webrange Solutions. [Pastel](/projects/23) (Sameem's employer, Pastel) is Pastel's own antiques marketplace, where Sameem works on the iOS app as its employee. [Dooz Inspected Cars](/projects/25) (Sameem's direct client) is Dooz's own used-car marketplace in Jordan, which hired him for its shared NestJS backend. DevoraX is how Sameem and Usman take this work directly now."
       },
       {
-        "q": "Who actually writes the code?",
-        "a": "Sameem Amjad and Usman. Sometimes a designer or another specialist joins a project, and we name them to you before they start. DevoraX has been running since 2022. The marketplaces named on this page are Sameem's work, most of it done as an employee of other companies, and each one's write-up says whose project it was. You will not be handed to an account manager, and you will not discover at kickoff that the people on the call are not the people building it."
-      },
-      {
-        "q": "Who were these marketplaces built for?",
-        "a": "Afriva was built at Webrange Solutions, where Sameem worked on it as an engineer. Pastel is Pastel's own antiques marketplace, and since April 2026 Sameem has worked on its iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee; DevoraX work is separate from his job at Pastel. Dooz is Dooz's own used-car marketplace in Jordan, and Dooz hired Sameem directly for its shared NestJS backend. DevoraX is the studio through which he and Usman now take this kind of work directly. Pastel and Dooz are live on the web and the app stores."
-      },
-      {
-        "q": "What is the first step?",
-        "a": "A free 30-minute discovery call. Bring your role model, your commission model, and your view on whether the catalogue holds stock-keeping items or single units. For a new build, the output is a written fixed-price proposal covering scope, exclusions and price. If the honest answer is that a template would serve you better, that is what the proposal will say."
-      },
-      {
-        "q": "My marketplace is already built, or a previous developer left it half-built. Where do I start?",
-        "a": "Most work starts with the $400 audit, credited to the fix. Two exceptions: Sharetribe Web Template work with no custom code is quoted from your requirements, and a payments-only fix can be quoted on the free call. The audit reviews your code, database security, payments, hosting and store readiness, you keep the written report whatever you decide, and it says how many $1,200 sprint weeks the fix needs before work starts. [The vibe code audit page](/solutions/fix-vibe-coded-app) sets out what it checks, and the [pricing page](/pricing) lists every step. New builds get a fixed-price proposal, from $2,900."
+        "q": "What is the first step for a new marketplace?",
+        "a": "A free 30-minute discovery call. Bring your roles, your commission model and whether the catalogue holds stock-keeping items or single units, because those answers shape the schema. For a new build, the output is a written fixed-price proposal covering scope, exclusions and price. If a template would serve you better, the proposal will say so."
       }
     ],
     "word_count": 3275,
-    "updated": "2026-11-08T00:00:00.000Z",
+    "updated": "2026-11-11T00:00:00.000Z",
     "role": "hub",
     "related_slugs": [
       "antiques-marketplace-app-development",
@@ -995,7 +1007,21 @@ export const SOLUTIONS: Solution[] = [
       "audit": "$400, credited to the launch if you go ahead",
       "launch": "From $2,400 (two weeks of our work) · in-app purchase, a US web-checkout link or a React Native rebuild is quoted separately"
     },
-    "hero_answer": "Taking a Lovable app to the App Store and Google Play needs a native shell (or, for some apps, a React Native rebuild quoted after the audit), developer accounts and review answers, and as of November 2026 Lovable has no built-in flow to package and submit it. DevoraX does that work for Lovable, Base44 and Replit apps: after a free 30-minute call, a $400 launch-readiness audit says what your app needs, and the launch starts from $2,400 with the audit credited to it. We prepare the app against Apple's and Google's guidelines, submit it and answer the reviewers. The stores decide approval.",
+    "hero_answer": "A Lovable app reaches the App Store and Google Play inside a native shell, or for some apps a React Native rebuild, and as of November 2026 Lovable has no built-in way to package and submit it. DevoraX does that work for Lovable, Base44 and Replit apps: after a free 30-minute call, a $400 launch-readiness audit says what your app needs, and the launch starts from $2,400 with the audit credited to it. We prepare the app against Apple's and Google's guidelines, submit it and answer the reviewers. The stores decide approval.",
+    "key_points": [
+      {
+        "heading": "Native features, not a website",
+        "body": "Apple can reject an app that is too close to a website. We add what a phone app is expected to have, such as push notifications and deep links, before the first submission."
+      },
+      {
+        "heading": "Try it on your phone",
+        "body": "You install TestFlight and Google Play internal testing builds on your own phone and try the real app before anything goes to review."
+      },
+      {
+        "heading": "In-app purchase decided early",
+        "body": "If the app sells digital features, the audit says whether you need in-app purchase or a US web-checkout link, storefront by storefront. Building it is a separate line in your quote."
+      }
+    ],
     "triggers": [
       "Your Lovable app works in the browser, and now users, a client or an investor expect to find it in the App Store and Google Play.",
       "You looked for a button in Lovable that publishes to the App Store and found there isn't one.",
@@ -1283,28 +1309,28 @@ export const SOLUTIONS: Solution[] = [
     ],
     "faqs": [
       {
-        "q": "My app was rejected by Apple. Can you take it from here?",
-        "a": "Yes, if the reason is one a change to the app can answer. Bring the rejection message to the free call: we read which guideline it cites and what the reviewer saw, and tell you whether the audit comes first. If no change to the app can answer the cited rule, we say so there. Otherwise the work is quoted as a launch or a finish sprint before it starts, and we change the app, reply in App Store Connect and resubmit. What a rejection during our launch costs you is in [the terms above](#terms), and the stores decide approval."
+        "q": "Apple rejected my app. Can you take it from here?",
+        "a": "Yes, if a change to the app can answer the reason Apple gave. Bring the rejection message to the free call: we read which guideline it cites and what the reviewer saw, and tell you whether the audit comes first. If no change can answer it, we say so there. Otherwise the work is quoted before it starts, then we change the app, reply in App Store Connect and resubmit. The stores decide approval."
       },
       {
-        "q": "Can I test my Lovable app on my iPhone before it goes to the App Store?",
-        "a": "Yes. Once a build is uploaded to App Store Connect, you install it with Apple's TestFlight app. As of November 2026, [Apple](https://developer.apple.com/testflight/) lets up to 100 members of your development team with certain App Store Connect roles test as internal testers, while external testers need your first build to pass Apple's TestFlight review. On Android, Google Play's internal testing track does the same job. You try the real app on your own phone before it goes to review."
+        "q": "Can I try my Lovable app on my iPhone before it goes to the App Store?",
+        "a": "Yes, through Apple's TestFlight app, once a build is uploaded to App Store Connect. As of November 2026, [Apple](https://developer.apple.com/testflight/) lets up to 100 members of your development team with certain App Store Connect roles test as internal testers, while external testers need your first build to clear Apple's TestFlight review. On Android, Google Play's internal testing track does the same job."
       },
       {
         "q": "Can my Lovable app send push notifications?",
-        "a": "Yes, in two ways. As a web app added to the home screen, it can receive web push on iPhone and iPad from iOS and iPadOS 16.4, according to [WebKit](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/), if the app is built to use it. In a store app, Lovable's docs put native device APIs, push notifications included, on a Capacitor wrapper built outside Lovable, and push then needs credentials from your Apple developer account and, for Android, Firebase. The Fiverr review above is for a OneSignal push integration on existing iOS and Android apps. If OneSignal push isn't arriving, Sameem's guides cover [OneSignal push not working on iOS](https://sameemamjad.com/guides/onesignal-push-not-working-ios) and [the missing push capability](https://sameemamjad.com/guides/onesignal-missing-push-capability-ios)."
+        "a": "Yes, in two ways. Added to the home screen as a web app, it can receive web push on iPhone and iPad from iOS and iPadOS 16.4, according to [WebKit](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/), if it is built to use it. In a store app, Lovable's docs put push on a Capacitor wrapper built outside Lovable, which needs credentials from your Apple developer account and, for Android, Firebase. Sameem's guide covers [the missing push capability on iOS](https://sameemamjad.com/guides/onesignal-missing-push-capability-ios)."
       },
       {
         "q": "Can I put a Base44 app on Google Play?",
-        "a": "Yes. Base44 generates the Google Play file, an AAB, and you upload it in Play Console. Plan for two things: Google Play Billing isn't supported in Base44 apps yet (see the Base44 section above), and a personal Play account created after 13 November 2023 needs the 12-tester closed test before it can publish to production."
+        "a": "Yes. Base44 generates the Google Play file, an AAB, and you upload it in Play Console. Plan for two things. Google Play Billing isn't supported in Base44 apps yet, so digital sales inside the app need another route. And a personal Play account created after 13 November 2023 has to finish the 12-tester closed test before it can publish to production."
       },
       {
-        "q": "How long before my app can be in the stores?",
-        "a": "We can't promise a date, because Apple and Google run their own reviews. Our part is counted in weeks: the audit gives the number before work starts, and the launch from $2,400 is two weeks of our work. Then come the outside waits on this page: a D-U-N-S Number if you publish as a company, at least 14 days of closed testing and Google's production access review for a new personal Play account, and App Review. As of November 2026, [Apple](https://developer.apple.com/distribute/app-review/) says App Review is \"typically reviewing at least 50% of submissions in less than 24 hours and 90% in less than 48 hours\". Our start date and audit turnaround are in [the terms above](#terms)."
+        "q": "How long before my app is in the stores?",
+        "a": "We can't promise a date, because Apple and Google run their own reviews. Our part is counted in weeks: the audit gives the number before work starts, and the launch from $2,400 is two weeks of our work. Then come the outside waits: a D-U-N-S Number if you publish as a company, at least 14 days of closed testing and Google's production access review for a new personal Play account, and App Review."
       },
       {
-        "q": "How do I ship changes after launch?",
-        "a": "Each change to a bundled Lovable app reaches your users only through a new store build, because its screens ship inside the app rather than loading from your website. For 35 days after handover, defects in the work we delivered are fixed free, as [the terms above](#terms) say. After that, fixes and new store builds go through monthly care at $1,500 a month, or a single release quoted per change."
+        "q": "If I change my app in Lovable, do store users get the change straight away?",
+        "a": "No, not in a bundled app. Its screens ship inside the app rather than loading from your website, so each change reaches users only through a new store build. That is why we suggest waiting until the app settles before the launch, or using the web version in the meantime. After launch, new store builds go through monthly care or a single release quoted per change."
       }
     ],
     "when_not_to_hire": "If one of the cheaper routes in the table above fits your app, take it: it will cost less than our launch. If your app still changes every day in Lovable, a bundled wrapper means a new store build for each change, so wait until it settles or use the PWA for now.\n\nIf you need someone to promise that Apple and Google will accept the app, we won't: no one can guarantee approval, because the stores decide. And if your launch date depends on a review finishing by a set day, we can't promise review times, because Apple and Google set them.",
@@ -1316,7 +1342,7 @@ export const SOLUTIONS: Solution[] = [
       "label": "Why Apple rejects some wrapped web apps (guideline 4.2)",
       "href": "https://sameemamjad.com/guides/app-store-guideline-4-2-minimum-functionality"
     },
-    "updated": "2026-11-08T00:00:00.000Z"
+    "updated": "2026-11-11T00:00:00.000Z"
   },
   {
     "kind": "offer",
@@ -1346,7 +1372,21 @@ export const SOLUTIONS: Solution[] = [
       "payments": "Only for a marketplace moving off Sharetribe's built-in payments, which most don't need ([why](#payouts)): from $1,200 (one week of our work) · Connect payouts from $2,400 (two weeks)",
       "launch": "From $2,400 (two weeks of our work) · first, a full React Native build, quoted in $1,200 sprint weeks after the $400 audit, which is credited to it"
     },
-    "hero_answer": "DevoraX is a two-person studio that takes on the work founders hire Sharetribe developers for: custom features, changes to how and when sellers are paid, and a native iOS and Android app. For a marketplace already on Sharetribe, custom features are quoted in $1,200 sprint weeks. A native app is a full React Native build, quoted in $1,200 sprint weeks after the $400 audit, which is credited to it, and its iOS and Android launch starts from $2,400. The first step is a free 30-minute call, where we tell you whether the audit comes first: it does for a native app, or when your marketplace runs custom code from another developer or an AI coding tool, and the $400 is then credited to the paid step that follows.",
+    "hero_answer": "DevoraX adds custom features, payout changes and a native app to Sharetribe marketplaces. For a marketplace already on Sharetribe, custom features are quoted in $1,200 sprint weeks. A native app is a full React Native build, quoted in $1,200 sprint weeks after the $400 audit, which is credited to it, and its iOS and Android launch starts from $2,400. The first step is a free 30-minute call, where we tell you whether the audit comes first: it does for a native app, or when your marketplace runs custom code from another developer or an AI coding tool, and the $400 is then credited to the paid step that follows.",
+    "key_points": [
+      {
+        "heading": "Console first, code second",
+        "body": "If what you need is a Console setting, such as fields, categories, texts or access control, we tell you to set it yourself rather than pay a developer."
+      },
+      {
+        "heading": "Tried in Dev, then Live",
+        "body": "Custom features and transaction process changes are built and tested in your Dev environment before they reach Live, so real payments never meet untested code."
+      },
+      {
+        "heading": "Earlier code checked first",
+        "body": "If a previous developer, you or an AI coding tool changed your template's code, the audit checks it before real payments run through it."
+      }
+    ],
     "triggers": [
       "You need something Sharetribe's no-code Console can't do: a marketplace in several languages at once, one cart across several sellers, a refundable deposit, or a different rule for when sellers get paid.",
       "Some of your sellers bank in countries Sharetribe's built-in Stripe payouts don't reach, and you need to know which payout route could work before anyone writes code.",
@@ -1678,19 +1718,27 @@ export const SOLUTIONS: Solution[] = [
     "faqs": [
       {
         "q": "Do we have to hire a Sharetribe Expert, or can another developer work on our marketplace?",
-        "a": "No, an Expert isn't required. Sharetribe's [guide to hiring a developer](https://www.sharetribe.com/help/en/articles/8506408-how-to-hire-a-developer-to-customize-your-marketplace-with-code) (6 May 2026) says \"hiring a Sharetribe Expert is not mandatory to customize Sharetribe. Any developer with the appropriate technical skillset can build custom code for Sharetribe.\" It names the skillset too: for anything beyond look-and-feel changes, JavaScript, React and building interfaces from components.\n\nDevoraX isn't listed on Sharetribe's Experts Marketplace, so judge us on the work above, [our Fiverr record](/reviews) and the free call."
+        "a": "No, an Expert isn't required. Sharetribe's [guide to hiring a developer](https://www.sharetribe.com/help/en/articles/8506408-how-to-hire-a-developer-to-customize-your-marketplace-with-code) (6 May 2026) says \"hiring a Sharetribe Expert is not mandatory to customize Sharetribe\". For anything beyond look-and-feel changes, it names JavaScript, React and building interfaces from components as the skills needed. DevoraX isn't listed on Sharetribe's Experts Marketplace, so judge us on [our Fiverr record](/reviews) and the free call."
       },
       {
         "q": "Can our Sharetribe marketplace use PayPal instead of Stripe?",
-        "a": "Only with custom code, and only after PayPal approves your business. As of November 2026, Sharetribe's help says PayPal \"is not available to use for most new marketplace businesses\" and that \"Using PayPal requires being approved by PayPal\" ([countries and currencies Stripe supports](https://www.sharetribe.com/help/en/articles/8418388-countries-and-currencies-supported-by-stripe)). Ask PayPal first, with the questions in [the payment gateway section above](#payments).\n\nWe have not built a PayPal integration on Sharetribe, and it is not on our price list."
+        "a": "Only with custom code, and only after PayPal approves your business. As of November 2026, Sharetribe's help says PayPal \"is not available to use for most new marketplace businesses\" and that \"Using PayPal requires being approved by PayPal\" ([countries and currencies Stripe supports](https://www.sharetribe.com/help/en/articles/8418388-countries-and-currencies-supported-by-stripe)). Ask PayPal first. We have not built a PayPal integration on Sharetribe, and it is not on our price list."
       },
       {
         "q": "Will our marketplace's iOS app have to use Apple's in-app purchase?",
-        "a": "Not for physical goods or services used outside the app. As of November 2026, Apple's [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/) (last updated 16 October 2026) say those must be paid for with methods other than in-app purchase, such as Apple Pay or card entry (3.1.3(e)). A class, tour or event people attend in person is a service used outside the app, and that is where Sharetribe's Stripe checkout fits. Real-time services between two people, such as tutoring, may also use other methods, but \"One-to-few and one-to-many real-time services must use in-app purchase\" (3.1.3(d)).\n\nApple's 3.1.1 requires in-app purchase to \"unlock features or functionality within your app\", naming subscriptions first; a paid seller membership or a digital download opened in the app can fall under it. On the US storefront the app may also link to your web checkout (3.1.1(a)). Something bought on the web unlocks in the app only if it is also sold there as an in-app purchase (3.1.3(b)). Google Play's [Payments policy](https://support.google.com/googleplay/android-developer/answer/9858738) bars its billing for physical goods and services. Digital features use it unless you enrol in one of Google's alternative billing or external content links programs where offered; the US has had both since December 2025 ([Google's US policy page](https://support.google.com/googleplay/android-developer/answer/15582165)). The full rules for both stores are on our Lovable page, under [Can I use Stripe in my iOS app?](/solutions/lovable-app-to-app-store#in-app-purchase) App Review decides each case."
+        "a": "Not for physical goods or services used outside the app. As of November 2026, Apple's [App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/) say those must be paid for by other methods, such as Apple Pay or card entry (3.1.3(e)), which is where Sharetribe's Stripe checkout fits. Digital features unlocked in the app, such as a paid seller membership, can fall under in-app purchase (3.1.1), and \"One-to-few and one-to-many real-time services must use in-app purchase\" (3.1.3(d)). [The Lovable page](/solutions/lovable-app-to-app-store#in-app-purchase) has both stores' rules."
       },
       {
         "q": "We built features on the Sharetribe template with an AI coding tool. Can you review them before we go live?",
-        "a": "Yes. That is when the $400 audit comes first, credited to the paid step that follows. Sharetribe now teaches founders to customise its template with AI tools. Even so, [its article on AI-assisted coding](https://www.sharetribe.com/help/en/articles/16691041-what-you-can-and-can-t-do-with-ai-assisted-coding-vibecoding) (11 September 2026) draws a line: \"For most people, if it's about money, identity, or private data, hiring a professional developer is recommended.\" It says pricing logic belongs in the template's server code, not in users' browsers, and that a broken transaction process \"can (and usually does) break important things\". Two checks in [our vibe-coded app security checklist](/insights/vibe-coded-app-security-checklist), keeping secret keys out of the browser and deciding prices on the server, apply to a Sharetribe template too, and you can run them yourself first.\n\nIf your app was built with an AI tool outside Sharetribe, see [fixing a vibe-coded app](/solutions/fix-vibe-coded-app)."
+        "a": "Yes. That is when the $400 audit comes first, credited to the paid step that follows. Sharetribe's [article on AI-assisted coding](https://www.sharetribe.com/help/en/articles/16691041-what-you-can-and-can-t-do-with-ai-assisted-coding-vibecoding) (11 September 2026) draws the line: \"For most people, if it's about money, identity, or private data, hiring a professional developer is recommended.\" Two checks in [our security checklist](/insights/vibe-coded-app-security-checklist), keeping secret keys out of the browser and deciding prices on the server, apply to a Sharetribe template too."
+      },
+      {
+        "q": "Does Sharetribe come with a mobile app?",
+        "a": "No native one. Sharetribe does not ship an iOS or Android app, so the choice is between a wrapper, a template and a custom app. A wrapper or a template costs less up front if your flows are standard. A custom app is a full React Native build on Sharetribe's APIs, reading the same listings and transactions as your website, and the audit comes before it."
+      },
+      {
+        "q": "We already take payments through Sharetribe. Do we need your Payments step?",
+        "a": "Probably not. Our Payments step is for a marketplace moving off Sharetribe's built-in payments, and most Sharetribe marketplaces don't need it: those payments already pay sellers through Stripe Connect. If some sellers bank in countries Sharetribe's built-in Stripe payouts don't reach, we look at which payout route could work before anyone writes code."
       }
     ],
     "when_not_to_hire": "If what you need is a Console setting (fields, categories, texts, pages, access control), set it yourself and keep the developer's fee; Sharetribe's support chat can point you to the right screen. If your flows are standard and you want an app soon, a wrapper or a certified template costs less up front: [the native app section](#native-app) compares them.\n\nIf you want a developer Sharetribe has vetted, hire from Sharetribe's Experts Marketplace: we aren't listed there yet. If no payment provider has agreed to pay your sellers where they live, settle that before paying anyone for code. And if you're no longer sure Sharetribe is the right base, read [where the line between Sharetribe and a custom build falls](/insights/sharetribe-vs-custom-marketplace-build) first.",
@@ -1703,7 +1751,7 @@ export const SOLUTIONS: Solution[] = [
       "label": "Compare the three routes to a Sharetribe app",
       "href": "https://sameemamjad.com/guides/sharetribe-mobile-app"
     },
-    "updated": "2026-11-08T00:00:00.000Z"
+    "updated": "2026-11-11T00:00:00.000Z"
   },
   {
     "kind": "offer",
@@ -1732,7 +1780,21 @@ export const SOLUTIONS: Solution[] = [
       "payments",
       "care"
     ],
-    "hero_answer": "DevoraX's vibe code audit is a $400 engineering review of an app built with Lovable, Base44, Replit, Bolt or Cursor, and the $400 is credited to the fix if you go ahead. We read the code, check its database rules, secrets, payments, hosting and store readiness, and give you a written report with a keep, harden or rebuild verdict for each part and the fix estimated in $1,200 sprint weeks (a finish sprint usually takes 1-2 weeks). It is not a security certification or a penetration test. The first step is a free 30-minute call, where we tell you whether you need the audit at all.",
+    "hero_answer": "DevoraX's vibe code audit is a $400 engineering review of an app built with Lovable, Base44, Replit, Bolt or Cursor, and the $400 is credited to the fix if you go ahead. We read the code, check its database rules, secrets, payments, hosting and store readiness, and give you a written report with a keep, harden or rebuild verdict for each part and the fix estimated in $1,200 sprint weeks (a finish sprint usually takes 1-2 weeks). It is not a security certification, and it does not replace a penetration test. Book the free 30-minute call first: we tell you there whether your app needs the audit at all.",
+    "key_points": [
+      {
+        "heading": "Starts where your scan stops",
+        "body": "We begin from what your builder's own security scan already reported, so you never pay us to repeat a check you can run yourself for free."
+      },
+      {
+        "heading": "Tested the way outsiders would",
+        "body": "We send real requests signed out and as a second test user, and run a test-mode purchase to check that access follows payment."
+      },
+      {
+        "heading": "A report you keep",
+        "body": "The written report is yours whatever you decide: fix the app yourself, hand the report to another developer, or hire us to do the work."
+      }
+    ],
     "triggers": [
       "The app works in the demo, but it has been stuck at 90% for weeks: sign-in, payments or deploys keep breaking.",
       "Every fix you prompt breaks something else, so each small edit feels like a gamble and burns credits.",
@@ -1999,23 +2061,27 @@ export const SOLUTIONS: Solution[] = [
     "faqs": [
       {
         "q": "Does the audit replace a penetration test?",
-        "a": "No. It is an engineering review, not a security certification, and it doesn't replace the third-party penetration test some investors ask for. As of November 2026, Lovable offers AI pentests through an Aikido connector, billed by Aikido, and recommends running the scanners first, fixing what they find, then validating with a pentest before a major release. Replit's Level 3 scan adds a black-box test of the running preview. If an investor asks for a pentest, ask whether an AI pentest will do or whether they want a testing firm. Either way the order works with the audit too: audit, fix, then test."
+        "a": "No. It is an engineering review, not a security certification, and it doesn't replace the third-party penetration test some investors ask for. As of November 2026, Lovable offers AI pentests through an Aikido connector, billed by Aikido, and Replit's Level 3 scan adds a black-box test of the running preview. If an investor asks for a pentest, ask whether an AI pentest will do. Either way, the order is audit, fix, then test."
       },
       {
         "q": "I vibe-coded my app. Do I need a developer at all?",
-        "a": "Not always. If the app has no users yet, takes no payments, holds no one else's personal data and isn't headed for the App Store or Google Play, keep building it yourself: work through our [security checklist](/insights/vibe-coded-app-security-checklist) and fix what it finds. Bring someone in when money, other people's data or a store review is involved, or when every fix you prompt breaks something else. The free call is a quick way to find out which side of that line you're on."
+        "a": "Not always. If the app has no users yet, takes no payments, holds no one else's personal data and isn't headed for the App Store or Google Play, keep building it yourself and work through our [security checklist](/insights/vibe-coded-app-security-checklist). Bring someone in when money, other people's data or a store review is involved, or when every fix you prompt breaks something else."
       },
       {
         "q": "My last developer left the app half-built. Can you pick it up?",
-        "a": "Yes, the same way: the audit reads what's there, whether a person or an AI wrote it, and gives each part a keep, harden or rebuild verdict. Before that, check that the repository, hosting, domain, Stripe and store accounts are in your name or your company's, not only the previous developer's. If they aren't, getting access transferred comes first, and we'll go through it on the call."
+        "a": "Yes, the same way: the audit reads what's there, whether a person or an AI wrote it, and gives each part a keep, harden or rebuild verdict. First, check that the repository, hosting, domain, Stripe and store accounts are in your name or your company's, not only the previous developer's. If they aren't, getting access transferred comes first, and we go through it on the call."
       },
       {
         "q": "Which builders and stacks can you audit?",
-        "a": "Anything we can read as a codebase: apps built with Lovable, Base44, Replit, Bolt, Cursor or Claude Code, or written by a person. As of November 2026, Lovable's built-in backend runs on Supabase's open-source foundation, and the related work shown on this page, ConstrAction and the FirstPass demo, runs on Next.js, Supabase and Stripe. Access is covered in step 2 above. This page shows no past audits."
+        "a": "Anything we can read as a codebase: apps built with Lovable, Base44, Replit, Bolt, Cursor or Claude Code, or written by a person. The related work we show, [ConstrAction](/projects/33) (DevoraX client, hired through Fiverr) and [FirstPass](/projects/37) (Demo build), runs on Next.js, Supabase and Stripe. We have no past audit to show yet, and no sample report is published."
       },
       {
         "q": "Will you sign an NDA before you read our code?",
-        "a": "Yes, on request, before the call. We treat your business model, technical specs and proprietary information as strictly confidential, whether or not an NDA is in place."
+        "a": "Yes, on request, before the call. We treat your business model, technical specs and proprietary information as strictly confidential, whether or not an NDA is in place. Read access to a GitHub repository is the simplest way to share the code, and you can revoke that access once the report arrives."
+      },
+      {
+        "q": "Can you move my app off Lovable Cloud into a Supabase project I control?",
+        "a": "Yes, as separate work the audit estimates in sprint weeks. As of November 2026, Lovable's built-in backend runs on Supabase's open-source foundation, so the data and its access rules can move to a Supabase project in your own account. The audit reads those rules first, because a migration is the right moment to fix any that are wrong."
       }
     ],
     "when_not_to_hire": "Don't hire us if you haven't run your builder's own scan yet: on Lovable the Quick and Deep scans are free as of November 2026, and fixing what they find may be all a small app needs. Don't hire us when one bug is all that's wrong, either. One bug you can name and reproduce? A fixed-price gig will cost less.\n\nDon't hire us if you need a compliance certification such as SOC 2, HIPAA or PCI: DevoraX holds no security or compliance certifications, and the audit isn't one. And if you need a team of five, or a committed launch date for your app before anyone has read its code, we're the wrong fit. DevoraX is [two engineers](/team) in Pakistan (UTC+5). The audit's estimate comes first, and a finish sprint usually takes 1-2 weeks.",
@@ -2028,7 +2094,7 @@ export const SOLUTIONS: Solution[] = [
       "label": "See what the audit report contains",
       "href": "#sample-report"
     },
-    "updated": "2026-11-08T00:00:00.000Z"
+    "updated": "2026-11-11T00:00:00.000Z"
   }
 ];
 

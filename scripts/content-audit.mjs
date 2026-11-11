@@ -342,6 +342,7 @@ const NOT_AN_OUTCOME =
 const SALES_SURFACES = new Set([
   'CASE_STUDY_CONTENT', 'SOLUTIONS', 'FAQS',
   'TERMS', 'OFFER_LADDER', 'POSITIONING', 'DOORS', 'MARKETPLACE_BUILD', 'ENTITY_STATEMENT',
+  'CATALOGUE', 'CATALOGUE_PROJECTS',
 ]);
 
 const SOURCES = [
@@ -362,6 +363,10 @@ const SOURCES = [
   ['src/data/offer.ts', 'POSITIONING'],
   ['src/data/offer.ts', 'DOORS'],
   ['src/data/offer.ts', 'MARKETPLACE_BUILD'],
+  // "What we build" (11 Nov 2026): the catalogue the homepage tabs, /services
+  // and llms.txt print, and the project labels it names work by.
+  ['src/data/catalogue.ts', 'CATALOGUE'],
+  ['src/data/catalogue.ts', 'CATALOGUE_PROJECTS'],
 ];
 
 let errors = 0, warnings = 0;

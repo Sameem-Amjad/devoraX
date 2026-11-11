@@ -20,6 +20,7 @@ import { createPublicClient } from '@/lib/public';
 import { absoluteUrl } from '@/lib/seo';
 import { BRAND_FACTS_UPDATED } from '@/data/brand';
 import { OFFER_UPDATED } from '@/data/offer';
+import { CATALOGUE_UPDATED } from '@/data/catalogue';
 import { TERMS_DATA_UPDATED } from '@/data/terms';
 import { REVIEWS_PAGE_UPDATED } from '@/data/testimonials';
 import { FAQS_UPDATED } from '@/data/faqs';
@@ -210,7 +211,7 @@ export function pageEntries(projects: ProjectRow[]): SitemapEntry[] {
     {
       url: absoluteUrl('/'),
       lastModified: newest(
-        [projectsUpdated(projects), HOME_UPDATED_2026_11_10, new Date(FAQS_UPDATED), new Date(OFFER_UPDATED), new Date(TERMS_DATA_UPDATED)],
+        [projectsUpdated(projects), HOME_UPDATED_2026_11_10, new Date(FAQS_UPDATED), new Date(OFFER_UPDATED), new Date(TERMS_DATA_UPDATED), new Date(CATALOGUE_UPDATED)],
         HOME_UPDATED_2026_11_10
       ),
     },
@@ -241,11 +242,16 @@ export function pageEntries(projects: ProjectRow[]): SitemapEntry[] {
  */
 export function serviceEntries(): SitemapEntry[] {
   return [
-    // The hub prints the doors' copy and the ladder's steps and prices
-    // (data/offer.ts), so it is as fresh as the newer of its rebuild and those.
+    // The hub prints the doors' copy, the ladder's steps and prices
+    // (data/offer.ts) and the catalogue (data/catalogue.ts), so it is as fresh
+    // as the newest of its rebuild and those. The homepage also prints the
+    // catalogue and, since 11 Nov 2026, the service pages' questions.
     {
       url: absoluteUrl('/services'),
-      lastModified: newest([PAGES_UPDATED_2026_11_07, new Date(OFFER_UPDATED)], PAGES_UPDATED_2026_11_07),
+      lastModified: newest(
+        [PAGES_UPDATED_2026_11_07, new Date(OFFER_UPDATED), new Date(CATALOGUE_UPDATED)],
+        PAGES_UPDATED_2026_11_07
+      ),
     },
     // Commercial solution landing pages. A door page carries its own revision
     // date, so publishing one does not re-date the vertical pages.
