@@ -20,6 +20,7 @@ export const INDUSTRIES = [
   { slug: 'legal-finance', label: 'Legal, Finance & Web3' },
   { slug: 'health', label: 'Health & Wellbeing' },
   { slug: 'fitness', label: 'Fitness & Sport' },
+  { slug: 'local-services', label: 'Local & Pet Services' },
   { slug: 'workforce', label: 'Field & Workforce' },
   { slug: 'travel', label: 'Travel' },
 ] as const satisfies readonly Industry[];
@@ -78,6 +79,8 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   // Field & workforce
   'cedmat-roller-shutter-app': 'workforce',
   'tal-workforce-platform': 'workforce',
+  // Local & pet services
+  biscuit: 'local-services',
   // Travel
   'barfly-risk-engine': 'travel',
 };

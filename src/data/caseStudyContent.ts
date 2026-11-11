@@ -50,6 +50,8 @@
  * client not named. Its demo is a real run on 30 fictional messages.
  * Tallyfile (50) followed the same day, on the same terms; its demo is a real
  * run on seven fictional invoices.
+ * Biscuit (51) too, built for a salon's Wix site; its demo runs on a fictional
+ * salon, Sudsy Paws, and makes live Gemini calls.
  *
  * Revised 7 Nov 2026 (owner decision): Pastel (23) is named only as Sameem's
  * own employment, "Senior Software Developer on Pastel's team, as Pastel's
@@ -2321,6 +2323,64 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
       "pypdf: extracts each page's text layer in pure Python, with no external programs to install. Because the AI and the checks read the same text, an amount can be confirmed against exactly what was printed. A file with no text layer is easy to spot as a scan, and it is skipped.",
       "Checks in plain code: the sum, the amount and date look-ups, the required fields and the date order run in one Python function after every AI answer. Code gives the same result for the same input every time, which a model does not, and money held as decimals avoids the small rounding errors binary floating point can introduce.",
       "CSV for Excel: a plain format that spreadsheets and most accounting software can import, so the tool is tied to no single system. It is written as UTF-8 with a byte-order mark, which helps Excel read accented names, and the status and reason columns let flagged rows be filtered."
+    ],
+    "word_count": 1899,
+    "updated": "2026-11-11T00:00:00.000Z"
+  },
+  "51": {
+    "project_id": 51,
+    "title": "Biscuit: An AI FAQ Chat Widget for a Dog-Grooming Salon's Wix Site in Google Gemini, Vercel and Supabase",
+    "meta_description": "Biscuit: a Google Gemini chat widget for a dog-grooming salon's Wix site that answers from the salon's own FAQ. A DevoraX client project.",
+    "summary_answer": "Biscuit is an AI chat assistant built for a dog-grooming salon's Wix website. It answers customers' questions about prices, hours, vaccines and parking from the salon's own FAQ, and when the FAQ doesn't cover something it says so and gives the salon's email. Biscuit is a DevoraX client project: Sameem built it for a client of DevoraX. Google Gemini writes each answer through a Vercel function, so the AI key never reaches the browser, and the FAQ lives in a Supabase table the owner can edit, which the site's FAQ page also reads. The widget adds suggested questions, a Book an appointment button and a full-screen chat on phones, and it embeds with one script tag. The demo runs on Sudsy Paws, a fictional salon, at demoprojectsforclients.sameemamjad.com/projects/biscuit, and a 1½-minute walkthrough is on this page.",
+    "sections": [
+      {
+        "heading": "What problem was Biscuit built to solve?",
+        "body": "A small grooming salon hears the same questions every day, about prices, vaccine records, walk-ins and parking. The owner answers them between appointments, and a question sent in the evening waits until morning.\n\nA general chatbot could reply at any hour, but language models write fluent answers whether or not they know the facts. A guessed price or a wrong vaccine rule does more harm than no answer, because the customer turns up expecting it.\n\nBiscuit has a narrower job. The AI is told to answer from the salon's own FAQ and nothing else, and when the FAQ has no answer, the customer gets a polite \"not sure\" and the salon's email. Biscuit sits on the salon's website as a chat bubble, with a button through to the existing booking page."
+      },
+      {
+        "heading": "How is Biscuit kept to the salon's FAQ?",
+        "body": "Each question goes to a server function that builds Gemini's instructions. The AI is told to answer only from the FAQ below, never to use outside knowledge, guess or estimate, and to repeat prices, times, policies and vaccine rules exactly as written, with every detail of a matching answer. Answers should be short, warm, plain text and in English. The full FAQ follows.\n\nInstructions steer a model without binding it, and nothing in the code compares a reply's prices with the FAQ. The code's part is how a refusal reaches the customer and what happens when a call fails.\n\nA low temperature, 0.1, keeps the model to its most likely wording, though answers can still vary a little. The last six messages go with each question, so a follow-up has its context, and replies are capped at 300 tokens. One habit is trimmed in code: a closing \"let me know if you have other questions\" or \"happy to help\" is cut when it follows an answer."
+      },
+      {
+        "heading": "What happens when the FAQ doesn't cover a question?",
+        "body": "The AI is told that if the FAQ does not clearly answer a question, or the question has nothing to do with the salon, it must reply NOT_IN_FAQ.\n\nThe code checks every reply for that marker. If it appears anywhere, or the reply is empty, the customer never sees the model's text and gets a fixed reply written in the code: \"I'm not sure about that one, and I'd rather not guess. Please email us at\" the salon's address, \"and we'll get back to you.\" The widget shows it in a pale yellow bubble with an Email the salon button.\n\nA marker, rather than an apology the model words itself, keeps the refusal the same every time, always with the address set in the salon's settings. The same reply is used when every attempt to reach Gemini fails.\n\nA model can still misread a question, answering from the wrong entry or answering when it should refuse, which is why the fallback exists."
+      },
+      {
+        "heading": "Why does the whole FAQ go into the prompt instead of a search index?",
+        "body": "Assistants that answer from documents often use retrieval. The documents are split into passages, each is turned into an embedding (a list of numbers that captures its meaning) and stored in a vector index, and each question pulls back the few passages that look closest. That suits a large help centre that would not fit in one request.\n\nA salon FAQ is short. The demo's has 13 questions, and the whole list goes into the instructions on every message, with no embeddings and no index. The model sees every answer, so a question touching two entries, such as a nervous puppy's first visit, does not depend on a search finding both, and there is no index to rebuild after an edit.\n\nThe trade-off is that every message sends the full FAQ, which costs tokens and grows with the list. For a list this short the cost is small; with hundreds of entries, retrieval would start to make sense."
+      },
+      {
+        "heading": "How does the salon owner change Biscuit's answers?",
+        "body": "The FAQ and the salon's settings live in two Supabase tables. biscuit_faqs holds each question and answer with a category, a sort order and an is_active switch; biscuit_settings holds the assistant's name, greeting, colours, email and booking link. The owner edits both in Supabase's Table Editor, much like a spreadsheet.\n\nThe site's FAQ page reads the same table, with a search box, category filters and an Ask Biscuit this button under every answer. Switching off is_active hides a question from the page and the chat alike, because the database returns only active rows to the public key.\n\nThe server keeps its copy for up to a minute, and the page's data is cached briefly too, so an edit appears after a short delay. If Supabase is not configured or cannot be reached, the server falls back to data/faq.json, a file copy of the FAQ."
+      },
+      {
+        "heading": "How is the AI key kept off the salon's website?",
+        "body": "The widget never talks to Google. It sends each question to a Vercel function, which adds the Gemini key from an environment variable on the server, so the key is in nothing the browser downloads.\n\nThe function checks each request before calling Gemini. A question must be present and at most 500 characters, and only the last six messages of history are accepted, each cut to 500 characters. One IP address can send 20 messages a minute; the next is asked to wait a moment. Each running copy of the function counts separately, so this is a simple guard rather than a strict quota.\n\nRow-level security makes the Supabase tables read-only to the public key. ALLOWED_ORIGINS can limit which websites' pages may call the API from a browser. Replies are escaped before display, so a reply cannot add markup or links to the page.\n\nQuestions and recent messages are sent to Google for processing. DevoraX holds no security or compliance certifications."
+      },
+      {
+        "heading": "What happens when Gemini is busy or slow?",
+        "body": "Hosted models sometimes turn requests away under load, usually with HTTP 429 or 503, or reply very slowly.\n\nEach attempt gets eight seconds. If Google answers busy or with another error, or the time runs out, the function tries the next model on its list: by default gemini-3.1-flash-lite, then gemini-3-flash-preview, then the first model once more. The list is a setting, GEMINI_MODEL, so a retired model can be swapped without touching the code.\n\nIf every attempt fails, the customer gets the not-sure reply with the salon's email. If the browser cannot reach the server at all, the widget says it is having trouble connecting and gives the email. While a reply is on its way, a typing indicator shows and the send button stays off."
+      },
+      {
+        "heading": "How does Biscuit fit into a Wix website?",
+        "body": "The widget is one JavaScript file added with one script tag. By default it shows a floating chat bubble. With data-mode=\"inline\" it fills the box it sits in, for Wix's Embed HTML element, which runs code inside an iframe. There the chat stays open, and Book an appointment opens a new tab, since some site builders stop an iframe from moving the page around it.\n\nIt draws itself inside a shadow DOM, a part of the page whose styles are sealed off in both directions, so the salon's theme and the chat cannot restyle each other. Its name, greeting, colours, email and booking link load from the settings table.\n\nOn a phone, an open chat fills the screen. Four suggested questions, such as Prices for a small dog, start the conversation and disappear after the first message. Escape closes the floating chat. The site's own buttons can open it with a question already asked, which is how the FAQ page hands questions over."
+      },
+      {
+        "heading": "Where can you see Biscuit?",
+        "body": "Biscuit is a DevoraX client project: Sameem built it for a client of DevoraX, for a dog-grooming salon's Wix website. The public demo runs it on Sudsy Paws Grooming, a fictional salon whose address, email, reviews and photos are demo content. It is reached from demoprojectsforclients.sameemamjad.com/projects/biscuit and needs no login.\n\nThe chat bubble is on every page. Every answer is a real Gemini call, so wording can vary a little between visits. Ask a price, then something the salon doesn't do, to see an answer and a refusal. The FAQ page loads 13 questions from Supabase, and each Ask Biscuit this button hands its question to the chat. The booking form confirms without booking anything: \"Demo booking page. In the real salon, this is the owner's existing booking site.\"\n\nThe 1½-minute walkthrough on this page shows the salon site, a price answer and a polite refusal, suggested questions, the FAQ page handing a question to Biscuit, and the demo booking page."
+      }
+    ],
+    "results": [
+      "Live demo: demoprojectsforclients.sameemamjad.com/projects/biscuit (Sudsy Paws, a fictional salon site with Biscuit on every page; no login)",
+      "A 1½-minute walkthrough on this page: the salon site, a price answer and a polite refusal, suggested questions, the FAQ page handing a question to Biscuit, and the demo booking page",
+      "On the demo's FAQ page, 13 questions load from the salon's Supabase table, each with an \"Ask Biscuit this\" button that opens the chat and asks it"
+    ],
+    "stack_rationale": [
+      "Google Gemini: writes each answer from the full FAQ, sent with every message. A low temperature, a 300-token cap and the minimal thinking level suit short lookups. By default the lightweight gemini-3.1-flash-lite is tried first, with gemini-3-flash-preview as the backup, and questions are sent to Google for processing.",
+      "Vercel serverless functions: three small endpoints, for the chat, the widget's settings and the FAQ list, with no build step and no dependencies. The Gemini key stays on the server as an environment variable, and the functions run only when a request arrives.",
+      "Supabase: hosted Postgres whose Table Editor lets the owner change questions, answers and settings without code. Row-level security makes both tables read-only to the public key, and the functions read them over Supabase's REST API with plain fetch calls, falling back to data/faq.json if the database is unavailable.",
+      "Vanilla JavaScript widget: one file with no framework, so there is nothing to bundle and it drops into any page that accepts a script tag. A shadow DOM keeps its styles apart from the host page's, and a small window.Biscuit hook lets the site's own buttons open the chat or ask a question.",
+      "One-line Wix embed: Wix lets a site owner paste custom code, so the widget needs only a script tag pointing at the Vercel app. The floating bubble suits a site-wide embed, and inline mode fills a Wix Embed HTML box. ALLOWED_ORIGINS can restrict the API to the salon's own domains."
     ],
     "word_count": 1899,
     "updated": "2026-11-11T00:00:00.000Z"

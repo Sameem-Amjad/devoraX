@@ -128,6 +128,7 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   48: { name: 'Bevy Irie', label: 'Client project' },
   49: { name: 'Triagely', label: 'DevoraX client' },
   50: { name: 'Tallyfile', label: 'DevoraX client' },
+  51: { name: 'Biscuit', label: 'DevoraX client' },
 };
 
 /** The label a reader sees beside one of our own sites. */
@@ -288,6 +289,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 45, note: 'AI style concepts kept apart from the buildable design; the demo shows labelled demo renders' },
           { project: 49, note: "support triage for an online store: categories, priorities, drafts and wholesale lead scores" },
           { project: 50, note: 'invoice PDFs read by AI, every number checked in plain code' },
+          { project: 51, note: 'an FAQ chat assistant for a grooming salon' },
         ],
       },
       {
@@ -298,17 +300,24 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'AI receptionist and customer support automation',
         line: 'An agent that answers calls, checks availability, books and hands the caller to a person when needed.',
-        refs: [{ project: 40 }, { project: 49, note: 'a support inbox sorted and drafted for review; nothing is sent automatically' }],
+        refs: [
+          { project: 40 },
+          { project: 49, note: 'a support inbox sorted and drafted for review; nothing is sent automatically' },
+          { project: 51, note: "a website chat that answers from the salon's FAQ and passes anything else to its email" },
+        ],
       },
       {
         name: 'Conversational AI integration',
         line: "A conversation layer joined to a business's own tools, templates and call records.",
-        refs: [{ project: 40 }],
+        refs: [{ project: 40 }, { project: 51, note: 'a chat widget dropped into a Wix site with one script tag' }],
       },
       {
         name: 'Answers from your own knowledge base (RAG)',
         line: 'Agents that answer only from the documents and facts a business gives them, not from the open web.',
-        refs: [{ project: 40, note: "answers drawn only from each business's own knowledge base" }],
+        refs: [
+          { project: 40, note: "answers drawn only from each business's own knowledge base" },
+          { project: 51, note: 'the whole FAQ in the prompt rather than retrieval, read from a Supabase table' },
+        ],
       },
       {
         name: 'AI-powered storytelling applications',
@@ -330,6 +339,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 40, note: 'Gemini through Google AI Studio, and Claude' },
           { project: 49, note: 'Gemini, with a second model when the first is busy' },
           { project: 50, note: 'Gemini returning structured fields that code then checks' },
+          { project: 51, note: 'Gemini behind a Vercel function, with a backup model' },
         ],
       },
       {
