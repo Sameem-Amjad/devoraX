@@ -42,6 +42,7 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   'pastel-marketplace': 'marketplaces',
   'dooz-inspected-cars': 'marketplaces',
   'afriva-e-commerce-platform': 'marketplaces',
+  triagely: 'marketplaces',
   // Food & hospitality (VoiceDesk's demo agents run a hotel and a restaurant)
   'food-magnet-vendor': 'food-hospitality',
   'koor-food-delivery': 'food-hospitality',

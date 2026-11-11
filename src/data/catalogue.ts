@@ -126,6 +126,7 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   46: { name: 'ExpertProfile.AI', label: 'Client project' },
   47: { name: 'SteamBlast Arena', label: 'Client project' },
   48: { name: 'Bevy Irie', label: 'Client project' },
+  49: { name: 'Triagely', label: 'DevoraX client' },
 };
 
 /** The label a reader sees beside one of our own sites. */
@@ -284,6 +285,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 34 },
           { project: 35, note: 'in-browser face tracking' },
           { project: 45, note: 'AI style concepts kept apart from the buildable design; the demo shows labelled demo renders' },
+          { project: 49, note: "support triage for an online store: categories, priorities, drafts and wholesale lead scores" },
         ],
       },
       {
@@ -294,7 +296,7 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'AI receptionist and customer support automation',
         line: 'An agent that answers calls, checks availability, books and hands the caller to a person when needed.',
-        refs: [{ project: 40 }],
+        refs: [{ project: 40 }, { project: 49, note: 'a support inbox sorted and drafted for review; nothing is sent automatically' }],
       },
       {
         name: 'Conversational AI integration',
@@ -322,12 +324,18 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'LLM integration (Claude, Gemini, OpenAI)',
         line: "Language models wired into a product's own logic, with the model chosen for each job.",
-        refs: [{ project: 40, note: 'Gemini through Google AI Studio, and Claude' }],
+        refs: [
+          { project: 40, note: 'Gemini through Google AI Studio, and Claude' },
+          { project: 49, note: 'Gemini, with a second model when the first is busy' },
+        ],
       },
       {
         name: 'AI workflow and business process automation',
         line: 'The steps after a conversation done for you: bookings confirmed by SMS, leads captured, calls transferred.',
-        refs: [{ project: 40, note: 'booking with SMS confirmation, lead capture, warm transfer' }],
+        refs: [
+          { project: 40, note: 'booking with SMS confirmation, lead capture, warm transfer' },
+          { project: 49, note: 'an exported inbox sorted, drafted and lead-scored in one run' },
+        ],
       },
       {
         name: 'AI tool calling and external API integration',

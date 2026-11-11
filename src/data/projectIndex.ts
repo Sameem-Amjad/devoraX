@@ -97,7 +97,9 @@ export const PROJECT_ENGAGEMENT: Record<number, Engagement> = {
   39: 'fiverr',
   40: 'fiverr',
   // DevoraX client work, the client not named (owner decision, 8 Nov 2026): Koor.
+  // Triagely too, on the owner's answer of 11 Nov 2026.
   17: 'devorax-client',
+  49: 'devorax-client',
   // "A client project: Sameem worked on it as a <role> for a client".
   41: 'client-project',
   42: 'client-project',
