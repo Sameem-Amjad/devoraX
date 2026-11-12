@@ -130,6 +130,7 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   50: { name: 'Tallyfile', label: 'DevoraX client' },
   51: { name: 'Biscuit', label: 'DevoraX client' },
   52: { name: 'LinguaBridge', label: 'Sameem worked on this build' },
+  53: { name: 'LearnHub', label: 'Sameem worked on this build' },
 };
 
 /** The label a reader sees beside one of our own sites. */
@@ -552,6 +553,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 37, note: 'four plans, Stripe in test mode' },
           { project: 30 },
           { project: 14 },
+          { project: 53, note: 'three tiers that gate courses and files' },
         ],
       },
     ],
@@ -651,7 +653,7 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'Subscription-based platforms',
         line: 'Platforms people pay for every month, with access that follows the plan they hold.',
-        refs: [{ project: 8 }, { project: 33 }, { project: 30 }],
+        refs: [{ project: 8 }, { project: 33 }, { project: 30 }, { project: 53, note: 'tiered course access' }],
       },
       {
         name: 'Inventory and order management',
@@ -761,6 +763,7 @@ export const CATALOGUE: CatalogueCategory[] = [
         name: 'PostgreSQL and Supabase development',
         line: 'Postgres databases, often through Supabase, with sign-in, file storage and row-level security.',
         refs: [
+          { project: 53, note: 'row-level security on every table' },
           { project: 33 },
           { project: 32 },
           { project: 34, note: 'PostgreSQL' },
@@ -800,6 +803,7 @@ export const CATALOGUE: CatalogueCategory[] = [
         name: 'Authentication and authorization systems',
         line: 'Sign-in and permissions, from ordinary accounts to national digital ID and crypto wallet signatures.',
         refs: [
+          { project: 53, note: 'plan tiers and admin roles' },
           { project: 32, note: 'role-based access' },
           { project: 27, note: 'MitID sign-in through Criipto' },
           { project: 44, note: 'wallet-signature sign-in' },
@@ -1236,11 +1240,11 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'Subscription billing systems',
         line: 'Recurring billing tied to what each customer may use, through plans, credits or paid access.',
-        refs: [{ project: 8 }, { project: 33 }, { project: 37 }, { project: 30 }],
+        refs: [{ project: 8 }, { project: 33 }, { project: 37 }, { project: 30 }, { project: 53 }],
       },
     ],
     industries: [
-      { slug: 'education', projects: [24, 37, 39, 47] },
+      { slug: 'education', projects: [24, 37, 39, 47, 53] },
       { slug: 'food-hospitality', projects: [17, 14, 40, 42, 20] },
       { slug: 'real-estate', projects: [33, 48, 36, 45, 38] },
       { slug: 'health', projects: [43, 35] },

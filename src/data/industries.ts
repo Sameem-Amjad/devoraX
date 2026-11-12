@@ -56,6 +56,7 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   firstpass: 'education',
   'pianissimo-online': 'education',
   'steamblast-arena': 'education',
+  learnhub: 'education',
   // Media, marketing & creators
   'ai-art-platform': 'media',
   'three28-creator-platform': 'media',

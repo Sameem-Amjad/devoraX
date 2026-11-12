@@ -57,6 +57,10 @@
  * company's name and who commissioned the build isn't recorded, so its study
  * says only that Sameem worked on the build (the 'unstated' engagement) and
  * repeats none of the page's own figures or testimonials.
+ * LearnHub (53), added 12 Nov 2026, takes the same 'unstated' line: who
+ * commissioned the build isn't recorded. Its demo runs on the shared Supabase
+ * hub with sample learners and Stripe switched off, and the study repeats
+ * none of the landing page's sample figures or testimonials.
  *
  * Revised 7 Nov 2026 (owner decision): Pastel (23) is named only as Sameem's
  * own employment, "Senior Software Developer on Pastel's team, as Pastel's
@@ -2447,6 +2451,65 @@ export const CASE_STUDY_CONTENT: Record<number, CaseStudyContent> = {
     ],
     "word_count": 1895,
     "updated": "2026-11-11T00:00:00.000Z"
+  },
+  "53": {
+    "project_id": 53,
+    "title": "LearnHub: A Tiered Course Platform on Next.js 16, Supabase Row-Level Security and Stripe Subscriptions",
+    "meta_description": "LearnHub: a subscription course platform on Next.js, Supabase and Stripe where paid tiers open courses and a library. Sameem Amjad worked on the build.",
+    "summary_answer": "LearnHub is a subscription learning platform for a business that sells courses by plan. Three paid tiers, each including the one below, give access to video courses and a library of handbooks, audio sessions and e-books. Sameem Amjad, DevoraX's founder, worked on this build. Learners resume a video where they stopped, complete a lesson once playback reaches 90% or with a button, and keep private notes stamped with the video time. Files are served through short-lived signed links after a plan check, and row-level security covers every table. Admins manage plans, roles and courses, and each change is logged. It runs on Next.js 16 and Supabase, with a Stripe subscription path that is switched off on the demo. The demo, on sample data, is at demoprojectsforclients.sameemamjad.com/projects/learnhub, and a 2-minute walkthrough is on this page.",
+    "sections": [
+      {
+        "heading": "What does a course platform sold by tier have to get right?",
+        "body": "Selling courses by plan puts a check in front of every video, file and lesson. A check that lives only in the page is easy to walk around: platforms of this kind usually expose an API and a file store as well, and a video with a public address can be shared with anyone. The rule has to hold wherever the content can be reached.\n\nLearners watch in short sessions, often on more than one device, and expect the platform to remember where they stopped. The people running the business need to change a learner's plan or publish a course without a developer, and to see afterwards who changed what."
+      },
+      {
+        "heading": "How do the three plans decide what a learner can open?",
+        "body": "The tiers are Insider, Core and Pro. Each is a level from 1 to 3, and a learner can open a course or library item when their plan's level is at least the item's. Only an active or trial plan counts, so a past-due or cancelled plan opens nothing.\n\nThe pricing page is built from the catalogue. It reads the published courses and the library and lists each under the tier it needs, so adding a course changes the page without anyone editing it. The demo lists Insider at $29, Core at $79 and Pro at $199 a month, with a yearly option that saves 10%.\n\nPreview lessons are open to anyone signed in. Locked lessons show a padlock, and opening one directly leads to the pricing page with a line naming the plan that course needs and that plan's card highlighted."
+      },
+      {
+        "heading": "How are lesson videos and library files kept behind the plan?",
+        "body": "Videos and library files sit in a private Supabase Storage bucket, so none has a public address. A file is reached only through a signed URL, a link carrying a signature and an expiry time, and the app creates one only after its own plan check.\n\nFor a lesson, the server checks that the learner is signed in and that the lesson is a preview or covered by their plan, and only then signs the video's path, for two hours.\n\nLibrary files go through two routes that make the same check. The stream route, used by the PDF viewer and the audio player, signs the file for ten minutes and passes the bytes through the app, forwarding range requests so audio can be skipped through. The download route redirects to a link that lasts an hour, which is how the EPUB is offered."
+      },
+      {
+        "heading": "What does row-level security allow, and what goes through the server?",
+        "body": "Supabase lets a browser query the database directly with a public key, so row-level security, a Postgres feature that attaches rules to each table, decides what any query can see or change. LearnHub turns it on for every table. Published courses are public, and lesson rows are visible to a signed-in learner only for previews or where their active plan reaches the course's tier.\n\nA browser can write only to the progress, notes and bookmarks tables, and only rows carrying its own user id. No policy lets it change plans, roles, courses or the audit log. Those change through server routes, which check the caller first.\n\nThe routes repeat the checks. Saving progress confirms the lesson is in a published course and is a preview or covered by the plan, and the user id always comes from the session. A database trigger gives each new sign-up a profile and the member role without ever blocking the sign-up."
+      },
+      {
+        "heading": "How does LearnHub resume a lesson and mark it finished?",
+        "body": "The player saves the playback position every 10 seconds while a video plays, on pause, and, as a beacon request, if the learner moves to another page mid-video. The position is stored against the learner's account rather than in the browser, so the lesson reopens at the same second on another device.\n\nA lesson is marked complete when playback reaches 90% of the video, when the video ends, or when the learner presses Mark as complete, which is also how reading lessons are finished.\n\nCompletion stays set. Position saves never write the completed field, so re-watching a finished lesson can't undo it, and the first completion time is kept.\n\nThe dashboard's Continue learning card picks the lesson the learner worked on last and shows where they stopped. If that lesson is finished, it offers the next unfinished one in the same course."
+      },
+      {
+        "heading": "How do notes stamped with the video time work?",
+        "body": "Each lesson has a private notes panel. A note saved while a video is loaded records the second the video had reached, and the list, newest first, shows that time as a small badge. Clicking the badge moves the video to that point and plays it, so a note leads back to the moment that prompted it. Notes on reading lessons have no time.\n\nThe server reads and writes notes filtered by the signed-in user's id, and the notes table's policy gives a browser its own notes only."
+      },
+      {
+        "heading": "How do Stripe subscriptions fit, and what happens on the demo?",
+        "body": "The code contains a full Stripe path. Choosing a plan opens a Stripe Checkout session in subscription mode for that tier's price. A portal route opens Stripe's hosted billing portal, and a webhook route keeps the plans table in step.\n\nThe webhook checks Stripe's signature on the raw request before trusting any event. Completed checkouts, subscription changes and successful payments are synced to the plans table, with the subscription's price mapped to a tier; a failed payment marks the plan past due, which locks the courses. Webhooks are the usual source of truth, since a buyer may close the browser before checkout returns.\n\nOn the demo Stripe is switched off (demo mode). Choosing a plan switches it on straight away, with no card and nothing charged. The billing page says no Stripe account is connected and hides the portal button, and no payment runs anywhere on the demo."
+      },
+      {
+        "heading": "What can an admin change, and how is it recorded?",
+        "body": "The console sits behind two checks: the proxy sends anyone without the admin role away from /admin, and every admin API route checks the role again. Its overview counts learners, plans by tier and status, published courses and lessons, and the share of started lessons that are finished.\n\nThe users list searches by name or email and filters by tier, status and role. An admin can grant a tier to one learner or a ticked selection, or revoke access, which ends it at once and keeps the plan on record as cancelled. The Roles tab makes a learner an admin and won't remove the last one. The Courses tab publishes and unpublishes courses, drafts included.\n\nAfter each change the route writes an audit line: who acted, what they did, to which learner or course, any tier, and when. Only admins can read the log.\n\nThe shared demo admin is limited in the server routes: it can change plans and roles only for the seeded sample learners, can't remove admin roles and can't unpublish courses. Its session carries a flag the database checks too, and a restrictive policy and a trigger on every table refuse any delete made with it."
+      },
+      {
+        "heading": "Where can you see LearnHub?",
+        "body": "Sameem Amjad, DevoraX's founder, worked on this build. The demo is reached from demoprojectsforclients.sameemamjad.com/projects/learnhub and runs on sample courses and learners with Stripe switched off.\n\nThe login page has one-click buttons for two demo accounts, with logins listed on the hub page: a Pro learner with courses in progress, notes and the library, and the demo admin with the console and audit log. A visitor can also sign up with any email, watch the preview lessons and choose a plan, which switches on at once with no card and nothing charged.\n\nThe courses, lesson videos and library files are sample material made for the demo: short narrated slides, two PDFs, an audio session and an EPUB. The landing page's figures and testimonials are sample copy.\n\nThe 2-minute walkthrough on this page covers pricing built from the catalogue, a Pro learner resuming a video lesson with a timestamped note, the library, then the demo admin granting a plan and finding it in the audit log."
+      }
+    ],
+    "results": [
+      "Live demo: demoprojectsforclients.sameemamjad.com/projects/learnhub, opening the course platform, with one-click demo accounts on its login page",
+      "A 2-minute walkthrough on this page: catalogue-built pricing, a resumed video lesson with a timestamped note, the library and a plan grant in the audit log",
+      "In the demo, the pricing page lists each sample course and library item under the tier that opens it"
+    ],
+    "stack_rationale": [
+      "Next.js 16: the course, lesson and library pages render on the server, where the plan check runs before a video link is signed, so a locked lesson redirects before any link exists. Route handlers hold the progress, notes, media, admin and Stripe endpoints, and the proxy file, Next.js 16's name for middleware, guards the signed-in and admin pages.",
+      "Supabase (Auth, Postgres, Storage): one service covers sign-in, data and files. Auth issues the session the database policies read, Postgres holds the catalogue, plans, progress, notes and audit log, and Storage keeps the media in a private bucket. The server reads with the service role, which bypasses the policies, so the app's routes and pages check access themselves before returning anything a plan protects.",
+      "Row-level security: policies on every table keep the access rules in force even for someone calling the database API directly. Browsers write only their own progress, notes and bookmarks, lesson rows are filtered by tier, and the demo admin's deletes are refused. The server routes, which bypass the policies, apply the same rules in code.",
+      "Stripe subscriptions: Checkout and the hosted billing portal keep card entry on Stripe's pages, and a signature-checked webhook keeps the plans table in step. Each tier maps to a Stripe price through configuration. On the demo this path is switched off and no payment is taken.",
+      "TypeScript: the tiers are one union type shared by pricing, the access checks and the admin console. Request bodies for progress, notes, checkout and the admin routes are parsed with Zod before use, which rejects a malformed id, an unknown tier or an oversized note at run time, where types alone can't.",
+      "Tailwind CSS: utility classes keep layout beside markup. The lesson sidebar stays sticky beside the player on large screens, and the plans sit in three columns from tablet width. The navy and amber palette is defined once as CSS variables and mapped to Tailwind colour names."
+    ],
+    "word_count": 1898,
+    "updated": "2026-11-12T00:00:00.000Z"
   }
 };
 
@@ -2462,4 +2525,4 @@ export function getCaseStudy(id: number | string): CaseStudyContent | undefined 
  * changed — and stale freshness signals measurably reduce how often a page is
  * cited by AI answer engines. Bump this only on a real content revision.
  */
-export const CASE_STUDY_CONTENT_UPDATED = '2026-11-11T00:00:00.000Z';
+export const CASE_STUDY_CONTENT_UPDATED = '2026-11-12T00:00:00.000Z';
