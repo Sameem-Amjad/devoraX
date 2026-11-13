@@ -68,8 +68,8 @@ export const PROJECT_ENGAGEMENT: Record<number, Engagement> = {
   3: 'no-client',
   11: 'no-client',
   12: 'no-client',
-  // Sameem as an engineer at another company: Webrange Solutions (8, 10, 28,
-  // 32), Zencloud (14, 26, 27, 29, 31), Fleact Tech (20), Pastel, his employer
+  // Sameem as an engineer at another company: Webrange Solutions (8, 10, 28),
+  // Zencloud (14, 26, 27, 29, 31), Fleact Tech (20), Pastel, his employer
   // since April 2026 (23), and ivector (24).
   8: 'employer',
   10: 'employer',
@@ -82,7 +82,6 @@ export const PROJECT_ENGAGEMENT: Record<number, Engagement> = {
   28: 'employer',
   29: 'employer',
   31: 'employer',
-  32: 'employer',
   // Hired Sameem directly: Three28, Dooz and JUJU, and iDecorwala ("for
   // iDecorwala"). Hear With You (34) has no study yet; its project page says
   // "direct client work", as did Sameem's answers of 9 Oct 2026.
@@ -98,10 +97,15 @@ export const PROJECT_ENGAGEMENT: Record<number, Engagement> = {
   40: 'fiverr',
   // DevoraX client work, the client not named (owner decision, 8 Nov 2026): Koor.
   // Triagely, Tallyfile and Biscuit too, on the owner's answers of 11 Nov 2026.
+  // Afriva (32, formerly credited to Webrange Solutions), Career Seal and
+  // Glorious Publications on the owner's instruction of 12 Nov 2026.
   17: 'devorax-client',
+  32: 'devorax-client',
   49: 'devorax-client',
   50: 'devorax-client',
   51: 'devorax-client',
+  54: 'devorax-client',
+  55: 'devorax-client',
   // "A client project: Sameem worked on it as a <role> for a client".
   41: 'client-project',
   42: 'client-project',
@@ -166,10 +170,10 @@ export function projectsLabelText(ids: readonly (number | string)[]): string {
 const TITLE_BUDGET = 50;
 
 /**
- * The <title> before the template's " | DevoraX": "Afriva E-Commerce Platform:
- * Engineering Write-up". Titles stay within 60 characters with the suffix, so
- * a long name takes the short label instead: "Predictive Analytics Dashboard:
- * Write-up".
+ * The <title> before the template's " | DevoraX": "Tallyfile Case Study" for
+ * DevoraX client work, "Loopedin Platform: Engineering Write-up" otherwise.
+ * Titles stay within 60 characters with the suffix, so a long name takes the
+ * short label instead: "Predictive Analytics Dashboard: Write-up".
  */
 export function projectPageTitle(id: number | string, title: string): string {
   if (projectEngagement(id) === 'devorax-client') return `${title} Case Study`;

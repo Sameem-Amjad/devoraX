@@ -109,7 +109,7 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   29: { name: 'Barfly', label: 'As an engineer at Zencloud' },
   30: { name: 'JUJU', label: "Sameem's direct client" },
   31: { name: 'WOD Pro League', label: 'As an engineer at Zencloud' },
-  32: { name: 'Afriva', label: 'As an engineer at Webrange Solutions' },
+  32: { name: 'Afriva', label: 'DevoraX client' },
   33: { name: 'ConstrAction', label: 'DevoraX client, hired through Fiverr' },
   34: { name: 'Hear With You', label: "Sameem's direct client" },
   35: { name: 'AR Lip Filler Preview', label: 'Proof of concept' },
@@ -131,6 +131,8 @@ export const CATALOGUE_PROJECTS: Record<number, { name: string; label: string; p
   51: { name: 'Biscuit', label: 'DevoraX client' },
   52: { name: 'LinguaBridge', label: 'Sameem worked on this build' },
   53: { name: 'LearnHub', label: 'Sameem worked on this build' },
+  54: { name: 'Career Seal', label: 'DevoraX client' },
+  55: { name: 'Glorious Publications', label: 'DevoraX client' },
 };
 
 /** The label a reader sees beside one of our own sites. */
@@ -249,11 +251,11 @@ export const CATALOGUE: CatalogueCategory[] = [
       },
       {
         q: 'Should my web app be built with Next.js or plain React?',
-        a: 'Next.js if strangers should find its pages in search, plain React if almost everything sits behind a login. Next.js can render each page on the server, so a crawler reads real content. [Mint Choc Media](/projects/41) (Client project) is React with Vite, a single page that needs no server, while [Afriva](/projects/32) (As an engineer at Webrange Solutions) uses Next.js 15 for a public storefront and its dashboards.',
+        a: 'Next.js if strangers should find its pages in search, plain React if almost everything sits behind a login. Next.js can render each page on the server, so a crawler reads real content. [Mint Choc Media](/projects/41) (Client project) is React with Vite, a single page that needs no server, while [Afriva](/projects/32) (DevoraX client) uses Next.js 15 for a public storefront and a separate seller dashboard.',
       },
       {
         q: 'Can different kinds of users each get their own dashboard?',
-        a: 'Yes, from one app and one database. [Afriva](/projects/32) (As an engineer at Webrange Solutions) has separate dashboards for admins, managers, sellers and buyers, and each one queries only the slice of data its role is entitled to. [Hear With You](/projects/34) (Sameem\'s direct client) pairs its customer app with a Next.js admin dashboard for the people who run the service.',
+        a: 'Yes, on one database. [Afriva](/projects/32) (DevoraX client) has a storefront for shoppers and a separate dashboard for each seller, and row-level security lets each one read only the slice of data its role is entitled to. [Hear With You](/projects/34) (Sameem\'s direct client) pairs its customer app with a Next.js admin dashboard for the people who run the service.',
       },
     ],
   },
@@ -343,6 +345,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 49, note: 'Gemini, with a second model when the first is busy' },
           { project: 50, note: 'Gemini returning structured fields that code then checks' },
           { project: 51, note: 'Gemini behind a Vercel function, with a backup model' },
+          { project: 54, note: 'Gemini matching resumes to job titles, with a keyword fallback' },
         ],
       },
       {
@@ -593,7 +596,7 @@ export const CATALOGUE: CatalogueCategory[] = [
     description:
       'Marketplaces where many sellers meet many buyers, and shops that sell for one business: storefronts, vendor portals, orders, stock and payments. Already on Sharetribe, or planning a new marketplace? The two services linked here are where to start.',
     intro:
-      "A marketplace is several products sharing one database: what buyers browse, what sellers manage and what you oversee. The work behind this group includes [Afriva](/projects/32) (As an engineer at Webrange Solutions), a four-role marketplace with real-time order tracking, and [Koor](/projects/17) (DevoraX client), which connects customers with home chefs. [Dooz Inspected Cars](/projects/25) (Sameem's direct client) appears for its shared NestJS backend, and [Pastel](/projects/23) (Sameem's employer, Pastel) only for Sameem's work on its iOS app.",
+      "A marketplace is several products sharing one database: what buyers browse, what sellers manage and what you oversee. The work behind this group includes [Afriva](/projects/32) (DevoraX client), a fashion marketplace with a storefront and a dashboard for each seller, and [Koor](/projects/17) (DevoraX client), which connects customers with home chefs. [Dooz Inspected Cars](/projects/25) (Sameem's direct client) appears for its shared NestJS backend, and [Pastel](/projects/23) (Sameem's employer, Pastel) only for Sameem's work on its iOS app.",
     key_points: [
       {
         heading: 'Sellers run their own shop',
@@ -622,6 +625,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 10 },
           { project: 32 },
           { project: 20, note: 'online ordering' },
+          { project: 55, note: "a publisher's bookshop, print and e-book" },
           { review: 'cedric_coleman', job: 'A website with an order system' },
         ],
       },
@@ -643,7 +647,7 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'Vendor management systems',
         line: 'Tools for sellers to manage inventory, pricing, menus and orders without needing your help.',
-        refs: [{ project: 32, note: 'a seller dashboard for inventory, pricing and orders' }, { project: 14 }],
+        refs: [{ project: 32, note: 'a seller dashboard for orders, products and returns' }, { project: 14 }],
       },
       {
         name: 'Marketplace payments',
@@ -660,8 +664,9 @@ export const CATALOGUE: CatalogueCategory[] = [
         line: 'Stock levels, order status and order history that buyers, sellers and staff all see the same way.',
         refs: [
           { project: 10, note: 'product, inventory and live order data' },
-          { project: 32 },
+          { project: 32, note: 'stock taken by the database at checkout' },
           { project: 17, note: 'real-time orders' },
+          { project: 55, note: 'printed stock, restocked when an order is cancelled' },
         ],
       },
       {
@@ -682,7 +687,7 @@ export const CATALOGUE: CatalogueCategory[] = [
     faqs: [
       {
         q: 'Can sellers on my marketplace manage their own stock and orders?',
-        a: 'Yes, through a vendor portal of their own. On [Afriva](/projects/32) (As an engineer at Webrange Solutions), Sameem worked on the seller dashboard for inventory, pricing and order status. On [Koor](/projects/17) (DevoraX client), home chefs set their own prices, promotions and availability and manage orders as they arrive. You keep oversight from an admin console that reads the same records.',
+        a: 'Yes, through a vendor portal of their own. On [Afriva](/projects/32) (DevoraX client), each seller works from its own dashboard: orders, fulfilment steps, products and returns. On [Koor](/projects/17) (DevoraX client), home chefs set their own prices, promotions and availability and manage orders as they arrive. You keep oversight from an admin console that reads the same records.',
       },
       {
         q: 'Can customers pay with Apple Pay and Google Pay?',
@@ -752,6 +757,7 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 47 },
           { project: 31 },
           { project: 30 },
+          { project: 54, note: 'Express and Mongoose API with rate limits' },
         ],
       },
       {
@@ -779,7 +785,7 @@ export const CATALOGUE: CatalogueCategory[] = [
       {
         name: 'MongoDB and Firebase development',
         line: 'Document databases and Firebase services for records that vary in shape and data that updates live.',
-        refs: [{ project: 8 }, { project: 10 }, { project: 17 }, { project: 14 }, { project: 20 }],
+        refs: [{ project: 8 }, { project: 10 }, { project: 17 }, { project: 14 }, { project: 20 }, { project: 54, note: 'MongoDB Atlas with Mongoose' }, { project: 55, note: 'MongoDB Atlas with Mongoose' }],
       },
       {
         name: 'Real-time application development',
@@ -804,7 +810,8 @@ export const CATALOGUE: CatalogueCategory[] = [
         line: 'Sign-in and permissions, from ordinary accounts to national digital ID and crypto wallet signatures.',
         refs: [
           { project: 53, note: 'plan tiers and admin roles' },
-          { project: 32, note: 'role-based access' },
+          { project: 32, note: 'row-level security for shoppers and sellers' },
+          { project: 54, note: 'token sessions and rate limits' },
           { project: 27, note: 'MitID sign-in through Criipto' },
           { project: 44, note: 'wallet-signature sign-in' },
           { project: 30, note: 'role-based access control' },
@@ -835,7 +842,7 @@ export const CATALOGUE: CatalogueCategory[] = [
       },
       {
         q: 'Should my app use PostgreSQL or MongoDB?',
-        a: 'PostgreSQL when your records relate to each other, MongoDB when each record varies in shape. [Afriva](/projects/32) (As an engineer at Webrange Solutions) uses Postgres through Supabase, because vendors own products, products appear in orders and constraints keep that true. [TAL](/projects/28) (As an engineer at Webrange Solutions) stores venues in MongoDB, whose geospatial indexes find the nearest ones to a worker.',
+        a: 'PostgreSQL when your records relate to each other, MongoDB when each record varies in shape. [Afriva](/projects/32) (DevoraX client) uses Postgres through Supabase, because sellers own products, products appear in orders and constraints and triggers keep that true. [TAL](/projects/28) (As an engineer at Webrange Solutions) stores venues in MongoDB, whose geospatial indexes find the nearest ones to a worker.',
       },
       {
         q: 'Can my app show changes live without users refreshing the page?',

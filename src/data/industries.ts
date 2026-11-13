@@ -66,6 +66,7 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   'expertprofile-ai': 'media',
   'mint-choc-media': 'media',
   linguabridge: 'media', // a translation agency's marketing site
+  'glorious-publications': 'media', // a publisher's bookshop
   // Legal, finance & Web3
   'fintech-mobile-app': 'legal-finance',
   'predictive-analytics-dashboard': 'legal-finance',
@@ -81,6 +82,7 @@ const PROJECT_INDUSTRY: Record<string, IndustrySlug> = {
   // Field & workforce
   'cedmat-roller-shutter-app': 'workforce',
   'tal-workforce-platform': 'workforce',
+  'career-seal': 'workforce', // recruitment for skilled workers moving abroad
   // Local & pet services
   biscuit: 'local-services',
   // Travel

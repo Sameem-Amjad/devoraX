@@ -493,8 +493,8 @@ export const INSIGHTS: Insight[] = [
     "seo_title": "Supabase vs Firebase for Marketplace Backends",
     "published": "2026-09-16T00:00:00.000Z",
     "meta_description": "Ten builds from the DevoraX portfolio, eight naming Firebase and two Supabase with no overlap: what they show about product shape, and what they cannot.",
-    "summary_answer": "Of the 26 entries in the DevoraX portfolio, ten name Supabase or Firebase in their tags or tech stack and none uses both: eight Firebase, two Supabase. Firebase sits alongside mobile frameworks, AWS services and, on Pastel, Sharetribe (Pastel is Sameem's employer: he has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026). Both Supabase builds are React-family web dashboards: Afriva, employer work at Webrange Solutions whose public link is a demo build, and Augment Fit, which has no public link. With only two Supabase builds, that split describes product shape in one portfolio, not measured backend performance.",
-    "dataset_note": "The dataset is the 26 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, six were employer projects (Food Magnet at Zencloud, Bondly and Afriva at Webrange Solutions, Coffee Shop at Fleact Tech, Pathana at ivector, and Pastel, where Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026), three have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
+    "summary_answer": "Of the 26 entries in the DevoraX portfolio, ten name Supabase or Firebase in their tags or tech stack and none uses both: eight Firebase, two Supabase. Firebase sits alongside mobile frameworks, AWS services and, on Pastel, Sharetribe (Pastel is Sameem's employer: he has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026). Both Supabase builds are React-family web dashboards: Afriva, built for a DevoraX client, whose live demo has shopper and seller logins, and Augment Fit, which has no public link. With only two Supabase builds, that split describes product shape in one portfolio, not measured backend performance.",
+    "dataset_note": "The dataset is the 26 entries in the DevoraX portfolio: products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies. Of the ten builds compared here, five were employer projects (Food Magnet at Zencloud, Bondly at Webrange Solutions, Coffee Shop at Fleact Tech, Pathana at ivector, and Pastel, where Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026), one, Afriva, was built for a DevoraX client, three have no named client and one, AgroBridge, has no client at all. Counts use structured fields only: category label, tags, declared tech stack and web, Google Play and App Store links. Backend attribution comes from the tags and tech stack. There is no control group, no random assignment, no shared measurement window, no instrumentation of the running systems and no outcome data. On the employer projects the backend was chosen inside another company. This is a record of which backends these products use, not a test of either.",
     "sections": [
       {
         "heading": "How many builds in the portfolio use Supabase, and how many use Firebase?",
@@ -586,8 +586,8 @@ export const INSIGHTS: Insight[] = [
               "Afriva E-Commerce Platform",
               "Supabase",
               "Tags + tech stack",
-              "Next.js & Microservices",
-              "Engineer at Webrange Solutions",
+              "Next.js & Supabase",
+              "DevoraX client",
               "Demo build on vercel.app"
             ],
             [
@@ -662,7 +662,7 @@ export const INSIGHTS: Insight[] = [
               "Afriva E-Commerce Platform",
               "Supabase",
               "Multi-vendor marketplace with admin, manager, seller and buyer roles",
-              "Engineer at Webrange Solutions",
+              "DevoraX client",
               "Demo build at afriva-buyer.vercel.app"
             ],
             [
@@ -812,7 +812,7 @@ export const INSIGHTS: Insight[] = [
     "published": "2026-09-17T00:00:00.000Z",
     "meta_description": "Where Sharetribe is the right answer, where a custom marketplace build is, and how that line falls in three real marketplaces from the DevoraX portfolio.",
     "summary_answer": "Use Sharetribe when your marketplace is a standard listing-and-commission transaction and you have not yet proved supply. For a large share of marketplaces that is the permanent answer, not a stage. Build custom when the domain data model, the role surfaces or native apps are the product. The line can also run through one project: Pastel, the antiques marketplace where DevoraX's founder Sameem Amjad works as a Senior Software Developer on Pastel's team, as Pastel's employee, runs its marketplace on Sharetribe and adds iOS and Android apps, which Sharetribe does not produce by default. Nobody built the fully custom alternative, so read that as description, not verdict.",
-    "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. Two are employer projects: Sameem Amjad, DevoraX's founder, works on Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee (since April 2026; the iOS app launched in November 2025, before he joined; DevoraX work is separate from his job at Pastel), and he worked on Afriva, whose public link is a demo build, as an engineer at Webrange Solutions. The third, Dooz, is his direct client work: Dooz hired him directly, and he worked on its shared NestJS backend. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
+    "dataset_note": "Three marketplaces from the DevoraX portfolio sit behind this piece. One is an employer project: Sameem Amjad, DevoraX's founder, works on Pastel's iOS app as a Senior Software Developer on Pastel's team, as Pastel's employee (since April 2026; the iOS app launched in November 2025, before he joined; DevoraX work is separate from his job at Pastel). Afriva was built for a DevoraX client, and its live demo has shopper and seller logins. The third, Dooz, is his direct client work: Dooz hired him directly, and he worked on its shared NestJS backend. Nobody ran a paired build, a cost model or a migration, and DevoraX has never operated Sharetribe or a Shopify multi-vendor app as a whole platform. A portfolio cannot show what failed.",
     "sections": [
       {
         "heading": "What is actually being compared here?",
@@ -889,7 +889,7 @@ export const INSIGHTS: Insight[] = [
               "Afriva (Next.js 15, Supabase)",
               "Not named in the portfolio; order and inventory state sit in the platform's own Postgres schema",
               "Four role dashboards (admin, manager, seller, buyer), real-time order tracking",
-              "Sameem worked on it as an engineer at Webrange Solutions",
+              "Built for a DevoraX client",
               "Demo build at afriva-buyer.vercel.app"
             ],
             [
@@ -960,11 +960,11 @@ export const INSIGHTS: Insight[] = [
       "Pastel and Dooz both have native iOS and Android apps, which a hosted web marketplace product does not produce by default.",
       "For a marketplace with a standard transaction, an ordinary catalogue and unproven supply, a hosted product is the permanent answer rather than a stage before a custom build. Nothing in the portfolio shows anyone outgrowing one, because it contains no such case either way.",
       "DevoraX's published custom starting points are $2,900 (MVP Starter) and $7,500 (Growth), and nothing shaped like Dooz fits the smaller band, so for some specifications the honest answer is to cut scope or stay hosted.",
-      "Two of the three are employer projects: Pastel, where Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026, and Afriva, at Webrange Solutions. The third, Dooz, hired Sameem directly to work on its shared NestJS backend."
+      "One of the three is an employer project: Pastel, where Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026. Afriva was built for a DevoraX client, and Dooz hired Sameem directly to work on its shared NestJS backend."
     ],
     "limitations": [
       "Three marketplaces inside a 26-entry portfolio from a two-person studio. A portfolio is selection-biased by construction: no cancelled, abandoned or failed marketplace could appear in it, and the portfolio was not audited for every product that might be called marketplace-shaped.",
-      "Two of the three are employer projects and the third was Sameem's direct client work. No entry records a DevoraX scope or price for any of them, so none shows how DevoraX itself scopes or prices a marketplace.",
+      "One of the three is an employer project, one was built for a DevoraX client and the third was Sameem's direct client work. No entry records a scope or price for any of them, so none shows how DevoraX itself scopes or prices a marketplace.",
       "Nobody built the same marketplace twice, once on a hosted product and once custom. There is no paired test, no A/B and no migration in either direction, so every comparison here is engineering reasoning rather than measurement.",
       "DevoraX has not run Sharetribe or a Shopify multi-vendor app as an entire platform. The direct experience of Sharetribe behind this article is Pastel, where Sameem works on the iOS app as Pastel's employee, which is why the structural table has no Shopify column.",
       "The portfolio holds no outcome data for these marketplaces, and even if it did, too much else differs between the three businesses for it to show whether build-versus-buy was the right call.",
@@ -986,7 +986,7 @@ export const INSIGHTS: Insight[] = [
     "published": "2026-09-17T00:00:00.000Z",
     "meta_description": "What a $3,000 MVP budget buys and what it does not, checked against the published $2,900 DevoraX starting tier and five web builds from its portfolio.",
     "summary_answer": "Roughly $3,000 buys one working surface for one primary audience, a narrow set of features, and a managed stack you do not have to operate. It does not buy role-separated dashboards, an app-store release, verified multi-tenancy or a security assessment. What it depends on is roles: each additional kind of user adds a surface, a permission boundary and a full test pass. If your difference from an off-the-shelf product is a preference rather than a rule, rent instead.",
-    "dataset_note": "This draws on the 26 entries in the DevoraX portfolio, products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies, and examines five web builds closely: Coffee Shop, Augment Fit, Waitmate, Pathana and Afriva. None of the five is a DevoraX engagement with a recorded price: three were employer work (Coffee Shop at Fleact Tech, Pathana at ivector and Afriva at Webrange Solutions), and Augment Fit and Waitmate have no named client. No entry stores a price, timeline, team size or developer-hour count, so nothing here evidences what any build cost. The five are used for their scope shapes only.",
+    "dataset_note": "This draws on the 26 entries in the DevoraX portfolio, products that DevoraX's founder, Sameem Amjad, built or worked on, many as an engineer at other companies, and examines five web builds closely: Coffee Shop, Augment Fit, Waitmate, Pathana and Afriva. None of the five comes with a recorded price: two were employer work (Coffee Shop at Fleact Tech and Pathana at ivector), Afriva was built for a DevoraX client, and Augment Fit and Waitmate have no named client. No entry stores a price, timeline, team size or developer-hour count, so nothing here evidences what any build cost. The five are used for their scope shapes only.",
     "sections": [
       {
         "heading": "What does a $3,000 MVP budget actually buy?",
@@ -1050,7 +1050,7 @@ export const INSIGHTS: Insight[] = [
             [
               "Afriva E-Commerce Platform",
               "Demo build (afriva-buyer.vercel.app)",
-              "Engineer at Webrange Solutions",
+              "DevoraX client",
               "4 role dashboards (admin, manager, seller, buyer)",
               "4 (admin, manager, seller, buyer)",
               "Inventory and pricing, order status, real-time delivery tracking",

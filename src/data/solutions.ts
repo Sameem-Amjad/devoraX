@@ -19,9 +19,10 @@
  * PUBLICLY DESCRIBED project with a write-up on this site. Most of that work is
  * Sameem Amjad's as an employee of other companies (Zencloud, Webrange
  * Solutions, Pastel); the rest is products he worked on whose client is not
- * named here. One of those, Koor on the food truck page, was DevoraX client
- * work (owner decision, 8 Nov 2026), and that page says so; nothing else is
- * presented as a DevoraX client delivery. A vertical page with no real work
+ * named here. Koor on the food truck page was DevoraX client work (owner
+ * decision, 8 Nov 2026), and Afriva on the marketplace page is too (owner's
+ * instruction, 12 Nov 2026); both pages say so. Nothing else is presented as a
+ * DevoraX client delivery. A vertical page with no real work
  * behind it is the thin content this site was already penalised for carrying,
  * and it would mean claiming expertise that does not exist.
  *
@@ -193,7 +194,7 @@ export const SOLUTIONS: Solution[] = [
     "h1": "Multi-Vendor Marketplace Development: Buyer, Vendor and Admin on One Backend",
     "title": "Multi-Vendor Marketplace Development",
     "meta_description": "Multi-vendor marketplace development from a two-person studio whose founder worked on Afriva and Dooz. Buyer app, vendor portal, admin. Fixed price.",
-    "hero_answer": "DevoraX builds multi-vendor marketplaces from scratch: a buyer storefront or app, a vendor portal and an admin console over one backend, for founders whose model a template won't carry. The marketplace work behind this page is Sameem Amjad's, done for others: Afriva as an engineer at Webrange Solutions, Dooz Inspected Cars' shared NestJS backend for Dooz directly, and Pastel's iOS app as Pastel's employee since April 2026, separate from DevoraX work. A new build starts with a free 30-minute call and a written fixed-price proposal. Already on Sharetribe? [Our Sharetribe developers page](/solutions/sharetribe-developers) covers custom features and a native app.",
+    "hero_answer": "DevoraX builds multi-vendor marketplaces from scratch: a buyer storefront or app, a vendor portal and an admin console over one backend, for founders whose model a template won't carry. The marketplace work behind this page: Afriva, a DevoraX client's fashion marketplace with a storefront and a seller dashboard, and Sameem Amjad's work for others on Dooz Inspected Cars' shared NestJS backend, for Dooz directly, and Pastel's iOS app, as Pastel's employee since April 2026 and separate from DevoraX work. A new build starts with a free 30-minute call and a written fixed-price proposal. Already on Sharetribe? [Our Sharetribe developers page](/solutions/sharetribe-developers) covers custom features and a native app.",
     "key_points": [
       {
         "heading": "Vendor rules in the database",
@@ -219,7 +220,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "Which marketplaces has DevoraX's founder worked on?",
-        "body": "Three: Afriva, built at Webrange Solutions; Pastel, the antiques marketplace where Sameem works as Pastel's employee; and Dooz Inspected Cars, Dooz's own used-car marketplace in Jordan, which hired Sameem directly.\n\nAfriva is a four-role marketplace on Next.js 15 and Supabase: admin, manager, seller and buyer dashboards with real-time order tracking. Sameem worked on it as an engineer at Webrange Solutions, on the Next.js 15 front end, the seller dashboard for inventory, pricing and order status, and the Supabase data layer. Its public link is a demo build of the buyer storefront, at afriva-buyer.vercel.app.\n\nPastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live at mypastel.com and on the App Store. Since April 2026 Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, working on its iOS app, which first launched in November 2025, before he joined. DevoraX work is separate from his job at Pastel. Dooz Inspected Cars runs an Angular web client and iOS and Android apps over one backend, and Dooz hired Sameem directly to work on that shared NestJS backend. Dooz's Google Play listing shows 100K+ downloads.\n\nFood Magnet, also named on this page, is not a marketplace. It is a food truck discovery platform: a Flutter app and a React admin console on AWS Lambda, with live location tracking and Stripe. Sameem worked on it as an engineer at Zencloud, on a product that already existed. It is adjacent work, not a fourth marketplace."
+        "body": "Three: Afriva, built for a DevoraX client; Pastel, the antiques marketplace where Sameem works as Pastel's employee; and Dooz Inspected Cars, Dooz's own used-car marketplace in Jordan, which hired Sameem directly.\n\nAfriva is a marketplace for African fashion on Next.js 15 and Supabase: a storefront where shoppers buy from independent sellers, and a separate dashboard where each seller handles its orders, products and returns. Row-level security and database triggers keep shoppers to their own orders and sellers to orders for their own products, and the database sets every price and takes the stock. Its live demo runs on sample shops and shoppers.\n\nPastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe and live at mypastel.com and on the App Store. Since April 2026 Sameem has been a Senior Software Developer on Pastel's team, as Pastel's employee, working on its iOS app, which first launched in November 2025, before he joined. DevoraX work is separate from his job at Pastel. Dooz Inspected Cars runs an Angular web client and iOS and Android apps over one backend, and Dooz hired Sameem directly to work on that shared NestJS backend. Dooz's Google Play listing shows 100K+ downloads.\n\nFood Magnet, also named on this page, is not a marketplace. It is a food truck discovery platform: a Flutter app and a React admin console on AWS Lambda, with live location tracking and Stripe. Sameem worked on it as an engineer at Zencloud, on a product that already existed. It is adjacent work, not a fourth marketplace."
       },
       {
         "heading": "How do you keep one vendor from reading another vendor's data?",
@@ -250,10 +251,10 @@ export const SOLUTIONS: Solution[] = [
       {
         "project_id": 32,
         "name": "Afriva E-Commerce Platform",
-        "one_line": "A four-role multi-vendor marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and real-time order tracking. Sameem worked on it as an engineer at Webrange Solutions.",
-        "what_it_proves": "Role-separated dashboards from one deployment, vendor ownership expressed in the Postgres schema rather than the interface, and order tracking streamed from database changes instead of polled. The closest reference for a conventional catalogue marketplace with sellers, stock and delivery.",
+        "one_line": "A fashion marketplace on Next.js 15 and Supabase, with a storefront for shoppers and a separate dashboard for each seller, built for a DevoraX client.",
+        "what_it_proves": "Seller ownership and order rules enforced in Postgres rather than the interface: row-level security per role, prices and stock set by triggers, and fulfilment and return steps the database allows only in order. The closest reference for a conventional catalogue marketplace with sellers, stock and delivery.",
         "figures": [
-          "Demo build of the buyer storefront at afriva-buyer.vercel.app"
+          "Live demo with shopper and seller logins, and a 2-minute walkthrough"
         ]
       },
       {
@@ -330,7 +331,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "Who owns the marketplaces you show as examples?",
-        "a": "Their own businesses, not DevoraX. [Afriva](/projects/32) (As an engineer at Webrange Solutions) was built at Webrange Solutions. [Pastel](/projects/23) (Sameem's employer, Pastel) is Pastel's own antiques marketplace, where Sameem works on the iOS app as its employee. [Dooz Inspected Cars](/projects/25) (Sameem's direct client) is Dooz's own used-car marketplace in Jordan, which hired him for its shared NestJS backend. DevoraX is how Sameem and Usman take this work directly now."
+        "a": "[Afriva](/projects/32) (DevoraX client) belongs to the DevoraX client it was built for. The other two are their own businesses' products: [Pastel](/projects/23) (Sameem's employer, Pastel) is Pastel's own antiques marketplace, where Sameem works on the iOS app as its employee. [Dooz Inspected Cars](/projects/25) (Sameem's direct client) is Dooz's own used-car marketplace in Jordan, which hired him for its shared NestJS backend. DevoraX is how Sameem and Usman take this work directly now."
       },
       {
         "q": "What is the first step for a new marketplace?",
@@ -365,7 +366,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "What antiques marketplace work stands behind this page?",
-        "body": "One product in the category. Pastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe, running publicly at mypastel.com and listed on the App Store as Pastel - Antique Marketplace. Sameem Amjad, DevoraX's founder, has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026, working on its iOS app. The iOS app first launched in November 2025, before he joined. Pastel is his employer, not a DevoraX client, and DevoraX work is separate from his job at Pastel. The write-up is at [/projects/23](/projects/23).\n\nAfriva is the second reference, for the operations side rather than the category. It is a four-role marketplace on Next.js 15 and Supabase, with admin, manager, seller and buyer dashboards and order tracking streamed from Postgres. Sameem worked on it as an engineer at Webrange Solutions. Its public link is a demo build of the buyer storefront, at afriva-buyer.vercel.app, and the write-up is at [/projects/32](/projects/32).\n\nPastel's storefront and app, and Afriva's demo, are open to inspection before you speak to us."
+        "body": "One product in the category. Pastel is a US-based marketplace for antiques, vintage decor and collectible art, built on Sharetribe, running publicly at mypastel.com and listed on the App Store as Pastel - Antique Marketplace. Sameem Amjad, DevoraX's founder, has been a Senior Software Developer on Pastel's team, as Pastel's employee, since April 2026, working on its iOS app. The iOS app first launched in November 2025, before he joined. Pastel is his employer, not a DevoraX client, and DevoraX work is separate from his job at Pastel. The write-up is at [/projects/23](/projects/23).\n\nAfriva is the second reference, for the operations side rather than the category. It is a fashion marketplace on Next.js 15 and Supabase, with a storefront for shoppers and a separate dashboard for each seller, built for a DevoraX client. Its live demo has shopper and seller logins, and the case study is at [/projects/32](/projects/32).\n\nPastel's storefront and app, and Afriva's demo, are open to inspection before you speak to us."
       },
       {
         "heading": "How do you model provenance and one-of-one listings?",
@@ -406,10 +407,10 @@ export const SOLUTIONS: Solution[] = [
       {
         "project_id": 32,
         "name": "Afriva E-Commerce Platform",
-        "one_line": "A four-role multi-vendor marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and order tracking streamed from Postgres. Sameem worked on it as an engineer at Webrange Solutions.",
-        "what_it_proves": "The operations side an antiques platform needs once real sellers are on it: role-separated dashboards each querying their own slice, a relational Postgres model where ownership can be expressed in the schema rather than in interface checks, and delivery status that reaches the buyer as an event instead of a poll.",
+        "one_line": "A fashion marketplace on Next.js 15 and Supabase, with a storefront for shoppers and a separate dashboard for each seller, built for a DevoraX client.",
+        "what_it_proves": "The operations side an antiques platform needs once real sellers are on it: a seller dashboard that sees only its own slice, a relational Postgres model where ownership is enforced in the schema rather than in interface checks, and fulfilment steps (packed, shipped, delivered) that the database allows only in order and stamps with a date.",
         "figures": [
-          "Demo build of the buyer storefront at afriva-buyer.vercel.app"
+          "Live demo with shopper and seller logins, and a 2-minute walkthrough"
         ]
       }
     ],
@@ -503,7 +504,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "heading": "How do you keep dealer accounts separated from each other?",
-        "body": "A marketplace with independent dealers is a multi-vendor system, and the rule that matters is that one seller cannot read or mutate another seller's stock. The wrong place to enforce that is the interface. A dashboard that hides a row is a presentation decision; a query that cannot return the row is a boundary.\n\nAfriva is the work that evidences this. Four roles, admin, manager, seller and buyer, each with a dashboard querying only the slice of data that role is entitled to, on Supabase's managed Postgres. Because Supabase bundles authentication with the database, the identity that signs a user in is the identity Postgres sees on the query, so ownership rules live once in the schema rather than in every screen. Sameem worked on Afriva as an engineer at Webrange Solutions, and its public link is a demo build.\n\nAfriva is general-goods e-commerce, not automotive. It evidences the separation model; Dooz supplies the vehicle domain."
+        "body": "A marketplace with independent dealers is a multi-vendor system, and the rule that matters is that one seller cannot read or mutate another seller's stock. The wrong place to enforce that is the interface. A dashboard that hides a row is a presentation decision; a query that cannot return the row is a boundary.\n\nAfriva, built for a DevoraX client, is the work that evidences this. Shoppers and sellers use separate apps over one Supabase Postgres database, and row-level security limits each to the rows it is entitled to: a seller sees only orders for its own products and can't change another seller's stock. Because Supabase bundles authentication with the database, the identity that signs a user in is the identity Postgres sees on the query, so ownership rules live once in the schema rather than in every screen. Its live demo has shopper and seller logins.\n\nAfriva is general-goods e-commerce, not automotive. It evidences the separation model; Dooz supplies the vehicle domain."
       },
       {
         "heading": "What does the build process look like, and what do you need from me?",
@@ -537,10 +538,10 @@ export const SOLUTIONS: Solution[] = [
       {
         "project_id": 32,
         "name": "Afriva E-Commerce Platform",
-        "one_line": "A multi-vendor e-commerce marketplace on Next.js 15 and Supabase, with separate admin, manager, seller and buyer dashboards and real-time delivery tracking over Postgres changes. Sameem worked on it as an engineer at Webrange Solutions.",
-        "what_it_proves": "Seller separation pushed down into the data layer rather than left as a UI concern, four role-scoped dashboards from one deployment, and server-rendered catalogue pages a crawler can read. General goods rather than automotive, so it evidences the multi-vendor mechanics a dealer marketplace needs, not vehicle domain knowledge.",
+        "one_line": "A multi-vendor fashion marketplace on Next.js 15 and Supabase, with a storefront for shoppers and a separate dashboard for each seller, built for a DevoraX client.",
+        "what_it_proves": "Seller separation pushed down into the data layer rather than left as a UI concern, a storefront and a seller dashboard over one database, and server-rendered catalogue pages a crawler can read. General goods rather than automotive, so it evidences the multi-vendor mechanics a dealer marketplace needs, not vehicle domain knowledge.",
         "figures": [
-          "Demo build of the buyer storefront at afriva-buyer.vercel.app"
+          "Live demo with shopper and seller logins, and a 2-minute walkthrough"
         ]
       }
     ],
@@ -593,7 +594,7 @@ export const SOLUTIONS: Solution[] = [
       },
       {
         "q": "How do you stop one dealer from seeing another dealer's stock?",
-        "a": "By enforcing ownership in the database rather than the interface. On Afriva, which Sameem worked on as an engineer at Webrange Solutions, each role queries only the slice of data it is entitled to, and because Supabase bundles authentication with Postgres, the identity that signs a user in is the identity the database sees on the query. A hidden row is a presentation choice; a query that cannot return it is a boundary."
+        "a": "By enforcing ownership in the database rather than the interface. On Afriva, built for a DevoraX client, each role queries only the slice of data it is entitled to, and because Supabase bundles authentication with Postgres, the identity that signs a user in is the identity the database sees on the query. A hidden row is a presentation choice; a query that cannot return it is a boundary."
       },
       {
         "q": "Is this the same build as a general multi-vendor marketplace?",
