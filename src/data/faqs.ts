@@ -19,7 +19,7 @@ export type Faq = { q: string; a: string };
 
 export const FAQS: Faq[] = [
   {
-    q: "My app was built with Lovable, Replit, Bolt or Cursor and it's stuck. Can you finish it?",
+    q: "My app was built with Lovable, Base44, Replit, Bolt or Cursor and it's stuck. Can you finish it?",
     a: "Yes, that is the main thing we do. Start with a free 30-minute call. If it makes sense, a launch-readiness audit reviews your code, database security, payments, hosting and store readiness, and you keep the written report. The fix is then a fixed-price finish sprint, usually 1–2 weeks, followed by payments and the iOS and Android launch if you need them.",
   },
   {
@@ -64,9 +64,10 @@ export const FAQS: Faq[] = [
  * When the answers above last changed: the homepage and /contact print them.
  * 8 Nov 2026: check-ins as confirmed, the accounts default, the Sharetribe
  * Payments step and app build, the launch's weeks and billing, the overrun
- * term on every written quote, and one release quoted per change.
+ * term on every written quote, and one release quoted per change. 16 Nov 2026:
+ * the first question names Base44, like the audience line in data/offer.ts.
  */
-export const FAQS_UPDATED = "2026-11-08T00:00:00.000Z";
+export const FAQS_UPDATED = "2026-11-16T00:00:00.000Z";
 
 /**
  * FAQPage node for the homepage graph, built from the exact Q&As rendered on

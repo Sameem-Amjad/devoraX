@@ -47,7 +47,7 @@ export const BRAND_FACTS = {
   whatWeDo:
     'Finish and ship stuck apps: payments that work, and real iOS and Android apps, prepared and submitted to the App Store and Google Play',
   whoItIsFor:
-    'Founders whose app was built with Lovable, Replit, Bolt or Cursor, runs on Sharetribe, or was left half-built by a previous developer',
+    'Founders whose app was built with Lovable, Base44, Replit, Bolt or Cursor, runs on Sharetribe, or was left half-built by a previous developer',
   // The profile is in Sameem's name but sells DevoraX's services, and the team
   // delivered the orders, so the record is the studio's (owner decision,
   // 8 Nov 2026). It still says whose name the profile is in, because that is
@@ -69,8 +69,9 @@ export const BRAND_FACTS = {
  *  /press sitemap entries. 7 Nov 2026: the evening call slots were added to
  *  callHours; the entity statement and whatWeDo lost their approval promise;
  *  the "Devora" alternateName went. 8 Nov 2026: trackRecord names the Fiverr
- *  profile as DevoraX's, in Sameem's name (owner decision). */
-export const BRAND_FACTS_UPDATED = '2026-11-08T00:00:00.000Z';
+ *  profile as DevoraX's, in Sameem's name (owner decision). 16 Nov 2026:
+ *  whoItIsFor names Base44, which the door pages already serve. */
+export const BRAND_FACTS_UPDATED = '2026-11-16T00:00:00.000Z';
 
 export type Profile = { label: string; url: string };
 

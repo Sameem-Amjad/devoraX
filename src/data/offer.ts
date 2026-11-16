@@ -36,8 +36,9 @@
 /** When the steps, their wording or their prices last changed. Feeds the
  *  /pricing and /services sitemap entries. 8 Nov 2026: the launch's scope, the
  *  launch and Payments billed in $1,200 weeks, the accounts default, and one
- *  release quoted per change as an alternative to monthly care. */
-export const OFFER_UPDATED = '2026-11-08T00:00:00.000Z';
+ *  release quoted per change as an alternative to monthly care. 16 Nov 2026:
+ *  the audience line names Base44. */
+export const OFFER_UPDATED = '2026-11-16T00:00:00.000Z';
 
 /** When the prices themselves last changed (the payments and launch prices
  *  Sameem set on 9 Oct 2026). /pricing prints it as "Prices last changed". */
@@ -49,7 +50,7 @@ export const POSITIONING = {
   promise:
     'Payments that work, and real iOS and Android apps, prepared and submitted to the App Store and Google Play.',
   audience:
-    'For founders whose app was built with Lovable, Replit, Bolt or Cursor, runs on Sharetribe, or was left half-built by a previous developer.',
+    'For founders whose app was built with Lovable, Base44, Replit, Bolt or Cursor, runs on Sharetribe, or was left half-built by a previous developer.',
 } as const;
 
 export type Door = {
