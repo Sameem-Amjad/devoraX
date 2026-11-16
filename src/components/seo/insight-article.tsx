@@ -17,6 +17,9 @@ import { InlineText, RichText } from './rich-text';
  * due-diligence notes) follow them. Each item sits at #item-{id}: the door
  * pages and the checklist's GitHub repo link to those anchors, so an item's id
  * never changes once it is published.
+ *
+ * A checklist's <article> carries data-checklist, which the click listener in
+ * lib/analytics.ts looks for to report checklist_click.
  */
 
 type ItemGroup = { name: string; anchor: string; first: number; items: ChecklistItem[] };
@@ -94,7 +97,7 @@ export function InsightArticle({ insight }: { insight: Insight }) {
   const keyFindings = insight.key_findings ?? [];
 
   return (
-    <article className="max-w-3xl">
+    <article data-checklist={checklist ? '' : undefined} className="max-w-3xl">
       <Byline updated={insightUpdated(insight)} kind={checklist ? 'checklist' : 'research'} />
       <p className="mt-8 text-xl leading-relaxed text-gray-200">
         <InlineText text={insight.summary_answer} />

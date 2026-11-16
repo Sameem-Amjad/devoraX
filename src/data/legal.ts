@@ -6,7 +6,11 @@
  */
 // 7 Nov 2026: the booking form's optional app questions, the landing page
 // (with analytics consent only) and the profile a booking link came from.
-export const PRIVACY_UPDATED = '2026-11-07';
+// 16 Nov 2026: the form's optional developer-account question and, for a
+// Sharetribe app, its plan and what it needs built; the profile a booking link
+// came from also kept in session storage (analytics consent only); and that
+// profile, PDF downloads and checklist link clicks reported to analytics.
+export const PRIVACY_UPDATED = '2026-11-16';
 // 7 Nov 2026: the portfolio section calls project pages "engineering
 // write-ups", and keeps "case study" for work a client contracted DevoraX for.
 // The same day, "Pricing information" made the published step prices and

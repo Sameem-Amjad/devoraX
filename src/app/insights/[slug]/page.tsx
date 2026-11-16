@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { INSIGHTS, getInsight, insightUpdated, isChecklist, type Insight } from '@/data/insights';
 import { InsightArticle } from '@/components/seo/insight-article';
+import { BookCallCta } from '@/components/seo/book-call-cta';
 import { JsonLd } from '@/components/seo/structured-data';
 import { OG_IMAGE, ORG_REF, absoluteUrl, breadcrumbNode, webPageNode } from '@/lib/seo';
 import { countWords } from '@/lib/richText';
@@ -166,6 +167,14 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-12">
             <InsightArticle insight={article} />
+            {/* Closes the page, as on /about and /pricing, in the article's
+                width. The slug tags the link (/book?from=…) so a booking
+                counts as made from this article. The checklist's own links
+                to /book sit inside its sections and carry the same tag, so
+                this is the same call to action, not a second one. */}
+            <div className="max-w-3xl">
+              <BookCallCta from={article.slug} />
+            </div>
           </div>
         </div>
       </main>

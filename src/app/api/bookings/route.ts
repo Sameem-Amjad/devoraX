@@ -14,7 +14,15 @@ import { NextResponse } from "next/server";
 import { SITE_URL } from "@/data/brand";
 import { serviceClient } from "@/lib/booking/db";
 import { HEARD_ABOUT_V1, isHeardAbout, isLinkChannel } from "@/lib/booking/attribution";
-import { MAX_APP_LINK, MAX_DEADLINE, cleanText, isBuiltWith } from "@/lib/booking/brief";
+import {
+  MAX_APP_LINK,
+  MAX_DEADLINE,
+  MAX_SHARETRIBE_NEED,
+  MAX_SHARETRIBE_PLAN,
+  cleanText,
+  isBuiltWith,
+  isDeveloperAccount,
+} from "@/lib/booking/brief";
 import { createCalendarEvent, calendarConfigured } from "@/lib/booking/googleCalendar";
 import {
   isBookableSlot,
@@ -90,15 +98,20 @@ export async function POST(request: Request) {
     booked_from: cleanPath(body.bookedFrom),
     referrer_host: cleanHost(body.referrerHost),
   };
-  // The form-written columns 20261107120000_bookings_lead_tracking.sql adds;
-  // the owner-set ones (qualified, new_channel, developer_account and the
-  // rest) are never sent.
+  // The form-written columns 20261107120000_bookings_lead_tracking.sql adds,
+  // the optional brief included. The owner-set ones (new_channel, qualified,
+  // qualified_note and first_step_paid) are never sent from here: the signed-in
+  // admin sets them from the dashboard. Only the first tier writes the columns
+  // below, so a missing migration costs the booking none of its other fields.
   const leadTracking = {
     landing_path: cleanPath(body.landingPath),
     lead_channel: isLinkChannel(body.leadChannel) ? body.leadChannel : null,
     app_link: cleanText(body.appLink, MAX_APP_LINK),
     built_with: isBuiltWith(body.builtWith) ? body.builtWith : null,
     deadline: cleanText(body.deadline, MAX_DEADLINE),
+    developer_account: isDeveloperAccount(body.developerAccount) ? body.developerAccount : null,
+    sharetribe_plan: cleanText(body.sharetribePlan, MAX_SHARETRIBE_PLAN),
+    sharetribe_need: cleanText(body.sharetribeNeed, MAX_SHARETRIBE_NEED),
   };
 
   if (!name || name.length > MAX_NAME) return bad("Please give a name");

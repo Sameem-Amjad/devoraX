@@ -6,6 +6,7 @@ import ProjectDetailClient from "@/app/projects/[id]/_components/projectClient";
 import { ProjectJsonLd, projectImageUrl } from '@/components/seo/json-ld';
 import { CaseStudyLongform } from '@/components/seo/case-study-longform';
 import { RelatedReading } from '@/components/seo/related-reading';
+import { BookCallCta } from '@/components/seo/book-call-cta';
 import { getCaseStudy } from '@/data/caseStudyContent';
 import { doorsCiting } from '@/data/doorsCiting';
 import { isHiddenProject, isIndexable, projectPageName, projectPageTitle } from '@/data/projectIndex';
@@ -246,6 +247,11 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </nav>
           )}
           <RelatedReading projectId={id} />
+          {/* The page's closing call to action, as on /about and /pricing. The
+              id tags the link (/book?from=34), so a booking counts as made
+              from this project's page. Hidden projects returned notFound()
+              above and never reach here. */}
+          <BookCallCta from={id} />
         </div>
       </div>
     </main>
