@@ -169,8 +169,13 @@ and anything malformed is saved as null rather than failing the booking.
 | `landing_path` | The first page of the visit, sent only if the visitor accepted analytics | the browser |
 | `lead_channel` | The profile a tagged link came from (`/book?from=linkedin`), or a channel you set by hand | the link, or you |
 | `app_link`, `built_with`, `deadline` | The optional brief, folded under "Add details about your app" | the form |
-| `qualified`, `qualified_note`, `first_step_paid` | Your assessment after the call, and the first paid step bought | you, in the Supabase table editor |
-| `new_channel`, `developer_account`, `sharetribe_plan`, `sharetribe_need` | Whether the lead came through a new channel (set at first contact); the kind of App Store and Google Play developer account the founder has (`none`, `personal` or `organisation`; an organisation needs a D-U-N-S Number); and, for a Sharetribe marketplace, its plan and what it needs built. The form doesn't ask for these, and the API never sends them | you, in the Supabase table editor |
+| `qualified`, `qualified_note`, `first_step_paid` | Your assessment after the call, and the first paid step bought | you, in the admin dashboard or the Supabase table editor |
+| `new_channel` | Whether the lead came through a new channel (set at first contact) | you, in the admin dashboard or the Supabase table editor |
+| `developer_account`, `sharetribe_plan`, `sharetribe_need` | The kind of App Store and Google Play developer account the founder has (`none`, `personal` or `organisation`; an organisation needs a D-U-N-S Number); and, for a Sharetribe marketplace, its plan and what it needs built. The form asks for the developer account under the optional app details (labels in `DEVELOPER_ACCOUNT` in `src/lib/booking/brief.ts`), and asks the two Sharetribe questions only when "Sharetribe" is the built-with answer | the form, in the first insert tier with the other lead-tracking fields |
+
+**Setting the lead columns.** `new_channel`, `qualified`, `qualified_note`, `first_step_paid` and `lead_channel` can now be set per booking in the admin dashboard, under "Lead details" in the Bookings tab. The Supabase table editor still works. Empty means not assessed yet. The save goes through the server action `updateBookingLeadAction`, which uses the signed-in admin's session and the existing "admins update bookings" policy, validates the values, and reports a write the policy refused instead of showing it as saved.
+
+The dashboard's Overview tab has a "Bookings by channel" table. It groups bookings by `lead_channel`, or by the visitor's `heard_about` answer when a booking has no `lead_channel`. It shows counts of bookings, qualified, qualified through a new channel, and first step paid. It counts every booking, cancelled ones too.
 
 **Tagged links.** `/book?from=` accepts a page's own name (any solution or
 insight slug, `home`, `pricing`, `services`, or a project id such as `34`) and
@@ -178,6 +183,10 @@ records that page as `booked_from`; or a profile (`sharetribe-experts`,
 `contra`, `clutch`, `linkedin`, `upwork`), recorded as `lead_channel`. Anything
 else is ignored. Put the profile links on the profiles themselves, for example
 `https://thedevorax.tech/book?from=linkedin`.
+
+The lead channel of a tagged link (`/book?from=contra`) is kept in session storage under `devorax-lead-channel` when the visitor has accepted analytics, and removed if the visitor declines, the same as `devorax-landing-path`. Without consent it lasts for the page load only.
+
+The Google Calendar invite is unchanged: it carries none of the optional app details.
 
 **Before deploying,** apply `supabase/migrations/20261107120000_bookings_lead_tracking.sql`
 with `supabase db push --linked`. If the code goes out first, `/api/bookings`
