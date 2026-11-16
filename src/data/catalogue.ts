@@ -190,7 +190,7 @@ export const CATALOGUE: CatalogueCategory[] = [
         line: 'Back-office screens where staff manage users, orders, content and plans without touching the code.',
         refs: [
           { project: 34, note: 'the Next.js admin dashboard' },
-          { project: 32, note: 'one dashboard per role' },
+          { project: 32, note: 'a seller dashboard for orders, products and returns' },
           { project: 10, note: 'React admin dashboard' },
           { project: 33, note: 'admin panel' },
           { project: 14, note: 'React web dashboards' },
@@ -797,7 +797,6 @@ export const CATALOGUE: CatalogueCategory[] = [
           { project: 47, note: 'server-run matches' },
           { project: 39 },
           { project: 17 },
-          { project: 32, note: 'real-time order tracking' },
         ],
       },
       {

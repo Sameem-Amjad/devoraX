@@ -8,12 +8,12 @@
  * from here so the start date, the turnaround and the money terms cannot drift
  * between surfaces. Change this file and the kit on the same day.
  *
- * Every answer is a practice Sameem confirmed on 7 or 8 Nov 2026. Rule for
+ * Every answer is a practice Sameem confirmed on 7 or 8 Nov 2026; the rebuild
+ * row (16 Nov 2026) repeats what the audit page already publishes. Rule for
  * adding one: if the practice does not exist yet, adopt it first or leave the
  * row out; never publish a guessed term. Left out on purpose:
- *  - What to do when data is exposed, whether we rebuild by default, backups,
- *    and whether the price is fair: page-specific copy, or a practice not
- *    confirmed yet.
+ *  - What to do when data is exposed, backups, and whether the price is fair:
+ *    page-specific copy, or a practice not confirmed yet.
  *  - Apple's and Google's review times: a platform fact that has to be re-read
  *    from the primary source on the day it is published.
  *  - The hours a sprint week gets: not published. Pages compare on the quoted
@@ -48,8 +48,10 @@ export const AUDIT_CREDIT_STEPS: OfferStepId[] = ['sprint', 'payments', 'launch'
  * release quoted per change after the defect window; the accounts default in
  * the ownership row, which the doors now show. 10 Nov 2026: the payment row
  * says the same prices apply on Upwork, which adds its own client fee.
+ * 16 Nov 2026: the rebuild row, for /pricing, in the words the audit page
+ * already uses.
  */
-export const TERMS_DATA_UPDATED = '2026-11-10T00:00:00.000Z';
+export const TERMS_DATA_UPDATED = '2026-11-16T00:00:00.000Z';
 
 /** Where a row renders: the door pages' block, the full Q&A on /pricing, the listing kit. */
 export type TermSurface = 'doors' | 'pricing' | 'kit';
@@ -131,6 +133,13 @@ export const TERMS: Term[] = [
     answer:
       'Not always. If the rest of the app is sound, the free call can skip the audit and quote the Payments step. One bug you can name and reproduce? A fixed-price gig will cost less.',
     surfaces: ['pricing', 'kit'],
+  },
+  {
+    id: 'rebuild',
+    question: 'Will you rebuild my app from scratch?',
+    answer:
+      'Not by default. The audit gives a keep, harden or rebuild verdict for each part, with its reasons, before any work is priced.',
+    surfaces: ['pricing'],
   },
   {
     id: 'continuity',
