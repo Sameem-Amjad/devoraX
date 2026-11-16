@@ -9,8 +9,9 @@
  * `noindex, follow`: the page still renders and stays on /projects for
  * visitors, but it leaves the sitemap, llms.txt, the footer and the admin's
  * IndexNow ping. An id joins the list when its page has been rewritten around
- * what Sameem actually did; /23 joins once its rewrite ships, naming Pastel
- * only as Sameem's own employment.
+ * what Sameem actually did. /19, /25, /33 and /37 were rewritten that way on
+ * 16 Nov 2026, and /23 joined with them, naming Pastel only as Sameem's own
+ * employment.
  *
  * Labels. "Case Study" means work a client contracted DevoraX for: Koor (17),
  * since the owner's answer of 8 Nov 2026. Every other project page is an
@@ -40,7 +41,7 @@ export type Engagement =
   | 'unstated'; // not placed: the page says only that Sameem worked on the build
 
 /** The index allowlist, in the order the footer, the homepage and llms.txt show it. */
-export const INDEXABLE_PROJECTS: readonly number[] = [34, 19, 25, 33, 37];
+export const INDEXABLE_PROJECTS: readonly number[] = [34, 19, 25, 33, 37, 23];
 
 /**
  * Projects hidden from the site on the owner's instruction (8 Nov 2026): a
