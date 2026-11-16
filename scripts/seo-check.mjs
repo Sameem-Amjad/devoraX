@@ -29,13 +29,27 @@
  * canonicals are compared against production, because that is what they must
  * name in every environment. Set SEO_CHECK_PROD to check another origin.
  *
+ * Link fragments are checked too. Pages link into each other's sections
+ * (/services#x, /pricing#terms, a door page's own #payments), and renaming an
+ * id breaks every such link with no error anywhere: the browser just stays at
+ * the top of the page. Every <a href> to this site that carries a #fragment,
+ * on every page above and in llms.txt, must name an id in the target's server
+ * HTML. Targets outside the sitemap (the noindexed /projects/{id} pages) are
+ * fetched once each. An id that only exists after client-side JavaScript runs
+ * counts as missing, on purpose: it is missing for every crawler that does not
+ * render, and a deep link to it works only once scripts have loaded.
+ *
+ *   node scripts/seo-check.mjs --selftest   runs that rule over an inline
+ *                                           fixture, offline, and exits 1 if it
+ *                                           does not flag exactly the broken links
+ *
  * Exit code 1 if anything at error level was found, so CI can gate on it.
  * Warnings are reported and never fail the run. No dependencies: Node 20+.
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
-const USAGE = 'usage: node scripts/seo-check.mjs [baseUrl] [--json out.json]';
+const USAGE = 'usage: node scripts/seo-check.mjs [baseUrl] [--json out.json] [--selftest]';
 
 const die = (msg) => {
   console.error(`seo-check: ${msg}\n${USAGE}`);
@@ -44,12 +58,15 @@ const die = (msg) => {
 
 let baseArg = 'http://localhost:3000';
 let jsonOut = null;
+let selfTest = false;
 const argv = process.argv.slice(2);
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
   if (a === '-h' || a === '--help') {
     console.log(USAGE);
     process.exit(0);
+  } else if (a === '--selftest') {
+    selfTest = true;
   } else if (a === '--json') {
     jsonOut = argv[++i];
     if (!jsonOut) die('--json needs a file path');
@@ -332,9 +349,16 @@ function findClose(html, name, from) {
  * words; joining inline tags merged a whole row of chips into one. The price is
  * that "Devora<span>X</span>" counts as two words, which is noise at this
  * scale, and the FAQ comparison ignores whitespace for exactly this reason.
+ *
+ * `ids` is what a #fragment can land on: every id in the document, SVG
+ * elements included, plus <a name>, which browsers still honour. Template
+ * contents are inert, and script and noscript contents are text, so none of
+ * them contribute; in particular the escaped copy of the markup in the React
+ * Server Components payload cannot make a missing id look present.
+ * `hrefs` is every <a href> as written.
  */
 function parseHtml(html) {
-  const doc = { titles: [], metas: [], links: [], headings: [], mains: [], images: [], jsonld: [] };
+  const doc = { titles: [], metas: [], links: [], headings: [], mains: [], images: [], jsonld: [], ids: new Set(), hrefs: [] };
   const text = [];
   const mainText = [];
   let mainDepth = 0;
@@ -416,6 +440,11 @@ function parseHtml(html) {
     i = tag.end;
     const { name, attrs } = tag;
 
+    if (!templateDepth) {
+      if (attrs.id) doc.ids.add(attrs.id);
+      if (name === 'a' && attrs.name) doc.ids.add(attrs.name);
+    }
+
     if (RAW_TEXT.has(name)) {
       const { contentEnd, next: resume } = findClose(html, name, i);
       const isJsonLd =
@@ -462,6 +491,7 @@ function parseHtml(html) {
     } else if (name === 'meta') doc.metas.push({ attrs, inHead });
     else if (name === 'link') doc.links.push({ attrs, inHead });
     else if (name === 'img') doc.images.push(attrs);
+    else if (name === 'a' && attrs.href != null) doc.hrefs.push(attrs.href);
   }
   closeHeading();
 
@@ -654,6 +684,12 @@ function checkJsonLd(r, doc, pageUrl) {
 
 /* ─────────────────────────────── pages ─────────────────────────────── */
 
+// What the anchor pass needs from each page, kept apart from the page records
+// so --json does not grow by every id on the site. Both are keyed by the
+// page's production URL.
+const documents = new Map(); // → { ids: Set<string> | null, why?, via?, skip? }
+const pageLinks = new Map(); // → every <a href> on the page, as written
+
 async function checkPage(page) {
   const res = await get(page.fetchUrl, 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8');
   const r = { url: page.url, path: page.path, fetched: page.fetchUrl, status: res.status, ms: res.ms ?? null, problems: [] };
@@ -668,6 +704,8 @@ async function checkPage(page) {
     return r;
   }
   const doc = parseHtml(res.body);
+  documents.set(page.url, { ids: doc.ids });
+  pageLinks.set(page.url, doc.hrefs);
 
   // <title>
   r.title = doc.titles[0]?.text ?? null;
@@ -987,7 +1025,7 @@ async function checkSitemaps() {
 
 async function checkLlms(sitemapUrls) {
   const res = await get(`${BASE}/llms.txt`, 'text/plain,text/markdown;q=0.9,*/*;q=0.8');
-  const r = { ...meta(res), links: [], problems: [] };
+  const r = { ...meta(res), links: [], fragments: [], problems: [] };
   if (res.status !== 200 || !/^text\/(?:plain|markdown)\b/i.test(res.contentType))
     add(r, 'error', 'llms-fetch', `expected 200 text/plain or text/markdown, got ${describe(res)}`);
   if (res.status !== 200) return r;
@@ -997,8 +1035,15 @@ async function checkLlms(sitemapUrls) {
   const esc = PROD.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const re = new RegExp(`${esc}(?![\\w.-])[^\\s<>"'()\\[\\]]*`, 'g');
   const found = new Set();
-  for (const [m] of res.body.matchAll(re)) found.add(normalize(m.replace(/[.,;:!?*_]+$/, '')));
+  const fragments = new Set();
+  for (const [m] of res.body.matchAll(re)) {
+    const link = m.replace(/[.,;:!?*_]+$/, '');
+    found.add(normalize(link));
+    // normalize() drops the fragment; the anchor pass wants it.
+    if (link.includes('#')) fragments.add(link);
+  }
   found.delete(null);
+  r.fragments = [...fragments];
 
   const listed = new Set(sitemapUrls);
   r.links = [...found].map((url) => ({ url, inSitemap: listed.has(url), status: null }));
@@ -1012,7 +1057,248 @@ async function checkLlms(sitemapUrls) {
   return r;
 }
 
+/* ───────────────────────────── anchors ───────────────────────────── */
+
+const HTML_ACCEPT = 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.8';
+const MAX_REDIRECTS = 5;
+
+const shownHref = (href) => {
+  const h = href.trim();
+  return clip(h.startsWith(PROD) ? h.slice(PROD.length) : h, 90);
+};
+
+/**
+ * Where a link lands, when it is a link to this site that carries a fragment
+ * worth checking; null otherwise. `key` is the target page's production URL
+ * without the fragment, the same key `documents` uses.
+ *
+ * What is deliberately not checked:
+ *   - links to other origins, and mailto:, tel:, javascript:, which have none;
+ *   - no fragment, and a bare "#": both land at the top of the page;
+ *   - "#top", in any case: browsers scroll to the top for it even when no
+ *     element has that id;
+ *   - the browser's own fragment directive (`#section:~:text=quote`), which is
+ *     cut off before the id is read.
+ *
+ * Browsers match the fragment as written first and percent-decoded second, and
+ * ids are case-sensitive, so `candidates` holds both spellings and nothing is
+ * lower-cased.
+ */
+function fragmentTarget(href, fromUrl) {
+  let u;
+  try {
+    u = new URL(href, fromUrl);
+  } catch {
+    return null;
+  }
+  if (u.origin !== PROD) return null;
+  const fragment = u.hash.slice(1).split(':~:')[0];
+  let decoded = fragment;
+  try {
+    decoded = decodeURIComponent(fragment);
+  } catch {
+    /* a stray "%": the id is read literally */
+  }
+  if (!decoded || /^top$/i.test(decoded)) return null;
+  return { key: toProd(u.href), id: decoded, candidates: [...new Set([fragment, decoded])] };
+}
+
+/**
+ * The anchor rule, with no I/O. `hrefs` are the links on the page at `fromUrl`;
+ * `lookup(key)` says what is known about a target page: `{ ids }` with the ids
+ * in its server HTML, `{ ids: null, why }` when it could not be read, or
+ * `{ ids: null, skip: true }` for a file that is not HTML (a PDF's #page=2 is
+ * not an id). A link repeated on one page is judged once.
+ */
+function judgeFragments(fromUrl, hrefs, lookup) {
+  const fromKey = toProd(fromUrl);
+  const seen = new Set();
+  const unchecked = new Map();
+  const out = { checked: 0, missing: [], unchecked: [] };
+  for (const href of hrefs) {
+    const target = fragmentTarget(href, fromUrl);
+    if (!target) continue;
+    const once = `${target.key}#${target.id}`;
+    if (seen.has(once)) continue;
+    seen.add(once);
+    out.checked++;
+
+    const doc = lookup(target.key) ?? { ids: null, why: 'not loaded' };
+    if (doc.skip) continue;
+    if (!doc.ids) {
+      const entry = unchecked.get(target.key) ?? { key: target.key, why: doc.why, count: 0 };
+      entry.count++;
+      unchecked.set(target.key, entry);
+      continue;
+    }
+    if (target.candidates.some((c) => doc.ids.has(c))) continue;
+    const lower = target.id.toLowerCase();
+    out.missing.push({
+      href: shownHref(href),
+      id: target.id,
+      key: target.key,
+      same: target.key === fromKey,
+      via: doc.via ?? null,
+      caseVariant: [...doc.ids].find((id) => id.toLowerCase() === lower) ?? null,
+    });
+  }
+  out.unchecked = [...unchecked.values()];
+  return out;
+}
+
+const missingMessage = (m) =>
+  `${m.href} → no element with id="${m.id}" on ${m.via ?? (m.same ? 'this page' : pathOf(m.key))}` +
+  (m.via ? ` (the link redirects there from ${pathOf(m.key)})` : '') +
+  (m.caseVariant ? `; id="${m.caseVariant}" exists, and ids are case-sensitive` : '');
+
+/**
+ * A page that is linked with a fragment but whose ids were not read in the page
+ * pass: a noindexed /projects/{id}, a retired URL. Fetched once. Redirects are
+ * followed here, unlike for sitemap URLs, because the browser carries the
+ * fragment across a redirect: the id has to exist on the page the visitor ends
+ * up on. (A Location header that sets a fragment of its own is not modelled.)
+ */
+async function loadTarget(key) {
+  let url = toBase(key);
+  for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
+    const res = await get(url, HTML_ACCEPT);
+    if (res.status >= 300 && res.status < 400 && res.location) {
+      let next = null;
+      try {
+        next = new URL(res.location, url);
+      } catch {
+        /* reported below */
+      }
+      if (!next) return { ids: null, why: `unusable Location header "${res.location}"` };
+      if (next.origin !== BASE && next.origin !== PROD) return { ids: null, why: `redirects off-site to ${next.origin}` };
+      url = toBase(next.href);
+      continue;
+    }
+    if (res.status !== 200) return { ids: null, why: describe(res) };
+    if (!/^(?:text\/html|application\/xhtml\+xml)\b/i.test(res.contentType)) return { ids: null, skip: true };
+    return { ids: parseHtml(res.body).ids, via: hop ? pathOf(url) : null };
+  }
+  return { ids: null, why: `more than ${MAX_REDIRECTS} redirects` };
+}
+
+const anchorTargets = new Set();
+const anchorStats = { links: 0, pages: 0, targets: 0, fetched: 0, requests: 0 };
+
+/**
+ * `sources` are `{ record, url, hrefs, page }`: where to file the problems, the
+ * page's production URL (relative links resolve against it), its links, and
+ * whether it is a page (as opposed to llms.txt).
+ * Missing ids are errors. A target that cannot be read is only a warning, and
+ * only when the sitemap does not list it: a sitemap URL that fails already has
+ * its own `status` error, and repeating it once per link would bury it.
+ */
+async function checkAnchors(sources, sitemapKeys) {
+  const before = requestCount;
+  const wanted = new Set();
+  for (const s of sources)
+    for (const href of s.hrefs) {
+      const t = fragmentTarget(href, s.url);
+      if (t) wanted.add(t.key);
+    }
+  const toLoad = [...wanted].filter((key) => !documents.has(key));
+  const loaded = await pool(toLoad, CONCURRENCY, loadTarget);
+  toLoad.forEach((key, i) => documents.set(key, loaded[i]));
+
+  for (const s of sources) {
+    const verdict = judgeFragments(s.url, s.hrefs, (key) => documents.get(key));
+    anchorStats.links += verdict.checked;
+    if (verdict.checked && s.page) anchorStats.pages++;
+    for (const m of verdict.missing) add(s.record, 'error', 'anchor-missing', missingMessage(m));
+    for (const u of verdict.unchecked) {
+      if (sitemapKeys.has(u.key)) continue;
+      add(s.record, 'warn', 'anchor-unchecked', `${count(u.count, 'fragment link')} to ${pathOf(u.key)} not checked: ${u.why}`);
+    }
+  }
+  for (const key of wanted) anchorTargets.add(key);
+  anchorStats.targets = anchorTargets.size;
+  anchorStats.fetched += toLoad.length;
+  anchorStats.requests += requestCount - before;
+}
+
+/**
+ * --selftest: the rule above over an inline fixture, offline. The table is the
+ * single source of truth for the links on page /a; each row says whether the
+ * rule must flag it. Exits 1 unless it flags exactly the broken rows, so a
+ * change that makes the check pass everything (or flag everything) fails here.
+ */
+function runSelfTest() {
+  const B = '/b';
+  const rows = [
+    // [href, must flag, why]
+    ['#intro', false, 'an id on this page'],
+    ['#gone', true, 'no such id on this page'],
+    [`${B}#details`, false, 'an id on another page'],
+    [`${PROD}${B}#details`, false, 'the same, as an absolute URL on the production origin'],
+    [`${B}#nope`, true, 'no such id on another page'],
+    [`${B}#caf%C3%A9`, false, 'a percent-encoded id'],
+    [`${B}#chart`, false, 'an id on an SVG element'],
+    [`${B}#legacy`, false, 'a named anchor (a name attribute)'],
+    [`${B}#details:~:text=Sample`, false, 'a text fragment directive after a good id'],
+    ['#Intro', true, 'ids are case-sensitive'],
+    ['#ghost', true, 'an id that exists only as text in a script (the RSC payload)'],
+    ['#inert', true, 'an id inside a template element, which is never in the document'],
+    ['#nojs', true, 'an id inside a noscript element, which is text when scripts run'],
+    ['#top', false, 'always valid'],
+    ['#TOP', false, 'always valid'],
+    ['#', false, 'the top of the page'],
+    [B, false, 'no fragment'],
+    ['https://example.com/x#nothing', false, 'another site'],
+    ['mailto:hi@example.com', false, 'not a page'],
+    ['/c#anything', false, 'target page unreadable: unchecked, not missing'],
+    ['/doc.pdf#page=2', false, 'target is not HTML: skipped'],
+  ];
+  // The descriptions are text in the fixture's markup, so they must hold no "<".
+  const links = rows.map(([href, , why]) => `<a href="${href}">${why}</a>`).join('\n');
+  const pageA = `<!doctype html><html><head><title>A</title></head><body>
+    <h2 id="intro">Intro</h2>
+    ${links}
+    <template><h2 id="inert">x</h2><a href="#in-template">inert</a></template>
+    <noscript><div id="nojs">x</div></noscript>
+    <script>self.__next_f.push([1,"<h2 id=\\"ghost\\">late</h2>"])</script>
+    </body></html>`;
+  const pageB = `<!doctype html><html><head><title>B</title></head><body>
+    <h2 id="details">Details</h2><h2 id="café">Café</h2>
+    <svg><g id="chart"></g></svg><a name="legacy">old anchor</a>
+    </body></html>`;
+
+  const a = parseHtml(pageA);
+  const docs = new Map([
+    [toProd(`${PROD}/a`), { ids: a.ids }],
+    [toProd(`${PROD}${B}`), { ids: parseHtml(pageB).ids }],
+    [toProd(`${PROD}/c`), { ids: null, why: 'HTTP 404' }],
+    [toProd(`${PROD}/doc.pdf`), { ids: null, skip: true }],
+  ]);
+  const verdict = judgeFragments(`${PROD}/a`, a.hrefs, (key) => docs.get(key));
+
+  const flagged = verdict.missing.map((m) => m.href).sort();
+  const expected = rows.filter(([, broken]) => broken).map(([href]) => href).sort();
+  const unchecked = verdict.unchecked.map((u) => pathOf(u.key));
+  const nope = verdict.missing.find((m) => m.href === `${B}#nope`);
+  const nopeMessage = nope ? missingMessage(nope) : '(not flagged)';
+  const checks = [
+    ['flags exactly the broken links', JSON.stringify(flagged) === JSON.stringify(expected), `flagged ${JSON.stringify(flagged)}, expected ${JSON.stringify(expected)}`],
+    ['reports the unreadable target as unchecked, once', JSON.stringify(unchecked) === '["/c"]', `unchecked ${JSON.stringify(unchecked)}`],
+    ['points the case mismatch at the id that exists', verdict.missing.some((m) => m.href === '#Intro' && m.caseVariant === 'intro'), 'no case hint on #Intro'],
+    ['names the missing id and page in its message', nopeMessage.includes(`id="nope" on ${B}`), `message was "${nopeMessage}"`],
+  ];
+  console.log(`seo-check --selftest · anchor rule over ${count(rows.length, 'fixture link')}\n`);
+  let failed = 0;
+  for (const [label, ok, detail] of checks) {
+    if (!ok) failed++;
+    console.log(`  ${ok ? '✓' : '✗'} ${label}${ok ? '' : `: ${detail}`}`);
+  }
+  console.log(failed ? `\n✗ ${failed} self-test check(s) failed` : '\n✓ self-test passed');
+  process.exit(failed ? 1 : 0);
+}
+
 /* ─────────────────────────────── run ─────────────────────────────── */
+
+if (selfTest) runSelfTest();
 
 const startedAt = new Date();
 console.log(`seo-check · ${BASE} · canonical origin ${PROD} · as OAI-SearchBot\n`);
@@ -1039,12 +1325,26 @@ printProblems('', sitemaps.problems);
 const targets = sitemaps.urls.map((u) => ({ url: toProd(u.url), fetchUrl: toBase(u.url), path: pathOf(u.url) }));
 if (targets.length) console.log(`\npages (${targets.length}), problems only:`);
 const pages = await pool(targets, CONCURRENCY, checkPage);
+// Every page's ids are known now, so fragment links can be judged. The problems
+// go onto each page's record and print with its others.
+const sitemapKeys = new Set(pages.map((p) => p.url));
+await checkAnchors(
+  pages.filter((p) => pageLinks.has(p.url)).map((p) => ({ record: p, url: p.url, hrefs: pageLinks.get(p.url), page: true })),
+  sitemapKeys
+);
 for (const p of pages) printProblems(p.path, p.problems);
 
 const llms = await checkLlms(sitemaps.urls.map((u) => u.url));
+await checkAnchors([{ record: llms, url: `${PROD}/llms.txt`, hrefs: llms.fragments, page: false }], sitemapKeys);
 const outside = llms.links.filter((l) => !l.inSitemap).length;
 console.log(`\nllms.txt (${describe(llms)}) → ${count(llms.links.length, 'link')} to ${PROD}, ${outside} outside the sitemap`);
 printProblems('', llms.problems);
+
+if (anchorStats.links)
+  console.log(
+    `\nanchors: ${count(anchorStats.links, 'fragment link')} on ${count(anchorStats.pages, 'page')}${llms.fragments.length ? ' and llms.txt' : ''}` +
+      ` → ${count(anchorStats.targets, 'target page')}, ${anchorStats.fetched} fetched beyond the sitemap (${count(anchorStats.requests, 'extra request')})`
+  );
 
 /* ───────────────────────────── summary ───────────────────────────── */
 
@@ -1119,7 +1419,7 @@ if (jsonOut) {
   const summary = { pages: pages.length, requests: requestCount, seconds: Number(seconds), errors, warnings, byCode: [...byCode.values()] };
   writeFileSync(
     file,
-    JSON.stringify({ base: BASE, production: PROD, userAgent: UA, startedAt: startedAt.toISOString(), summary, robots, sitemaps, pages, llms }, null, 2)
+    JSON.stringify({ base: BASE, production: PROD, userAgent: UA, startedAt: startedAt.toISOString(), summary, robots, sitemaps, pages, llms, anchors: anchorStats }, null, 2)
   );
   console.log(`\nfull results → ${file}`);
 }
