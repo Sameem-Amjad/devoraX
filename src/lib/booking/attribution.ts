@@ -11,8 +11,9 @@
  * what the database stores, and check constraints list the same ones:
  * heard_about in supabase/migrations/20261014120000_bookings_attribution.sql,
  * extended by 20261107120000_bookings_lead_tracking.sql, which also holds
- * lead_channel's. A new answer or channel needs a migration as well as a line
- * here.
+ * lead_channel's; 20261116120000_bookings_social_channels.sql adds X,
+ * Instagram and Facebook to both. A new answer or channel needs a migration as
+ * well as a line here.
  *
  * Apply 20261107120000 before deploying code that sends the newer answers or
  * fields. If it is not applied yet, /api/bookings falls back rather than fail
@@ -29,6 +30,7 @@ export const HEARD_ABOUT = {
   upwork: "Upwork",
   contra: "Contra",
   linkedin: "LinkedIn",
+  social: "X, Instagram or Facebook",
   community: "Reddit, a forum or a community",
   directory: "A directory, such as Sharetribe Experts or Clutch",
   referral: "A recommendation",
@@ -69,6 +71,9 @@ export const LEAD_CHANNELS = [
   "contra",
   "clutch",
   "linkedin",
+  "x",
+  "instagram",
+  "facebook",
   "upwork",
   "fiverr",
   "community",
@@ -82,6 +87,9 @@ const LEAD_CHANNEL_LABELS: Record<LeadChannel, string> = {
   contra: "Contra",
   clutch: "Clutch",
   linkedin: "LinkedIn",
+  x: "X (Twitter)",
+  instagram: "Instagram",
+  facebook: "Facebook",
   upwork: "Upwork",
   fiverr: "Fiverr",
   community: "A community",
@@ -101,6 +109,9 @@ export const LINK_CHANNELS: readonly LeadChannel[] = [
   "contra",
   "clutch",
   "linkedin",
+  "x",
+  "instagram",
+  "facebook",
   "upwork",
 ];
 

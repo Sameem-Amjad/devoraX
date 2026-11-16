@@ -1,11 +1,10 @@
 /**
  * The terms block (data/terms.ts) and the next start date.
  *
- * NextStart is the one component that prints NEXT_START. It compares the
- * date with the moment the page renders, and the pages that show it revalidate
- * hourly, so a week that has passed is replaced by "ask on the call" within the
- * hour rather than advertised until the next deploy. /book and the terms block
- * both render it.
+ * NextStart is the one component that prints the start week. The week is
+ * worked out from the moment the page renders (data/terms.ts, nextStartDay),
+ * and the pages that show it revalidate hourly, so it moves on by itself each
+ * Monday. /book and the terms block both render it.
  *
  * TermsBlock renders the rows for one surface: the door pages use 'doors', the
  * short block before what's included; 'pricing' is the full Q&A, for

@@ -27,13 +27,17 @@
 import type { OfferStepId } from './offer';
 
 /**
- * The week a new sprint can start (an ISO date, the Monday of that week) and
- * the day it was last set. Updated weekly; nextStartLine() stops printing a week
- * that has passed, so a missed update shows "ask on the call" rather than a
- * date that is no longer true.
+ * The start week now keeps itself current (owner decision, 16 Nov 2026): a new
+ * sprint can start in the week after the one a page is rendered in, unless
+ * we are fully booked.
+ *
+ * BUSY_UNTIL is the only thing to edit, and only when booked: set it to the
+ * last day of the work already taken on (an ISO date, '2026-12-11'), and the
+ * pages show the first Monday after that day instead. Set it back to null when
+ * that work ends; a date that has passed is ignored, so forgetting does no harm.
+ * The pages that print the start week revalidate hourly.
  */
-export const NEXT_START = '2026-11-16';
-export const NEXT_START_UPDATED = '2026-11-10';
+export const BUSY_UNTIL: string | null = null;
 
 /** The audit report usually arrives this many working days after we get access to the code. */
 export const AUDIT_TURNAROUND_WORKING_DAYS = 2;
@@ -199,11 +203,16 @@ export function termText(t: Term, surface: TermSurface, now: Date): string {
   return t.id === NEXT_START_TERM_ID ? `${nextStartLine(now)} ${answer}` : answer;
 }
 
-const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** An ISO day ("2026-11-23") for a moment, in UTC so no time zone moves the day. */
+function isoDay(t: number): string {
+  return new Date(t).toISOString().slice(0, 10);
+}
 
 /** "2026-11-09" as "9 November 2026", in UTC so no time zone moves the day. */
-function longDate(isoDay: string): string {
-  return new Date(`${isoDay}T00:00:00.000Z`).toLocaleDateString('en-GB', {
+function longDate(day: string): string {
+  return new Date(`${day}T00:00:00.000Z`).toLocaleDateString('en-GB', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -212,28 +221,28 @@ function longDate(isoDay: string): string {
 }
 
 /**
- * True once the week of NEXT_START is over: from the following Monday,
- * 00:00 UTC. An unreadable date counts as passed.
+ * The Monday a new sprint can start, as an ISO day: the first Monday after
+ * `now`, or after BUSY_UNTIL when that is later. A Monday counts as "after"
+ * only from the next one, so on a Monday the page offers the week after.
  */
-export function nextStartPassed(now: Date): boolean {
-  const start = Date.parse(`${NEXT_START}T00:00:00.000Z`);
-  return Number.isNaN(start) || now.getTime() >= start + WEEK_MS;
+export function nextStartDay(now: Date): string {
+  const today = Date.parse(`${isoDay(now.getTime())}T00:00:00.000Z`);
+  const busy = BUSY_UNTIL ? Date.parse(`${BUSY_UNTIL}T00:00:00.000Z`) : NaN;
+  const from = Number.isNaN(busy) ? today : Math.max(today, busy);
+  const weekday = new Date(from).getUTCDay(); // 0 Sunday ... 1 Monday
+  const daysToMonday = ((8 - weekday) % 7) || 7;
+  return isoDay(from + daysToMonday * DAY_MS);
 }
 
-/**
- * The start-date sentence for a page rendered at `now`. Pages that show it
- * revalidate hourly, so the switch to the fallback lands within the hour.
- */
+/** The start-date sentence for a page rendered at `now`. */
 export function nextStartLine(now: Date): string {
-  if (nextStartPassed(now)) return 'Ask on the call: our next start date is updated weekly.';
-  return `We can start a new sprint in the week of ${longDate(NEXT_START)} (updated ${longDate(NEXT_START_UPDATED)}).`;
+  return `We can start a new sprint in the week of ${longDate(nextStartDay(now))}.`;
 }
 
 /**
- * The start week on its own ("16 November 2026"), for a short label such as the
- * homepage hero's status line, or null once that week has passed. The caller
- * then shows something else rather than a date that is no longer true.
+ * The start week on its own ("23 November 2026"), for a short label such as
+ * the homepage hero's status line.
  */
-export function nextStartWeek(now: Date): string | null {
-  return nextStartPassed(now) ? null : longDate(NEXT_START);
+export function nextStartWeek(now: Date): string {
+  return longDate(nextStartDay(now));
 }

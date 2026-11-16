@@ -180,7 +180,7 @@ The dashboard's Overview tab has a "Bookings by channel" table. It groups bookin
 **Tagged links.** `/book?from=` accepts a page's own name (any solution or
 insight slug, `home`, `pricing`, `services`, or a project id such as `34`) and
 records that page as `booked_from`; or a profile (`sharetribe-experts`,
-`contra`, `clutch`, `linkedin`, `upwork`), recorded as `lead_channel`. Anything
+`contra`, `clutch`, `linkedin`, `x`, `instagram`, `facebook`, `upwork`), recorded as `lead_channel`. Anything
 else is ignored. Put the profile links on the profiles themselves, for example
 `https://thedevorax.tech/book?from=linkedin`.
 

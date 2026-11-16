@@ -166,8 +166,8 @@ as "no one can guarantee approval" pass), a turnaround promise (a reply or
 delivery "within" so many hours or days), a credential claim ("we are …
 certified/experts/partners"), a figure on a client's word, an employer project
 claimed as DevoraX's, `manifest.json`'s description differing from the entity
-statement, or a `NEXT_START` week in `src/data/terms.ts` that has passed (update
-it weekly with `NEXT_START_UPDATED`). It also checks these. The label rule: "case
+statement, or a `BUSY_UNTIL` in `src/data/terms.ts` that is neither null nor a
+date. It also checks these. The label rule: "case
 study" appears only on `devorax-client` projects, or in text that explains the
 label. The demo rule: no "shipped", "launched" or "in production" in the study of
 a demo or proof of concept. The price rule: the site's own prices must come from
@@ -219,7 +219,7 @@ Before the day: the checks above pass on a local production build, and item 13's
 5. ~~**Run IndexNow:**~~ Done 8 Nov 2026: 70 URLs, HTTP 200. `npm run indexnow -- --dry-run` to see the list, then `npm run indexnow`. It sends the new and changed pages and the URLs that left the sitemap: the redirected paths and the project pages now marked noindex.
 6. **Request indexing in Search Console** for the three door pages and the checklist: URL Inspection, then "Request indexing", once each.
 7. **Register the GA4 dimensions:** `booked_from`, `heard_about` and `lead_channel`, event-scoped, with `booking_submit` kept as the key event (item 7 below). `booking_open` now fires on `/book`, so a report that filters it on `/` stops counting the homepage's bookings.
-8. **Update `NEXT_START` every Monday:** set it and `NEXT_START_UPDATED` in `src/data/terms.ts`, then deploy. From the Monday after the week it names, the pages say "Ask on the call: our next start date is updated weekly." and `npm run audit:content` fails until it is updated. Change the start week the same day wherever a marketplace listing prints it.
+8. **The start week updates itself** (since 16 Nov 2026): the pages offer the week after the one they are rendered in, and move on each Monday. Only when you are fully booked, set `BUSY_UNTIL` in `src/data/terms.ts` to the last day of the booked work (for example `'2026-12-11'`) and deploy: the pages then offer the first Monday after it. Set it back to `null` when that work ends; a date that has passed is ignored. A marketplace listing that prints a start week still needs changing by hand.
 
 A week after deploying, run Bing Webmaster Tools' URL Inspection on each door page (item 5 below).
 

@@ -15,8 +15,7 @@
  * (approval and turnaround promises, credential claims, "rescue"), with
  * the terms (data/terms.ts), the offer ladder and the entity statement as
  * sources, plus two parity checks: manifest.json's description must be the
- * entity statement, and the NEXT_START week in data/terms.ts must not have
- * passed. A hit is excused only by where it comes from (EXEMPT in
+ * entity statement, and BUSY_UNTIL in data/terms.ts must be null or a date. A hit is excused only by where it comes from (EXEMPT in
  * scripts/lib/claims-rules.mjs) or by an entry in scripts/audit-allow.json,
  * never by loosening a pattern.
  *
@@ -334,8 +333,9 @@ try {
  * Parity: facts that live in two places must say the same thing.
  *  - public/manifest.json is static, so it holds a copy of the entity
  *    statement; a stale copy is what profiles and app installs would show.
- *  - NEXT_START is set by hand each week. The pages fall back to "ask on the
- *    call" once its week has passed, but a stale date is a release blocker.
+ *  - The start week is worked out by the pages themselves. The one value set
+ *    by hand, BUSY_UNTIL, must be null or an ISO day, or the pages would offer
+ *    a week computed from nothing.
  *  - The brand is "DevoraX" and nothing else: BRAND_FACTS has that name and no
  *    alternateName (the schema and og:site_name are built from it).
  */
@@ -350,13 +350,11 @@ try {
 }
 {
   const termsSrc = readFileSync('src/data/terms.ts', 'utf8');
-  const day = /export const NEXT_START\s*=\s*'(\d{4}-\d{2}-\d{2})'/.exec(termsSrc)?.[1];
-  const start = day ? Date.parse(`${day}T00:00:00.000Z`) : NaN;
-  const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-  if (Number.isNaN(start)) {
-    parity.push(['src/data/terms.ts', 'next-start', 'NEXT_START is missing or not an ISO day']);
-  } else if (Date.now() >= start + WEEK_MS) {
-    parity.push(['src/data/terms.ts', 'next-start', `the week of NEXT_START (${day}) has passed; set the next start week and NEXT_START_UPDATED`]);
+  const busy = /export const BUSY_UNTIL\s*(?::[^=]+)?=\s*(null|'([^']*)')\s*;/.exec(termsSrc);
+  if (!busy) {
+    parity.push(['src/data/terms.ts', 'busy-until', 'BUSY_UNTIL is missing; it must be null or an ISO day']);
+  } else if (busy[1] !== 'null' && (!/^\d{4}-\d{2}-\d{2}$/.test(busy[2]) || Number.isNaN(Date.parse(`${busy[2]}T00:00:00.000Z`)))) {
+    parity.push(['src/data/terms.ts', 'busy-until', `BUSY_UNTIL is '${busy[2]}'; it must be null or an ISO day such as '2026-12-11'`]);
   }
 }
 if (loaded.BRAND_FACTS) {
