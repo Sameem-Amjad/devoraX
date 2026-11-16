@@ -38,7 +38,7 @@ import { SITE_URL } from '@/data/brand';
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: '*', allow: '/', disallow: ['/api/', '/admin/'] },
+      { userAgent: '*', allow: '/', disallow: ['/api/'] },
       { userAgent: 'Bytespider', disallow: '/' },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,

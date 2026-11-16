@@ -12,7 +12,7 @@
  * accepting.
  *
  * Renders nothing until after mount, and nothing at all in a build without
- * an analytics ID or on /admin — with no tracking there is nothing to
+ * an analytics ID or in the admin — with no tracking there is nothing to
  * consent to. */
 
 import { useEffect, useState, useSyncExternalStore } from "react";

@@ -52,7 +52,7 @@ AggregateRating markup anywhere: Google treats reviews a business hosts about
 itself as ineligible (§7.1.10).
 
 **Crawling and indexing.**
-- `robots.txt`: one `*` group (blocks `/api/`, `/admin/`), one Bytespider group, the sitemap line.
+- `robots.txt`: one `*` group (blocks `/api/`; the admin is at a secret address that robots.txt must not name, so its pages carry `noindex` instead, see `docs/ADMIN.md`), one Bytespider group, the sitemap line.
 - `/sitemap.xml` is a sitemap index. Children: `/sitemaps/pages.xml`, `services.xml` (`/services` and every `/solutions/{slug}` page), `case-studies.xml` (`/projects` and the allowlisted project pages, with their images; the file keeps its old name), `insights.xml` (`/insights`, its articles and checklists, and `/glossary`). `<lastmod>` is the date the content last changed, never the build time (`src/lib/sitemap.ts`). A door page, a checklist and a vertical page with its own `updated` carry that date, so adding one page doesn't re-date the others.
 - Project pages off the allowlist in `src/data/projectIndex.ts` carry `noindex, follow`, and the sitemap, llms.txt and the footer leave them out. They still render, and `/projects` still lists them.
 - Every page sets its own canonical. The root layout deliberately sets none, so a page that forgot would otherwise have been a "duplicate" of the homepage.

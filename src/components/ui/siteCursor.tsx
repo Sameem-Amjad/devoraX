@@ -14,7 +14,7 @@
  *    last positions, and diamond shards thrown off as it moves.
  *
  * Where it runs: only with a mouse or trackpad (hover: hover, pointer: fine),
- * so never on a phone, and not on /admin, where the native cursor stays.
+ * so never on a phone, and not in the admin, where the native cursor stays.
  * Under prefers-reduced-motion nothing here mounts and the native cursor
  * stays: a cursor that lags and sheds sparks is exactly the motion that
  * setting asks to be spared. The native cursor is hidden by a class on
@@ -29,6 +29,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { isAdminArea } from "@/lib/adminArea";
 
 /** What makes the ring grow: the portfolio's list, plus the FAQ's <summary> and selects. */
 const INTERACTIVE = "[data-cursor], a, button, input, textarea, select, label, summary, [role='button']";
@@ -301,10 +302,22 @@ function useCursorEnabled(): boolean {
   return enabled;
 }
 
-export function SiteCursor() {
+/** True in the admin, which is recognised by its marker: its address is secret. */
+function useInAdmin(): boolean {
   const pathname = usePathname();
+  const [inAdmin, setInAdmin] = useState(true);
+  useEffect(() => {
+    // Checked again on every navigation, once the new page is in the DOM.
+    const frame = requestAnimationFrame(() => setInAdmin(isAdminArea()));
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
+  return inAdmin;
+}
+
+export function SiteCursor() {
   const enabled = useCursorEnabled();
-  if (!enabled || pathname?.startsWith("/admin")) return null;
+  const inAdmin = useInAdmin();
+  if (!enabled || inAdmin) return null;
   return (
     <>
       <CursorTrail />

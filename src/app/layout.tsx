@@ -397,7 +397,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <SiteFooter />
           {/* The dot, ring and trail that replace the pointer on a mouse or
               trackpad. Renders nothing on touch devices, under reduced
-              motion, on /admin, or before JavaScript runs. */}
+              motion, in the admin, or before JavaScript runs. */}
           <SiteCursor />
         </MotionProvider>
         <CookieConsent />

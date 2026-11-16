@@ -161,17 +161,7 @@ export function SiteFooter() {
               </Link>
             ))}
             <PrivacyChoicesButton className="text-xs text-gray-400 hover:text-gray-200 transition-colors" />
-            {/* Was a client-side button that flipped React state to reach the admin
-                login. A plain link works without JS and the middleware guards the
-                route regardless. A plain <a>, not <Link>: the full page load means
-                analytics never carries over into /admin, which it must not record. */}
-            <a
-              href="/admin/login"
-              rel="nofollow"
-              className="text-xs text-gray-700 hover:text-teal-500 transition-colors font-mono"
-            >
-              SYSTEM ACCESS
-            </a>
+            {/* No link to the admin: it lives at a secret address (lib/adminPath.ts). */}
           </div>
         </div>
       </div>

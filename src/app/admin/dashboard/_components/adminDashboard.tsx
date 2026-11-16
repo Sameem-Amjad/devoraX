@@ -32,6 +32,8 @@ interface Props {
   initialInquiries: any[];
   initialBookings: any[];
   user: AdminUser;
+  /** The login page's secret address, from the server page (lib/adminPath.ts). */
+  loginHref: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -156,7 +158,7 @@ const NAV = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export const AdminDashboard = ({ initialProjects, initialInquiries, initialBookings, user }: Props) => {
+export const AdminDashboard = ({ initialProjects, initialInquiries, initialBookings, user, loginHref }: Props) => {
   const [activeTab, setActiveTab]       = useState("overview");
   const [projects,  setProjects]        = useState(initialProjects);
   const [inquiries, setInquiries]       = useState(initialInquiries);
@@ -189,7 +191,7 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/admin/login");
+    router.push(loginHref);
   };
 
   // ── Projects ──────────────────────────────────────────────────────────────

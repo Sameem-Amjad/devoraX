@@ -5,7 +5,9 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/client";
 
-export const LoginScreen = ({ onLogin }: { onLogin: () => void }) => {
+/* dashboardHref is the dashboard's secret address, from the server page
+   (lib/adminPath.ts): this file is in a client bundle and can't read it. */
+export const LoginScreen = ({ dashboardHref }: { dashboardHref: string }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,8 +25,7 @@ export const LoginScreen = ({ onLogin }: { onLogin: () => void }) => {
       setError(authError.message);
       setLoading(false);
     } else {
-      onLogin();
-      router.push("/admin/dashboard");
+      router.push(dashboardHref);
     }
   };
 

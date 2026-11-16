@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { createClient } from "@/lib/server";
 import { redirect } from "next/navigation";
+import { adminHref } from "@/lib/adminPath";
 import { AdminDashboard } from "@/app/admin/dashboard/_components/adminDashboard";
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default async function DashboardPage() {
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user || user.app_metadata?.role !== "admin") {
-    redirect("/admin/login");
+    redirect(adminHref("/login"));
   }
 
   const [projectsRes, inquiriesRes, bookingsRes] = await Promise.all([
@@ -28,6 +29,7 @@ export default async function DashboardPage() {
       initialInquiries={inquiriesRes.data ?? []}
       initialBookings={bookingsRes.data ?? []}
       user={{ email: user.email ?? "", id: user.id }}
+      loginHref={adminHref("/login")}
     />
   );
 }

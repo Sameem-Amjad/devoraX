@@ -47,8 +47,10 @@
  *   link_url is the address with no query string; an address on this site keeps
  *   its hash, which names the check.
  *
- * /admin is never measured. Its pages show booking names and emails, and a
+ * The admin is never measured. Its pages show booking names and emails, and a
  * Clarity recording would capture them. */
+
+import { isAdminArea } from "@/lib/adminArea";
 
 type Consent = "granted" | "denied";
 
@@ -132,8 +134,9 @@ export const onOpenPrivacyChoices = (fn: () => void) => {
   return () => window.removeEventListener(OPEN_EVENT, fn);
 };
 
-/* The admin area is never measured (see the top of this file). */
-export const isUnmeasuredPage = () => window.location.pathname.startsWith("/admin");
+/* The admin area is never measured (see the top of this file). It sits at a
+   secret address, so it is recognised by its marker, not its path. */
+export const isUnmeasuredPage = isAdminArea;
 
 /* The last segment of a path, as a person would write the file's name. */
 const fileName = (pathname: string) => {
@@ -256,7 +259,7 @@ export const initAnalytics = () => {
 
 /* Fire a custom event: a GA event, and a Clarity event of the same name so
    recordings can be filtered to the visitors who did it. A no-op for any tool
-   that never loaded (dev, blocked by an ad blocker, no ID, /admin), so call
+   that never loaded (dev, blocked by an ad blocker, no ID, the admin), so call
    sites never need to guard. */
 export const track = (name: string, params?: Record<string, unknown>) => {
   if (typeof window === "undefined") return;
