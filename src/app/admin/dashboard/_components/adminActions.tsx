@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/server";
 import { revalidatePath } from "next/cache";
 import { notifyIndexNow } from "@/lib/indexnow";
+import { cleanLeadPatch } from "@/lib/booking/leadAssessment";
 
 /**
  * A project was created, edited or deleted. The public pages that render
@@ -75,4 +76,32 @@ export async function updateBookingStatusAction(id: string, status: string) {
   const { error } = await supabase.from("bookings").update({ status }).eq("id", id);
   if (!error) revalidatePath("/admin/dashboard");
   return { error: error?.message ?? null };
+}
+
+/**
+ * Set a booking's owner-set columns (lib/booking/leadAssessment.ts). Saved the
+ * way the status above is: with the signed-in admin's own session, not the
+ * service role, so the "admins update bookings" policy is what authorises it.
+ * The patch is still checked here, because a server action is a public
+ * endpoint and the dashboard is not what guards it.
+ *
+ * A write the policy refuses (no session, or not an admin) matches no rows and
+ * raises no error, so the rows come back and an empty answer is reported
+ * rather than shown as saved.
+ */
+export async function updateBookingLeadAction(id: string, patch: unknown) {
+  if (typeof id !== "string" || !id || id.length > 64) return { error: "Unknown booking" };
+  const cleaned = cleanLeadPatch(patch);
+  if ("error" in cleaned) return { error: cleaned.error };
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(cleaned.patch)
+    .eq("id", id)
+    .select("id");
+  if (error) return { error: error.message };
+  if (!data?.length) return { error: "Not saved. Sign in again as the admin and retry." };
+  revalidatePath("/admin/dashboard");
+  return { error: null };
 }

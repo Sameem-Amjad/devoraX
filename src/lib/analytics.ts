@@ -26,12 +26,26 @@
  *
  * Custom events (track() below):
  * - booking_open { page_path }: the booking dialog opened.
- * - booking_submit { page_path, heard_about, booked_from }: a booking was
- *   saved; the GA4 key event. booked_from is the path stored with the
- *   booking, the page that led to it (lib/booking/visit.ts), so bookings can
- *   be counted by page and not only as "/book". Register heard_about and
- *   booked_from as event-scoped custom dimensions to report on them.
+ * - booking_submit { page_path, heard_about, booked_from, lead_channel }: a
+ *   booking was saved; the GA4 key event. booked_from is the path stored with
+ *   the booking, the page that led to it (lib/booking/visit.ts), so bookings
+ *   can be counted by page and not only as "/book". lead_channel is the
+ *   profile a tagged booking link came from (/book?from=linkedin), sent only
+ *   when there is one. Register heard_about, booked_from and lead_channel as
+ *   event-scoped custom dimensions to report on them.
  * - contact_click { method, page_path }: an email link was clicked.
+ * - file_download { file_name, link_url, page_path }: a link on this site to a
+ *   .pdf was clicked. Added before the site had a PDF, so the first one is
+ *   measured from its first day. link_url has no query string or hash. GA4's
+ *   Enhanced measurement can count file downloads itself under the same event
+ *   name: switch its "File downloads" option off for the data stream, or each
+ *   click is counted twice.
+ * - checklist_click { link_url, page_path }: a link inside a checklist article
+ *   (an insight with kind 'checklist') was clicked, an in-page anchor to one of
+ *   its checks included. The article is marked data-checklist in
+ *   components/seo/insight-article.tsx, which is how the listener finds it.
+ *   link_url is the address with no query string; an address on this site keeps
+ *   its hash, which names the check.
  *
  * /admin is never measured. Its pages show booking names and emails, and a
  * Clarity recording would capture them. */
@@ -121,6 +135,16 @@ export const onOpenPrivacyChoices = (fn: () => void) => {
 /* The admin area is never measured (see the top of this file). */
 export const isUnmeasuredPage = () => window.location.pathname.startsWith("/admin");
 
+/* The last segment of a path, as a person would write the file's name. */
+const fileName = (pathname: string) => {
+  const last = pathname.split("/").pop() ?? "";
+  try {
+    return decodeURIComponent(last);
+  } catch {
+    return last;
+  }
+};
+
 let started = false;
 
 /* Events fired before initAnalytics runs. It waits for the load event and an
@@ -184,15 +208,46 @@ export const initAnalytics = () => {
   // Anything tracked before this point, now that the tags are set up.
   for (const [name, params] of pending.splice(0)) track(name, params);
 
-  // contact_click, for emails: one listener on the document covers every
-  // mailto: link, including ones rendered after this runs. Capture phase, so
-  // a handler that stops propagation can't hide the click.
+  // contact_click for emails, file_download for PDFs and checklist_click for
+  // links in a checklist article: one listener on the document covers every
+  // such link, including ones rendered after this runs. Capture phase, so a
+  // handler that stops propagation can't hide the click.
   document.addEventListener(
     "click",
     (e) => {
       if (!(e.target instanceof Element) || isUnmeasuredPage()) return;
+      const page_path = window.location.pathname;
       if (e.target.closest('a[href^="mailto:"]')) {
-        track("contact_click", { method: "email", page_path: window.location.pathname });
+        track("contact_click", { method: "email", page_path });
+      }
+      // An <a> inside an SVG is not an HTMLAnchorElement and has no usable href.
+      const link = e.target.closest("a[href]");
+      if (!(link instanceof HTMLAnchorElement)) return;
+      let url: URL;
+      try {
+        // link.href is absolute unless the browser could not resolve it, and
+        // then it comes back as typed and fails to parse: leave that click
+        // unmeasured.
+        url = new URL(link.href);
+      } catch {
+        return;
+      }
+      // Web links only: mailto: is counted above, and tel: or javascript:
+      // links have no address worth reporting.
+      if (url.protocol !== "https:" && url.protocol !== "http:") return;
+      const sameSite = url.origin === window.location.origin;
+      if (sameSite && url.pathname.toLowerCase().endsWith(".pdf")) {
+        track("file_download", {
+          file_name: fileName(url.pathname),
+          link_url: url.origin + url.pathname,
+          page_path,
+        });
+      }
+      if (link.closest("[data-checklist]")) {
+        track("checklist_click", {
+          link_url: url.origin + url.pathname + (sameSite ? url.hash : ""),
+          page_path,
+        });
       }
     },
     true

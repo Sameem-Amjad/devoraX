@@ -12,19 +12,25 @@
  *   removed if they decline. Until then it stays in memory, so accepting on
  *   the third page still records the page the visit began on.
  * - The profile a tagged booking link came from (/book?from=linkedin), kept
- *   for the rest of the page load so a visitor who looks around before
- *   booking keeps it.
+ *   so a visitor who looks around before booking keeps it. It follows the
+ *   landing path's rule: with consent it is also kept in sessionStorage, so a
+ *   reload does not lose it, and it is removed on a decline. Without consent
+ *   it lives for the rest of the page load only, as it always did.
  *
- * Everything except the stored landing path lives in module memory: like
- * document.referrer, it is never written to the device and is gone when the
- * tab is. Browser-only; nothing here runs on the server.
+ * Everything else lives in module memory: like document.referrer, it is never
+ * written to the device and is gone when the tab is. Browser-only; nothing
+ * here runs on the server.
  */
 
 import { analyticsEnabled, isUnmeasuredPage, readConsent } from "@/lib/analytics";
-import type { LeadChannel } from "./attribution";
+import { isLinkChannel, type LeadChannel } from "./attribution";
 
 /** sessionStorage key for the landing path. The privacy page names it. */
 export const LANDING_PATH_KEY = "devorax-landing-path";
+
+/** sessionStorage key for the profile a tagged booking link came from. The
+ *  privacy page names it too. */
+export const LEAD_CHANNEL_KEY = "devorax-lead-channel";
 
 let current: string | null = null;
 let previous: string | null = null;
@@ -78,6 +84,7 @@ export function noteRoute(path: string): void {
   }
   current = path;
   syncLandingPath();
+  syncLeadChannel();
 }
 
 /** The page on this site the visitor was on before this one, if any. */
@@ -93,10 +100,40 @@ export function landingPath(): string | null {
   }
 }
 
+/** Store or remove the lead channel to match the visitor's answer to the
+ *  banner, as syncLandingPath does for the landing path. */
+export function syncLeadChannel(): void {
+  try {
+    if (!consented()) {
+      window.sessionStorage.removeItem(LEAD_CHANNEL_KEY);
+      return;
+    }
+    // A newer tagged link replaces an older one, as it does in memory.
+    if (channel) window.sessionStorage.setItem(LEAD_CHANNEL_KEY, channel);
+  } catch {
+    /* storage blocked: the channel lives for this page load only */
+  }
+}
+
 /** Remember the profile a tagged booking link came from. */
 export function noteLeadChannel(value: LeadChannel): void {
   channel = value;
+  syncLeadChannel();
 }
 
-/** The profile this page load's tagged booking link came from, if any. */
-export const visitLeadChannel = (): LeadChannel | null => channel;
+/**
+ * The profile a tagged booking link came from, if any: this page load's, else
+ * with consent the one kept for the tab. Checked against the link channels
+ * because sessionStorage is the visitor's to edit; /api/bookings validates it
+ * again.
+ */
+export function visitLeadChannel(): LeadChannel | null {
+  if (channel) return channel;
+  if (!consented()) return null;
+  try {
+    const stored = window.sessionStorage.getItem(LEAD_CHANNEL_KEY);
+    return isLinkChannel(stored) ? stored : null;
+  } catch {
+    return null;
+  }
+}

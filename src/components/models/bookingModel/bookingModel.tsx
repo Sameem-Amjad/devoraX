@@ -18,7 +18,17 @@ import { X, Zap, Check, AlertCircle, Loader2, ChevronDown } from "lucide-react";
 import { useState, useEffect, useCallback, useMemo, useId, useSyncExternalStore } from "react";
 import { track } from "@/lib/analytics";
 import { HEARD_ABOUT, HEARD_ABOUT_KEYS } from "@/lib/booking/attribution";
-import { BUILT_WITH, BUILT_WITH_KEYS, MAX_APP_LINK, MAX_DEADLINE } from "@/lib/booking/brief";
+import {
+  BUILT_WITH,
+  BUILT_WITH_KEYS,
+  BUILT_WITH_SHARETRIBE,
+  DEVELOPER_ACCOUNT,
+  DEVELOPER_ACCOUNT_KEYS,
+  MAX_APP_LINK,
+  MAX_DEADLINE,
+  MAX_SHARETRIBE_NEED,
+  MAX_SHARETRIBE_PLAN,
+} from "@/lib/booking/brief";
 import { landingPath, visitLeadChannel } from "@/lib/booking/visit";
 
 interface BookingModalProps {
@@ -116,6 +126,9 @@ const EMPTY_FORM = {
   email: "",
   appLink: "",
   builtWith: "",
+  sharetribePlan: "",
+  sharetribeNeed: "",
+  developerAccount: "",
   deadline: "",
   notes: "",
   heardAbout: "",
@@ -218,6 +231,10 @@ const BookingModal = ({ isOpen, onClose, bookedFrom }: BookingModalProps) => {
     }
     setLoading(true);
     const from = bookedFrom?.() ?? window.location.pathname;
+    const leadChannel = visitLeadChannel();
+    // The Sharetribe answers count only while Sharetribe is the choice: a
+    // visitor who typed them and then picked something else sees no fields.
+    const sharetribe = form.builtWith === BUILT_WITH_SHARETRIBE;
     try {
       const res = await fetch("/api/bookings", {
         method: "POST",
@@ -233,10 +250,15 @@ const BookingModal = ({ isOpen, onClose, bookedFrom }: BookingModalProps) => {
           referrerHost: referrerHost(),
           // Null unless the visitor accepted analytics (lib/booking/visit.ts).
           landingPath: landingPath(),
-          leadChannel: visitLeadChannel(),
+          leadChannel,
           appLink: form.appLink || null,
           builtWith: form.builtWith || null,
           deadline: form.deadline || null,
+          // undefined, not null, when unanswered: JSON.stringify leaves the
+          // key out, so a booking that skips these sends what it always did.
+          developerAccount: form.developerAccount || undefined,
+          sharetribePlan: (sharetribe && form.sharetribePlan) || undefined,
+          sharetribeNeed: (sharetribe && form.sharetribeNeed) || undefined,
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -258,6 +280,7 @@ const BookingModal = ({ isOpen, onClose, bookedFrom }: BookingModalProps) => {
         page_path: window.location.pathname,
         heard_about: form.heardAbout || undefined,
         booked_from: from,
+        lead_channel: leadChannel ?? undefined,
       });
     } catch {
       setError("Couldn't reach the server. Please check your connection.");
@@ -575,6 +598,61 @@ const BookingModal = ({ isOpen, onClose, bookedFrom }: BookingModalProps) => {
                             </option>
                           ))}
                         </select>
+                        {/* Only for a Sharetribe app: its plan and what it
+                            needs built. Plain text, like the link field. */}
+                        {form.builtWith === BUILT_WITH_SHARETRIBE && (
+                          <>
+                            <label htmlFor={`${uid}-st-plan`} className="sr-only">
+                              Your Sharetribe plan (optional)
+                            </label>
+                            <input
+                              id={`${uid}-st-plan`}
+                              type="text"
+                              maxLength={MAX_SHARETRIBE_PLAN}
+                              placeholder="Sharetribe plan (optional)"
+                              value={form.sharetribePlan}
+                              onChange={(e) => setForm({ ...form, sharetribePlan: e.target.value })}
+                              className={fieldClass}
+                            />
+                            <label htmlFor={`${uid}-st-need`} className="sr-only">
+                              What you need built on Sharetribe (optional)
+                            </label>
+                            <textarea
+                              id={`${uid}-st-need`}
+                              rows={2}
+                              maxLength={MAX_SHARETRIBE_NEED}
+                              placeholder="What you need built on Sharetribe (optional)"
+                              value={form.sharetribeNeed}
+                              onChange={(e) => setForm({ ...form, sharetribeNeed: e.target.value })}
+                              className={`${fieldClass} resize-none`}
+                            />
+                          </>
+                        )}
+                        <label htmlFor={`${uid}-account`} className="sr-only">
+                          App Store and Google Play developer account (optional)
+                        </label>
+                        <select
+                          id={`${uid}-account`}
+                          aria-describedby={`${uid}-account-help`}
+                          value={form.developerAccount}
+                          onChange={(e) => setForm({ ...form, developerAccount: e.target.value })}
+                          className={`${selectClass} ${form.developerAccount ? "text-white" : "text-gray-400"}`}
+                        >
+                          <option value="" className="bg-[#0a0a0a] text-gray-400">
+                            Developer account (optional)
+                          </option>
+                          {DEVELOPER_ACCOUNT_KEYS.map((key) => (
+                            <option key={key} value={key} className="bg-[#0a0a0a] text-white">
+                              {DEVELOPER_ACCOUNT[key]}
+                            </option>
+                          ))}
+                        </select>
+                        {/* The select's own text is kept short to fit one line;
+                            this says which account, and the label above says
+                            it in full for a screen reader. */}
+                        <p id={`${uid}-account-help`} className="-mt-1 text-[11px] text-gray-500">
+                          The account you publish apps from on the App Store and Google Play.
+                        </p>
                         <label htmlFor={`${uid}-deadline`} className="sr-only">
                           Deadline (optional)
                         </label>

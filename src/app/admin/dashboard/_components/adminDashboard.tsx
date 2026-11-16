@@ -13,10 +13,13 @@ import {
   updateProjectAction,
   markInquiryReadAction,
   updateBookingStatusAction,
+  updateBookingLeadAction,
 } from "@/app/admin/dashboard/_components/adminActions";
+import { ChannelReport, LeadAssessment } from "@/app/admin/dashboard/_components/bookingLeads";
 import { useRouter } from "next/navigation";
 import { heardAboutLabel, leadChannelLabel } from "@/lib/booking/attribution";
-import { appLinkHref, builtWithLabel } from "@/lib/booking/brief";
+import { appLinkHref, builtWithLabel, developerAccountLabel } from "@/lib/booking/brief";
+import type { LeadPatch } from "@/lib/booking/leadAssessment";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -55,7 +58,8 @@ const STATUS_BOOKING: Record<string, string> = {
 // How the visitor heard about us, and where they booked. Every part is
 // optional, and rows from before the attribution migrations (or saved while
 // one was still unapplied) have none of it. An answer this build has no label
-// for is shown as stored rather than hidden.
+// for is shown as stored rather than hidden. The channel is a tagged link's
+// profile or one set from the lead details, so it is not called a link here.
 const BookingSource = ({ heardAbout, leadChannel, bookedFrom, landingPath, referrerHost }: {
   heardAbout?: string | null;
   leadChannel?: string | null;
@@ -71,7 +75,7 @@ const BookingSource = ({ heardAbout, leadChannel, bookedFrom, landingPath, refer
   return (
     <div className="max-w-[14rem] space-y-0.5">
       {answer && <div className="text-gray-300">{answer}</div>}
-      {channel && <div className="text-gray-300">Link on {channel}</div>}
+      {channel && <div className="text-gray-300">Channel: {channel}</div>}
       {bookedFrom && (
         <div className="text-gray-500 truncate" title={bookedFrom}>Booked from {bookedFrom}</div>
       )}
@@ -87,14 +91,25 @@ const BookingSource = ({ heardAbout, leadChannel, bookedFrom, landingPath, refer
 
 // The booking form's optional brief (lib/booking/brief.ts). The link was
 // typed by a visitor, so it is only clickable when it is an http(s) address.
-const BookingBrief = ({ appLink, builtWith, deadline }: {
+// The Sharetribe answers and the developer account can also have been set by
+// hand in the table editor, and are shown the same way.
+const BookingBrief = ({
+  appLink, builtWith, deadline, developerAccount, sharetribePlan, sharetribeNeed,
+}: {
   appLink?: string | null;
   builtWith?: string | null;
   deadline?: string | null;
+  developerAccount?: string | null;
+  sharetribePlan?: string | null;
+  sharetribeNeed?: string | null;
 }) => {
-  if (!appLink && !builtWith && !deadline) return null;
+  if (
+    !appLink && !builtWith && !deadline &&
+    !developerAccount && !sharetribePlan && !sharetribeNeed
+  ) return null;
   const href = appLinkHref(appLink);
   const tool = builtWithLabel(builtWith) ?? builtWith;
+  const account = developerAccountLabel(developerAccount) ?? developerAccount;
   return (
     <div className="mt-1.5 max-w-[16rem] space-y-0.5 text-xs text-gray-400">
       {appLink && (
@@ -115,6 +130,13 @@ const BookingBrief = ({ appLink, builtWith, deadline }: {
         </div>
       )}
       {tool && <div>Built with {tool}</div>}
+      {sharetribePlan && (
+        <div className="truncate" title={sharetribePlan}>Sharetribe plan: {sharetribePlan}</div>
+      )}
+      {sharetribeNeed && (
+        <div className="whitespace-pre-wrap break-words">Needs: {sharetribeNeed}</div>
+      )}
+      {account && <div>Developer account: {account}</div>}
       {deadline && (
         <div className="truncate" title={deadline}>Deadline: {deadline}</div>
       )}
@@ -225,6 +247,22 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
       setBookings(initialBookings);
     } else {
       showToast(`Booking marked as ${status}`);
+    }
+  };
+
+  // The owner-set lead columns. Applied at once like the status, but a failed
+  // save puts back only the columns it changed, so a save that went through
+  // in the meantime stays.
+  const handleBookingLead = async (id: number, patch: LeadPatch) => {
+    const before = bookings.find((b) => b.id === id);
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, ...patch } : b)));
+    const { error } = await updateBookingLeadAction(id.toString(), patch);
+    if (error) {
+      showToast(error, "error");
+      const undo = Object.fromEntries(Object.keys(patch).map((k) => [k, before?.[k] ?? null]));
+      setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, ...undo } : b)));
+    } else {
+      showToast("Lead details saved");
     }
   };
 
@@ -395,6 +433,8 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
               ))}
             </div>
 
+            <ChannelReport bookings={bookings} />
+
             {/* Quick Actions */}
             <div className="bg-[#080808] border border-white/5 rounded-xl p-6">
               <h3 className="font-bold text-white mb-4">Quick Actions</h3>
@@ -528,9 +568,11 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                         <th className="px-4 py-3 text-right">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-white/5">
-                      {bookings.map((b: any) => (
-                        <tr key={b.id} className="hover:bg-white/5 transition-colors">
+                    {/* One tbody per booking, so its row and its lead details
+                        row stay together under a single divider. */}
+                    {bookings.map((b: any) => (
+                      <tbody key={b.id} className="border-t border-white/5">
+                        <tr className="hover:bg-white/5 transition-colors">
                           <td className="px-4 py-3">
                             <div className="font-semibold text-white">{b.name}</div>
                             <div className="text-gray-500 text-xs flex items-center gap-1 mt-0.5">
@@ -540,6 +582,9 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                               appLink={b.app_link}
                               builtWith={b.built_with}
                               deadline={b.deadline}
+                              developerAccount={b.developer_account}
+                              sharetribePlan={b.sharetribe_plan}
+                              sharetribeNeed={b.sharetribe_need}
                             />
                           </td>
                           <td className="px-4 py-3 hidden md:table-cell text-gray-400 text-xs">
@@ -596,8 +641,16 @@ export const AdminDashboard = ({ initialProjects, initialInquiries, initialBooki
                             </div>
                           </td>
                         </tr>
-                      ))}
-                    </tbody>
+                        <tr>
+                          <td colSpan={6} className="px-4 pb-3">
+                            <LeadAssessment
+                              booking={b}
+                              onSave={(patch) => handleBookingLead(b.id, patch)}
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    ))}
                   </table>
                 </div>
               )}

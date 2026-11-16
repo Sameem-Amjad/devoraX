@@ -7,7 +7,7 @@ import {
   clarityEnabled,
   gaEnabled,
 } from '@/lib/analytics';
-import { LANDING_PATH_KEY } from '@/lib/booking/visit';
+import { LANDING_PATH_KEY, LEAD_CHANNEL_KEY } from '@/lib/booking/visit';
 import { JsonLd } from '@/components/seo/structured-data';
 import { breadcrumbNode, pageMetadata, webPageNode } from '@/lib/seo';
 
@@ -82,11 +82,21 @@ export default function PrivacyPage() {
                 website.
               </p>
               <p className="mt-4 leading-relaxed">
-                The form also asks three optional questions about your app: a{' '}
+                The form also asks optional questions about your app: a{' '}
                 <strong className="text-gray-200">link to it</strong>,{' '}
-                <strong className="text-gray-200">what it was built with</strong>{' '}
-                and your <strong className="text-gray-200">deadline</strong>. If you
-                answer them, we store your answers with the booking.
+                <strong className="text-gray-200">what it was built with</strong>,
+                whether you have an{' '}
+                <strong className="text-gray-200">
+                  App Store and Google Play developer account
+                </strong>{' '}
+                (none, a personal account or an organisation account) and your{' '}
+                <strong className="text-gray-200">deadline</strong>. If you say it
+                was built with Sharetribe, it also asks for{' '}
+                <strong className="text-gray-200">your Sharetribe plan</strong> and{' '}
+                <strong className="text-gray-200">
+                  what you need built on Sharetribe
+                </strong>
+                . If you answer them, we store your answers with the booking.
               </p>
               <p className="mt-4 leading-relaxed">
                 With each booking we also store your{' '}
@@ -146,9 +156,13 @@ export default function PrivacyPage() {
                   which pages they view, where they click and how far they scroll.
                   They also record when the booking dialog is opened and when a
                   booking is made, with the page it happened on, the page you
-                  booked from and, if you answered it, how you heard about us.
-                  They never record your name, email address, message or your
-                  answers about your app.
+                  booked from, which of our profiles the booking link was on, if
+                  it was on one, and, if you answered it, how you heard about
+                  us. They also record when a PDF is downloaded from this site
+                  and when a link in one of our checklists is clicked, with the
+                  address of the link and the page it was on. They never record
+                  your name, email address, message or your answers about your
+                  app.
                   {clarityEnabled &&
                     ' Microsoft Clarity also produces heatmaps and session recordings. What you type into a form is masked in your browser before anything is sent, and the whole booking dialog is masked too.'}{' '}
                   We use this only to improve the site, and we run no ads.
@@ -242,10 +256,15 @@ export default function PrivacyPage() {
                   If you accept, the first page you open on this site in a browser
                   tab (its path only, such as /pricing) is also kept in that
                   tab&apos;s session storage under the key{' '}
-                  <code className="text-teal-400">{LANDING_PATH_KEY}</code>. It is
-                  sent to us only if you book a call, as described above. Session
-                  storage is cleared when you close the tab, and declining the
-                  banner removes the value at once.
+                  <code className="text-teal-400">{LANDING_PATH_KEY}</code>. If the
+                  booking link you followed was on one of our profiles, such as{' '}
+                  /book?from=linkedin, the name of that profile (for example
+                  linkedin) is kept in the same session storage under the key{' '}
+                  <code className="text-teal-400">{LEAD_CHANNEL_KEY}</code>, so a
+                  reload of the page does not lose it. Both are sent to us only if
+                  you book a call, as described above. Session storage is cleared
+                  when you close the tab, and declining the banner removes both
+                  values at once.
                 </p>
               )}
             </section>
