@@ -5,7 +5,7 @@ the code, the decisions behind it, how to add a page without breaking it, and
 the jobs that can only be done outside the code. The strategy behind all of it
 is `Seo_From_AI_Agents.md` in the repo root (section numbers below refer to it).
 
-Last reviewed: 8 November 2026.
+Last reviewed: 16 November 2026.
 
 ## Decisions on record
 
@@ -19,8 +19,8 @@ Last reviewed: 8 November 2026.
 | URL scheme | Keep `/projects/{id}`: moving to slugs needs a 301 per URL and buys little. Which project pages are indexed is the allowlist below. Service and landing pages live at `/solutions/{slug}`; the four `/services/{id}` pages were retired (see the redirect map) | 7 Nov 2026 | `next.config.ts` |
 | Self-reported attribution (§12.9) | "How did you hear about us?" stored in `bookings.heard_about` | 14 Oct 2026 | booking modal, `/api/bookings` |
 | Booking path and lead tracking | Every booking link goes to `/book`, with `?from=` naming the page or profile; the first page of a visit is kept only with analytics consent; weekday call windows 10:00 to 18:00 and 19:00 to 23:00 PKT | 7 Nov 2026 | `/book`, booking modal, `/api/bookings`, migration 20261107120000, `src/lib/booking/` |
-| Project pages in the index | Only `/projects/34`, `/19`, `/25`, `/33` and `/37` are indexable (`INDEXABLE_PROJECTS`). Every other `/projects/{id}`, including rows added later, is `noindex, follow` and stays on `/projects` for visitors. The sitemap, the footer, the homepage's work grid, llms.txt and the admin's IndexNow ping read the list. An id joins it when its page is rewritten around what Sameem did on it | 7 Nov 2026 | `src/data/projectIndex.ts` |
-| "Case Study" label | Only for projects whose `PROJECT_ENGAGEMENT` value is `devorax-client`, client work DevoraX did: Koor (project 17) from 8 Nov 2026. Every other project page is an "engineering write-up" in its title, JSON-LD name, byline and the links to it, including the `fiverr` projects, where a client hired DevoraX through its Fiverr profile (in Sameem Amjad's name). Engagements are read from each study's attribution sentence | 8 Nov 2026 | `src/data/projectIndex.ts` |
+| Project pages in the index | Only `/projects/34`, `/19`, `/25`, `/33`, `/37` and `/23` are indexable (`INDEXABLE_PROJECTS`). The five studies for 19, 25, 33, 37 and 23 were rewritten on 16 Nov 2026 around what each product is and what Sameem did on it, and /23 (Pastel) joined then, named only as Sameem's own employment. Every other `/projects/{id}`, including rows added later, is `noindex, follow` and stays on `/projects` for visitors. The sitemap, the footer, the homepage's work grid, llms.txt and the admin's IndexNow ping read the list. An id joins it when its page is rewritten around what Sameem did on it | 7 Nov 2026, extended 16 Nov 2026 | `src/data/projectIndex.ts` |
+| "Case Study" label | Only for projects whose `PROJECT_ENGAGEMENT` value is `devorax-client`, client work DevoraX did: seven on 16 Nov 2026 (17 Koor, 32 Afriva, 49 Triagely, 50 Tallyfile, 51 Biscuit, 54 Career Seal and 55 Glorious Publications). Every other project page is an "engineering write-up" in its title, JSON-LD name, byline and the links to it, including the `fiverr` projects, where a client hired DevoraX through its Fiverr profile (in Sameem Amjad's name). Engagements are read from each study's attribution sentence | 8 Nov 2026, list as of 16 Nov 2026 | `src/data/projectIndex.ts` |
 | Retired URLs | `/case-study` (it listed the same projects as `/projects`); the "25 production builds" insight, which search engines had never crawled; `/services/1` to `/4`, the four service pages, replaced by the door pages and the `/services` hub. The `services` table keeps its rows, because `projects.service_id` points at them; nothing renders them. All permanent (308); see the redirect map | 7 Nov 2026 | `next.config.ts` |
 | Service pages | `/services` is the hub: the three door pages, new marketplace builds, the offer ladder and the market pages, with no database grid. A door page (`kind: 'offer'` in `src/data/solutions.ts`) sells steps of the offer ladder at the published prices, and the site's links to it use its `nav_label` as anchor text: the hero, the homepage cards, the footer, `/services` and llms.txt | 7 Nov 2026 | `src/data/offer.ts` (`DOORS`), `src/data/siteNav.ts` |
 | Studio profiles (`sameAs`) | None for now: the owner removed `linkedin.com/company/devorax` and `github.com/devorax` from `ORG_PROFILES`. The Organization carries no `sameAs` until the studio has profiles it runs; /contact offers Sameem's own LinkedIn instead | 14 Oct 2026 | `src/data/brand.ts` |
@@ -79,16 +79,29 @@ navigation (§9.2.2), so a page without one loses its content.
 
 **Measurement.** GA4 and Clarity, after consent: `booking_open`,
 `booking_submit` (with `heard_about` and `booked_from`), `contact_click` (email
-links). The bookings table records `heard_about`, `booked_from` and
-`referrer_host`; from migration 20261107120000 also `landing_path` (with
-consent), `lead_channel`, the optional brief, and the columns the owner fills
-in by hand in the Supabase table editor: `new_channel`, `qualified`,
-`qualified_note`, `first_step_paid`, `developer_account`, `sharetribe_plan` and
-`sharetribe_need` (docs/BOOKING.md, "What a booking records"). Every booking
+links). `booking_submit` also carries `lead_channel` when a tagged link set one,
+so register `lead_channel` as an event-scoped custom dimension beside
+`heard_about` and `booked_from`. The site also sends `file_download { file_name,
+link_url, page_path }` when a link on this site to a `.pdf` is clicked, and
+`checklist_click { link_url, page_path }` for any link inside a checklist
+article. Turn off GA4 Enhanced measurement's "File downloads" option for the
+stream, or each PDF click counts twice. The bookings table records `heard_about`,
+`booked_from` and `referrer_host`; from migration 20261107120000 also
+`landing_path` (with consent), `lead_channel` and the optional brief. The form
+also records `developer_account`, `sharetribe_plan` and `sharetribe_need` when
+the visitor answers them. The owner sets `new_channel`, `qualified`,
+`qualified_note`, `first_step_paid` and `lead_channel` in the admin dashboard,
+under "Lead details" on the Bookings tab; the Supabase table editor still works.
+The Overview tab has a "Bookings by channel" table (docs/BOOKING.md, "What a
+booking records"). Every booking
 link goes to `/book`; links tagged `/book?from=…` say which page or profile a
 booking came from. So `booking_open` fires on `/book`, even for a booking
 started on the homepage; count bookings by page with `booking_submit`'s
-`booked_from`.
+`booked_from`. Project pages and insight articles now end with a booking link
+tagged `/book?from=<project id>` or `/book?from=<slug>`, so `booked_from` counts
+bookings by project and by article. With analytics consent, the profile a tagged
+booking link came from is kept in session storage (`devorax-lead-channel`), so a
+reload does not lose it.
 
 ## Adding or changing a page
 
@@ -116,6 +129,19 @@ record it in the redirect map below.
 2. Give it its own `updated`: the byline, the Article schema and the sitemap use it, so the research articles keep their dates.
 3. `/insights` labels it "N checks · checklist"; the sitemap, llms.txt and `/book?from={slug}` pick it up from `INSIGHTS`. Run the checks, deploy, then `npm run indexnow`.
 
+### Adding a third-party price
+
+1. Add a row to `MARKET_PRICES` in `src/data/marketPrices.ts`: the name, the price exactly as the page prints it, its amounts, the source URL, the date it was read, and where it is used.
+2. Type the same price into the page's table, with its source and "read <date>".
+3. `npm run audit:content` fails on a third-party price that has no row, and warns when a row is more than 90 days old. Re-read the source, then update the row's `checked_on` and the page's date together.
+
+### Publishing the sample audit report
+
+1. Put the PDF in `public/`.
+2. In `src/data/solutions.ts`, in the `sample-report` section of the `fix-vibe-coded-app` page, replace the paragraph that says no sample is published with what the report is and a link to the PDF. Add a proof item of type `asset` for it.
+3. The `file_download` event measures downloads of the PDF with no further code.
+4. Run the checks, deploy, then `npm run indexnow`.
+
 ## Checks
 
 ```bash
@@ -123,10 +149,16 @@ npm run build && npm run start            # local production build on :3000
 npm run check:seo                          # titles, canonicals, noindex, <main>, H1, JSON-LD, sitemaps, robots, llms.txt
 npm run check:seo -- https://thedevorax.tech   # the same against production
 npm run audit:content                      # honesty rules on the content files (see below)
+npm run audit:rendered                     # claims rules on every rendered page; needs the build on :3000 running (add -- http://localhost:3000 --warn-only to report without failing)
+npm run audit:selftest                     # proves each audit rule fires on a bad sentence and passes a good one
+node scripts/seo-check.mjs --selftest      # proves the anchor check flags a broken anchor (offline)
 npm run check:links                        # dead outbound links, including Supabase link columns
+npm run export:checklist                   # rewrites the checklist's README for its public repository from src/data/insights.ts
 ```
 
 `check:seo` exits non-zero on any error. Run it before each deploy.
+
+`check:seo` also checks anchors: every link to this site that carries a `#fragment`, on every sitemap page and in llms.txt, must name an id present in the target page's server HTML. A missing id is an error (`anchor-missing`); a target that cannot be read is a warning (`anchor-unchecked`). `#top`, an empty fragment and non-HTML targets are ignored. An id added only by client-side JavaScript counts as missing.
 
 `audit:content` reads every string in the content files (`src/data/`) and exits
 non-zero on any error: a promise that a store will approve the app (denials such
@@ -135,9 +167,28 @@ delivery "within" so many hours or days), a credential claim ("we are …
 certified/experts/partners"), a figure on a client's word, an employer project
 claimed as DevoraX's, `manifest.json`'s description differing from the entity
 statement, or a `NEXT_START` week in `src/data/terms.ts` that has passed (update
-it weekly with `NEXT_START_UPDATED`). The terms' audit turnaround, a third
-party's terms in a dated, sourced price table and a quotation that carries its
-source link are exempt.
+it weekly with `NEXT_START_UPDATED`). It also checks these. The label rule: "case
+study" appears only on `devorax-client` projects, or in text that explains the
+label. The demo rule: no "shipped", "launched" or "in production" in the study of
+a demo or proof of concept. The price rule: the site's own prices must come from
+the offer ladder or the two new-build package prices, and a third-party price
+must be a row in `src/data/marketPrices.ts`. That row needs a source URL and a
+`checked_on` date, and it warns when the row is more than 90 days old. It warns
+when "$400" stands beside another of the site's prices without "credited". Terms
+parity: the defect window and the audit turnaround stated anywhere must equal
+`src/data/terms.ts`. It also checks "our clients" in the plural, and "Devora" as
+a word. The terms' audit turnaround, a third party's terms in a dated, sourced
+price table and a quotation that carries its source link are exempt.
+Sentence-level exceptions live in `scripts/audit-allow.json`, each with a reason,
+an approver and a date. Entries marked `unreviewed` wait for the owner's
+sign-off, and an entry that no longer matches anything is reported as stale.
+
+`audit:rendered` runs the same rules over the HTML the site serves: every sitemap
+URL, every page linked from them (the noindexed `/projects/{id}` pages included),
+`/llms.txt` and `/manifest.json`. It also checks that `og:site_name` and the
+Organization and WebSite names are "DevoraX", with no `alternateName`. It catches
+copy typed in page and component files, which `audit:content` never reads. It
+exits non-zero on any error.
 
 ## Redirect map
 
@@ -167,7 +218,7 @@ Before the day: the checks above pass on a local production build, and item 13's
 4. ~~**Make one test booking per door**~~ Done 8 Nov 2026: each row held its door's `booked_from`, the first also its brief, and each invite was created with a Meet link, so the lead tracking fields saved first time. The rows and events were deleted afterwards (the events without cancellation emails). with your own email address, through `/book?from=lovable-app-to-app-store`, `/book?from=sharetribe-developers` and `/book?from=fix-vibe-coded-app`. In Supabase, each row's `booked_from` is that door's `/solutions/…` path, and the optional brief holds what you typed. The Vercel logs show neither `[booking] saving bookings without the lead tracking fields` nor `[booking] saving bookings without attribution`. Then delete the three rows in the Supabase table editor (the dashboard can't delete bookings) and the three events in Google Calendar (deleting a row doesn't cancel its event).
 5. ~~**Run IndexNow:**~~ Done 8 Nov 2026: 70 URLs, HTTP 200. `npm run indexnow -- --dry-run` to see the list, then `npm run indexnow`. It sends the new and changed pages and the URLs that left the sitemap: the redirected paths and the project pages now marked noindex.
 6. **Request indexing in Search Console** for the three door pages and the checklist: URL Inspection, then "Request indexing", once each.
-7. **Register the GA4 dimensions:** `booked_from` and `heard_about`, event-scoped, with `booking_submit` kept as the key event (item 7 below). `booking_open` now fires on `/book`, so a report that filters it on `/` stops counting the homepage's bookings.
+7. **Register the GA4 dimensions:** `booked_from`, `heard_about` and `lead_channel`, event-scoped, with `booking_submit` kept as the key event (item 7 below). `booking_open` now fires on `/book`, so a report that filters it on `/` stops counting the homepage's bookings.
 8. **Update `NEXT_START` every Monday:** set it and `NEXT_START_UPDATED` in `src/data/terms.ts`, then deploy. From the Monday after the week it names, the pages say "Ask on the call: our next start date is updated weekly." and `npm run audit:content` fails until it is updated. Change the start week the same day wherever a marketplace listing prints it.
 
 A week after deploying, run Bing Webmaster Tools' URL Inspection on each door page (item 5 below).
@@ -183,7 +234,7 @@ In priority order.
 4. **Google Search Console:** use a Domain property; submit `https://thedevorax.tech/sitemap.xml` (the index shows indexing per section); under Settings, keep "Search generative AI" on *included*; link GA4; turn on the BigQuery bulk export (§12.1).
 5. **Bing Webmaster Tools:** import the site from Search Console, submit the sitemap, and review the **AI Performance** report (Copilot citations and grounding queries) monthly (§12.3).
 6. **Brave Search:** search `site:thedevorax.tech` at search.brave.com. Claude's web search draws on Brave's index (§5.3.4).
-7. **GA4:** mark `booking_submit` as a key event; register `heard_about` and `booked_from` as event-scoped custom dimensions; add an "AI Assistants" channel group placed **above** Referral, with *source matches regex* (§12.2):
+7. **GA4:** mark `booking_submit` as a key event; register `heard_about`, `booked_from` and `lead_channel` as event-scoped custom dimensions; turn off Enhanced measurement's "File downloads" option, because the site sends its own `file_download` event; add an "AI Assistants" channel group placed **above** Referral, with *source matches regex* (§12.2):
    `^(www\.)?(chatgpt\.com|chat\.openai\.com|perplexity\.ai|gemini\.google\.com|claude\.ai|copilot\.microsoft\.com|grok\.com|meta\.ai|chat\.deepseek\.com|chat\.mistral\.ai|you\.com)$`
 8. **Profiles (§11.2):** the studio has no company profiles on the site now. When you create a LinkedIn company page (and a GitHub organization, if you want one), use the entity statement as the description, link it to https://thedevorax.tech, and add it to `ORG_PROFILES` in `src/data/brand.ts`: the footer, the `/about` page and the Organization's `sameAs` all pick it up from there. Put the same statement on Fiverr.
 9. **Directories and reviews (§8.4):** create a Clutch profile using the facts in `src/data/brand.ts`, word for word (GoodFirms can wait). Before asking for a Clutch review, record who the client's contract and invoices were with: ask only where that was DevoraX, or where the client agrees the studio did the work, and ask the reviewer to describe the engagement as it happened; otherwise ask for a LinkedIn recommendation for Sameem. Orders through DevoraX's Fiverr profile (in Sameem Amjad's name) count as DevoraX's; read Fiverr's terms before asking a Fiverr client for a review anywhere else.
