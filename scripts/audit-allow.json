@@ -1,0 +1,21 @@
+{
+  "_doc": "Sentence-level exceptions to the content audits (scripts/content-audit.mjs and scripts/audit-rendered.mjs). Each entry: where (a file under src/ for the static audit, or a URL path such as /pricing for the rendered audit), sentence (a distinctive piece of the text, matched exactly after whitespace is collapsed), rule (the rule id it excuses), reason, approver (a name, or \"unreviewed\" until the owner has signed it off) and date (ISO). An entry that no longer matches anything is reported as allow-stale and should be removed. A structural exemption (excused by where a string comes from) stays in code, in scripts/lib/claims-rules.mjs.",
+  "entries": [
+    {
+      "where": "/insights/vibe-coded-app-security-checklist",
+      "sentence": "$3,000 MVP Budget",
+      "rule": "price",
+      "reason": "The related-reading card names another article by its title, 'What a $3,000 MVP Budget Actually Gets You'; the figure is that article's topic, not a DevoraX price.",
+      "approver": "unreviewed",
+      "date": "2026-11-16"
+    },
+    {
+      "where": "/llms.txt",
+      "sentence": "$3,000 MVP Budget",
+      "rule": "price",
+      "reason": "The insights list names the article by its title and prints its summary; the figure is that article's topic, not a DevoraX price.",
+      "approver": "unreviewed",
+      "date": "2026-11-16"
+    }
+  ]
+}

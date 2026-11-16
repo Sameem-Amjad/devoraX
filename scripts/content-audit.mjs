@@ -16,311 +16,48 @@
  * the terms (data/terms.ts), the offer ladder and the entity statement as
  * sources, plus two parity checks: manifest.json's description must be the
  * entity statement, and the NEXT_START week in data/terms.ts must not have
- * passed. A hit is excused only by where it comes from (EXEMPT below), never by
- * loosening a pattern.
+ * passed. A hit is excused only by where it comes from (EXEMPT in
+ * scripts/lib/claims-rules.mjs) or by an entry in scripts/audit-allow.json,
+ * never by loosening a pattern.
+ *
+ * Later in Nov 2026 the rules moved into scripts/lib/claims-rules.mjs, which
+ * this script, the rendered audit (scripts/audit-rendered.mjs) and the
+ * self-test (scripts/audit-selftest.mjs) all import, so they cannot drift. This
+ * file keeps what only a data walk can do:
+ *  - the label and demo rules know a project's engagement (data/projectIndex.ts)
+ *    and read it from the study's id;
+ *  - the price rule: every dollar amount in a sales field must be one of
+ *    DevoraX's own prices (the offer ladder plus the two package prices, read
+ *    from the files) or a third-party price listed in data/marketPrices.ts; the
+ *    rows of that table are themselves checked (source, read date, still used);
+ *  - terms parity: the defect window and the audit turnaround are stated in
+ *    data/terms.ts and typed again elsewhere; a copy with another number fails;
+ *  - brand parity on BRAND_FACTS.
  *
  * Usage:  node scripts/content-audit.mjs            (exit 1 if any error-level hit)
  *         node scripts/content-audit.mjs --verbose  (print every hit, not a sample)
  */
 import { readFileSync } from 'node:fs';
+import { extract, strings, at, stringLiterals, ownPrices } from './lib/read-data.mjs';
+import {
+  RULES,
+  findHits,
+  marketAmounts,
+  unknownPrices,
+  unlistedThirdPartyPrices,
+  uncreditedAudit,
+  inSourcedPriceTable,
+  isPriceTable,
+  isThirdPartyRow,
+  marketIssues,
+  termFacts,
+  termMismatches,
+  loadAllow,
+  findAllow,
+  allowKind,
+} from './lib/claims-rules.mjs';
 
 const VERBOSE = process.argv.includes('--verbose');
-
-/**
- * The plain constants a module declares (`const NAME = 'text'` or a number),
- * so a literal that interpolates one (terms.ts: `${AUDIT_TURNAROUND_WORKING_DAYS}`)
- * or names one (`id: NEXT_START_TERM_ID`) evaluates to what the page renders.
- */
-function moduleConstants(src) {
-  const scope = {};
-  const re = /(?:export\s+)?const\s+([A-Z][A-Z0-9_]*)\s*(?::[^=;]+)?=\s*('(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|-?\d+(?:\.\d+)?)\s*;/g;
-  for (let m; (m = re.exec(src)); ) scope[m[1]] = eval(m[2]);
-  return scope;
-}
-
-/**
- * Pull an exported literal (object, array or string) out of a .ts module
- * without compiling it.
- */
-function extract(file, exportName) {
-  const src = readFileSync(file, 'utf8');
-  // The exact name, not a prefix: `export const BRAND_FACTS` is also the start
-  // of `export const BRAND_FACTS_UPDATED`, and a prefix match parsed whichever
-  // came first. Skips an optional type annotation up to the `=`.
-  const found = new RegExp(`export const ${exportName}\\b\\s*(?::[^=]*)?=`).exec(src);
-  if (!found) throw new Error(`${exportName} not found in ${file}`);
-  let start = src.indexOf('=', found.index) + 1;
-  while (start < src.length && /\s/.test(src[start])) start++;
-  const openCh = src[start];
-
-  let end = -1;
-  if (openCh === '[' || openCh === '{') {
-    const closeCh = openCh === '[' ? ']' : '}';
-    let depth = 0, inStr = null, esc = false;
-    for (let k = start; k < src.length; k++) {
-      const ch = src[k];
-      if (inStr) {
-        if (esc) esc = false;
-        else if (ch === '\\') esc = true;
-        else if (ch === inStr) inStr = null;
-        continue;
-      }
-      // Comments inside a literal (terms.ts has one) may hold an apostrophe,
-      // which must not open a string.
-      if (ch === '/' && src[k + 1] === '/') { k = src.indexOf('\n', k); if (k === -1) break; continue; }
-      if (ch === '/' && src[k + 1] === '*') { k = src.indexOf('*/', k + 2) + 1; if (k === 0) break; continue; }
-      if (ch === '"' || ch === "'" || ch === '`') { inStr = ch; continue; }
-      if (ch === openCh) depth++;
-      else if (ch === closeCh) { depth--; if (depth === 0) { end = k; break; } }
-    }
-  } else if (openCh === '"' || openCh === "'" || openCh === '`') {
-    // A string export, such as ENTITY_STATEMENT.
-    let esc = false;
-    for (let k = start + 1; k < src.length; k++) {
-      const ch = src[k];
-      if (esc) { esc = false; continue; }
-      if (ch === '\\') { esc = true; continue; }
-      if (ch === openCh) { end = k; break; }
-    }
-  }
-  if (end === -1) throw new Error(`unbalanced literal for ${exportName} in ${file}`);
-  const scope = moduleConstants(src);
-  return new Function(...Object.keys(scope), `return (${src.slice(start, end + 1)});`)(
-    ...Object.values(scope)
-  );
-}
-
-/** Every string in a nested structure, with a dotted path to each. */
-function* strings(node, path = '') {
-  if (typeof node === 'string') { yield [path, node]; return; }
-  if (Array.isArray(node)) {
-    for (let i = 0; i < node.length; i++) yield* strings(node[i], `${path}[${i}]`);
-    return;
-  }
-  if (node && typeof node === 'object') {
-    for (const [k, v] of Object.entries(node)) yield* strings(v, path ? `${path}.${k}` : k);
-  }
-}
-
-/** The value at a path that strings() produced, e.g. "[8].sections[3].table". */
-function at(root, path) {
-  let node = root;
-  for (const m of path.matchAll(/\[(\d+)\]|\.?([A-Za-z_$][\w$]*)/g)) {
-    if (node == null) return undefined;
-    node = node[m[1] !== undefined ? Number(m[1]) : m[2]];
-  }
-  return node;
-}
-
-/**
- * Spans inside double quotation marks: straight quotes toggle, curly quotes
- * open and close. Single quotes are skipped on purpose: an apostrophe
- * ("Apple's") cannot be told from a quote.
- */
-function quotedSpans(text) {
-  const spans = [];
-  let open = -1;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (ch === '"') {
-      if (open === -1) open = i;
-      else { spans.push([open, i]); open = -1; }
-    } else if (ch === '“') open = i;
-    else if (ch === '”' && open !== -1) { spans.push([open, i]); open = -1; }
-  }
-  return spans;
-}
-const insideQuotes = (text, index) => quotedSpans(text).some(([a, b]) => index > a && index < b);
-
-/** The `n` words before (or after) a match, for negation and proximity tests. */
-const wordsBefore = (text, index, n) => text.slice(0, index).split(/\s+/).filter(Boolean).slice(-n).join(' ');
-const wordsAfter = (text, index, n) => text.slice(index).split(/\s+/).filter(Boolean).slice(0, n).join(' ');
-
-/** "n't", "not", "never", "no one", "cannot": the forms that turn a claim into its denial. */
-const NEGATION = /n['’]t\b|\bnot\b|\bnever\b|\bno one\b|\bcannot\b/i;
-
-/** A buyer's question is in the buyer's voice ("Do we have to hire…?"), not ours. */
-const isQuestionField = (path) => /(?:^|\.)(?:q|question)$/.test(path);
-
-const RULES = [
-  {
-    id: 'client-reported',
-    level: 'error',
-    /**
-     * "The client reports 2.4M users." Public data contradicted several of these
-     * figures and nothing backed the rest, and several "clients" were employers.
-     * Since the Oct 2026 claims ledger a figure is published only if a reader can
-     * check it today (a store listing, a live site, the Fiverr record), so the
-     * client's word is not a source and the phrasing itself is the regression.
-     */
-    re: /\bclient[- ]reported\b|\b(?:the )?client reports\b|\breported (?:to us )?by the client\b|\bas reported by\b|\boutcomes reported\b/gi,
-    why: "presents a figure on the client's word; publish only figures a reader can check",
-  },
-  {
-    id: 'agency-attribution',
-    level: 'error',
-    /**
-     * Most portfolio products were built while Sameem was an employee elsewhere,
-     * for clients who hired him directly, or have no confirmed client. "DevoraX
-     * built X" claims them for the agency.
-     *
-     * Owner decisions of 8 Nov 2026: orders through the Fiverr profile are
-     * DevoraX client work (the profile is in Sameem's name but sells the
-     * studio's services, and the team delivered them), and so is Koor (17). The
-     * pattern stays as it was: those pages say "a client who hired DevoraX on
-     * Fiverr" or "DevoraX worked on it for a client", which name the engagement
-     * without the phrases below, so the rule still catches "DevoraX built" and
-     * "our client" laid over employer work.
-     */
-    re: /\bbuilt by DevoraX\b|\bDevoraX built\b|\bour client\b/gi,
-    why: 'claims employer or unconfirmed work as DevoraX client work',
-  },
-  {
-    id: 'db-column-name',
-    level: 'error',
-    /**
-     * A literal column from our Supabase schema, printed for visitors. Always
-     * wrong, in every genre — nobody outside this repo knows what a stats field is.
-     */
-    re: /\b(?:stats|techstack|description|result|slug|image) field\b|\beach row['’]s\b|\bevery row of\b/gi,
-    why: 'prints a database column name on a public page',
-  },
-  {
-    id: 'approval',
-    level: 'error',
-    /**
-     * Owner decision (7 Nov 2026): no approval promise anywhere. We prepare the
-     * app against Apple's and Google's guidelines, submit it and answer the
-     * reviewers; the stores decide. Affirmative forms only: a hit with "n't",
-     * "not", "never", "no one" or "cannot" in the six words before it is a
-     * denial ("No one can guarantee App Store approval", "a build that didn't
-     * pass review") and passes.
-     */
-    re: /\bApp Store approval\b|\buntil (?:it is |the app is )?approved\b|\bapproval guaranteed\b|\bguaranteed approval\b|\bget it approved\b|\bpass(?:es)? (?:app )?review\b/gi,
-    skip: ({ text, index }) => NEGATION.test(wordsBefore(text, index, 6)),
-    why: 'promises store approval; say what we do (prepare, submit, answer the reviewers) and that the stores decide',
-  },
-  {
-    id: 'turnaround',
-    level: 'error',
-    /**
-     * No turnaround or delivery promise beyond "usually 1–2 weeks" for a finish
-     * sprint and the owner-set audit turnaround in data/terms.ts. "Response
-     * within 24h", "a fixed-price proposal within 48 hours" and "a scope, a
-     * timeline and a number" were all on the site once.
-     */
-    re: /\bwithin\s+(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten|twelve|twenty-four|forty-eight)\s*(?:h\b|hrs?\b|hours?\b|(?:business |working )?days?\b)|\b(?:24|48|72)\s?h\b|\b(?:24|48|72)[- ]hours?\b|\ba timeline and a number\b|\bscope, timeline and an honest number\b|\bfixed-price proposal within\b|\bresponse within\b/gi,
-    why: 'a turnaround promise; use the terms in data/terms.ts ("usually N working days", the start week) instead',
-  },
-  {
-    id: 'credential',
-    level: 'error',
-    /**
-     * No certification, partnership or "expert" claim until a program accepts
-     * DevoraX. Self-claims only: a denial ("we are not
-     * certified") passes, and so do the names of things that are not claims
-     * about us ("Expert Network", "Experts directory", "partner team",
-     * "certified compliance posture").
-     */
-    re: /\b(?:we are|we['’]re|DevoraX is|our team is)\b[^.]{0,40}\b(?:experts?|certified|partners?)\b/gi,
-    allow: /\bExperts? (?:Network|directory|Marketplace)\b|\bpartner team\b|\bcertified compliance posture\b/i,
-    skip: ({ match }) => /n['’]t\b|\bnot\b|\bnever\b|\bno\b/i.test(match),
-    why: 'a credential self-claim; say what the work is ("developer for apps built with Lovable")',
-  },
-  {
-    id: 'platform-credential',
-    level: 'error',
-    /**
-     * "Lovable expert", "Sharetribe Expert", "Base44 partner" next to us: these
-     * read as a platform's accreditation, which DevoraX does not hold. Flagged
-     * when "we", "I", "DevoraX", "Sameem" or "our" is within five words, outside
-     * quotation marks (a platform's own words, quoted, pass) and outside a
-     * buyer's question ("Do we have to hire a Sharetribe Expert?").
-     */
-    re: /\b(?:Lovable|Base44|Sharetribe|Replit|Bolt)\s+(?:experts?|partners?)\b/gi,
-    allow: /\bExperts? (?:Network|directory|Marketplace)\b/i,
-    skip: ({ text, index, match, path }) =>
-      isQuestionField(path) ||
-      insideQuotes(text, index) ||
-      !/\b(?:[Ww]e|I|DevoraX|Sameem|[Oo]ur)\b/.test(
-        `${wordsBefore(text, index, 5)} ${wordsAfter(text, index + match.length, 5)}`
-      ),
-    why: "reads as a platform's accreditation; DevoraX is not listed or certified by it",
-  },
-  {
-    id: 'record-as-document',
-    /**
-     * "the record states", "named in the record", "project record".
-     *
-     * Wrong on a sales or portfolio page, where it reads as an internal audit
-     * note and tells a prospect our CMS is thin. Legitimate in a research
-     * article's methodology, where naming the dataset and its limits is exactly
-     * what makes the findings citable. Reported as a warning so the genre can
-     * decide; `--strict` promotes it for the files where it is never acceptable.
-     */
-    level: 'warn',
-    re: /\bthe record (?:states|says|names|lists|describes|documents|reports|covers|shows|gives|carries|leaves|claims|contains)\b|\bnamed in the record\b|\bproject record\b|\bthe record['’]s\b|\brecord['’]s (?:own|frontend|backend|scalability)\b/gi,
-    why: 'reads as an internal audit note rather than a page for a reader',
-  },
-  {
-    id: 'marketing-fluff',
-    level: 'warn',
-    re: /\bcutting[- ]edge\b|\bseamless(?:ly)?\b|\bworld[- ]class\b|\bleverag(?:e|ing)\b|\bempower(?:s|ing)?\b|\bbespoke\b|\bgame[- ]chang/gi,
-    why: 'banned house-style terms',
-  },
-  {
-    id: 'rescue',
-    level: 'warn',
-    /** "Finish and ship", never "rescue" (offer.ts); nor a claim about past rescues. */
-    re: /\brescu(?:e|ed|es|ing)\b/gi,
-    why: '"finish and ship", never "rescue"',
-  },
-  {
-    id: 'self-superlative',
-    level: 'warn',
-    re: /\bwhere we are strongest\b|\bbest[- ]in[- ]class\b|\bindustry[- ]leading\b|\bunmatched\b|\bsecond to none\b/gi,
-    why: 'unsupported self-grading',
-  },
-];
-
-/**
- * A third party's own terms or prices, quoted in a market-price table that
- * names its source and the day it was read: a "Source" column holding a
- * domain, and a date in that cell or in the caption. DevoraX's own row in such
- * a table is still ours, so it gets no pass.
- */
-function inSourcedPriceTable(data, path) {
-  const m = /^(.*\.table)\.rows\[(\d+)\]\[\d+\]$/.exec(path);
-  if (!m) return false;
-  const table = at(data, m[1]);
-  const row = table?.rows?.[Number(m[2])];
-  if (!table || !row) return false;
-  const col = (table.headers || []).findIndex((h) => /^source\b/i.test(h));
-  if (col === -1) return false;
-  const DATE = /\b\d{1,2} (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]* \d{4}\b|\b\d{4}-\d{2}-\d{2}\b/;
-  const sourced = /[a-z0-9-]+\.[a-z]{2,}/i.test(row[col] || '');
-  const dated = DATE.test(row[col] || '') || DATE.test(table.caption || '');
-  return sourced && dated && !/^DevoraX\b/.test(row[0] || '');
-}
-
-/** Hits excused by their source. Each says why; none loosens a pattern. */
-const EXEMPT = [
-  {
-    rule: 'turnaround',
-    why: 'the owner-set audit turnaround in data/terms.ts, the one turnaround the site publishes',
-    test: ({ name, data, path }) => name === 'TERMS' && at(data, path.replace(/\.[^.]+$/, ''))?.id === 'start',
-  },
-  {
-    rule: 'turnaround',
-    why: "a third party's terms in a dated, sourced market-price table",
-    test: ({ data, path }) => inSourcedPriceTable(data, path),
-  },
-  {
-    rule: 'turnaround',
-    why: "a quotation that carries its source link (Apple's App Review times)",
-    test: ({ text, index }) => insideQuotes(text, index) && /\]\(https:\/\/|https:\/\//.test(text),
-  },
-];
 
 /** A figure is fine if its own sentence, or the one before it, names the source. */
 const FIGURE = /\b\d+(?:\.\d+)?%|\$[\d,]+|\b\d[\d,.]*\s?(?:k|K|M|m|B|million|billion)\+?\b/;
@@ -343,6 +80,19 @@ const SALES_SURFACES = new Set([
   'CASE_STUDY_CONTENT', 'SOLUTIONS', 'FAQS',
   'TERMS', 'OFFER_LADDER', 'POSITIONING', 'DOORS', 'MARKETPLACE_BUILD', 'ENTITY_STATEMENT',
   'CATALOGUE', 'CATALOGUE_PROJECTS',
+]);
+
+/**
+ * Where DevoraX states a price, so where the price rule applies: every string
+ * of the pages and lists that sell (door and vertical pages, FAQS, TERMS, the
+ * ladder, the doors, positioning, the catalogue), and the checklist insight,
+ * which states the audit's price. Not the project studies and not the research
+ * articles: they quote public figures of their own, which the unattributed-figure
+ * warning below covers, and a "$3,000 MVP" article is about that number.
+ */
+const PRICE_SCOPE = new Set([
+  'SOLUTIONS', 'FAQS', 'TERMS', 'OFFER_LADDER', 'POSITIONING', 'DOORS', 'MARKETPLACE_BUILD',
+  'CATALOGUE', 'CATALOGUE_PROJECTS', 'BRAND_FACTS', 'ENTITY_STATEMENT', 'CONSTANTS',
 ]);
 
 const SOURCES = [
@@ -373,34 +123,115 @@ let errors = 0, warnings = 0;
 const report = [];
 const loaded = {};
 
-for (const [file, name] of SOURCES) {
-  let data;
-  try { data = extract(file, name); }
-  catch (e) { report.push([`${file}`, 'error', 'parse', e.message]); errors++; continue; }
-  loaded[name] = data;
+/* ── shared inputs, all read from the files ── */
+const allow = loadAllow();
+for (const p of allow.problems) { report.push(['scripts/audit-allow.json', 'error', 'allow-file', p]); errors++; }
 
-  const hits = {};
+const ENGAGEMENT = extract('src/data/projectIndex.ts', 'PROJECT_ENGAGEMENT');
+const engagementOf = (id) => ENGAGEMENT[Number(id)] ?? 'unstated';
+// Project names, so a sentence about "Koor's case study" is known to be about a
+// project whose engagement is devorax-client (see the case-study-label rule).
+const projectNames = (() => {
+  const names = new Map();
+  try { for (const [id, p] of Object.entries(extract('src/data/catalogue.ts', 'CATALOGUE_PROJECTS'))) names.set(Number(id), p.name); } catch { /* the audit still runs without names */ }
+  try { for (const [id, n] of Object.entries(extract('src/data/projectIndex.ts', 'PROJECT_NAMES'))) names.set(Number(id), n); } catch { /* same */ }
+  return [...names].map(([id, name]) => ({ id, name }));
+})();
+
+let own = new Set(), market = marketAmounts([]), marketRows = [], facts = {};
+try { own = ownPrices().own; }
+catch (e) { report.push(['src/data/offer.ts', 'error', 'parse', `own prices: ${e.message}`]); errors++; }
+try { marketRows = extract('src/data/marketPrices.ts', 'MARKET_PRICES'); market = marketAmounts(marketRows); }
+catch (e) { report.push(['src/data/marketPrices.ts', 'error', 'parse', e.message]); errors++; }
+try {
+  facts = termFacts();
+  if (!Number.isFinite(facts.defectDays) || !Number.isFinite(facts.turnaroundDays)) throw new Error(`could not read the defect window or the audit turnaround (${JSON.stringify(facts)})`);
+} catch (e) { report.push(['src/data/terms.ts', 'error', 'parse', e.message]); errors++; }
+
+/** Where a table cell sits: { table, row, rowIndex } for "...table.rows[r][c]", else null. */
+function tableCell(data, path) {
+  const m = /^(.*\.table)\.rows\[(\d+)\]\[\d+\]$/.exec(path);
+  if (!m) return null;
+  const table = at(data, m[1]);
+  const rowIndex = Number(m[2]);
+  return table?.rows?.[rowIndex] ? { table, row: table.rows[rowIndex], rowIndex } : null;
+}
+const parentPath = (path) => path.replace(/\.[A-Za-z_$][\w$]*$/, '');
+
+/**
+ * Run the sources through every check. A string can come from a data export (a
+ * parsed literal, strings with dotted paths) or, for constants.tsx, from the
+ * quoted literals in the file; the latter get the price and parity checks only.
+ */
+function auditSource({ file, name, data, items }) {
+  const hits = {};   // rule id -> [{ path, sample, level, text }]
   const exempt = [];
-  let figureHits = [];
+  const allowed = [];
+  const figureHits = [];
+  const priceChecks = name === 'INSIGHTS' || PRICE_SCOPE.has(name);
+  const rulesOn = name !== 'CONSTANTS';
 
-  for (const [path, text] of strings(data)) {
-    for (const rule of RULES) {
-      rule.re.lastIndex = 0;
-      for (const m of text.matchAll(rule.re)) {
-        const ctx = { name, data, path, text, index: m.index, match: m[0] };
-        if (rule.allow && rule.allow.test(text.slice(m.index, m.index + m[0].length + 20))) continue;
-        if (rule.skip && rule.skip(ctx)) continue;
-        const excused = EXEMPT.find((x) => x.rule === rule.id && x.test(ctx));
-        if (excused) { exempt.push({ path, rule: rule.id, sample: m[0], why: excused.why }); continue; }
-        // Sales and portfolio surfaces have no methodology excuse for it.
-        const level =
-          rule.id === 'record-as-document' && SALES_SURFACES.has(name)
-            ? 'error'
-            : rule.level;
-        (hits[rule.id] ??= []).push({ path, sample: m[0], level, text });
+  const record = (rule, level, path, sample, text, why) => {
+    const entry = findAllow(allow.entries, { where: file, rule, text });
+    if (entry) { allowed.push({ path, rule, sample, why: entry.reason }); return; }
+    (hits[rule] ??= []).push({ path, sample, level, text, why });
+  };
+
+  for (const [path, text] of items) {
+    if (rulesOn) {
+      const idMatch = name === 'CASE_STUDY_CONTENT' ? /^(\d+)\./.exec(path) : null;
+      const cell = data ? tableCell(data, path) : null;
+      const flags = new Set();
+      if (name === 'TERMS' && at(data, path.replace(/\.[^.]+$/, ''))?.id === 'start') flags.add('terms-start');
+      if (cell && inSourcedPriceTable(cell.table, cell.rowIndex)) flags.add('sourced-price-row');
+      const ctx = {
+        path,
+        flags,
+        engagementOf,
+        projectNames,
+        engagement: idMatch ? engagementOf(idMatch[1]) : undefined,
+        heroText: data ? at(data, parentPath(path))?.hero_answer : undefined,
+        sales: SALES_SURFACES.has(name),
+        // The offer's own voice: sales surfaces other than the project studies.
+        offer: SALES_SURFACES.has(name) && name !== 'CASE_STUDY_CONTENT',
+      };
+      const found = findHits(text, ctx);
+      for (const x of found.exempt) exempt.push({ path, ...x });
+      for (const h of found.hits) record(h.rule, h.level, path, h.sample, text, h.why);
+    }
+
+    // Prices: only where DevoraX states its own (see PRICE_SCOPE). The checklist
+    // is the one insight in scope.
+    const inScope =
+      priceChecks && (name !== 'INSIGHTS' || at(data, path.replace(/^(\[\d+\]).*$/, '$1'))?.kind === 'checklist');
+    if (inScope) {
+      const cell = data ? tableCell(data, path) : null;
+      // A third party's row in a table of read prices may state only listed
+      // prices, even where one equals ours; everywhere else, ours or listed.
+      const strict = cell && isPriceTable(cell.table) && isThirdPartyRow(cell.row);
+      const bad = strict ? unlistedThirdPartyPrices(text, { market }) : unknownPrices(text, { own, market });
+      for (const a of bad) {
+        record(
+          'price', 'error', path, a.raw, text,
+          strict
+            ? "a third party's price that no row of src/data/marketPrices.ts lists"
+            : "not one of DevoraX's prices (the offer ladder, the two packages) and not a row of src/data/marketPrices.ts"
+        );
+      }
+      for (const s of uncreditedAudit(text, { own })) {
+        record('price-400-credited', 'warn', path, '$400', s, 'the $400 audit stands beside another DevoraX price without saying it is credited');
       }
     }
+
+    // Terms parity: a restated fact must say what data/terms.ts says.
+    if (name !== 'TERMS' && Number.isFinite(facts.defectDays)) {
+      for (const m of termMismatches(text, facts)) {
+        record('terms-parity', 'error', path, m.sample, text, `states ${m.found} for the ${m.fact}; data/terms.ts says ${m.expected}`);
+      }
+    }
+
     // Unattributed outcome figures, checked sentence by sentence.
+    if (!rulesOn) continue;
     const sents = text.split(/(?<=[.!?])\s+/);
     // Research articles compute their own percentages over our 25-project book
     // of work. Those are self-derived rather than client-reported, and each
@@ -427,15 +258,17 @@ for (const [file, name] of SOURCES) {
   }
 
   const summary = [];
-  for (const rule of RULES) {
-    const h = hits[rule.id] || [];
+  const ruleIds = [...RULES.map((r) => r.id), 'price', 'price-400-credited', 'terms-parity'];
+  for (const id of ruleIds) {
+    const h = hits[id] || [];
     if (!h.length) continue;
-    const lvl = h[0].level;
-    if (lvl === 'error') errors += h.length; else warnings += h.length;
-    summary.push(`${rule.id}=${h.length}`);
+    const errs = h.filter((x) => x.level === 'error').length;
+    errors += errs;
+    warnings += h.length - errs;
+    summary.push(`${id}=${h.length}`);
     const show = VERBOSE ? h : h.slice(0, 3);
-    for (const x of show) report.push([`${name}.${x.path}`, x.level, rule.id, `"${x.sample}" — ${rule.why}`]);
-    if (!VERBOSE && h.length > 3) report.push([`${name}`, lvl, rule.id, `…and ${h.length - 3} more (--verbose to list)`]);
+    for (const x of show) report.push([`${name}.${x.path}`, x.level, id, `"${x.sample}" — ${x.why}`]);
+    if (!VERBOSE && h.length > 3) report.push([`${name}`, h[0].level, id, `…and ${h.length - 3} more (--verbose to list)`]);
   }
   if (figureHits.length) {
     warnings += figureHits.length;
@@ -448,8 +281,53 @@ for (const [file, name] of SOURCES) {
     summary.push(`exempt=${exempt.length}`);
     if (VERBOSE) for (const x of exempt) report.push([`${name}.${x.path}`, 'info', `${x.rule} (exempt)`, `"${x.sample}" — ${x.why}`]);
   }
-
+  if (allowed.length) {
+    summary.push(`allowed=${allowed.length}`);
+    if (VERBOSE) for (const x of allowed) report.push([`${name}.${x.path}`, 'info', `${x.rule} (allowed)`, `"${x.sample}" — ${x.why}`]);
+  }
   console.log(`${name.padEnd(22)} ${summary.length ? summary.join('  ') : 'clean'}`);
+}
+
+for (const [file, name] of SOURCES) {
+  let data;
+  try { data = extract(file, name); }
+  catch (e) { report.push([`${file}`, 'error', 'parse', e.message]); errors++; continue; }
+  loaded[name] = data;
+  auditSource({ file, name, data, items: strings(data) });
+}
+
+// constants.tsx holds the two package prices and the plan features (one says
+// "35 Days Free Maintenance"). It exports no literal this can parse, so its
+// quoted strings go through the price and parity checks.
+try {
+  const file = 'src/utils/constants/constants.tsx';
+  const items = stringLiterals(readFileSync(file, 'utf8')).map((t, i) => [`literal[${i}]`, t]);
+  auditSource({ file, name: 'CONSTANTS', data: null, items });
+} catch (e) { report.push(['src/utils/constants/constants.tsx', 'error', 'parse', e.message]); errors++; }
+
+/**
+ * The market-prices table: one row per third-party price, with its source and
+ * read date. A section is looked up by its id in the door or insight data, and
+ * its heading, body and table cells are read as one text.
+ */
+{
+  const sectionText = (place) => {
+    const m = /^(solutions|insights)\/([^#]+)(?:#(.+))?$/.exec(place);
+    if (!m) return null;
+    const list = m[1] === 'solutions' ? loaded.SOLUTIONS : loaded.INSIGHTS;
+    const entry = (list || []).find((e) => e.slug === m[2]);
+    if (!entry) return null;
+    const target = m[3] ? (entry.sections || []).find((s) => s.id === m[3]) : entry;
+    if (!target) return null;
+    return [...strings(target)].map(([, t]) => t).join('\n');
+  };
+  const issues = marketIssues(marketRows, { resolvePlace: sectionText });
+  const nErr = issues.filter((i) => i.level === 'error').length;
+  const summary = issues.length ? [...new Set(issues.map((i) => i.rule))].map((r) => `${r}=${issues.filter((i) => i.rule === r).length}`) : [];
+  errors += nErr;
+  warnings += issues.length - nErr;
+  for (const i of issues) report.push([`MARKET_PRICES.${i.id}`, i.level, i.rule, i.detail]);
+  console.log(`${'MARKET_PRICES'.padEnd(22)} rows=${marketRows.length}${summary.length ? '  ' + summary.join('  ') : '  clean'}`);
 }
 
 /**
@@ -458,6 +336,8 @@ for (const [file, name] of SOURCES) {
  *    statement; a stale copy is what profiles and app installs would show.
  *  - NEXT_START is set by hand each week. The pages fall back to "ask on the
  *    call" once its week has passed, but a stale date is a release blocker.
+ *  - The brand is "DevoraX" and nothing else: BRAND_FACTS has that name and no
+ *    alternateName (the schema and og:site_name are built from it).
  */
 const parity = [];
 try {
@@ -479,13 +359,33 @@ try {
     parity.push(['src/data/terms.ts', 'next-start', `the week of NEXT_START (${day}) has passed; set the next start week and NEXT_START_UPDATED`]);
   }
 }
+if (loaded.BRAND_FACTS) {
+  if (loaded.BRAND_FACTS.name !== 'DevoraX') parity.push(['src/data/brand.ts', 'brand', `BRAND_FACTS.name is "${loaded.BRAND_FACTS.name}"; it must be "DevoraX"`]);
+  if ('alternateName' in loaded.BRAND_FACTS) parity.push(['src/data/brand.ts', 'brand', 'BRAND_FACTS has an alternateName; the brand has no alternate name']);
+}
 for (const [where, id, detail] of parity) report.push([where, 'error', id, detail]);
 errors += parity.length;
 console.log(`${'PARITY'.padEnd(22)} ${parity.length ? parity.map(([, id]) => id).join('  ') : 'clean'}`);
 
+/**
+ * Allow entries that excuse nothing any more: the sentence was fixed or moved,
+ * and the entry should go. Only entries this audit judges (a file under src/,
+ * as opposed to a URL path, which the rendered audit judges).
+ */
+for (const e of allow.entries) {
+  if (allowKind(e) === 'static' && !e.used) {
+    report.push([`scripts/audit-allow.json`, 'warn', 'allow-stale', `no match for "${e.sentence}" (${e.rule}) in ${e.where}; remove the entry`]);
+    warnings++;
+  }
+  if (allowKind(e) === 'static' && e.approver === 'unreviewed') {
+    report.push([`scripts/audit-allow.json`, 'info', 'allow-unreviewed', `"${e.sentence}" (${e.rule}) in ${e.where} still needs the owner's sign-off`]);
+  }
+}
+
 if (report.length) {
   console.log('');
   for (const [where, level, id, detail] of report) {
+    if (level === 'info' && !VERBOSE && id !== 'allow-unreviewed') continue;
     const mark = level === 'error' ? '✗' : level === 'info' ? '·' : '!';
     console.log(`  ${mark} [${id}] ${where}\n      ${detail}`);
   }
